@@ -1,9 +1,23 @@
-# Eksperyment wydajnościowy RetractorDB
+# Eksperymenty RetractorDB
 
-Infrastruktura do kampanii pomiarowej opisanej w `REQUIREMENTS.md` i w sekcji
-*Performance Evaluation* `paper-arXiv/debs/main-debs.tex`. Dokument ten opisuje,
-jak uruchomić kampanię od zera na własnym sprzęcie (nadzorca + worker) i co
-dokładnie zostaje zarejestrowane, żeby wynik dało się odtworzyć.
+Repozytorium trzyma dwie rodziny badań. Łączy je zasada „jeden katalog
+`results_<data>` = jedno badanie” i wspólny dziennik `JOURNAL.md`; różnią się
+protokołem i tym, co w ogóle mierzą.
+
+| Rodzina | Co bada | Protokół | Przykład |
+|---|---|---|---|
+| **Kampanie wydajnościowe** | ile danych na sekundę wytrzyma dana platforma, jak zachowują się opóźnienia, temperatura i zasoby | `REQUIREMENTS.md`: nadzorca + worker pod Linuksem RT, zapis stanu maszyny przed i po każdym badaniu | `results_20260716` … `results_20260722_thick_mesh` |
+| **Eksperymenty semantyczne** | czy semantyka silnika zgadza się z niezależnym modelem formalnym | lokalny przebieg na zbudowanym silniku, bez workera i bez pomiaru czasu | `results_20260725` (równoważność przeplotu z CSDF/SDF) |
+
+Reszta tego dokumentu opisuje **rodzinę pierwszą**: jak uruchomić kampanię od
+zera na własnym sprzęcie (nadzorca + worker) i co dokładnie zostaje
+zarejestrowane, żeby wynik dało się odtworzyć. Wyniki tej rodziny zasilają
+sekcję *Performance Evaluation* w `paper-arXiv/debs/main-debs.tex`.
+
+Eksperymenty semantyczne mają własne README w swoim katalogu i własny skrypt
+odtwarzający (`run.sh`) — nie przechodzą przez `start_supervisor.sh` i nie
+podlegają protokołowi z `REQUIREMENTS.md`. Wynik `results_20260725` zasila
+sekcję *Related Work* (§3.3 i tabelę `tab:repr`) tej samej pracy.
 
 ## Architektura
 

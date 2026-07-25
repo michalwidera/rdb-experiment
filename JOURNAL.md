@@ -2260,3 +2260,141 @@ bez timeoutu, timeout nieosiągalny z konstrukcji pętli, pusta lista badań bez
 błędu. Wspólny wzorzec: **stan zewnętrzny zmienia się pod skryptem, a skrypt nie
 sprawdza, czy to, na czym pracuje, nadal istnieje**. Warto przy okazji kolejnej
 zmiany przejrzeć nadzorcę pod tym kątem, zamiast czekać na czwarty przypadek.
+
+---
+
+## 2026-07-25 — eksperyment semantyczny CSDF/SDF: równoważność przeplotu i koszt
+## reprezentacji
+
+Pierwszy wpis dotyczący badania **innej rodziny** niż wszystko powyżej. Nie ma
+tu nadzorcy, workera ani jądra RT — nie mierzymy czasu. Badanie jest lokalne,
+uruchamiane na zbudowanym silniku, a jego przedmiotem jest **semantyka**, nie
+wydajność. Protokół z `REQUIREMENTS.md` (zapis stanu maszyny, rotacja katalogów,
+restart workera) go nie dotyczy; katalog `results_20260725` trzyma się jednak
+tej samej konwencji nazewniczej i zasady „jeden katalog = jedno badanie”.
+
+**Cel.** Zamknąć lukę, którą artykuł deklarował wprost w §3.3: „Whether a Beatty
+interleave actor can be translated into ordinary SDF/CSDF with the same
+observable order and comparable state is an important comparison **not yet
+evaluated here**”. Zdanie, które w zgłoszonej pracy czyta się jak przyznanie,
+że praca nie jest gotowa.
+
+### Decyzja projektowa: oracle nie może być przepisaniem wzoru
+
+W `examples/python-model/` leżą prototypy na `Fraction` — `hash.py`,
+`equations.py` i pokrewne. Wyglądają na gotowy oracle, ale nim nie są: liczą
+**dokładnie ten sam wzór podłogowy** co silnik. Wykryją literówkę w transkrypcji
+do C++, nie wykryją błędu we wzorze ani w regule remisów, bo popełnią ten sam
+błąd. Artykuł odsyłał do nich zdaniem „a numerical verification of all
+equations” — obietnica mocniejsza niż to, co ten kod daje.
+
+Nowy oracle (`reference.py`) definiuje przeplot **operacyjnie**, przez scalenie
+dwóch arytmetycznych siatek terminów:
+
+```
+termin A[k] = (k+1)·Δa
+termin B[j] =  j   ·Δb
+scalanie rosnące, remis na korzyść A
+```
+
+Ani jednej podłogi. Zgodność ze wzorem Beatty'ego jest więc zgodnością dwóch
+niezależnych konstrukcji. Przesunięcie o jeden interwał po stronie A odpowiada
+jednoslotowemu opóźnieniu `Theta` z dokumentacji algebry — to nie jest fudge
+factor dobrany pod wynik, tylko odwzorowanie konwencji, którą algebra i tak ma.
+
+Pierwsza kontrola: oracle odtwarza przykład z dokumentacji `φ(Epsilon, Alfa)`
+= `1,2,a,3,b,4,5,c,6,d` oraz wzorzec `B,A,A` z testu silnika
+`issue202_hash_shift_e2e`. Dopiero po tym warto było iść dalej.
+
+### Co zbudowano
+
+Cztery realizacje tej samej semantyki, każda zwracająca ślad
+`(source-id, source-index)`: `beatty_online` (wzór z silnika), `csdf_explicit`
+(P jawnych faz, tablica z oracle'a), `csdf_lookup` (tablica ze wzoru — wariant
+kontrolny rozdzielający koszt reprezentacji od kosztu jej konstrukcji) oraz
+`sdf_block` (aktor blokowy, `b/g` i `a/g` tokenów na odpalenie).
+
+Do tego lemat o okresie: słowo wyboru ma minimalny okres `P = (a+b)/g`.
+Okresowość z `Pz = b/g ∈ ℕ`; minimalność z tego, że liczba jedynek w oknie
+długości `T` teleskopuje do `⌊(n+T)z⌋ − ⌊nz⌋`, a stałość tego wyrażenia wymusza
+`Tz ∈ ℕ` — przy mianowniku skróconego `z` równym `P` daje to `P | T`.
+
+### Wyniki
+
+| Etap | Wynik |
+|---|---|
+| Kontrole mutacyjne | 4/4 wstrzyknięte błędy wykryte; kontrola negatywna poprawnie milczy |
+| Macierz równoważności | 7908 par interwałów, **4 106 738 pozycji, zero rozbieżności** |
+| Lemat o okresie | potwierdzony maszynowo w każdym przypadku |
+| Most do silnika | **8/8** przypadków zgodnych rekord po rekordzie, w tym 160/147 (`P = 307`) |
+
+Koszt reprezentacji: jawny CSDF przechowuje `Θ(P)` faz przy startup latency
+jednego tokena; blokowy SDF ma zwartą sygnaturę rate'ów, ale startup i bufor
+wejściowy rosną jak `Θ(P)`; postać online utrzymuje stałą liczbę liczników.
+Wielkości są **wyprowadzone z definicji modeli**, nie zmierzone — i tak są w
+artykule opisane.
+
+Odtworzenie: `results_20260725/run.sh`. Macierz równoważności ~21 s, most do
+silnika ~3 min (silnik taktuje w czasie rzeczywistym, więc to ogranicza liczbę
+rekordów, nie moc obliczeniowa).
+
+### Trzy rzeczy, które poszły nie tak — i co z nich wynika
+
+**1. Jedna z zaplanowanych mutacji okazała się tożsamością.** Miała psuć indeks
+po stronie B: `n − ⌊nz⌋` zamiast `n − ⌊(n+1)z⌋`. Nie wykryła jej żadna z 12
+kontroli, bo w gałęzi B warunek rozgałęzienia brzmi **dokładnie**
+`⌊nz⌋ = ⌊(n+1)z⌋` — obie postaci są równe z konstrukcji. Mutacja przeniesiona
+na stronę A, gdzie `⌊(n+1)z⌋ = ⌊nz⌋ + 1` i podmiana daje prawdziwy off-by-one.
+
+To jest ważniejsze niż sam incydent: **kontrola mutacyjna, która wygląda
+sensownie i niczego nie sprawdza, jest gorsza niż jej brak**, bo daje fałszywe
+poczucie pokrycia. Macierz mutacji trzeba czytać tak samo podejrzliwie jak
+macierz wyników.
+
+**2. Pierwszy przebieg mostu dał rozbieżność na pozycji 767** — oracle
+oczekiwał `B[400]`, silnik dał `B[0]`. Nie była to rozbieżność semantyki:
+plik źródłowy miał 400 rekordów, a **źródło plikowe czytane poza koniec danych
+zaczyna indeksować od zera**. Harness porównuje teraz wyłącznie prefiks pokryty
+danymi i raportuje, ile rekordów faktycznie porównał. Samo zachowanie zawijania
+warto sprawdzić osobno — nie wiem, czy jest zamierzone.
+
+**3. Przypadek 160/147 z `-m 26000` chodził ponad 11 minut** i wyprodukował
+8596 rekordów, bo silnik taktuje w czasie rzeczywistym. Limit zszedł do 2800,
+co daje ~1151 rekordów, czyli 3,75 okresu — wystarczająco, żeby pokazać
+powtarzalność wzorca, a nie żeby czekać. Wniosek na przyszłość: w badaniach
+semantycznych dobierać `-m` od strony liczby okresów, nie „z zapasem”.
+
+### Ustalenie uboczne, które zawęża inny problem
+
+Samo `A#B`, bez operatorów przesunięcia, **nie produkuje zerowego prefiksu** w
+żadnym z ośmiu przypadków silnikowych. Zerowy prefiks pojawia się dopiero z
+`>N`. To lokalizuje rozbieżność `factor_runtime_semantic_divergence` znaną z
+macierzy `optimizer_ablation`: problem nie leży w przeplocie ani w jego
+konwencji czasu, tylko po stronie przesunięcia — dokładnie tam, gdzie
+dokumentacja definiuje `tau_m` jako odczyt w przód, a implementacja realizuje
+opóźnienie.
+
+### Decyzje
+
+- **Mikrobenchmark `ns/token` świadomie pominięty.** Kolumna wymagałaby
+  porównania czterech reprezentacji w jednym procesie, co jest tematem z obszaru
+  embedded dataflow i na DEBS czytałoby się jako off-venue. Tabela w artykule
+  podaje wyłącznie wielkości strukturalne i mówi wprost, że kosztu wykonania nie
+  mierzono.
+- **Kontrola w PREESM/ForSyDe-Atom/SDF3 zostaje opcjonalna.** Dowód i oracle są
+  obowiązkowe, zewnętrzne narzędzie jest wzmocnieniem.
+- **Nie twierdzimy, że SDF nie potrafi wyrazić przeplotu.** Aktor SDF może
+  liczyć ten sam wzór wewnętrznie — wtedy opakowuje ten algorytm, zamiast go
+  zastępować. Porównanie dotyczy jawnych reprezentacji rate/phase wobec
+  reprezentacji algorytmicznej.
+
+Wynik trafił do `paper-arXiv/debs/main-debs.tex` (§3.3 + `tab:repr`) i do wersji
+polskiej; zniknęły z nich zdania „not yet evaluated here” oraz „remains
+necessary before submission”.
+
+### Następny krok
+
+Oracle pokrywa **przeplot**, nie regułę shift-matching. Żeby domknąć
+`factorMatchedHashTimeMoves()`, trzeba go rozszerzyć o operator `>N`, semantykę
+`null` i luk — i dopiero wtedy powtórzyć ten sam schemat: mutacje najpierw,
+wyniki potem.

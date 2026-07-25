@@ -1,3 +1,5 @@
+@zakres Ten dokument definiuje wymagania **kampanii wydajnościowej** (nadzorca + worker, pomiar czasu na sprzęcie RT). Nie obowiązuje eksperymentów semantycznych, które nie mierzą czasu i nie potrzebują workera — te mają własne README i własny skrypt odtwarzający w swoim katalogu wyników (przykład: `results_20260725`). Podział rodzin badań opisuje `README.md`.
+
 Eksperyment powinien:
 - być procesem prowadzonym na fizycznym sprzęcie z zainstalowanym oprogramowaniem RetractorDB, systemem pracującym pod kontrolą Linux skonfigurowanym w trybie czasu rzeczywistego.
 - mieć zdefinowany cel badawczy: zebranie informacji wymaganych dla celów publikacji naukowej (paper-arXiv/debs/main-debs.tex - Performance Evaluation)
