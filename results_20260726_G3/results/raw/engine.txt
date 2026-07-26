@@ -1,0 +1,28 @@
+-- p2_equal
+   ratio=       1 shift=1+1 tail=3 records=86/86/86 blocked_mismatch=0 OK
+-- p3_regression
+   ratio=     1/2 shift=2+1 tail=5 records=47/47/47 blocked_mismatch=0 OK
+-- p3_reverse
+   ratio=       2 shift=1+2 tail=4 records=55/55/55 blocked_mismatch=0 OK
+-- p4_skew
+   ratio=     1/3 shift=3+1 tail=7 records=52/52/52 blocked_mismatch=0 OK
+-- p5_remainder1
+   ratio=     2/3 shift=3+2 tail=7 records=55/55/55 blocked_mismatch=0 OK
+-- p7_remainder1
+   ratio=     3/4 shift=4+3 tail=9 records=55/55/55 blocked_mismatch=0 OK
+-- p8_remainder2
+   ratio=     3/5 shift=5+3 tail=10 records=58/58/58 blocked_mismatch=7 MISMATCH
+-- p5_fast
+   ratio=     3/2 shift=4+6 tail=11 records=70/70/70 blocked_mismatch=14 MISMATCH
+-- p5_slow
+   ratio=     3/2 shift=4+6 tail=11 records=32/32/32 blocked_mismatch=7 MISMATCH
+-- p18_fast
+   ratio=    7/11 shift=11+7 tail=20 records=75/75/75 blocked_mismatch=13 MISMATCH
+-- p18_slow
+   ratio=    7/11 shift=11+7 tail=20 records=27/27/27 blocked_mismatch=5 MISMATCH
+-- p3_unreduced
+   ratio=     3/2 shift=2+3 tail=6 records=50/50/50 blocked_mismatch=10 MISMATCH
+-- p307_audio
+   ratio= 160/147 shift=147+160 tail=308 records=218/218/218 blocked_mismatch=103 MISMATCH
+
+WYNIK: 6/13 przypadków zgodnych z oracle'em

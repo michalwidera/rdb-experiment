@@ -1,0 +1,2325 @@
+{
+  "binary": "/home/michal/github/retractordb/build/Debug/src/retractor/xretractor",
+  "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=ON\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON\nRDB_BENCH_PROBE=OFF",
+  "code_commit": "fac2fb0fa4e9cbb96b8b8d7058fe82880023cf7a",
+  "experiment_commit": "386f18e7d512157e1efa3ba720e40bd230ccad30",
+  "python": "3.14.4 (main, Jun 18 2026, 14:25:02) [GCC 15.2.0]",
+  "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "gap_policy": "computed R1 outputs must have an empty gap trace",
+  "cases": [
+    {
+      "case": "p2_equal",
+      "delta_a": "1/100",
+      "delta_b": "1/100",
+      "ratio": "1",
+      "shift_a": 1,
+      "shift_b": 1,
+      "combined": 2,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/200",
+      "expected_tail": 3,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 1,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 3,
+        "blocked": 3,
+        "explicit_rhs": 3
+      },
+      "intervals": {
+        "optimized": "1/200",
+        "blocked": "1/200",
+        "explicit_rhs": "1/200"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 62,
+        "partial_null": 20,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 86,
+          "meta_records": 86,
+          "compared": 86,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 86,
+          "meta_records": 86,
+          "compared": 86,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 86,
+          "meta_records": 86,
+          "compared": 86,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p3_regression",
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "ratio": "1/2",
+      "shift_a": 2,
+      "shift_b": 1,
+      "combined": 3,
+      "loops": 70,
+      "min_interval_ms": 100,
+      "source_records": 2500,
+      "expected_interval": "1/15",
+      "expected_tail": 5,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 5,
+        "blocked": 5,
+        "explicit_rhs": 5
+      },
+      "intervals": {
+        "optimized": "1/15",
+        "blocked": "1/15",
+        "explicit_rhs": "1/15"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 33,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 47,
+          "meta_records": 47,
+          "compared": 47,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 47,
+          "meta_records": 47,
+          "compared": 47,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 47,
+          "meta_records": 47,
+          "compared": 47,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p3_reverse",
+      "delta_a": "1/50",
+      "delta_b": "1/100",
+      "ratio": "2",
+      "shift_a": 1,
+      "shift_b": 2,
+      "combined": 3,
+      "loops": 80,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/150",
+      "expected_tail": 4,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 1,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 4,
+        "blocked": 4,
+        "explicit_rhs": 4
+      },
+      "intervals": {
+        "optimized": "1/150",
+        "blocked": "1/150",
+        "explicit_rhs": "1/150"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 41,
+        "partial_null": 12,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p4_skew",
+      "delta_a": "1/100",
+      "delta_b": "3/100",
+      "ratio": "1/3",
+      "shift_a": 3,
+      "shift_b": 1,
+      "combined": 4,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/400",
+      "expected_tail": 7,
+      "current_hash_tail": 3,
+      "phase_safe_hash_tail": 3,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 7,
+        "blocked": 7,
+        "explicit_rhs": 7
+      },
+      "intervals": {
+        "optimized": "3/400",
+        "blocked": "3/400",
+        "explicit_rhs": "3/400"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 38,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 52,
+          "meta_records": 52,
+          "compared": 52,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 52,
+          "meta_records": 52,
+          "compared": 52,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 52,
+          "meta_records": 52,
+          "compared": 52,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p5_remainder1",
+      "delta_a": "1/100",
+      "delta_b": "3/200",
+      "ratio": "2/3",
+      "shift_a": 3,
+      "shift_b": 2,
+      "combined": 5,
+      "loops": 100,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/500",
+      "expected_tail": 7,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 7,
+        "blocked": 7,
+        "explicit_rhs": 7
+      },
+      "intervals": {
+        "optimized": "3/500",
+        "blocked": "3/500",
+        "explicit_rhs": "3/500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 41,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p7_remainder1",
+      "delta_a": "1/100",
+      "delta_b": "1/75",
+      "ratio": "3/4",
+      "shift_a": 4,
+      "shift_b": 3,
+      "combined": 7,
+      "loops": 110,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/175",
+      "expected_tail": 9,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 0,
+      "tails": {
+        "optimized": 9,
+        "blocked": 9,
+        "explicit_rhs": 9
+      },
+      "intervals": {
+        "optimized": "1/175",
+        "blocked": "1/175",
+        "explicit_rhs": "1/175"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 40,
+        "partial_null": 12,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": true,
+      "schemas_equal": true,
+      "status": "OK"
+    },
+    {
+      "case": "p8_remainder2",
+      "delta_a": "1/100",
+      "delta_b": "1/60",
+      "ratio": "3/5",
+      "shift_a": 5,
+      "shift_b": 3,
+      "combined": 8,
+      "loops": 120,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/160",
+      "expected_tail": 10,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 10,
+        "blocked": 10,
+        "explicit_rhs": 10
+      },
+      "intervals": {
+        "optimized": "1/160",
+        "blocked": "1/160",
+        "explicit_rhs": "1/160"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 43,
+        "partial_null": 12,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 58,
+          "meta_records": 58,
+          "compared": 58,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 58,
+          "meta_records": 58,
+          "compared": 58,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 7,
+          "first_mismatches": [
+            {
+              "position": 2,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 10,
+              "expected_values": [
+                1000004,
+                0
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                true
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 4
+            },
+            {
+              "position": 18,
+              "expected_values": [
+                1000007,
+                2000007
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 7
+            },
+            {
+              "position": 26,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            },
+            {
+              "position": 34,
+              "expected_values": [
+                1000013,
+                2000013
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 13
+            },
+            {
+              "position": 42,
+              "expected_values": [
+                1000016,
+                2000016
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 16
+            },
+            {
+              "position": 50,
+              "expected_values": [
+                1000019,
+                2000019
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 19
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 58,
+          "meta_records": 58,
+          "compared": 58,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p5_fast",
+      "delta_a": "3/1000",
+      "delta_b": "1/500",
+      "ratio": "3/2",
+      "shift_a": 4,
+      "shift_b": 6,
+      "combined": 10,
+      "loops": 130,
+      "min_interval_ms": 2,
+      "source_records": 2500,
+      "expected_interval": "3/2500",
+      "expected_tail": 11,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 11,
+        "blocked": 11,
+        "explicit_rhs": 11
+      },
+      "intervals": {
+        "optimized": "3/2500",
+        "blocked": "3/2500",
+        "explicit_rhs": "3/2500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 50,
+        "partial_null": 17,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 70,
+          "meta_records": 70,
+          "compared": 70,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 70,
+          "meta_records": 70,
+          "compared": 70,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 14,
+          "first_mismatches": [
+            {
+              "position": 1,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 6,
+              "expected_values": [
+                1000004,
+                0
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                true
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 4
+            },
+            {
+              "position": 11,
+              "expected_values": [
+                1000007,
+                2000007
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 7
+            },
+            {
+              "position": 16,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            },
+            {
+              "position": 21,
+              "expected_values": [
+                1000013,
+                2000013
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 13
+            },
+            {
+              "position": 26,
+              "expected_values": [
+                1000016,
+                2000016
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 16
+            },
+            {
+              "position": 31,
+              "expected_values": [
+                1000019,
+                2000019
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 19
+            },
+            {
+              "position": 36,
+              "expected_values": [
+                0,
+                2000022
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                true,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 22
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 70,
+          "meta_records": 70,
+          "compared": 70,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p5_slow",
+      "delta_a": "3/100",
+      "delta_b": "1/50",
+      "ratio": "3/2",
+      "shift_a": 4,
+      "shift_b": 6,
+      "combined": 10,
+      "loops": 70,
+      "min_interval_ms": 20,
+      "source_records": 2500,
+      "expected_interval": "3/250",
+      "expected_tail": 11,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 11,
+        "blocked": 11,
+        "explicit_rhs": 11
+      },
+      "intervals": {
+        "optimized": "3/250",
+        "blocked": "3/250",
+        "explicit_rhs": "3/250"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 23,
+        "partial_null": 7,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 32,
+          "meta_records": 32,
+          "compared": 32,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 32,
+          "meta_records": 32,
+          "compared": 32,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 7,
+          "first_mismatches": [
+            {
+              "position": 1,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 6,
+              "expected_values": [
+                1000004,
+                0
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                true
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 4
+            },
+            {
+              "position": 11,
+              "expected_values": [
+                1000007,
+                2000007
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 7
+            },
+            {
+              "position": 16,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            },
+            {
+              "position": 21,
+              "expected_values": [
+                1000013,
+                2000013
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 13
+            },
+            {
+              "position": 26,
+              "expected_values": [
+                1000016,
+                2000016
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 16
+            },
+            {
+              "position": 31,
+              "expected_values": [
+                1000019,
+                2000019
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 19
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 32,
+          "meta_records": 32,
+          "compared": 32,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p18_fast",
+      "delta_a": "1/500",
+      "delta_b": "11/3500",
+      "ratio": "7/11",
+      "shift_a": 11,
+      "shift_b": 7,
+      "combined": 18,
+      "loops": 180,
+      "min_interval_ms": 2,
+      "source_records": 2500,
+      "expected_interval": "11/9000",
+      "expected_tail": 20,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 20,
+        "blocked": 20,
+        "explicit_rhs": 20
+      },
+      "intervals": {
+        "optimized": "11/9000",
+        "blocked": "11/9000",
+        "explicit_rhs": "11/9000"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 54,
+        "partial_null": 17,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 75,
+          "meta_records": 75,
+          "compared": 75,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 75,
+          "meta_records": 75,
+          "compared": 75,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 13,
+          "first_mismatches": [
+            {
+              "position": 2,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 7,
+              "expected_values": [
+                1000003,
+                2000003
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 3
+            },
+            {
+              "position": 12,
+              "expected_values": [
+                1000005,
+                2000005
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 5
+            },
+            {
+              "position": 20,
+              "expected_values": [
+                1000008,
+                2000008
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 8
+            },
+            {
+              "position": 25,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            },
+            {
+              "position": 30,
+              "expected_values": [
+                1000012,
+                2000012
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 12
+            },
+            {
+              "position": 38,
+              "expected_values": [
+                0,
+                2000015
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                true,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 15
+            },
+            {
+              "position": 43,
+              "expected_values": [
+                1000017,
+                2000017
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 17
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 75,
+          "meta_records": 75,
+          "compared": 75,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p18_slow",
+      "delta_a": "1/50",
+      "delta_b": "11/350",
+      "ratio": "7/11",
+      "shift_a": 11,
+      "shift_b": 7,
+      "combined": 18,
+      "loops": 90,
+      "min_interval_ms": 20,
+      "source_records": 2500,
+      "expected_interval": "11/900",
+      "expected_tail": 20,
+      "current_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 20,
+        "blocked": 20,
+        "explicit_rhs": 20
+      },
+      "intervals": {
+        "optimized": "11/900",
+        "blocked": "11/900",
+        "explicit_rhs": "11/900"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 19,
+        "partial_null": 6,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 27,
+          "meta_records": 27,
+          "compared": 27,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 27,
+          "meta_records": 27,
+          "compared": 27,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 5,
+          "first_mismatches": [
+            {
+              "position": 2,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 7,
+              "expected_values": [
+                1000003,
+                2000003
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 3
+            },
+            {
+              "position": 12,
+              "expected_values": [
+                1000005,
+                2000005
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 5
+            },
+            {
+              "position": 20,
+              "expected_values": [
+                1000008,
+                2000008
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 8
+            },
+            {
+              "position": 25,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 27,
+          "meta_records": 27,
+          "compared": 27,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p3_unreduced",
+      "delta_a": "3/200",
+      "delta_b": "1/100",
+      "ratio": "3/2",
+      "shift_a": 2,
+      "shift_b": 3,
+      "combined": 5,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/500",
+      "expected_tail": 6,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 6,
+        "blocked": 6,
+        "explicit_rhs": 6
+      },
+      "intervals": {
+        "optimized": "3/500",
+        "blocked": "3/500",
+        "explicit_rhs": "3/500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 37,
+        "partial_null": 11,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 50,
+          "meta_records": 50,
+          "compared": 50,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 50,
+          "meta_records": 50,
+          "compared": 50,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 10,
+          "first_mismatches": [
+            {
+              "position": 1,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 6,
+              "expected_values": [
+                1000004,
+                0
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                true
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 4
+            },
+            {
+              "position": 11,
+              "expected_values": [
+                1000007,
+                2000007
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 7
+            },
+            {
+              "position": 16,
+              "expected_values": [
+                1000010,
+                2000010
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 10
+            },
+            {
+              "position": 21,
+              "expected_values": [
+                1000013,
+                2000013
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 13
+            },
+            {
+              "position": 26,
+              "expected_values": [
+                1000016,
+                2000016
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 16
+            },
+            {
+              "position": 31,
+              "expected_values": [
+                1000019,
+                2000019
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 19
+            },
+            {
+              "position": 36,
+              "expected_values": [
+                0,
+                2000022
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                true,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 22
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 50,
+          "meta_records": 50,
+          "compared": 50,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    },
+    {
+      "case": "p307_audio",
+      "delta_a": "8/3675",
+      "delta_b": "1/500",
+      "ratio": "160/147",
+      "shift_a": 147,
+      "shift_b": 160,
+      "combined": 307,
+      "loops": 1050,
+      "min_interval_ms": 2,
+      "source_records": 3557,
+      "expected_interval": "8/7675",
+      "expected_tail": 308,
+      "current_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "tail_deficit": 1,
+      "tails": {
+        "optimized": 308,
+        "blocked": 308,
+        "explicit_rhs": 308
+      },
+      "intervals": {
+        "optimized": "8/7675",
+        "blocked": "8/7675",
+        "explicit_rhs": "8/7675"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 157,
+        "partial_null": 57,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 218,
+          "meta_records": 218,
+          "compared": 218,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 218,
+          "meta_records": 218,
+          "compared": 218,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 103,
+          "first_mismatches": [
+            {
+              "position": 1,
+              "expected_values": [
+                1000001,
+                2000001
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 1
+            },
+            {
+              "position": 3,
+              "expected_values": [
+                0,
+                2000002
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                true,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 2
+            },
+            {
+              "position": 5,
+              "expected_values": [
+                1000003,
+                2000003
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 3
+            },
+            {
+              "position": 7,
+              "expected_values": [
+                1000004,
+                0
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                true
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 4
+            },
+            {
+              "position": 9,
+              "expected_values": [
+                1000005,
+                2000005
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 5
+            },
+            {
+              "position": 11,
+              "expected_values": [
+                1000006,
+                2000006
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 6
+            },
+            {
+              "position": 13,
+              "expected_values": [
+                1000007,
+                2000007
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 7
+            },
+            {
+              "position": 15,
+              "expected_values": [
+                1000008,
+                2000008
+              ],
+              "actual_values": [
+                0,
+                0
+              ],
+              "expected_nulls": [
+                false,
+                false
+              ],
+              "actual_nulls": [
+                true,
+                true
+              ],
+              "source": "B",
+              "source_index": 8
+            }
+          ]
+        },
+        "explicit_rhs": {
+          "records": 218,
+          "meta_records": 218,
+          "compared": 218,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "status": "MISMATCH"
+    }
+  ],
+  "verdict": "MISMATCH"
+}

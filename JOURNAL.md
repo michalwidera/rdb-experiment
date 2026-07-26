@@ -2802,3 +2802,107 @@ decyzja projektowa, a nie usterka do cichego naprawienia.
 ### Weryfikacja
 
 `ctest` 166/166 w Debug i Release.
+
+---
+
+## 2026-07-26 — K2/G3: niezależny oracle ujawnia fazowy deficyt ogona `#`
+
+Kampania: `results_20260726_G3`. Cel: zamknąć G3 niezależną kontrolą reguły
+shift-matching:
+
+```text
+phi(tau_i(A), tau_k(B)) = tau_(i+k)(phi(A,B))
+gdy i*delta_A = k*delta_B
+```
+
+### Metoda
+
+Historyczny `results_20260725` pozostał nietknięty. Nowy oracle nie używa wzoru
+Beatty'ego ani pętli silnika; scala arytmetyczne siatki zdarzeń A i B,
+a `>N` realizuje jako fizyczne opóźnienie całej siatki. Ślad zawiera fazę,
+czas logiczny, źródło, indeks, dwupolowy rekord i pełny bitset `NULL`.
+
+Przed właściwym wynikiem zakwalifikowano osiem mutacji: off-by-one
+przesunięcia, zły łączny shift, zamianę argumentów, zmianę remisu, utratę mapy
+`NULL`, zamianę `NULL` na zero, wstrzykniętą lukę i zmianę schematu. Wszystkie
+zostały wykryte. `6/4 == 3/2` pozostaje kontrolą benign — brak skrócenia
+stosunku nie zmienia semantyki.
+
+### Wynik oracle'a
+
+| kampania | przypadków | pozycji | rozbieżności |
+|---|---:|---:|---:|
+| exhaustive `1 <= a,b <= 256`, min. `10P` | 65 536 | 123 053 540 | 0 |
+| property-based, pary do `10^6` | 10 000 | 19 987 962 | 0 |
+| przypadki obowiązkowe | 12 | 24 420 | 0 |
+| **razem** | **75 548** | **143 065 922** | **0** |
+
+Dziedzina nie była pusta: 714 rekordów bez `NULL`, 264 z częściowym `NULL`
+i 22 all-null w jawnej kontroli payloadu. Wszystkie 12/12 niedopasowanych
+przesunięć zostało odrzuconych.
+
+### Most do silnika — wynik negatywny
+
+Każdy przypadek wykonywał trzy plany:
+
+1. LHS przepisana przez `factorMatchedHashTimeMoves()`;
+2. LHS nieprzepisana, bo oba przesunięcia są publicznymi strumieniami;
+3. jawna RHS `(A#B)>(i+k)`.
+
+Wynik: **6/13 zgodnych**. We wszystkich siedmiu porażkach:
+
+- plan zoptymalizowany był zgodny z jawną RHS i oracle'em;
+- nieprzepisana LHS miała ten sam `delta`, deklarowany `tail`, schemat
+  i liczbę rekordów;
+- w jej payloadzie okresowo pojawiał się rekord all-null zamiast kolejnego
+  elementu B;
+- wpisów `gap` nie było, zgodnie z aktualną polityką `G_S = empty`.
+
+Kontrole dla `3/2` i `7/11` powtórzono przy najkrótszym interwale 2 ms i 20 ms.
+W obu tempach wystąpił ten sam wzorzec, więc nie jest to niedotrzymanie krótkiego
+taktu.
+
+### Zawężenie przyczyny
+
+`computeStartupLatency()` przypisuje przeplotowi własny ogon:
+
+```text
+ceil(delta_B / delta_A)
+```
+
+To zabezpiecza pierwszą potrzebną próbkę B, ale nie zawsze najgorszą fazę
+okresu. Dla skróconego `delta_A/delta_B = p/q` kontrola dostępności kolejnych
+`B[j]` daje maksimum:
+
+```text
+max_{0 <= j < p} (
+  ceil((j+1)q/p) - floor(jq/p)
+)
+```
+
+W 6 przypadkach przechodzących maksimum było równe bieżącemu ogonowi.
+W 7 przypadkach zawodzących było dokładnie o jeden większe:
+
+| proporcja | bieżący / fazowo bezpieczny | błędów blocked |
+|---|---:|---:|
+| `3/5` | 2 / 3 | 7 |
+| `3/2` | 1 / 2 | 14 (2 ms), 7 (20 ms) |
+| `7/11` | 2 / 3 | 13 (2 ms), 5 (20 ms) |
+| `160/147` | 1 / 2 | 103 |
+
+Ta cecha przewidziała wszystkie porażki i nie przewidziała żadnej fałszywej.
+To jest hipoteza poprawki, nie jeszcze wdrożony ani zweryfikowany fix.
+
+### Werdykt i następny krok
+
+**K2/G3 pozostaje otwarte.** Oracle spełnia wymagania i wykrył rozbieżność,
+której nie obejmował test `r1_identity_nulls` ani przypadek
+`issue202_hash_shift_e2e` o proporcji `1/2`.
+
+Następny krok:
+
+1. skorygować własny ogon `STREAM_HASH` na maksimum fazowe;
+2. dodać regresje dla co najmniej `3/5`, `3/2`, `7/11` i `160/147`;
+3. uruchomić pełne CTest;
+4. powtórzyć `results_20260726_G3/run.sh` na poprawionym commicie;
+5. dopiero po zerowej macierzy mostu oznaczyć K2/G3 jako zamknięte.

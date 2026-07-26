@@ -1,0 +1,163 @@
+{
+  "seed": 20260726,
+  "quick": false,
+  "mutations": {
+    "rhs_shift_plus_one": {
+      "detected": true,
+      "layers": [
+        "tail",
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "lhs_shift_off_by_one": {
+      "detected": true,
+      "layers": [
+        "tail",
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "swapped_arguments": {
+      "detected": true,
+      "layers": [
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "tie_to_b": {
+      "detected": true,
+      "layers": [
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "null_map_dropped": {
+      "detected": true,
+      "layers": [
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "null_as_zero": {
+      "detected": true,
+      "layers": [
+        "records"
+      ],
+      "verdict": "OK"
+    },
+    "injected_gap": {
+      "detected": true,
+      "layers": [
+        "gaps"
+      ],
+      "verdict": "OK"
+    },
+    "changed_schema": {
+      "detected": true,
+      "layers": [
+        "schema"
+      ],
+      "verdict": "OK"
+    },
+    "unreduced_6_4_equals_3_2": {
+      "detected": false,
+      "layers": [],
+      "verdict": "OK (kontrola benign)"
+    }
+  },
+  "payload_domain": {
+    "valid": true,
+    "differences": [],
+    "coverage": {
+      "present": 714,
+      "partial_null": 264,
+      "all_null": 22
+    }
+  },
+  "unmatched_guard": {
+    "cases": [
+      {
+        "case": "1/1",
+        "rejected": true
+      },
+      {
+        "case": "1/2",
+        "rejected": true
+      },
+      {
+        "case": "2/1",
+        "rejected": true
+      },
+      {
+        "case": "3/2",
+        "rejected": true
+      },
+      {
+        "case": "6/4",
+        "rejected": true
+      },
+      {
+        "case": "3/1",
+        "rejected": true
+      },
+      {
+        "case": "1/3",
+        "rejected": true
+      },
+      {
+        "case": "1/16",
+        "rejected": true
+      },
+      {
+        "case": "16/1",
+        "rejected": true
+      },
+      {
+        "case": "7/11",
+        "rejected": true
+      },
+      {
+        "case": "160/147",
+        "rejected": true
+      },
+      {
+        "case": "1000/999",
+        "rejected": true
+      }
+    ],
+    "all_rejected": true
+  },
+  "campaigns": [
+    {
+      "label": "exhaustive<=256",
+      "cases": 65536,
+      "positions": 123053540,
+      "checksum64": "51f914e0aa831b74",
+      "mismatches": [],
+      "seconds": 20.858
+    },
+    {
+      "label": "property<=1e6",
+      "cases": 10000,
+      "positions": 19987962,
+      "checksum64": "83c63ba051847a78",
+      "mismatches": [],
+      "seconds": 3.623
+    },
+    {
+      "label": "special",
+      "cases": 12,
+      "positions": 24420,
+      "checksum64": "46584b8195ef2596",
+      "mismatches": [],
+      "seconds": 0.004
+    }
+  ],
+  "totals": {
+    "cases": 75548,
+    "positions": 143065922,
+    "mismatches": 0
+  },
+  "verdict": "OK"
+}
