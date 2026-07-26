@@ -2750,3 +2750,55 @@ stwierdzenia semantyczne, nie regenerację wyjścia — m.in. `a2 == sa` zamiast
 Otwarte: konwencja `tau` w `dokumentacja-rdb` (nadal odczyt w przód — do korekty
 w wersji polskiej, potem angielskiej); operatory `MOD`, `SUBTRACT`, `AGSE` bez
 własnego ogonu; decyzja D3 o nazwach pól; macierz profili ablacyjnych.
+
+---
+
+## 2026-07-26 — dziedzina z NULL-ami domknięta; warstwa luk okazała się pusta
+
+Domknięcie pozycji, którą ujawniło pytanie o politykę null: cała weryfikacja R1
+biegła na danych **bez** NULL-i (sonda: 0/33 rekordów all-null), więc twierdzenie
+o zachowaniu obserwowalnego wyniku tej dziedziny nie obejmowało.
+
+### Wynik pozytywny
+
+Sonda ma teraz przypadki z NULL-ami w obu argumentach przeplotu, w tym serię
+dłuższą niż próg nullfill. Wszystkie trzy postacie tożsamości R1 — przepisana,
+nieprzepisana i prawa strona zapisana wprost w RQL — dają **ten sam wynik**:
+6/30 rekordów all-null, identyczne mapy null, identyczne wartości. Kontrola
+(ten sam plan dwa razy w dziedzinie z NULL-ami) przechodzi.
+
+Przypięte w CI testem `r1_identity_nulls`. Porównuje dane **i** `.meta`, bo samo
+porównanie bajtów by nie wystarczyło: rekord all-null i rekord o wartości zero
+mają identyczną zawartość binarną, a różną denotację. Test ma kontrolę
+niepustości — jeśli NULL-e nie dojdą do wyniku, przerywa z komunikatem, zamiast
+cicho porównywać dane bez NULL-i.
+
+### Ustalenie negatywne: wpisy gap nie powstają w przetwarzaniu
+
+Szukając luk w wyniku odkryłem, że seria trzech NULL-i daje trzy zapisane
+rekordy all-null, a nie lukę. Mechanizm: `configureGapDetection()` jest wołane
+wyłącznie dla deklaracji (`streamInstance.cpp:38`), a deklaracje mają **inertny**
+indeks null (bez pliku). Strumienie obliczane mają prawdziwy indeks, ale detekcja
+nie jest dla nich włączona, więc `absorbAppend()` zwraca false i każdy rekord
+all-null trafia do magazynu. `markTransmissionGap()` nie ma wywołania w runtime.
+
+Kontrola: przeskanowałem 97 plików `.meta` w drzewie build — 175 wpisów, w tym
+**2 wpisy gap**, oba z syntetycznego generatora fikstur do testu `xtrdb`, nie
+z silnika.
+
+Wnioski, które trzeba zapisać zamiast przemilczeć:
+
+- punkt „znaczniki luk” w relacji równoważności jest pusty dla każdego strumienia,
+  którego przepisanie może dotknąć — reguły zachowują go trywialnie;
+- próg `nullFillCount` = 2 (R17) nie ma dziś żadnego wpływu na artefakt, więc
+  pytanie „czy wchodzi do relacji” odpada, dopóki detekcja jest wyłączona;
+- serie NULL-i nie są kompresowane — koszt składowania rośnie liniowo z długością
+  przerwy.
+
+Czego **nie** zrobiłem: nie włączyłem detekcji przerw dla strumieni obliczanych.
+To zmieniłoby liczbę zapisanych rekordów, czyli obserwowalny artefakt — jest to
+decyzja projektowa, a nie usterka do cichego naprawienia.
+
+### Weryfikacja
+
+`ctest` 166/166 w Debug i Release.

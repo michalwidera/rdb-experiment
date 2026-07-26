@@ -11,6 +11,7 @@
   "cases": {
     "shift_declared": {
       "case": "shift_declared",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM probe FROM A>3",
@@ -92,6 +93,7 @@
     },
     "shift_declared_copy": {
       "case": "shift_declared_copy",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM probe FROM A>3",
@@ -173,6 +175,7 @@
     },
     "shift_computed": {
       "case": "shift_computed",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT A[0]+0 STREAM mid FROM A\nSELECT * STREAM probe FROM mid>3",
@@ -256,6 +259,7 @@
     },
     "hash_declared": {
       "case": "hash_declared",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM probe FROM A#B",
@@ -338,6 +342,7 @@
     },
     "hash_computed": {
       "case": "hash_computed",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT A[0]+0 STREAM midA FROM A\nSELECT B[0]+0 STREAM midB FROM B\nSELECT * STREAM probe FROM midA#midB",
@@ -424,6 +429,7 @@
     },
     "hash_computed_sorted": {
       "case": "hash_computed_sorted",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "DECLARE value INTEGER STREAM T1, 1/10 FILE 'a.txt'\nDECLARE value INTEGER STREAM T2, 1/5 FILE 'b.txt'\nSELECT A[0]+0 STREAM midA FROM A\nSELECT B[0]+0 STREAM midB FROM B\nSELECT * STREAM probe FROM midA#midB\nSELECT * STREAM trigger FROM (T1>2)#(T2>1)",
@@ -517,8 +523,356 @@
       "zero_prefix": 0,
       "all_null_records": 0
     },
+    "null_r1_lhs_auto": {
+      "case": "null_r1_lhs_auto",
+      "gap_entries": [],
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "rql": "SELECT * STREAM probe FROM (A>2)#(B>1)",
+      "plan": [
+        ":STORAGE\t./",
+        "A(1/10)\ta.txt",
+        "B(1/5)\tb.txt",
+        "STREAM_HASH_A_B(1/15)\ttail=2",
+        "\t:- PUSH_STREAM(A)",
+        "\t:- PUSH_STREAM(B)",
+        "\t:- STREAM_HASH",
+        "probe(1/15)\ttail=5",
+        "\t:- PUSH_STREAM(STREAM_HASH_A_B)",
+        "\t:- STREAM_TIMEMOVE(3)"
+      ],
+      "field_names": [
+        "value"
+      ],
+      "desc": "{\tINTEGER value\n}",
+      "records_total": 30,
+      "records": [
+        [
+          1000000
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [
+          1000001
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ],
+        [
+          0
+        ],
+        [
+          5
+        ],
+        [
+          0
+        ],
+        [
+          1000003
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          1000004
+        ],
+        [
+          9
+        ]
+      ],
+      "null_flags": [
+        "data",
+        "data",
+        "null",
+        "data",
+        "data",
+        "data",
+        "null",
+        "data",
+        "null",
+        "data",
+        "null",
+        "null",
+        "data",
+        "data"
+      ],
+      "zero_prefix": 0,
+      "all_null_records": 6
+    },
+    "null_r1_lhs_blocked": {
+      "case": "null_r1_lhs_blocked",
+      "gap_entries": [],
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "rql": "SELECT * STREAM sA FROM A>2\nSELECT * STREAM sB FROM B>1\nSELECT * STREAM probe FROM sA#sB",
+      "plan": [
+        ":STORAGE\t./",
+        "A(1/10)\ta.txt",
+        "sA(1/10)\ttail=2",
+        "\t:- PUSH_STREAM(A)",
+        "\t:- STREAM_TIMEMOVE(2)",
+        "B(1/5)\tb.txt",
+        "sB(1/5)\ttail=1",
+        "\t:- PUSH_STREAM(B)",
+        "\t:- STREAM_TIMEMOVE(1)",
+        "probe(1/15)\ttail=5",
+        "\t:- PUSH_STREAM(sA)",
+        "\t:- PUSH_STREAM(sB)",
+        "\t:- STREAM_HASH"
+      ],
+      "field_names": [
+        "value"
+      ],
+      "desc": "{\tINTEGER value\n}",
+      "records_total": 30,
+      "records": [
+        [
+          1000000
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [
+          1000001
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ],
+        [
+          0
+        ],
+        [
+          5
+        ],
+        [
+          0
+        ],
+        [
+          1000003
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          1000004
+        ],
+        [
+          9
+        ]
+      ],
+      "null_flags": [
+        "data",
+        "data",
+        "null",
+        "data",
+        "data",
+        "data",
+        "null",
+        "data",
+        "null",
+        "data",
+        "null",
+        "null",
+        "data",
+        "data"
+      ],
+      "zero_prefix": 0,
+      "all_null_records": 6
+    },
+    "null_r1_rhs": {
+      "case": "null_r1_rhs",
+      "gap_entries": [],
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "rql": "SELECT * STREAM probe FROM (A#B)>3",
+      "plan": [
+        ":STORAGE\t./",
+        "A(1/10)\ta.txt",
+        "B(1/5)\tb.txt",
+        "STREAM_HASH_A_B(1/15)\ttail=2",
+        "\t:- PUSH_STREAM(A)",
+        "\t:- PUSH_STREAM(B)",
+        "\t:- STREAM_HASH",
+        "probe(1/15)\ttail=5",
+        "\t:- PUSH_STREAM(STREAM_HASH_A_B)",
+        "\t:- STREAM_TIMEMOVE(3)"
+      ],
+      "field_names": [
+        "value"
+      ],
+      "desc": "{\tINTEGER value\n}",
+      "records_total": 30,
+      "records": [
+        [
+          1000000
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [
+          1000001
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ],
+        [
+          0
+        ],
+        [
+          5
+        ],
+        [
+          0
+        ],
+        [
+          1000003
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          1000004
+        ],
+        [
+          9
+        ]
+      ],
+      "null_flags": [
+        "data",
+        "data",
+        "null",
+        "data",
+        "data",
+        "data",
+        "null",
+        "data",
+        "null",
+        "data",
+        "null",
+        "null",
+        "data",
+        "data"
+      ],
+      "zero_prefix": 0,
+      "all_null_records": 6
+    },
+    "null_r1_rhs_copy": {
+      "case": "null_r1_rhs_copy",
+      "gap_entries": [],
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "rql": "SELECT * STREAM probe FROM (A#B)>3",
+      "plan": [
+        ":STORAGE\t./",
+        "A(1/10)\ta.txt",
+        "B(1/5)\tb.txt",
+        "STREAM_HASH_A_B(1/15)\ttail=2",
+        "\t:- PUSH_STREAM(A)",
+        "\t:- PUSH_STREAM(B)",
+        "\t:- STREAM_HASH",
+        "probe(1/15)\ttail=5",
+        "\t:- PUSH_STREAM(STREAM_HASH_A_B)",
+        "\t:- STREAM_TIMEMOVE(3)"
+      ],
+      "field_names": [
+        "value"
+      ],
+      "desc": "{\tINTEGER value\n}",
+      "records_total": 30,
+      "records": [
+        [
+          1000000
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [
+          1000001
+        ],
+        [
+          3
+        ],
+        [
+          4
+        ],
+        [
+          0
+        ],
+        [
+          5
+        ],
+        [
+          0
+        ],
+        [
+          1000003
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          1000004
+        ],
+        [
+          9
+        ]
+      ],
+      "null_flags": [
+        "data",
+        "data",
+        "null",
+        "data",
+        "data",
+        "data",
+        "null",
+        "data",
+        "null",
+        "data",
+        "null",
+        "null",
+        "data",
+        "data"
+      ],
+      "zero_prefix": 0,
+      "all_null_records": 6
+    },
     "add_declared": {
       "case": "add_declared",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/10",
       "rql": "SELECT * STREAM probe FROM A+B",
@@ -616,6 +970,7 @@
     },
     "add_computed": {
       "case": "add_computed",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/10",
       "rql": "SELECT A[0]+0 STREAM midA FROM A\nSELECT B[0]+0 STREAM midB FROM B\nSELECT * STREAM probe FROM midA+midB",
@@ -717,6 +1072,7 @@
     },
     "r1_lhs_auto": {
       "case": "r1_lhs_auto",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM probe FROM (A>2)#(B>1)",
@@ -802,6 +1158,7 @@
     },
     "r1_lhs_blocked": {
       "case": "r1_lhs_blocked",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM sA FROM A>2\nSELECT * STREAM sB FROM B>1\nSELECT * STREAM probe FROM sA#sB",
@@ -890,6 +1247,7 @@
     },
     "r1_rhs": {
       "case": "r1_rhs",
+      "gap_entries": [],
       "delta_a": "1/10",
       "delta_b": "1/5",
       "rql": "SELECT * STREAM probe FROM (A#B)>3",
@@ -984,6 +1342,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -995,6 +1354,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": false,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1006,6 +1366,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": false,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1017,6 +1378,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": false,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1028,6 +1390,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1039,6 +1402,43 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": false,
+      "gaps": true,
+      "schema_shape": true
+    },
+    {
+      "left": "null_r1_rhs",
+      "right": "null_r1_rhs_copy",
+      "role": "control",
+      "note": "dziedzina z NULL-ami: ten sam plan dwa razy",
+      "values": true,
+      "null_map": true,
+      "zero_prefix": true,
+      "field_names": true,
+      "gaps": true,
+      "schema_shape": true
+    },
+    {
+      "left": "null_r1_lhs_auto",
+      "right": "null_r1_rhs",
+      "role": "question",
+      "note": "R1 nad danymi z NULL-ami: przepisany vs prawa strona",
+      "values": true,
+      "null_map": true,
+      "zero_prefix": true,
+      "field_names": true,
+      "gaps": true,
+      "schema_shape": true
+    },
+    {
+      "left": "null_r1_lhs_blocked",
+      "right": "null_r1_rhs",
+      "role": "question",
+      "note": "R1 nad danymi z NULL-ami: nieprzepisany vs prawa strona",
+      "values": true,
+      "null_map": true,
+      "zero_prefix": true,
+      "field_names": true,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1050,6 +1450,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1061,6 +1462,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
+      "gaps": true,
       "schema_shape": true
     },
     {
@@ -1072,6 +1474,7 @@
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
+      "gaps": true,
       "schema_shape": true
     }
   ],

@@ -44,8 +44,12 @@ DECLARE value INTEGER STREAM A, {da} FILE 'a.txt'
 DECLARE value INTEGER STREAM B, {db} FILE 'b.txt'
 """
 
-# (nazwa, delta_a, delta_b, ciało zapytania). Badany strumień zawsze nazywa się
-# `probe`, żeby dekodowanie było wspólne dla wszystkich przypadków.
+# Pozycje NULL-i (modulo 16) w źródłach A i B dla przypadków z dziedziny z NULL-ami.
+# W A jest seria trzech kolejnych (5,6,7) — dłuższa niż próg nullfill (R17 = 2).
+NULL_SPEC = ({1, 5, 6, 7}, {2, 11})
+
+# (nazwa, delta_a, delta_b, ciało zapytania[, (NULL-e w A, NULL-e w B)]).
+# Badany strumień zawsze nazywa się `probe`, żeby dekodowanie było wspólne.
 CASES = [
     # --- operator przesunięcia: źródło deklarowane vs strumień obliczany ---
     ("shift_declared", "1/10", "1/5", "SELECT * STREAM probe FROM A>3\n"),
@@ -88,6 +92,42 @@ CASES = [
         "SELECT * STREAM probe FROM midA#midB\n"
         "SELECT * STREAM trigger FROM (T1>2)#(T2>1)\n",
     ),
+    # --- tożsamość R1 nad danymi Z NULL-AMI ---
+    # Cała dotychczasowa weryfikacja reguły biegła na danych bez NULL-i, więc
+    # twierdzenie o zachowaniu wyniku nie obejmowało tej dziedziny. NULL-e są
+    # rozłożone tak, by trafiły w oba argumenty przeplotu, w tym seria dłuższa
+    # niż próg nullfill (R17 = 2).
+    (
+        "null_r1_lhs_auto",
+        "1/10",
+        "1/5",
+        "SELECT * STREAM probe FROM (A>2)#(B>1)\n",
+        NULL_SPEC,
+    ),
+    (
+        "null_r1_lhs_blocked",
+        "1/10",
+        "1/5",
+        "SELECT * STREAM sA FROM A>2\n"
+        "SELECT * STREAM sB FROM B>1\n"
+        "SELECT * STREAM probe FROM sA#sB\n",
+        NULL_SPEC,
+    ),
+    (
+        "null_r1_rhs",
+        "1/10",
+        "1/5",
+        "SELECT * STREAM probe FROM (A#B)>3\n",
+        NULL_SPEC,
+    ),
+    # kontrola dziedziny z NULL-ami: ten sam plan dwa razy musi dać to samo
+    (
+        "null_r1_rhs_copy",
+        "1/10",
+        "1/5",
+        "SELECT * STREAM probe FROM (A#B)>3\n",
+        NULL_SPEC,
+    ),
     # --- kontrola: ten sam podział na wejścia deklarowane/obliczane dla + ---
     ("add_declared", "1/10", "1/10", "SELECT * STREAM probe FROM A+B\n"),
     (
@@ -128,17 +168,31 @@ PAIRS = [
      "wpływ SAMEJ kolejności planu: to samo zapytanie, dołożone niezwiązane zapytanie wyzwala topologicalSort"),
     ("hash_declared", "hash_computed_sorted", "question",
      "residuum po przywróceniu porządku: co zostaje niezgodne"),
+    ("null_r1_rhs", "null_r1_rhs_copy", "control", "dziedzina z NULL-ami: ten sam plan dwa razy"),
+    ("null_r1_lhs_auto", "null_r1_rhs", "question", "R1 nad danymi z NULL-ami: przepisany vs prawa strona"),
+    ("null_r1_lhs_blocked", "null_r1_rhs", "question", "R1 nad danymi z NULL-ami: nieprzepisany vs prawa strona"),
     ("r1_lhs_auto", "r1_rhs", "question", "R1: plan przepisany vs prawa strona tożsamości"),
     ("r1_lhs_blocked", "r1_rhs", "question", "R1: plan nieprzepisany vs prawa strona tożsamości"),
     ("r1_lhs_auto", "r1_lhs_blocked", "question", "R1: plan przepisany vs nieprzepisany"),
 ]
 
 
-def write_sources(workdir):
+def write_sources(workdir, nulls=None):
+    """Zapisuje źródła; `nulls` to para zbiorów pozycji, które mają być NULL-em.
+
+    NULL w źródle tekstowym zapisuje się słowem NULL — tak samo jak w testach
+    issue113/issue121. Pozycje powtarzają się co 16 rekordów, żeby NULL-e
+    wystąpiły w całym przebiegu, a nie tylko na jego początku.
+    """
+    nulls_a, nulls_b = nulls if nulls else (set(), set())
+
+    def cell(index, value, null_positions):
+        return "NULL" if (index % 16) in null_positions else str(value)
+
     with open(os.path.join(workdir, "a.txt"), "w") as handle:
-        handle.write("".join(f"{k + 1}\n" for k in range(SOURCE_RECORDS)))
+        handle.write("".join(cell(k, k + 1, nulls_a) + "\n" for k in range(SOURCE_RECORDS)))
     with open(os.path.join(workdir, "b.txt"), "w") as handle:
-        handle.write("".join(f"{B_BASE + j}\n" for j in range(SOURCE_RECORDS)))
+        handle.write("".join(cell(j, B_BASE + j, nulls_b) + "\n" for j in range(SOURCE_RECORDS)))
 
 
 def decode_data(path, field_count):
@@ -198,11 +252,11 @@ def field_names(desc_text):
     return names
 
 
-def run_case(binary, workroot, name, delta_a, delta_b, body):
+def run_case(binary, workroot, name, delta_a, delta_b, body, nulls=None):
     workdir = os.path.join(workroot, name)
     shutil.rmtree(workdir, ignore_errors=True)
     os.makedirs(workdir)
-    write_sources(workdir)
+    write_sources(workdir, nulls)
 
     with open(os.path.join(workdir, "q.rql"), "w") as handle:
         handle.write(PREAMBLE.format(da=delta_a, db=delta_b) + "\n" + body)
@@ -227,8 +281,13 @@ def run_case(binary, workroot, name, delta_a, delta_b, body):
             break
         zero_prefix += 1
 
+    # Wpisy gap są markerami przerw i NIE są wliczane do numeracji rekordów, więc
+    # stanowią osobną warstwę obserwowalną (punkt 5 relacji równoważności).
+    gaps = [entry["records"] for entry in meta if entry["gap"]]
+
     return {
         "case": name,
+        "gap_entries": gaps,
         "delta_a": delta_a,
         "delta_b": delta_b,
         "rql": body.strip(),
@@ -250,6 +309,7 @@ def compare(left, right):
         "null_map": left["null_flags"] == right["null_flags"],
         "zero_prefix": left["zero_prefix"] == right["zero_prefix"],
         "field_names": left["field_names"] == right["field_names"],
+        "gaps": left["gap_entries"] == right["gap_entries"],
         "schema_shape": len(left["field_names"]) == len(right["field_names"]),
     }
 
@@ -274,9 +334,11 @@ def main():
     workroot = os.path.abspath(args.workdir)
 
     cases = {}
-    for name, delta_a, delta_b, body in CASES:
+    for case in CASES:
+        name, delta_a, delta_b, body = case[:4]
+        nulls = case[4] if len(case) > 4 else None
         print(f"-- {name}")
-        cases[name] = run_case(binary, workroot, name, delta_a, delta_b, body)
+        cases[name] = run_case(binary, workroot, name, delta_a, delta_b, body, nulls)
 
     pairs = []
     for left, right, role, note in PAIRS:
@@ -305,7 +367,7 @@ def main():
 
     print()
     for pair in pairs:
-        layers = [key for key in ("values", "null_map", "zero_prefix", "field_names") if not pair[key]]
+        layers = [key for key in ("values", "null_map", "zero_prefix", "field_names", "gaps") if not pair[key]]
         verdict = "ZGODNE" if not layers else "ROZBIEŻNE: " + ", ".join(layers)
         print(f"[{pair['role']:>8}] {pair['left']} <-> {pair['right']}: {verdict}")
 
