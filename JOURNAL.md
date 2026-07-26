@@ -2398,3 +2398,277 @@ Oracle pokrywa **przeplot**, nie regułę shift-matching. Żeby domknąć
 `factorMatchedHashTimeMoves()`, trzeba go rozszerzyć o operator `>N`, semantykę
 `null` i luk — i dopiero wtedy powtórzyć ten sam schemat: mutacje najpierw,
 wyniki potem.
+
+---
+
+## 2026-07-26 — eksperyment semantyczny G1/K1: obserwowalność planu; `#` nad
+## strumieniami obliczanymi degeneruje
+
+Kampania: `results_20260726_G1` (rodzina semantyczna, bez workera i bez pomiaru
+czasu). Cel: dane do luki **G1** / kroku **K1** planu badawczego — zdefiniować
+relację obserwowalnej równoważności planów, rozstrzygnąć status zerowego
+prefiksu, rozstrzygnąć, **która strona tożsamości R1 jest stroną odniesienia**.
+
+Metoda: `probe.py` uruchamia rodzinę zapytań różniących się wyłącznie kształtem
+planu i porównuje **pary planów** w czterech warstwach — wartości, mapa `null`
+(dekodowana wprost z wpisów RLE w `.meta`), długość prefiksu zerowego, nazwy
+pól z `.desc`. Nie porównuje z oracle'em: K1 dotyczy relacji między planami,
+poprawność bezwzględna to K2.
+
+### Kontrola zadziałała
+
+Para `add_declared` ↔ `add_computed` (operator `+` nad wejściem deklarowanym
+kontra obliczanym) wyszła zgodna w wartościach i mapie `null`. To odróżnia
+wynik poniżej od artefaktu konstrukcji sondy — gdyby degeneracja brała się ze
+sposobu, w jaki sonda materializuje strumienie pośrednie, kontrola też by
+padła. Para „ten sam plan dwa razy” również zgodna.
+
+### Wynik główny: rozjazd **jest** w przeplocie
+
+`A#B` nad źródłami deklarowanymi daje poprawny przeplot. Ten sam przeplot nad
+dwoma strumieniami **obliczanymi** daje 23 z 35 rekordów all-null i sekwencję
+`0,1,0,0,3,0,0,5,…`. Mechanizm: `dataModel::fetchForward()` liczy
+`rev = count - 1 - forwardIndex` względem liczby rekordów **już zapisanych**
+przez strumień obliczany; dla przeplotu indeks postępujący wyprzedza `count`,
+odczyt wychodzi poza zakres i zwraca rekord all-null.
+
+Osobno: `>N` nad źródłem **deklarowanym** jest operacją pustą —
+`getPayload()` woła `revRead(offset)` tylko dla `!isDeclared()`. Token
+`STREAM_TIMEMOVE` zostaje w planie, runtime go nie realizuje.
+
+**To obala ustalenie uboczne z 2026-07-25** („problem nie leży w przeplocie ani
+w jego konwencji czasu, tylko po stronie przesunięcia”). Tamten most do silnika
+testował `#` wyłącznie nad źródłami deklarowanymi — szablon
+`SELECT * STREAM hashed FROM A#B` z obydwoma `DECLARE` — więc tego przypadku
+nie mógł objąć. Wynik 8/8 pozostaje w mocy dla swojej dziedziny. Błędna
+hipoteza zostaje w dzienniku; nie przepisujemy historii.
+
+### Co z tego wynika dla R1
+
+Plan przepisany przez `factorMatchedHashTimeMoves()` jest identyczny co do bitu
+z prawą stroną tożsamości zapisaną wprost w RQL — we wszystkich czterech
+warstwach. Plan **nieprzepisany** rozchodzi się z obiema, i to nie o prefiks,
+tylko o treść sekwencji: wykonuje `#` nad dwoma substratami obliczanymi.
+
+Przepisanie zmienia dwie rzeczy naraz — przenosi `#` z wejść obliczanych na
+deklarowane i `>N` ze źródeł deklarowanych na węzeł obliczany. Oba przeniesienia
+idą w stronę zachowania poprawnego. **R1 w obecnym silniku nie jest
+optymalizacją zachowującą wykonanie; jest naprawą.** Rozbieżność ablacyjna
+`factor_runtime_semantic_divergence` jest więc większa, niż zakładał opis
+w planie badawczym („o jeden rekord zerowego prefiksu więcej”).
+
+Sposób uzyskania planu nieprzepisanego bez przebudowy binarki: zapisać
+przesunięcia jako **strumienie użytkownika**, nie podwyrażenia. Przebieg
+faktoryzacji wymaga substratów (`query::isSubstrat`), więc się nie odpala.
+Przypadek `r1_lhs_blocked` w sondzie.
+
+### Ustalenie uboczne: dwie konwencje „wartości niezdefiniowanej”
+
+Prefiks zerowy z `>N` jest zapisany jako rekordy o wartości 0 z **pustą** mapą
+`null` (`xtrdb`: „35 records, no nulls”) — nieodróżnialny od prawdziwego zera.
+Rekord niedostępny z `fetchForward()` jest oznaczony all-null. Ta sama sytuacja
+logiczna, dwie reprezentacje. Przy słowie „exact” w tytule sekcji i abstrakcie
+to jest problem sam w sobie (dotyka też G11).
+
+### Dlaczego to przetrwało zielone CI
+
+Testy reguły shift-matching (`issue202_hash_shift_factorization`) uruchamiają
+`xretractor -c` — sprawdzają kształt planu, nigdy go nie wykonują. Wariant
+ablacyjny, który plan wykonuje, jest przy wyłączonej faktoryzacji oznaczony
+`WILL_FAIL`, więc rejestruje **fakt** rozbieżności, nie jej treść. Nikt nie
+oglądał sekwencji, która wtedy powstaje.
+
+### Decyzje i następny krok
+
+Trzy decyzje K1 (status prefiksu, strona odniesienia, status nazw pól) są
+przygotowane z opcjami i rekomendacją w `paper-arXiv/debs/G1/03-decyzje.md` —
+podejmuje je człowiek, nie zamyka ich ten wpis.
+
+Następny krok jest **punktem go/no-go**: oszacować, czy `#` nad strumieniami
+obliczanymi da się naprawić bez zmiany modelu wykonania. Jeżeli nie, R1
+pozostaje normalizacją, a wtedy H4 nie ma czego mierzyć — dwa plany liczą co
+innego — i kroki K5–K6 trzeba przeformułować, a nie tylko wykonać.
+
+Do domknięcia macierzy brakuje jeszcze: profili `OFF`/`STRUCT`/`ALGSTRUCT`
+(skrypt `build_profiles.sh` gotowy, wymaga trzech przebudów Release), osi
+deduplikacji (`dedup_startup_prefix_divergence`) i przypadku `(A>i)#(B>k)`
+z przesunięciami niedopasowanymi, gdzie reguła z definicji się nie odpala —
+podejrzenie, że degeneruje tak samo, a to dotyczyłoby zapytań użytkownika,
+nie tylko konfiguracji ablacyjnej.
+
+---
+
+## 2026-07-26 (cd.) — K1.1: F2 rozpada się na dwa defekty; kolejność planu
+## zależy od tego, czy odpaliła się niezwiązana optymalizacja
+
+Krok K1.1 planu G1 był punktem go/no-go: czy `#` nad strumieniami obliczanymi
+da się naprawić bez przebudowy modelu wykonania. Odpowiedź jest złożona —
+**F2 to dwa niezależne defekty**, nie jeden.
+
+### W1 — porządek topologiczny jest niszczony i przypadkowo przywracany
+
+`compiler::resolveStreamIntervals()` kończy się `coreInstance.sort()`, a
+`qTree::sort()` porządkuje plan **rosnąco po interwale** (`query.cpp:13`).
+To nadpisuje porządek topologiczny ustalony w `expandSchemaWildcards()`.
+Jedynym późniejszym przebiegiem, który go przywraca, jest
+`factorMatchedHashTimeMoves()` — i tylko gdy faktycznie coś przepisał
+(`compiler.cpp:969`). `dataModel::processRows()` iteruje plan w tej kolejności,
+więc konsument policzony przed producentem czyta stan sprzed taktu.
+
+`#` jest **jedynym operatorem, którego interwał wyjściowy jest zawsze mniejszy
+od interwałów wejść** (`Δc = ΔaΔb/(Δa+Δb)`), więc sortowanie po interwale
+stawia go systematycznie przed jego producentami. `+` zachowuje interwał —
+dlatego kontrola `add_computed` przechodziła.
+
+Dowód: dopisanie do pliku RQL zapytania `(T1>2)#(T2>1)`, **niezwiązanego
+z badanym strumieniem**, wyzwala R1, ta woła `topologicalSort()`, i wynik
+badanego strumienia zmienia się z `–,a0,–,–,a2,–` na `–,a0,a1,–,a2,a3`.
+Przypadek `hash_computed_sorted` w sondzie, odtwarzalny przez `run.sh`.
+
+**To jest zmienna zakłócająca dla całej kampanii ablacyjnej.** Profil `OFF`
+różni się od domyślnego nie tylko wyłączonymi przebiegami, ale też kolejnością
+przetwarzania każdego planu, w którym R1 by się odpaliła. K4/K6 wykonane przed
+naprawą W1 mierzą artefakt. Naprawa: bezwarunkowy `topologicalSort()` na końcu
+`compile()`, ~0,5 dnia; sprawdzone, że nic w runtime nie zależy od porządku po
+interwale (`getAvailableTimeIntervals()` zwraca `std::set`).
+
+### W2 — drugi argument `#` jest wymagany zanim producent go wyprodukuje
+
+Residuum po przywróceniu kolejności jest ostre: **gałąź pierwszego argumentu
+działa w całości, gałąź drugiego jest zawsze all-null.** Zmierzone dla
+`ΔA/ΔB` = 1/1, 1/2, 2/1, 3/1 — za każdym razem tak samo.
+
+Element `b_j` jest potrzebny w slocie wyprzedzającym moment jego powstania o
+`Δb − Δc = Δb²/(Δa+Δb)`, czyli o `Δb/Δa` slotów wyjściowych. Wyprzedzenie jest
+**stałe**, nie startowe — dlatego gałąź B nie odzyskuje się po rozgrzewce.
+Element `a_k` jest potrzebny dokładnie w slocie swojego powstania, więc
+wystarcza mu poprawna kolejność w takcie. Stąd czysty rozdział obu gałęzi.
+
+Źródła deklarowane tego nie odczuwają, bo `processZeroStep()` wykonuje
+`revRead(0); fire();` przed pierwszym taktem (a `fire()` zwiększa
+`recordsCount_`), i są dodatkowo przetwarzane w drugiej pętli `processRows()`.
+Są więc trwale o jeden rekord do przodu względem strumienia obliczanego —
+a wymagane wyprzedzenie jest mniejsze niż jeden slot źródła. Strumień
+obliczany takiej rezerwy mieć nie może: jego rekord `n+1` zależy od jego
+własnych wejść w takcie `n+1`, więc wyprzedzenie propagowałoby się rekurencyjnie
+w górę grafu. To byłaby zmiana modelu wykonania na spekulacyjny — odrzucone.
+
+Realna opcja: **realizacja przyczynowa** — opóźnić wyjście `#` o
+`d = ⌈Δb/Δa⌉` slotów, rekordy `n < d` all-null. Architektonicznie spójna, bo
+operator odwrotny `Θ` (`STREAM_DEHASH_DIV`) **już** jest tak zrealizowany
+(komentarz w `dataModel.cpp:208-212`). Koszt 3–5 dni, bo dotyka wymaganej
+głębokości historii, wzorców ośmiu testów integracyjnych z `#`, tożsamości
+okrężnej `cor:exact`, oracle'a z `results_20260725` i kolumny startup latency
+w `tab:repr`.
+
+### Werdykt i konsekwencja dla kolejności prac
+
+Naprawialne bez zmiany modelu wykonania, ale nie w budżecie K1. W1 — 0,5 dnia,
+obowiązkowe przed kampanią ablacyjną. W2 — 3–5 dni i **musi nastąpić po
+decyzji D1**, nie przed: opóźnienie wyjścia `#` jest wprowadzeniem rozgrzewki
+do operatora podstawowego, czyli dokładnie tym, co D1 ma rozstrzygnąć jako
+konwencję. Wykonanie W2 przed D1 oznaczałoby zmianę semantyki brzegu bez
+zapisanej relacji, która ją opisuje.
+
+Jeżeli wykonamy W1 + W2: obie strony tożsamości R1 stają się równoważne
+niezależnie od przebiegu, R1 wraca do roli optymalizacji i H4 ma co mierzyć.
+Jeżeli tylko W1: R1 pozostaje normalizacją, a do artykułu idzie zastrzeżenie.
+
+Wycena i opcje: `paper-arXiv/debs/G1/04-k1.1-ocena.md`.
+
+---
+
+## 2026-07-26 — K1.1: rozkład defektu `#` na dwie przyczyny; **W1 naprawione**
+
+Krok K1.1 planu badawczego (punkt go/no-go): czy `#` nad strumieniami
+obliczanymi da się naprawić bez zmiany modelu wykonania. Odpowiedź: **to były
+dwa niezależne defekty, nie jeden.**
+
+### W1 — porządek przetwarzania planu (naprawione)
+
+Kolejność elementów `qTree` jest kolejnością przetwarzania w takcie
+(`dataModel::processRows`) i musi być topologiczna. `resolveStreamIntervals()`
+woła `qTree::sort()`, które sortuje **rosnąco po interwale**, niszcząc ten
+porządek; przywracał go potem wyłącznie `factorMatchedHashTimeMoves()`, i tylko
+gdy reguła R1 faktycznie coś przepisała.
+
+`#` jest jedynym operatorem, którego `Δ` wyniku jest zawsze **mniejsza** od
+`Δ` argumentów, więc sortowanie po interwale stawiało go systematycznie przed
+jego producentami. Operator `+` zachowuje `Δ`, dlatego kontrola `add_computed`
+zawsze przechodziła.
+
+Dowód, jaki dała sonda: dopisanie do pliku RQL zapytania **niezwiązanego**
+z badanym strumieniem, które wyzwala R1, zmieniało wynik badanego strumienia
+z `0,1,0,0,3,0,…` na `0,1,2,0,3,4,…`. Semantyka planu zależała od tego, czy
+odpaliła optymalizacja w innym zapytaniu tego samego pliku.
+
+Naprawa: bezwarunkowy `coreInstance.topologicalSort()` jako ostatni przebieg
+`compile()`.
+
+**Pierwsza próba przewróciła `ut_crsMath`** na
+`storage::revRead: recordIndexFromBack 1 >= circularBuffer_.capacity() 1`.
+Przyczyną był ukryty defekt w samym `topologicalSort()`: kończyło się ono
+`coreInstance = tempInstance`, a `qTree` dziedziczy po `std::vector<query>`, ale
+ma też pole `maxCapacity` — przypisanie całego obiektu **zerowało policzone
+pojemności historii**. Było to nieszkodliwe dopóki sortowano wyłącznie przed
+`computeRequiredCapacities()`. Poprawka: podmieniać tylko zawartość wektora.
+Wniosek na przyszłość: klasa dziedzicząca po kontenerze i dokładająca własne
+pola jest pułapką — „przypisz cały obiekt, żeby przestawić kolejność” wygląda
+niewinnie i gubi stan.
+
+Weryfikacja: `ctest` **164/164 w Debug i 164/164 w Release** (z `ninja install`
+przed każdym przebiegiem — testy integracyjne używają zainstalowanej binarki).
+18 testów wymagało regeneracji wzorca, bo porównują pełny listing planu albo
+graf `-d`. Dla każdego sprawdzono, że **multizbiór linii jest identyczny** —
+zmieniła się wyłącznie kolejność bloków. Żaden test porównujący dane nie
+zmienił wyniku.
+
+Efekt na sondzie (`results/probe-before-W1.json` vs `results/probe.json`):
+para `hash_computed ↔ hash_computed_sorted` z rozbieżnej stała się zgodna;
+`r1_lhs_blocked` poprawił się z 23/35 rekordów all-null do 12/35, a gałąź
+pierwszego argumentu przeplotu zaczęła być w całości poprawna.
+
+### Konsekwencja metodologiczna dla kampanii ablacyjnej
+
+Przed tą naprawą profil `RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=OFF` nie miał
+żadnego przebiegu przywracającego porządek topologiczny, więc wykonywał plany
+w kolejności po interwale. Porównanie `OFF` z `ALG+STRUCT` mierzyłoby zatem
+efekt optymalizacji **zmieszany ze zmianą kolejności przetwarzania** — zmienną,
+której nie ma w projekcie eksperymentu. Danych ablacyjnych jeszcze nie
+zbierano, więc nic nie trafia do odrzucenia; gdyby kampania ruszyła kilka dni
+wcześniej, jej wyniki byłyby nieważne.
+
+### W2 — nieprzyczynowość drugiego argumentu `#` (otwarte)
+
+Residuum po naprawie kolejności jest ostre: **gałąź pierwszego argumentu działa
+w całości, gałąź drugiego jest zawsze all-null.** Zmierzone dla czterech
+stosunków `ΔA/ΔB` (1/1, 1/2, 2/1, 3/1) — za każdym razem tak samo.
+
+Element `b_j` jest potrzebny w slocie wyjściowym wyprzedzającym moment jego
+powstania o `Δb − Δc = Δb²/(Δa+Δb)`, czyli o `Δb/Δa` slotów wyjściowych.
+Wyprzedzenie jest **stałe**, nie startowe — dlatego gałąź `B` nie odzyskuje się
+po rozgrzewce. Element `a_k` jest potrzebny dokładnie w slocie swojego
+powstania, więc wystarcza mu poprawna kolejność w takcie.
+
+Dlaczego źródła deklarowane tego nie ujawniają: `processZeroStep()` wykonuje
+dla każdej deklaracji `revRead(0); fire();` przed pierwszym taktem, a
+`storage::fire()` inkrementuje `recordsCount_`; deklaracje są dodatkowo
+przetwarzane w drugiej pętli `processRows()`, po zapytaniach obliczanych.
+Źródło deklarowane jest więc trwale o jeden rekord z przodu, a wymagane
+wyprzedzenie jest mniejsze niż jeden slot źródła. **`#` działa dziś dlatego, że
+źródła deklarowane są uzbrajane naprzód — nie dlatego, że operator jest
+przyczynowy.** Strumień obliczany takiej rezerwy mieć nie może: jego rekord
+`n+1` zależy od jego wejść w takcie `n+1`.
+
+### Decyzja i następny krok
+
+W2 **nie idzie teraz.** Rekomendowana naprawa (opóźnienie wyjścia `#`
+o `⌈Δb/Δa⌉` slotów, tak jak już działa operator odwrotny `Θ`) wprowadza
+rozgrzewkę do operatora podstawowego, czyli zmienia obserwowalne wyjście `#`
+także dla źródeł deklarowanych — a więc wzorce wszystkich testów przeplotu,
+tożsamość okrężną `cor:exact` i oracle z `results_20260725`. To jest dokładnie
+przedmiot decyzji D1 (status prefiksu), więc kolejność musi być D1 → W2, nie
+odwrotnie. Wycena 3–5 dni.
+
+Do rozstrzygnięcia przez człowieka: D1, D2, D3 —
+`paper-arXiv/debs/G1/03-decyzje.md`.
