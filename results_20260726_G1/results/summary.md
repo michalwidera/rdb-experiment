@@ -41,17 +41,17 @@ Konfiguracja binarki: `RDB_OPT_DEDUP_SUBSTRATES=ON RDB_OPT_SHARE_EQUIVALENT_SELE
 
 | przypadek | nazwy pól | prefiks zer | rekordy all-null | pierwsze wartości |
 |---|---|---:|---|---|
-| `shift_declared` | `value` | 0 | 0/47 | 1, 2, 3, 4, 5, 6, 7, 8, 9 … |
-| `shift_declared_copy` | `value` | 0 | 0/47 | 1, 2, 3, 4, 5, 6, 7, 8, 9 … |
-| `shift_computed` | `mid_0` | 3 | 0/47 | 0, 0, 0, 1, 2, 3, 4, 5, 6 … |
-| `hash_declared` | `value` | 0 | 0/35 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
-| `hash_computed` | `midA_0` | 1 | 12/35 | 0, 1, 2, 0, 3, 4, 0, 5, 6 … |
-| `hash_computed_sorted` | `midA_0` | 1 | 12/35 | 0, 1, 2, 0, 3, 4, 0, 5, 6 … |
+| `shift_declared` | `value` | 0 | 0/44 | 4, 5, 6, 7, 8, 9, 10, 11, 12 … |
+| `shift_declared_copy` | `value` | 0 | 0/44 | 4, 5, 6, 7, 8, 9, 10, 11, 12 … |
+| `shift_computed` | `mid_0` | 0 | 0/44 | 1, 2, 3, 4, 5, 6, 7, 8, 9 … |
+| `hash_declared` | `value` | 0 | 0/33 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
+| `hash_computed` | `midA_0` | 0 | 0/33 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
+| `hash_computed_sorted` | `midA_0` | 0 | 0/33 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
 | `add_declared` | `A_0, B_1` | 0 | 0/47 | 1/1000000, 2/1000001, 3/1000002, 4/1000003, 5/1000004, 6/1000005, 7/1000006, 8/1000007, 9/1000008 … |
 | `add_computed` | `midA_0, midB_1` | 0 | 0/47 | 1/1000000, 2/1000001, 3/1000002, 4/1000003, 5/1000004, 6/1000005, 7/1000006, 8/1000007, 9/1000008 … |
-| `r1_lhs_auto` | `value` | 3 | 0/35 | 0, 0, 0, 1000000, 1, 2, 1000001, 3, 4 … |
-| `r1_lhs_blocked` | `value` | 1 | 12/35 | 0, 1, 2, 0, 3, 4, 0, 5, 6 … |
-| `r1_rhs` | `value` | 3 | 0/35 | 0, 0, 0, 1000000, 1, 2, 1000001, 3, 4 … |
+| `r1_lhs_auto` | `value` | 0 | 0/30 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
+| `r1_lhs_blocked` | `value` | 0 | 0/30 | 1000001, 3, 4, 1000002, 5, 6, 1000003, 7, 8 … |
+| `r1_rhs` | `value` | 0 | 0/30 | 1000000, 1, 2, 1000001, 3, 4, 1000002, 5, 6 … |
 
 ### Pary planów — profil `default`
 
@@ -59,11 +59,11 @@ Konfiguracja binarki: `RDB_OPT_DEDUP_SUBSTRATES=ON RDB_OPT_SHARE_EQUIVALENT_SELE
 |---|---|---|---|---|---|---|
 | control | `shift_declared` ↔ `shift_declared_copy` | = | = | = | = | ten sam plan dwa razy |
 | control | `add_declared` ↔ `add_computed` | = | = | = | **≠** | + nad wejściem deklarowanym vs obliczanym |
-| question | `shift_declared` ↔ `shift_computed` | **≠** | = | **≠** | **≠** | >N nad wejściem deklarowanym vs obliczanym |
-| question | `hash_declared` ↔ `hash_computed` | **≠** | **≠** | **≠** | **≠** | # nad wejściem deklarowanym vs obliczanym |
+| question | `shift_declared` ↔ `shift_computed` | **≠** | = | = | **≠** | >N nad wejściem deklarowanym vs obliczanym |
+| question | `hash_declared` ↔ `hash_computed` | = | = | = | **≠** | # nad wejściem deklarowanym vs obliczanym |
 | question | `hash_computed` ↔ `hash_computed_sorted` | = | = | = | = | wpływ SAMEJ kolejności planu: to samo zapytanie, dołożone niezwiązane zapytanie wyzwala topologicalSort |
-| question | `hash_declared` ↔ `hash_computed_sorted` | **≠** | **≠** | **≠** | **≠** | residuum po przywróceniu porządku: co zostaje niezgodne |
+| question | `hash_declared` ↔ `hash_computed_sorted` | = | = | = | **≠** | residuum po przywróceniu porządku: co zostaje niezgodne |
 | question | `r1_lhs_auto` ↔ `r1_rhs` | = | = | = | = | R1: plan przepisany vs prawa strona tożsamości |
-| question | `r1_lhs_blocked` ↔ `r1_rhs` | **≠** | **≠** | **≠** | = | R1: plan nieprzepisany vs prawa strona tożsamości |
-| question | `r1_lhs_auto` ↔ `r1_lhs_blocked` | **≠** | **≠** | **≠** | = | R1: plan przepisany vs nieprzepisany |
+| question | `r1_lhs_blocked` ↔ `r1_rhs` | **≠** | = | = | = | R1: plan nieprzepisany vs prawa strona tożsamości |
+| question | `r1_lhs_auto` ↔ `r1_lhs_blocked` | **≠** | = | = | = | R1: plan przepisany vs nieprzepisany |
 

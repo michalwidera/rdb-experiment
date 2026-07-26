@@ -17,7 +17,7 @@
       "plan": [
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
-        "probe(1/10)",
+        "probe(1/10)\ttail=3",
         "\t:- PUSH_STREAM(A)",
         "\t:- STREAM_TIMEMOVE(3)",
         "B(1/5)\tb.txt"
@@ -26,17 +26,8 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 47,
+      "records_total": 44,
       "records": [
-        [
-          1
-        ],
-        [
-          2
-        ],
-        [
-          3
-        ],
         [
           4
         ],
@@ -69,6 +60,15 @@
         ],
         [
           14
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          17
         ]
       ],
       "null_flags": [
@@ -98,7 +98,7 @@
       "plan": [
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
-        "probe(1/10)",
+        "probe(1/10)\ttail=3",
         "\t:- PUSH_STREAM(A)",
         "\t:- STREAM_TIMEMOVE(3)",
         "B(1/5)\tb.txt"
@@ -107,17 +107,8 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 47,
+      "records_total": 44,
       "records": [
-        [
-          1
-        ],
-        [
-          2
-        ],
-        [
-          3
-        ],
         [
           4
         ],
@@ -150,6 +141,15 @@
         ],
         [
           14
+        ],
+        [
+          15
+        ],
+        [
+          16
+        ],
+        [
+          17
         ]
       ],
       "null_flags": [
@@ -181,7 +181,7 @@
         "A(1/10)\ta.txt",
         "mid(1/10)",
         "\t:- PUSH_STREAM(A)",
-        "probe(1/10)",
+        "probe(1/10)\ttail=3",
         "\t:- PUSH_STREAM(mid)",
         "\t:- STREAM_TIMEMOVE(3)",
         "B(1/5)\tb.txt"
@@ -190,17 +190,8 @@
         "mid_0"
       ],
       "desc": "{\tINTEGER mid_0\n}",
-      "records_total": 47,
+      "records_total": 44,
       "records": [
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
         [
           1
         ],
@@ -233,6 +224,15 @@
         ],
         [
           11
+        ],
+        [
+          12
+        ],
+        [
+          13
+        ],
+        [
+          14
         ]
       ],
       "null_flags": [
@@ -251,7 +251,7 @@
         "data",
         "data"
       ],
-      "zero_prefix": 3,
+      "zero_prefix": 0,
       "all_null_records": 0
     },
     "hash_declared": {
@@ -263,7 +263,7 @@
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
         "B(1/5)\tb.txt",
-        "probe(1/15)",
+        "probe(1/15)\ttail=2",
         "\t:- PUSH_STREAM(A)",
         "\t:- PUSH_STREAM(B)",
         "\t:- STREAM_HASH"
@@ -272,7 +272,7 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 35,
+      "records_total": 33,
       "records": [
         [
           1000000
@@ -349,7 +349,7 @@
         "B(1/5)\tb.txt",
         "midB(1/5)",
         "\t:- PUSH_STREAM(B)",
-        "probe(1/15)",
+        "probe(1/15)\ttail=2",
         "\t:- PUSH_STREAM(midA)",
         "\t:- PUSH_STREAM(midB)",
         "\t:- STREAM_HASH"
@@ -358,10 +358,10 @@
         "midA_0"
       ],
       "desc": "{\tINTEGER midA_0\n}",
-      "records_total": 35,
+      "records_total": 33,
       "records": [
         [
-          0
+          1000000
         ],
         [
           1
@@ -370,7 +370,7 @@
           2
         ],
         [
-          0
+          1000001
         ],
         [
           3
@@ -379,7 +379,7 @@
           4
         ],
         [
-          0
+          1000002
         ],
         [
           5
@@ -388,7 +388,7 @@
           6
         ],
         [
-          0
+          1000003
         ],
         [
           7
@@ -397,30 +397,30 @@
           8
         ],
         [
-          0
+          1000004
         ],
         [
           9
         ]
       ],
       "null_flags": [
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
+        "data",
+        "data",
+        "data",
+        "data",
+        "data",
         "data"
       ],
-      "zero_prefix": 1,
-      "all_null_records": 12
+      "zero_prefix": 0,
+      "all_null_records": 0
     },
     "hash_computed_sorted": {
       "case": "hash_computed_sorted",
@@ -435,17 +435,17 @@
         "B(1/5)\tb.txt",
         "midB(1/5)",
         "\t:- PUSH_STREAM(B)",
-        "probe(1/15)",
+        "probe(1/15)\ttail=2",
         "\t:- PUSH_STREAM(midA)",
         "\t:- PUSH_STREAM(midB)",
         "\t:- STREAM_HASH",
         "T1(1/10)\ta.txt",
         "T2(1/5)\tb.txt",
-        "STREAM_HASH_T1_T2(1/15)",
+        "STREAM_HASH_T1_T2(1/15)\ttail=2",
         "\t:- PUSH_STREAM(T1)",
         "\t:- PUSH_STREAM(T2)",
         "\t:- STREAM_HASH",
-        "trigger(1/15)",
+        "trigger(1/15)\ttail=5",
         "\t:- PUSH_STREAM(STREAM_HASH_T1_T2)",
         "\t:- STREAM_TIMEMOVE(3)"
       ],
@@ -453,10 +453,10 @@
         "midA_0"
       ],
       "desc": "{\tINTEGER midA_0\n}",
-      "records_total": 35,
+      "records_total": 33,
       "records": [
         [
-          0
+          1000000
         ],
         [
           1
@@ -465,7 +465,7 @@
           2
         ],
         [
-          0
+          1000001
         ],
         [
           3
@@ -474,7 +474,7 @@
           4
         ],
         [
-          0
+          1000002
         ],
         [
           5
@@ -483,7 +483,7 @@
           6
         ],
         [
-          0
+          1000003
         ],
         [
           7
@@ -492,30 +492,30 @@
           8
         ],
         [
-          0
+          1000004
         ],
         [
           9
         ]
       ],
       "null_flags": [
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
+        "data",
+        "data",
+        "data",
+        "data",
+        "data",
         "data"
       ],
-      "zero_prefix": 1,
-      "all_null_records": 12
+      "zero_prefix": 0,
+      "all_null_records": 0
     },
     "add_declared": {
       "case": "add_declared",
@@ -724,11 +724,11 @@
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
         "B(1/5)\tb.txt",
-        "STREAM_HASH_A_B(1/15)",
+        "STREAM_HASH_A_B(1/15)\ttail=2",
         "\t:- PUSH_STREAM(A)",
         "\t:- PUSH_STREAM(B)",
         "\t:- STREAM_HASH",
-        "probe(1/15)",
+        "probe(1/15)\ttail=5",
         "\t:- PUSH_STREAM(STREAM_HASH_A_B)",
         "\t:- STREAM_TIMEMOVE(3)"
       ],
@@ -736,17 +736,8 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 35,
+      "records_total": 30,
       "records": [
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
         [
           1000000
         ],
@@ -779,6 +770,15 @@
         ],
         [
           7
+        ],
+        [
+          8
+        ],
+        [
+          1000004
+        ],
+        [
+          9
         ]
       ],
       "null_flags": [
@@ -797,7 +797,7 @@
         "data",
         "data"
       ],
-      "zero_prefix": 3,
+      "zero_prefix": 0,
       "all_null_records": 0
     },
     "r1_lhs_blocked": {
@@ -808,14 +808,14 @@
       "plan": [
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
-        "sA(1/10)",
+        "sA(1/10)\ttail=2",
         "\t:- PUSH_STREAM(A)",
         "\t:- STREAM_TIMEMOVE(2)",
         "B(1/5)\tb.txt",
-        "sB(1/5)",
+        "sB(1/5)\ttail=1",
         "\t:- PUSH_STREAM(B)",
         "\t:- STREAM_TIMEMOVE(1)",
-        "probe(1/15)",
+        "probe(1/15)\ttail=5",
         "\t:- PUSH_STREAM(sA)",
         "\t:- PUSH_STREAM(sB)",
         "\t:- STREAM_HASH"
@@ -824,19 +824,10 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 35,
+      "records_total": 30,
       "records": [
         [
-          0
-        ],
-        [
-          1
-        ],
-        [
-          2
-        ],
-        [
-          0
+          1000001
         ],
         [
           3
@@ -845,7 +836,7 @@
           4
         ],
         [
-          0
+          1000002
         ],
         [
           5
@@ -854,7 +845,7 @@
           6
         ],
         [
-          0
+          1000003
         ],
         [
           7
@@ -863,30 +854,39 @@
           8
         ],
         [
-          0
+          1000004
         ],
         [
           9
+        ],
+        [
+          10
+        ],
+        [
+          1000005
+        ],
+        [
+          11
         ]
       ],
       "null_flags": [
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
         "data",
         "data",
-        "null",
+        "data",
+        "data",
+        "data",
+        "data",
+        "data",
         "data"
       ],
-      "zero_prefix": 1,
-      "all_null_records": 12
+      "zero_prefix": 0,
+      "all_null_records": 0
     },
     "r1_rhs": {
       "case": "r1_rhs",
@@ -897,11 +897,11 @@
         ":STORAGE\t./",
         "A(1/10)\ta.txt",
         "B(1/5)\tb.txt",
-        "STREAM_HASH_A_B(1/15)",
+        "STREAM_HASH_A_B(1/15)\ttail=2",
         "\t:- PUSH_STREAM(A)",
         "\t:- PUSH_STREAM(B)",
         "\t:- STREAM_HASH",
-        "probe(1/15)",
+        "probe(1/15)\ttail=5",
         "\t:- PUSH_STREAM(STREAM_HASH_A_B)",
         "\t:- STREAM_TIMEMOVE(3)"
       ],
@@ -909,17 +909,8 @@
         "value"
       ],
       "desc": "{\tINTEGER value\n}",
-      "records_total": 35,
+      "records_total": 30,
       "records": [
-        [
-          0
-        ],
-        [
-          0
-        ],
-        [
-          0
-        ],
         [
           1000000
         ],
@@ -952,6 +943,15 @@
         ],
         [
           7
+        ],
+        [
+          8
+        ],
+        [
+          1000004
+        ],
+        [
+          9
         ]
       ],
       "null_flags": [
@@ -970,7 +970,7 @@
         "data",
         "data"
       ],
-      "zero_prefix": 3,
+      "zero_prefix": 0,
       "all_null_records": 0
     }
   },
@@ -1004,7 +1004,7 @@
       "note": ">N nad wej\u015bciem deklarowanym vs obliczanym",
       "values": false,
       "null_map": true,
-      "zero_prefix": false,
+      "zero_prefix": true,
       "field_names": false,
       "schema_shape": true
     },
@@ -1013,9 +1013,9 @@
       "right": "hash_computed",
       "role": "question",
       "note": "# nad wej\u015bciem deklarowanym vs obliczanym",
-      "values": false,
-      "null_map": false,
-      "zero_prefix": false,
+      "values": true,
+      "null_map": true,
+      "zero_prefix": true,
       "field_names": false,
       "schema_shape": true
     },
@@ -1035,9 +1035,9 @@
       "right": "hash_computed_sorted",
       "role": "question",
       "note": "residuum po przywr\u00f3ceniu porz\u0105dku: co zostaje niezgodne",
-      "values": false,
-      "null_map": false,
-      "zero_prefix": false,
+      "values": true,
+      "null_map": true,
+      "zero_prefix": true,
       "field_names": false,
       "schema_shape": true
     },
@@ -1058,8 +1058,8 @@
       "role": "question",
       "note": "R1: plan nieprzepisany vs prawa strona to\u017csamo\u015bci",
       "values": false,
-      "null_map": false,
-      "zero_prefix": false,
+      "null_map": true,
+      "zero_prefix": true,
       "field_names": true,
       "schema_shape": true
     },
@@ -1069,8 +1069,8 @@
       "role": "question",
       "note": "R1: plan przepisany vs nieprzepisany",
       "values": false,
-      "null_map": false,
-      "zero_prefix": false,
+      "null_map": true,
+      "zero_prefix": true,
       "field_names": true,
       "schema_shape": true
     }

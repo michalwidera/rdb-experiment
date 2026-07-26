@@ -12,12 +12,12 @@
 
 [ control] shift_declared <-> shift_declared_copy: ZGODNE
 [ control] add_declared <-> add_computed: ROZBIEŻNE: field_names
-[question] shift_declared <-> shift_computed: ROZBIEŻNE: values, zero_prefix, field_names
-[question] hash_declared <-> hash_computed: ROZBIEŻNE: values, null_map, zero_prefix, field_names
+[question] shift_declared <-> shift_computed: ROZBIEŻNE: values, field_names
+[question] hash_declared <-> hash_computed: ROZBIEŻNE: field_names
 [question] hash_computed <-> hash_computed_sorted: ZGODNE
-[question] hash_declared <-> hash_computed_sorted: ROZBIEŻNE: values, null_map, zero_prefix, field_names
+[question] hash_declared <-> hash_computed_sorted: ROZBIEŻNE: field_names
 [question] r1_lhs_auto <-> r1_rhs: ZGODNE
-[question] r1_lhs_blocked <-> r1_rhs: ROZBIEŻNE: values, null_map, zero_prefix
-[question] r1_lhs_auto <-> r1_lhs_blocked: ROZBIEŻNE: values, null_map, zero_prefix
+[question] r1_lhs_blocked <-> r1_rhs: ROZBIEŻNE: values
+[question] r1_lhs_auto <-> r1_lhs_blocked: ROZBIEŻNE: values
 
 zapisano: results/probe.json
