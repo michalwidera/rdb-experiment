@@ -1,0 +1,61 @@
+[0/2] Re-checking globbed directories...
+[1/61] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCBaseListener.cpp.o
+[2/61] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLListener.cpp.o
+[3/61] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLBaseListener.cpp.o
+[4/61] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCListener.cpp.o
+[5/61] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCLexer.cpp.o
+[6/61] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLLexer.cpp.o
+[7/61] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCParser.cpp.o
+[8/61] Linking CXX static library src/rdb/lib/.antlr/libdescparser.a
+[9/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/cmake_pch.hxx.gch
+[10/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/cmake_pch.hxx.gch
+[11/61] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLParser.cpp.o
+[12/61] Building CXX object src/common/CMakeFiles/common.dir/uxSysTermTools.cpp.o
+[13/61] Linking CXX static library src/common/libcommon.a
+[14/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/gapDetector.cc.o
+[15/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccfs.cc.o
+[16/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptorIO.cc.o
+[17/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/indexRecord.cc.o
+[18/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaShadow.cc.o
+[19/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storagePaths.cc.o
+[20/61] Building CXX object src/retractor/CMakeFiles/xretractor.dir/launcher.cpp.o
+[21/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/rleSegment.cc.o
+[22/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccmemory.cc.o
+[23/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/accessorFactory.cc.o
+[24/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storageShadow.cc.o
+[25/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposix.cc.o
+[26/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccbindev.cc.o
+[27/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/bitsetCodec.cc.o
+[28/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storage.cc.o
+[29/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/sourceBuffer.cc.o
+[30/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/facctxtsrc.cc.o
+[31/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/DESCParser.cc.o
+[32/61] Linking CXX static library src/retractor/lib/.antlr/librqlparser.a
+[33/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/fagrp.cc.o
+[34/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaIndexStore.cc.o
+[35/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptor.cc.o
+[36/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposixshd.cc.o
+[37/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/convertTypes.cc.o
+[38/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/payload.cc.o
+[39/61] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaData.cc.o
+[40/61] Linking CXX static library src/rdb/lib/librdb.a
+[41/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/CRSMath.cpp.o
+[42/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executor_rt.cpp.o
+[43/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/persistentCounter.cpp.o
+[44/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/field.cpp.o
+[45/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/lockManager.cpp.o
+[46/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/serviceControl.cpp.o
+[47/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/dumpManager.cpp.o
+[48/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/RQLParser.cpp.o
+[49/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/token.cpp.o
+[50/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/query.cpp.o
+[51/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/qTree.cpp.o
+[52/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/dataModel.cpp.o
+[53/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/appConfig.cpp.o
+[54/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/presenter.cpp.o
+[55/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/streamInstance.cpp.o
+[56/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/compiler.cpp.o
+[57/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsm.cpp.o
+[58/61] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/expressionEvaluator.cpp.o
+[59/61] Linking CXX static library src/retractor/lib/libretractor.a
+[60/61] Linking CXX executable src/retractor/xretractor

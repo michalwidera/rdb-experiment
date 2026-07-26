@@ -1,0 +1,30 @@
+-- shift_declared
+-- shift_declared_copy
+-- shift_computed
+-- hash_declared
+-- hash_computed
+-- hash_computed_sorted
+-- null_r1_lhs_auto
+-- null_r1_lhs_blocked
+-- null_r1_rhs
+-- null_r1_rhs_copy
+-- add_declared
+-- add_computed
+-- r1_lhs_auto
+-- r1_lhs_blocked
+-- r1_rhs
+
+[ control] shift_declared <-> shift_declared_copy: ZGODNE
+[ control] add_declared <-> add_computed: ROZBIEŻNE: field_names
+[question] shift_declared <-> shift_computed: ROZBIEŻNE: field_names
+[question] hash_declared <-> hash_computed: ROZBIEŻNE: field_names
+[question] hash_computed <-> hash_computed_sorted: ZGODNE
+[question] hash_declared <-> hash_computed_sorted: ROZBIEŻNE: field_names
+[ control] null_r1_rhs <-> null_r1_rhs_copy: ZGODNE
+[question] null_r1_lhs_auto <-> null_r1_rhs: ZGODNE
+[question] null_r1_lhs_blocked <-> null_r1_rhs: ZGODNE
+[question] r1_lhs_auto <-> r1_rhs: ZGODNE
+[question] r1_lhs_blocked <-> r1_rhs: ZGODNE
+[question] r1_lhs_auto <-> r1_lhs_blocked: ZGODNE
+
+zapisano: results/probe-STRUCT.json
