@@ -1,0 +1,24 @@
+== 1/4 kwalifikacja mutacji ==
+  rhs_shift_plus_one             OK: tail, records
+  lhs_shift_off_by_one           OK: tail, records
+  swapped_arguments              OK: records
+  tie_to_b                       OK: records
+  null_map_dropped               OK: records
+  null_as_zero                   OK: records
+  injected_gap                   OK: gaps
+  changed_schema                 OK: schema
+  legacy_first_b_tail            OK: tail
+  unreduced_6_4_equals_3_2       OK (kontrola benign): -
+
+== 2/4 jawne wartości i mapy NULL ==
+  pokrycie: {'present': 714, 'partial_null': 264, 'all_null': 22}; wynik=True
+  niedopasowane przesunięcia odrzucone: 12/12
+
+== 3/4 exhaustive 1 <= a,b <= 256, co najmniej 10P pozycji ==
+  65536 przypadków, 123053540 pozycji, 0 rozbieżności, 20.796 s
+
+== 4/4 property-based: 10000 par do 10^6 ==
+  losowe: 10000 przypadków, 19987962 pozycji, 0 rozbieżności, 3.653 s
+  obowiązkowe: 12 przypadków, 24420 pozycji, 0 rozbieżności
+
+WYNIK: zero rozbieżności
