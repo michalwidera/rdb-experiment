@@ -2672,3 +2672,81 @@ odwrotnie. Wycena 3–5 dni.
 
 Do rozstrzygnięcia przez człowieka: D1, D2, D3 —
 `paper-arXiv/debs/G1/03-decyzje.md`.
+
+---
+
+## 2026-07-26 — zasada brzegu strumienia wdrożona: koniec półproduktów
+
+Decyzja właściciela projektu, która uruchomiła tę pracę: **NULL jest wartością
+pochłaniającą** — dane oczekiwane a nieobecne albo wynik nieistniejący w zbiorze
+wartości. **Nigdy** nie oznacza „system przewiduje tu miejsce na dane”. Gdy
+operator musi wstrzymać wydawanie wyniku, system czeka i raportuje ogon, zamiast
+dostarczać półprodukty.
+
+Moja wcześniejsza rekomendacja (prefiks jako rekordy all-null) była **błędna** —
+popełniała dokładnie ten błąd, przed którym zasada chroni. Zostaje w dzienniku.
+
+### Co zrobiono
+
+1. **Ogon w kompilatorze.** `query::startupLatency` + przebieg
+   `computeStartupLatency()`, arytmetyka wymierna, raport `tail=` w listingu.
+   Rekurencja: `tau_N` dodaje `N`; `phi` dodaje `⌈Δy/Δx⌉` do ogonu **drugiego**
+   argumentu; `Theta` dodaje slot.
+2. **Brak emisji w slotach ogona.** `processRows` pomija strumień, dopóki ogon
+   nie minie. Nowy licznik `streamInstance::elapsedSlots` rozdziela pozycję na
+   siatce slotów od indeksu elementu — dotąd były tym samym, bo każdy strumień
+   emitował w każdym slocie.
+3. **`Theta` bez rekordu-zastępnika.** Usunięty przypadek `(n == 0) ? -1`;
+   jednoslotowa nieprzyczynowość jest teraz częścią ogonu.
+4. **Jedna konwencja `tau`.** Nowy `fetchBack()` honoruje offset także dla
+   źródeł deklarowanych. Wybrano **opóźnienie**, nie odczyt w przód: zasada jest
+   sformułowana jako czekanie, odczyt w przód jest nieprzyczynowy dla źródła na
+   żywo, a runtime i testy już tak działały dla strumieni obliczanych.
+
+### Czego nauczył eksperyment
+
+**Sonda znalazła błąd w mojej rekurencji.** Ogon `phi` liczyłem jako
+`max(wejścia, własne wyprzedzenie)`. Poprawnie: wyprzedzenie dotyczy odczytu
+drugiego argumentu, więc **dodaje się do jego ogonu**. Przed poprawką lewa
+strona tożsamości R1 dawała 3, prawa 5 — reguła nie zachowywałaby ogonu.
+Wyszło to wyłącznie dlatego, że sonda porównuje pary planów, a nie pojedyncze
+wyniki z oczekiwaniem.
+
+**W2 rozwiązało się samo.** Wyceniłem naprawę nieprzyczynowości przeplotu nad
+strumieniami obliczanymi na 3–5 dni jako osobny krok. Wdrożenie zasady zamknęło
+ją mimochodem: ogon **jest** brakującym opóźnieniem przyczynowym. Wycena była
+zawyżona, bo zakładałem osobny mechanizm dla czegoś, co jest tym samym
+zjawiskiem.
+
+**Półprodukty wychodziły na zewnątrz.** `issue56_timeshift` publikował pięć
+rekordów `{ str1_0:0 str1_1:0 str1_2:20 }` — wartość `20` policzoną wyrażeniem
+`str1[1]*str1[0]+20` z nieistniejących danych. Cztery prawdziwe rekordy po
+zmianie pozostały identyczne co do bitu.
+
+**Tożsamość okrężna jest teraz dokładna.** `deinterleave_roundtrip`: `a2 == sa`
+i `b2 == sb` co do bitu. Wcześniej `a2` zaczynało się sfabrykowanym zerem i było
+przesunięte o rekord. Wniosek `cor:exact` można podać bez zastrzeżenia „po
+odrzuceniu zastępnika”.
+
+### Wynik sondy (przed → po)
+
+Macierz par planów jest teraz zgodna we wszystkich warstwach poza nazwami pól
+(to osobna decyzja D3):
+
+- `hash_declared` ↔ `hash_computed`: 23/35 rekordów all-null → **zgodne**, 0/33;
+- `shift_declared` ↔ `shift_computed`: wartości różne → **zgodne**;
+- `r1_lhs_blocked` ↔ `r1_rhs`: wartości i mapa null różne → **zgodne**.
+
+Ostatnia pozycja jest najważniejsza: plan **nieprzepisany** i prawa strona
+tożsamości dają ten sam wynik, więc R1 jest optymalizacją, a nie naprawą.
+H4 (korzyść systemowa) ma wreszcie co mierzyć.
+
+### Weryfikacja i stan
+
+`ctest` 164/164 w Debug i Release. Oczekiwania czterech testów przepisano jako
+stwierdzenia semantyczne, nie regenerację wyjścia — m.in. `a2 == sa` zamiast
+„zastępnik, potem `sa`”, oraz kontrola równości ogonów obu stron tożsamości R1.
+
+Otwarte: konwencja `tau` w `dokumentacja-rdb` (nadal odczyt w przód — do korekty
+w wersji polskiej, potem angielskiej); operatory `MOD`, `SUBTRACT`, `AGSE` bez
+własnego ogonu; decyzja D3 o nazwach pól; macierz profili ablacyjnych.

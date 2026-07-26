@@ -29,6 +29,15 @@
       "records_total": 44,
       "records": [
         [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
           4
         ],
         [
@@ -60,15 +69,6 @@
         ],
         [
           14
-        ],
-        [
-          15
-        ],
-        [
-          16
-        ],
-        [
-          17
         ]
       ],
       "null_flags": [
@@ -110,6 +110,15 @@
       "records_total": 44,
       "records": [
         [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3
+        ],
+        [
           4
         ],
         [
@@ -141,15 +150,6 @@
         ],
         [
           14
-        ],
-        [
-          15
-        ],
-        [
-          16
-        ],
-        [
-          17
         ]
       ],
       "null_flags": [
@@ -827,6 +827,15 @@
       "records_total": 30,
       "records": [
         [
+          1000000
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
           1000001
         ],
         [
@@ -858,15 +867,6 @@
         ],
         [
           9
-        ],
-        [
-          10
-        ],
-        [
-          1000005
-        ],
-        [
-          11
         ]
       ],
       "null_flags": [
@@ -1002,7 +1002,7 @@
       "right": "shift_computed",
       "role": "question",
       "note": ">N nad wej\u015bciem deklarowanym vs obliczanym",
-      "values": false,
+      "values": true,
       "null_map": true,
       "zero_prefix": true,
       "field_names": false,
@@ -1057,7 +1057,7 @@
       "right": "r1_rhs",
       "role": "question",
       "note": "R1: plan nieprzepisany vs prawa strona to\u017csamo\u015bci",
-      "values": false,
+      "values": true,
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
@@ -1068,7 +1068,7 @@
       "right": "r1_lhs_blocked",
       "role": "question",
       "note": "R1: plan przepisany vs nieprzepisany",
-      "values": false,
+      "values": true,
       "null_map": true,
       "zero_prefix": true,
       "field_names": true,
