@@ -1,8 +1,36 @@
 {
   "binary": "/home/michal/github/retractordb/build/Debug/src/retractor/xretractor",
   "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=ON\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON\nRDB_BENCH_PROBE=OFF",
-  "code_commit": "fac2fb0fa4e9cbb96b8b8d7058fe82880023cf7a",
-  "experiment_commit": "386f18e7d512157e1efa3ba720e40bd230ccad30",
+  "code_commit": "5c3f32adb2ff8d377a3188c2b1f9ab2f6c3f707f",
+  "experiment_commit": "b51f7afd5f3c31380d86f1fa7035f23acdc89694",
+  "code_worktree": {
+    "commit": "5c3f32adb2ff8d377a3188c2b1f9ab2f6c3f707f",
+    "dirty": true,
+    "diff_sha256": "ca5f15ce98a1cafa036071c307b76452b9439b6864e8830941bb00f5e476f36c",
+    "status": [
+      "m examples/experiment",
+      " M src/retractor/lib/compiler.cpp",
+      " M test/IntegrationTest_serial/r1_identity_nulls/query.rql",
+      " M test/IntegrationTest_serial/r1_identity_nulls/verify.sh",
+      " M test/UnitTest/test_compiler.cpp"
+    ]
+  },
+  "experiment_worktree": {
+    "commit": "b51f7afd5f3c31380d86f1fa7035f23acdc89694",
+    "dirty": true,
+    "diff_sha256": "4f81e640458f07c3fdb9dc50ec723a2f9231a4045314312d6c35a5de64aab5b5",
+    "status": [
+      "M results_20260726_G3/engine_check.py",
+      " M results_20260726_G3/make_summary.py",
+      " M results_20260726_G3/mutants.py",
+      " M results_20260726_G3/reference.py",
+      " M results_20260726_G3/results/engine.json",
+      " M results_20260726_G3/results/equivalence.json",
+      " M results_20260726_G3/results/raw/engine.txt",
+      " M results_20260726_G3/results/raw/equivalence.txt",
+      " M results_20260726_G3/results/summary.md"
+    ]
+  },
   "python": "3.14.4 (main, Jun 18 2026, 14:25:02) [GCC 15.2.0]",
   "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
   "gap_policy": "computed R1 outputs must have an empty gap trace",
@@ -20,9 +48,9 @@
       "source_records": 2500,
       "expected_interval": "1/200",
       "expected_tail": 3,
-      "current_hash_tail": 1,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 1,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 3,
         "blocked": 3,
@@ -115,9 +143,9 @@
       "source_records": 2500,
       "expected_interval": "1/15",
       "expected_tail": 5,
-      "current_hash_tail": 2,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 5,
         "blocked": 5,
@@ -210,9 +238,9 @@
       "source_records": 2500,
       "expected_interval": "1/150",
       "expected_tail": 4,
-      "current_hash_tail": 1,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 1,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 4,
         "blocked": 4,
@@ -305,9 +333,9 @@
       "source_records": 2500,
       "expected_interval": "3/400",
       "expected_tail": 7,
-      "current_hash_tail": 3,
+      "legacy_hash_tail": 3,
       "phase_safe_hash_tail": 3,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 7,
         "blocked": 7,
@@ -400,9 +428,9 @@
       "source_records": 2500,
       "expected_interval": "3/500",
       "expected_tail": 7,
-      "current_hash_tail": 2,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 7,
         "blocked": 7,
@@ -495,9 +523,9 @@
       "source_records": 2500,
       "expected_interval": "1/175",
       "expected_tail": 9,
-      "current_hash_tail": 2,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 0,
+      "legacy_tail_deficit": 0,
       "tails": {
         "optimized": 9,
         "blocked": 9,
@@ -589,14 +617,14 @@
       "min_interval_ms": 10,
       "source_records": 2500,
       "expected_interval": "1/160",
-      "expected_tail": 10,
-      "current_hash_tail": 2,
+      "expected_tail": 11,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 3,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 10,
-        "blocked": 10,
-        "explicit_rhs": 10
+        "optimized": 11,
+        "blocked": 11,
+        "explicit_rhs": 11
       },
       "intervals": {
         "optimized": "1/160",
@@ -608,14 +636,14 @@
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
         "present": 43,
-        "partial_null": 12,
+        "partial_null": 11,
         "all_null": 3
       },
       "outputs": {
         "optimized": {
-          "records": 58,
-          "meta_records": 58,
-          "compared": 58,
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
           "gaps": [],
           "schema": [
             [
@@ -631,9 +659,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 58,
-          "meta_records": 58,
-          "compared": 58,
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
           "gaps": [],
           "schema": [
             [
@@ -645,161 +673,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 7,
-          "first_mismatches": [
-            {
-              "position": 2,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 10,
-              "expected_values": [
-                1000004,
-                0
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                true
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 4
-            },
-            {
-              "position": 18,
-              "expected_values": [
-                1000007,
-                2000007
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 7
-            },
-            {
-              "position": 26,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            },
-            {
-              "position": 34,
-              "expected_values": [
-                1000013,
-                2000013
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 13
-            },
-            {
-              "position": 42,
-              "expected_values": [
-                1000016,
-                2000016
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 16
-            },
-            {
-              "position": 50,
-              "expected_values": [
-                1000019,
-                2000019
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 19
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 58,
-          "meta_records": 58,
-          "compared": 58,
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
           "gaps": [],
           "schema": [
             [
@@ -816,9 +696,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p5_fast",
@@ -832,14 +712,14 @@
       "min_interval_ms": 2,
       "source_records": 2500,
       "expected_interval": "3/2500",
-      "expected_tail": 11,
-      "current_hash_tail": 1,
+      "expected_tail": 12,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 11,
-        "blocked": 11,
-        "explicit_rhs": 11
+        "optimized": 12,
+        "blocked": 12,
+        "explicit_rhs": 12
       },
       "intervals": {
         "optimized": "3/2500",
@@ -850,15 +730,15 @@
       "blocked_shape": true,
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
-        "present": 50,
+        "present": 49,
         "partial_null": 17,
         "all_null": 3
       },
       "outputs": {
         "optimized": {
-          "records": 70,
-          "meta_records": 70,
-          "compared": 70,
+          "records": 69,
+          "meta_records": 69,
+          "compared": 69,
           "gaps": [],
           "schema": [
             [
@@ -874,9 +754,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 70,
-          "meta_records": 70,
-          "compared": 70,
+          "records": 69,
+          "meta_records": 69,
+          "compared": 69,
           "gaps": [],
           "schema": [
             [
@@ -888,182 +768,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 14,
-          "first_mismatches": [
-            {
-              "position": 1,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 6,
-              "expected_values": [
-                1000004,
-                0
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                true
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 4
-            },
-            {
-              "position": 11,
-              "expected_values": [
-                1000007,
-                2000007
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 7
-            },
-            {
-              "position": 16,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            },
-            {
-              "position": 21,
-              "expected_values": [
-                1000013,
-                2000013
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 13
-            },
-            {
-              "position": 26,
-              "expected_values": [
-                1000016,
-                2000016
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 16
-            },
-            {
-              "position": 31,
-              "expected_values": [
-                1000019,
-                2000019
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 19
-            },
-            {
-              "position": 36,
-              "expected_values": [
-                0,
-                2000022
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                true,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 22
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 70,
-          "meta_records": 70,
-          "compared": 70,
+          "records": 69,
+          "meta_records": 69,
+          "compared": 69,
           "gaps": [],
           "schema": [
             [
@@ -1080,9 +791,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p5_slow",
@@ -1096,14 +807,14 @@
       "min_interval_ms": 20,
       "source_records": 2500,
       "expected_interval": "3/250",
-      "expected_tail": 11,
-      "current_hash_tail": 1,
+      "expected_tail": 12,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 11,
-        "blocked": 11,
-        "explicit_rhs": 11
+        "optimized": 12,
+        "blocked": 12,
+        "explicit_rhs": 12
       },
       "intervals": {
         "optimized": "3/250",
@@ -1114,15 +825,15 @@
       "blocked_shape": true,
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
-        "present": 23,
+        "present": 22,
         "partial_null": 7,
         "all_null": 2
       },
       "outputs": {
         "optimized": {
-          "records": 32,
-          "meta_records": 32,
-          "compared": 32,
+          "records": 31,
+          "meta_records": 31,
+          "compared": 31,
           "gaps": [],
           "schema": [
             [
@@ -1138,9 +849,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 32,
-          "meta_records": 32,
-          "compared": 32,
+          "records": 31,
+          "meta_records": 31,
+          "compared": 31,
           "gaps": [],
           "schema": [
             [
@@ -1152,161 +863,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 7,
-          "first_mismatches": [
-            {
-              "position": 1,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 6,
-              "expected_values": [
-                1000004,
-                0
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                true
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 4
-            },
-            {
-              "position": 11,
-              "expected_values": [
-                1000007,
-                2000007
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 7
-            },
-            {
-              "position": 16,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            },
-            {
-              "position": 21,
-              "expected_values": [
-                1000013,
-                2000013
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 13
-            },
-            {
-              "position": 26,
-              "expected_values": [
-                1000016,
-                2000016
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 16
-            },
-            {
-              "position": 31,
-              "expected_values": [
-                1000019,
-                2000019
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 19
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 32,
-          "meta_records": 32,
-          "compared": 32,
+          "records": 31,
+          "meta_records": 31,
+          "compared": 31,
           "gaps": [],
           "schema": [
             [
@@ -1323,9 +886,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p18_fast",
@@ -1339,14 +902,14 @@
       "min_interval_ms": 2,
       "source_records": 2500,
       "expected_interval": "11/9000",
-      "expected_tail": 20,
-      "current_hash_tail": 2,
+      "expected_tail": 21,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 3,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 20,
-        "blocked": 20,
-        "explicit_rhs": 20
+        "optimized": 21,
+        "blocked": 21,
+        "explicit_rhs": 21
       },
       "intervals": {
         "optimized": "11/9000",
@@ -1357,15 +920,15 @@
       "blocked_shape": true,
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
-        "present": 54,
+        "present": 53,
         "partial_null": 17,
         "all_null": 4
       },
       "outputs": {
         "optimized": {
-          "records": 75,
-          "meta_records": 75,
-          "compared": 75,
+          "records": 74,
+          "meta_records": 74,
+          "compared": 74,
           "gaps": [],
           "schema": [
             [
@@ -1381,9 +944,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 75,
-          "meta_records": 75,
-          "compared": 75,
+          "records": 74,
+          "meta_records": 74,
+          "compared": 74,
           "gaps": [],
           "schema": [
             [
@@ -1395,182 +958,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 13,
-          "first_mismatches": [
-            {
-              "position": 2,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 7,
-              "expected_values": [
-                1000003,
-                2000003
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 3
-            },
-            {
-              "position": 12,
-              "expected_values": [
-                1000005,
-                2000005
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 5
-            },
-            {
-              "position": 20,
-              "expected_values": [
-                1000008,
-                2000008
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 8
-            },
-            {
-              "position": 25,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            },
-            {
-              "position": 30,
-              "expected_values": [
-                1000012,
-                2000012
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 12
-            },
-            {
-              "position": 38,
-              "expected_values": [
-                0,
-                2000015
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                true,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 15
-            },
-            {
-              "position": 43,
-              "expected_values": [
-                1000017,
-                2000017
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 17
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 75,
-          "meta_records": 75,
-          "compared": 75,
+          "records": 74,
+          "meta_records": 74,
+          "compared": 74,
           "gaps": [],
           "schema": [
             [
@@ -1587,9 +981,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p18_slow",
@@ -1603,14 +997,14 @@
       "min_interval_ms": 20,
       "source_records": 2500,
       "expected_interval": "11/900",
-      "expected_tail": 20,
-      "current_hash_tail": 2,
+      "expected_tail": 21,
+      "legacy_hash_tail": 2,
       "phase_safe_hash_tail": 3,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 20,
-        "blocked": 20,
-        "explicit_rhs": 20
+        "optimized": 21,
+        "blocked": 21,
+        "explicit_rhs": 21
       },
       "intervals": {
         "optimized": "11/900",
@@ -1621,15 +1015,15 @@
       "blocked_shape": true,
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
-        "present": 19,
+        "present": 18,
         "partial_null": 6,
         "all_null": 2
       },
       "outputs": {
         "optimized": {
-          "records": 27,
-          "meta_records": 27,
-          "compared": 27,
+          "records": 26,
+          "meta_records": 26,
+          "compared": 26,
           "gaps": [],
           "schema": [
             [
@@ -1645,9 +1039,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 27,
-          "meta_records": 27,
-          "compared": 27,
+          "records": 26,
+          "meta_records": 26,
+          "compared": 26,
           "gaps": [],
           "schema": [
             [
@@ -1659,119 +1053,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 5,
-          "first_mismatches": [
-            {
-              "position": 2,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 7,
-              "expected_values": [
-                1000003,
-                2000003
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 3
-            },
-            {
-              "position": 12,
-              "expected_values": [
-                1000005,
-                2000005
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 5
-            },
-            {
-              "position": 20,
-              "expected_values": [
-                1000008,
-                2000008
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 8
-            },
-            {
-              "position": 25,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 27,
-          "meta_records": 27,
-          "compared": 27,
+          "records": 26,
+          "meta_records": 26,
+          "compared": 26,
           "gaps": [],
           "schema": [
             [
@@ -1788,9 +1076,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p3_unreduced",
@@ -1804,14 +1092,14 @@
       "min_interval_ms": 10,
       "source_records": 2500,
       "expected_interval": "3/500",
-      "expected_tail": 6,
-      "current_hash_tail": 1,
+      "expected_tail": 7,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 6,
-        "blocked": 6,
-        "explicit_rhs": 6
+        "optimized": 7,
+        "blocked": 7,
+        "explicit_rhs": 7
       },
       "intervals": {
         "optimized": "3/500",
@@ -1822,15 +1110,15 @@
       "blocked_shape": true,
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
-        "present": 37,
+        "present": 36,
         "partial_null": 11,
         "all_null": 2
       },
       "outputs": {
         "optimized": {
-          "records": 50,
-          "meta_records": 50,
-          "compared": 50,
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
           "gaps": [],
           "schema": [
             [
@@ -1846,9 +1134,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 50,
-          "meta_records": 50,
-          "compared": 50,
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
           "gaps": [],
           "schema": [
             [
@@ -1860,182 +1148,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 10,
-          "first_mismatches": [
-            {
-              "position": 1,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 6,
-              "expected_values": [
-                1000004,
-                0
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                true
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 4
-            },
-            {
-              "position": 11,
-              "expected_values": [
-                1000007,
-                2000007
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 7
-            },
-            {
-              "position": 16,
-              "expected_values": [
-                1000010,
-                2000010
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 10
-            },
-            {
-              "position": 21,
-              "expected_values": [
-                1000013,
-                2000013
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 13
-            },
-            {
-              "position": 26,
-              "expected_values": [
-                1000016,
-                2000016
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 16
-            },
-            {
-              "position": 31,
-              "expected_values": [
-                1000019,
-                2000019
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 19
-            },
-            {
-              "position": 36,
-              "expected_values": [
-                0,
-                2000022
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                true,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 22
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 50,
-          "meta_records": 50,
-          "compared": 50,
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
           "gaps": [],
           "schema": [
             [
@@ -2052,9 +1171,9 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     },
     {
       "case": "p307_audio",
@@ -2068,14 +1187,14 @@
       "min_interval_ms": 2,
       "source_records": 3557,
       "expected_interval": "8/7675",
-      "expected_tail": 308,
-      "current_hash_tail": 1,
+      "expected_tail": 309,
+      "legacy_hash_tail": 1,
       "phase_safe_hash_tail": 2,
-      "tail_deficit": 1,
+      "legacy_tail_deficit": 1,
       "tails": {
-        "optimized": 308,
-        "blocked": 308,
-        "explicit_rhs": 308
+        "optimized": 309,
+        "blocked": 309,
+        "explicit_rhs": 309
       },
       "intervals": {
         "optimized": "8/7675",
@@ -2087,14 +1206,14 @@
       "oracle_lhs_equals_rhs": true,
       "null_coverage": {
         "present": 157,
-        "partial_null": 57,
+        "partial_null": 56,
         "all_null": 4
       },
       "outputs": {
         "optimized": {
-          "records": 218,
-          "meta_records": 218,
-          "compared": 218,
+          "records": 217,
+          "meta_records": 217,
+          "compared": 217,
           "gaps": [],
           "schema": [
             [
@@ -2110,9 +1229,9 @@
           "first_mismatches": []
         },
         "blocked": {
-          "records": 218,
-          "meta_records": 218,
-          "compared": 218,
+          "records": 217,
+          "meta_records": 217,
+          "compared": 217,
           "gaps": [],
           "schema": [
             [
@@ -2124,182 +1243,13 @@
               "INTEGER"
             ]
           ],
-          "mismatch_count": 103,
-          "first_mismatches": [
-            {
-              "position": 1,
-              "expected_values": [
-                1000001,
-                2000001
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 1
-            },
-            {
-              "position": 3,
-              "expected_values": [
-                0,
-                2000002
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                true,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 2
-            },
-            {
-              "position": 5,
-              "expected_values": [
-                1000003,
-                2000003
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 3
-            },
-            {
-              "position": 7,
-              "expected_values": [
-                1000004,
-                0
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                true
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 4
-            },
-            {
-              "position": 9,
-              "expected_values": [
-                1000005,
-                2000005
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 5
-            },
-            {
-              "position": 11,
-              "expected_values": [
-                1000006,
-                2000006
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 6
-            },
-            {
-              "position": 13,
-              "expected_values": [
-                1000007,
-                2000007
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 7
-            },
-            {
-              "position": 15,
-              "expected_values": [
-                1000008,
-                2000008
-              ],
-              "actual_values": [
-                0,
-                0
-              ],
-              "expected_nulls": [
-                false,
-                false
-              ],
-              "actual_nulls": [
-                true,
-                true
-              ],
-              "source": "B",
-              "source_index": 8
-            }
-          ]
+          "mismatch_count": 0,
+          "first_mismatches": []
         },
         "explicit_rhs": {
-          "records": 218,
-          "meta_records": 218,
-          "compared": 218,
+          "records": 217,
+          "meta_records": 217,
+          "compared": 217,
           "gaps": [],
           "schema": [
             [
@@ -2316,10 +1266,10 @@
         }
       },
       "optimized_equals_rhs": true,
-      "blocked_equals_rhs": false,
+      "blocked_equals_rhs": true,
       "schemas_equal": true,
-      "status": "MISMATCH"
+      "status": "OK"
     }
   ],
-  "verdict": "MISMATCH"
+  "verdict": "OK"
 }

@@ -55,7 +55,7 @@ XRETRACTOR=/sciezka/do/xretractor ./run.sh
 
 Wynik generowany jest do `results/summary.md`; nie należy edytować go ręcznie.
 
-## Wynik 2026-07-26
+## Wynik 2026-07-26 — po poprawce
 
 Oracle przeszedł pełną macierz:
 
@@ -65,18 +65,19 @@ Oracle przeszedł pełną macierz:
 - łącznie 75 548 przypadków i 143 065 922 porównane pozycje;
 - zero rozbieżności.
 
-Most do silnika dał wynik negatywny: 6/13 przypadków zgodnych. We wszystkich
-porażkach plan zoptymalizowany i jawna RHS zgadzają się z oracle'em, natomiast
-nieprzepisana LHS emituje okresowe rekordy all-null zamiast kolejnych elementów
-drugiego argumentu przeplotu. Wynik powtarza się przy interwałach 2 ms i 20 ms,
-więc nie jest skutkiem zbyt szybkiego taktowania.
+Pierwsze wykonanie mostu dało 6/13 przypadków zgodnych i ujawniło, że dawne
+`ceil(delta_B/delta_A)` zabezpiecza tylko pierwszą próbkę B, a nie najgorszą
+fazę okresu. Silnik używa teraz maksimum fazowego; dla zredukowanego
+`delta_A/delta_B=p/q` jego zamknięta postać wynosi
+`ceil((p+q-1)/p)`. Oracle nadal liczy maksimum bezpośrednio po całym okresie,
+nie korzysta więc z implementacyjnej postaci zamkniętej.
 
-Przyczynę zawężono do ogona własnego `#`. Bieżące
-`ceil(delta_B/delta_A)` nie uwzględnia najgorszej fazy okresu. Maksimum
-wymaganego wyprzedzenia B po wszystkich fazach jest o jeden większe dokładnie
-w siedmiu przypadkach, które zawiodły. Szczegóły i liczności:
+Po poprawce most przeszedł **13/13** przypadków. Plan zoptymalizowany,
+nieprzepisana LHS i jawna RHS mają w każdym przypadku ten sam interwał, ogon,
+schemat, payload, mapę `NULL` i pusty ślad luk; liczba błędów względem oracle'a
+wynosi zero. Wynik powtarza się przy interwałach 2 ms i 20 ms.
+
+Szczegóły, provenance brudnych worktree i liczności:
 [`results/summary.md`](results/summary.md).
 
-Werdykt: **K2/G3 pozostaje otwarte**. Przed powtórzeniem kampanii trzeba
-skorygować wyliczenie ogona przeplotu i dodać regresję dla proporcji innych niż
-dotychczasowe `1/2`.
+Werdykt: **K2/G3 spełnia kryterium eksperymentalne**.

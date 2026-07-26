@@ -80,6 +80,15 @@ def changed_schema():
     return lhs, replace(rhs, schema=(("aux", "INTEGER"), ("value", "INTEGER")))
 
 
+def legacy_first_b_tail():
+    delta_a = Fraction(3, 10)
+    delta_b = Fraction(1, 5)
+    shift_a, shift_b = matched_offsets(delta_a, delta_b, 1)
+    expected = lhs_observation(delta_a, delta_b, shift_a, shift_b, 120)
+    # Dawne ceil(delta_b/delta_a) chroniło B[0], lecz pomijało najgorszą fazę.
+    return expected, replace(expected, tail=expected.tail - 1)
+
+
 MUTANTS = {
     "rhs_shift_plus_one": rhs_shift_plus_one,
     "lhs_shift_off_by_one": lhs_shift_off_by_one,
@@ -89,5 +98,5 @@ MUTANTS = {
     "null_as_zero": null_as_zero,
     "injected_gap": injected_gap,
     "changed_schema": changed_schema,
+    "legacy_first_b_tail": legacy_first_b_tail,
 }
-

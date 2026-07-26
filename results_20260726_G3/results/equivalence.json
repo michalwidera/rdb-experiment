@@ -60,6 +60,13 @@
       ],
       "verdict": "OK"
     },
+    "legacy_first_b_tail": {
+      "detected": true,
+      "layers": [
+        "tail"
+      ],
+      "verdict": "OK"
+    },
     "unreduced_6_4_equals_3_2": {
       "detected": false,
       "layers": [],
@@ -135,7 +142,7 @@
       "positions": 123053540,
       "checksum64": "51f914e0aa831b74",
       "mismatches": [],
-      "seconds": 20.858
+      "seconds": 20.796
     },
     {
       "label": "property<=1e6",
@@ -143,7 +150,7 @@
       "positions": 19987962,
       "checksum64": "83c63ba051847a78",
       "mismatches": [],
-      "seconds": 3.623
+      "seconds": 3.653
     },
     {
       "label": "special",

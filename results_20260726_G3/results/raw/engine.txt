@@ -11,18 +11,18 @@
 -- p7_remainder1
    ratio=     3/4 shift=4+3 tail=9 records=55/55/55 blocked_mismatch=0 OK
 -- p8_remainder2
-   ratio=     3/5 shift=5+3 tail=10 records=58/58/58 blocked_mismatch=7 MISMATCH
+   ratio=     3/5 shift=5+3 tail=11 records=57/57/57 blocked_mismatch=0 OK
 -- p5_fast
-   ratio=     3/2 shift=4+6 tail=11 records=70/70/70 blocked_mismatch=14 MISMATCH
+   ratio=     3/2 shift=4+6 tail=12 records=69/69/69 blocked_mismatch=0 OK
 -- p5_slow
-   ratio=     3/2 shift=4+6 tail=11 records=32/32/32 blocked_mismatch=7 MISMATCH
+   ratio=     3/2 shift=4+6 tail=12 records=31/31/31 blocked_mismatch=0 OK
 -- p18_fast
-   ratio=    7/11 shift=11+7 tail=20 records=75/75/75 blocked_mismatch=13 MISMATCH
+   ratio=    7/11 shift=11+7 tail=21 records=74/74/74 blocked_mismatch=0 OK
 -- p18_slow
-   ratio=    7/11 shift=11+7 tail=20 records=27/27/27 blocked_mismatch=5 MISMATCH
+   ratio=    7/11 shift=11+7 tail=21 records=26/26/26 blocked_mismatch=0 OK
 -- p3_unreduced
-   ratio=     3/2 shift=2+3 tail=6 records=50/50/50 blocked_mismatch=10 MISMATCH
+   ratio=     3/2 shift=2+3 tail=7 records=49/49/49 blocked_mismatch=0 OK
 -- p307_audio
-   ratio= 160/147 shift=147+160 tail=308 records=218/218/218 blocked_mismatch=103 MISMATCH
+   ratio= 160/147 shift=147+160 tail=309 records=217/217/217 blocked_mismatch=0 OK
 
-WYNIK: 6/13 przypadków zgodnych z oracle'em
+WYNIK: 13/13 przypadków zgodnych z oracle'em

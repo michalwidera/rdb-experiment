@@ -17,7 +17,11 @@ def main():
         "# K2/G3 — niezależny oracle shift-matching",
         "",
         f"- commit silnika: `{engine['code_commit']}`",
+        f"- worktree silnika: **{'dirty' if engine['code_worktree']['dirty'] else 'clean'}**, "
+        f"diff SHA-256: `{engine['code_worktree']['diff_sha256'] or '—'}`",
         f"- commit repozytorium eksperymentów przed kampanią: `{engine['experiment_commit']}`",
+        f"- worktree eksperymentu: **{'dirty' if engine['experiment_worktree']['dirty'] else 'clean'}**, "
+        f"diff SHA-256: `{engine['experiment_worktree']['diff_sha256'] or '—'}`",
         f"- wygenerowano: {datetime.now(timezone.utc).isoformat()}",
         f"- wynik oracle'a: **{equivalence['verdict']}**",
         f"- wynik mostu do silnika: **{engine['verdict']}**",
@@ -64,7 +68,7 @@ def main():
         "",
         "## 3. Most oracle — RetractorDB",
         "",
-        "| przypadek | min Δ [ms] | ΔA/ΔB | i+k | W | ogon # bieżący/bezpieczny | "
+        "| przypadek | min Δ [ms] | ΔA/ΔB | i+k | W | ogon # legacy/bezpieczny | "
         "rekordy opt/blocked/rhs | błędy blocked | wynik |",
         "|---|---:|---|---:|---:|---|---|---:|---|",
     ]
@@ -72,7 +76,7 @@ def main():
         records = "/".join(str(case["outputs"][name]["records"]) for name in ("optimized", "blocked", "explicit_rhs"))
         out.append(
             f"| {case['case']} | {case['min_interval_ms']} | {case['ratio']} | {case['combined']} | "
-            f"{case['expected_tail']} | {case['current_hash_tail']}/{case['phase_safe_hash_tail']} | "
+            f"{case['expected_tail']} | {case['legacy_hash_tail']}/{case['phase_safe_hash_tail']} | "
             f"{records} | {case['outputs']['blocked']['mismatch_count']} | {case['status']} |"
         )
 
@@ -83,8 +87,8 @@ def main():
         "Każda z nich jest porównywana bezpośrednio z oracle'em.",
         "",
         "`ogon # bezpieczny` jest maksimum wymaganego wyprzedzenia B po wszystkich "
-        "fazach jednego okresu. Różnica względem bieżącego `ceil(delta_B/delta_A)` "
-        "przewiduje dokładnie przypadki z rekordami all-null w nieprzepisanej LHS.",
+        "fazach jednego okresu. Różnica względem dawnego `ceil(delta_B/delta_A)` "
+        "przewidywała dokładnie przypadki z rekordami all-null w nieprzepisanej LHS.",
         "",
         "## 4. Semantyka luk",
         "",

@@ -143,12 +143,17 @@ def interleave_trace(
 
 
 def interleave_tail(delta_a: Fraction | int, delta_b: Fraction | int) -> int:
-    """Ogon przyczynowego przeplotu wyprowadzony z dostępności B[0].
+    """Ogon przyczynowego przeplotu wyprowadzony z dostępności każdej fazy B.
 
-    B[0] staje się dostępne po jednym interwale B. Liczba pełnych taktów A,
-    które trzeba odczekać, jest więc sufitem ``delta_b/delta_a``.
+    Dla zredukowanego ``delta_a/delta_b=p/q`` potrzebne wyprzedzenie w fazie
+    ``j`` wynosi ``ceil((j+1)q/p)-floor(jq/p)``. Oracle celowo liczy maksimum
+    po całym okresie, niezależnie od zamkniętej postaci użytej przez silnik.
     """
-    return ceil_fraction(Fraction(delta_b) / Fraction(delta_a))
+    p, q = reduced_ratio(delta_a, delta_b)
+    return max(
+        ceil_fraction(Fraction((index + 1) * q, p)) - (index * q // p)
+        for index in range(p)
+    )
 
 
 def matched_offsets(delta_a: Fraction | int, delta_b: Fraction | int, multiplier: int) -> tuple[int, int]:
@@ -303,4 +308,3 @@ def compare_structural_case(
             )
         checksum = ((checksum * 1_000_003) ^ (lhs_source << 24) ^ lhs_index ^ lhs_time) & ((1 << 64) - 1)
     return True, "", checksum
-

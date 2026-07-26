@@ -2,6 +2,7 @@
 """Most niezależnego oracle'a K2/G3 do aktualnego silnika RetractorDB."""
 
 import argparse
+import hashlib
 import json
 import os
 import platform
@@ -229,7 +230,7 @@ def run_case(binary: Path, workroot: Path, case):
     expected_tail = rhs.tail
     expected_interval = rhs.interval
     p, q = reduced_ratio(delta_a, delta_b)
-    current_hash_tail = ceil_fraction(Fraction(q, p))
+    legacy_hash_tail = ceil_fraction(Fraction(q, p))
     phase_safe_hash_tail = max(
         ceil_fraction(Fraction((index + 1) * q, p)) - (index * q // p)
         for index in range(p)
@@ -274,9 +275,9 @@ def run_case(binary: Path, workroot: Path, case):
         "source_records": records,
         "expected_interval": str(expected_interval),
         "expected_tail": expected_tail,
-        "current_hash_tail": current_hash_tail,
+        "legacy_hash_tail": legacy_hash_tail,
         "phase_safe_hash_tail": phase_safe_hash_tail,
-        "tail_deficit": phase_safe_hash_tail - current_hash_tail,
+        "legacy_tail_deficit": phase_safe_hash_tail - legacy_hash_tail,
         "tails": tails,
         "intervals": {name: str(value) if value is not None else None for name, value in intervals.items()},
         "optimized_shape": optimized_shape,
@@ -306,6 +307,26 @@ def git_revision(path: Path):
         text=True,
         check=True,
     ).stdout.strip()
+
+
+def git_worktree_state(path: Path):
+    status = subprocess.run(
+        ["git", "-C", str(path), "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout.strip()
+    diff = subprocess.run(
+        ["git", "-C", str(path), "diff", "--binary", "HEAD"],
+        capture_output=True,
+        check=True,
+    ).stdout
+    return {
+        "commit": git_revision(path),
+        "dirty": bool(status),
+        "diff_sha256": hashlib.sha256(diff).hexdigest() if diff else None,
+        "status": status.splitlines(),
+    }
 
 
 def main():
@@ -343,11 +364,15 @@ def main():
         )
 
     failed = [result for result in results if result["status"] != "OK"]
+    code_state = git_worktree_state(code_repo)
+    experiment_state = git_worktree_state(experiment_repo)
     report = {
         "binary": str(binary),
         "build_info": build_info,
-        "code_commit": git_revision(code_repo),
-        "experiment_commit": git_revision(experiment_repo),
+        "code_commit": code_state["commit"],
+        "experiment_commit": experiment_state["commit"],
+        "code_worktree": code_state,
+        "experiment_worktree": experiment_state,
         "python": sys.version,
         "platform": platform.platform(),
         "gap_policy": "computed R1 outputs must have an empty gap trace",

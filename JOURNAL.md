@@ -2906,3 +2906,43 @@ Następny krok:
 3. uruchomić pełne CTest;
 4. powtórzyć `results_20260726_G3/run.sh` na poprawionym commicie;
 5. dopiero po zerowej macierzy mostu oznaczyć K2/G3 jako zamknięte.
+
+---
+
+## 2026-07-26 — K2/G3: maksimum fazowe usuwa rozbieżność; most 13/13
+
+Własny ogon `STREAM_HASH` został zmieniony z zabezpieczenia pierwszej próbki
+`ceil(delta_B/delta_A)` na maksimum dostępności B po wszystkich fazach okresu.
+Dla zredukowanego `delta_A/delta_B=p/q` silnik używa równoważnej postaci:
+
+```text
+ceil((p+q-1)/p)
+```
+
+Obliczenie pośrednie wykonuje się w 64 bitach, aby suma `p+q` nie przepełniła
+typu `int` używanego przez `boost::rational<int>`. Test jednostkowy przypina
+proporcje `3/5`, `3/2`, `7/11` i `160/147`. Test wykonawczy
+`r1_identity_nulls` ma dodatkowo publiczne przesunięcia dla `3/2`, więc
+faktoryzacja nie może ukryć wadliwej LHS.
+
+Regresje najpierw odtworzyły błąd: cztery oczekiwania miały deficyt jednego
+slotu, a wykonawcza LHS deklarowała `tail=6` zamiast `7`. Po poprawce pakiet
+ukierunkowany przeszedł 6/6, a pełny Debug CTest **166/166**.
+
+Oracle został doprecyzowany w tej samej warstwie obserwacji: ogon liczy
+bezpośrednie maksimum po okresie, niezależnie od postaci zamkniętej silnika.
+Nowa mutacja `legacy_first_b_tail` potwierdza, że komparator wykrywa dawny,
+o jeden za krótki ogon.
+
+Powtórzona pełna kampania:
+
+- 75 548 przypadków i 143 065 922 pozycji modelowych, 0 rozbieżności;
+- wszystkie mutacje wykryte, kontrola `6/4 == 3/2` pozostała benign;
+- most RetractorDB **13/13**;
+- zoptymalizowana LHS, zablokowana LHS i jawna RHS: 0 błędów payloadu,
+  mapy `NULL`, schematu, interwału, ogona i luk.
+
+Wynik zapisano z commitem bazowym oraz SHA-256 brudnych diffów, ponieważ zgodnie
+z procedurą eksperyment został wykonany przed zatwierdzeniem poprawki.
+
+**Werdykt: K2/G3 spełnia kryterium eksperymentalne.**
