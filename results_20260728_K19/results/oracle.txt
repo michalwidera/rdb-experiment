@@ -1,0 +1,1 @@
+OK: SUBTRACT=468220 faz, AGSE=2239488 faz, mutacje=4

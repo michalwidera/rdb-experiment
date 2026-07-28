@@ -1,0 +1,22 @@
+{
+  "limit": 24,
+  "subtract_phase_checks": 468220,
+  "agse_phase_checks": 2239488,
+  "mutations": {
+    "partial_window": [
+      "tail",
+      "records"
+    ],
+    "null_to_zero": [
+      "records"
+    ],
+    "gap_injection": [
+      "gaps"
+    ],
+    "materialization_change": [
+      "materialization"
+    ]
+  },
+  "gap_policy": "computed streams: empty",
+  "verdict": "OK"
+}
