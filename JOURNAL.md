@@ -2982,3 +2982,18 @@ Weryfikacja lokalna nadzorcy:
 Nie uruchamiano kampanii pomiarowej ani restartu workera — kryterium K9a
 dotyczyło wymuszonych ścieżek negatywnych nadzorcy. **K9a spełnione; K18, K5,
 K6 i soak K11 nie są już blokowane przez nadzorcę.**
+
+## 2026-07-28T15:02:47+02:00 — results_20260728_K18 / exactness
+
+- wynik: sukces
+- kod: master@bc37186ac87cb944d76cf74c7be92706a4a3a87f
+- replay: 2 x 20 000 probek, 17 strumieni, 67 artefaktow, zero roznic
+- round-trip: a2 == a, b2 == b, bez rekordu zastepczego
+- dane: results_20260728_K18/exactness
+
+## 2026-07-28T15:06:55+02:00 — results_20260728_K18 / rate_k18 / study_1
+
+- wynik: sukces
+- commit kodu: `bc37186ac87cb944d76cf74c7be92706a4a3a87f`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20260728_K18/rate_k18/study_01`

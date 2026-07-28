@@ -51,7 +51,30 @@ assert_release_probe_install() {
 assert_worker_discovery_wired() {
   grep -q "resolve_worker_host" "$REPO_ROOT/start_supervisor.sh" &&
     grep -q -- "--worker-subnet" "$REPO_ROOT/start_supervisor.sh" &&
-    grep -q -- "--worker-host-key" "$REPO_ROOT/start_supervisor.sh"
+    grep -q -- "--worker-host-key" "$REPO_ROOT/start_supervisor.sh" &&
+    grep -q -- "kampania wykonawcza" "$REPO_ROOT/start_supervisor.sh"
+}
+
+assert_exactness_k18_wired() {
+  grep -q 'results_20260728_K18/run.sh' "$REPO_ROOT/worker/run_exactness.sh" &&
+    grep -q 'EXPECTED_CODE_BRANCH="master"' "$REPO_ROOT/results_20260728_K18/run.sh" &&
+    grep -q 'EXPECTED_CODE_COMMIT="bc37186ac87cb944d76cf74c7be92706a4a3a87f"' \
+      "$REPO_ROOT/results_20260728_K18/run.sh" &&
+    ! grep -Eq 'git -C "\$CODE_REPO" (add|commit|push|reset|checkout)' \
+      "$REPO_ROOT/results_20260728_K18/run.sh" &&
+    "$REPO_ROOT/worker/run_exactness.sh" --help |
+      grep -qF 'master@bc37186ac87cb944d76cf74c7be92706a4a3a87f'
+}
+
+assert_k18_readmes_pinned() {
+  local readme
+  for readme in \
+    "$REPO_ROOT/results_20260728_K18/README.md" \
+    "$REPO_ROOT/results_20260728_K18/exactness/README.md"; do
+    grep -qF 'master' "$readme" &&
+      grep -qF 'bc37186ac87cb944d76cf74c7be92706a4a3a87f' "$readme" ||
+      return 1
+  done
 }
 
 assert_inferred_subnet() {
@@ -192,8 +215,10 @@ study_id,rate_hz,clients,samples
 EOF
 
 expect_success "poprawny experiment-id" validate_experiment_id 20260728_performance
+expect_success "poprawny experiment-id K18" validate_experiment_id 20260728_K18
 expect_failure "experiment-id bez typu" validate_experiment_id 20260728
 expect_success "poprawny katalog wynikow" validate_results_root results_20260728_performance
+expect_success "poprawny katalog wynikow K18" validate_results_root results_20260728_K18
 expect_failure "katalog przejsciowy results" validate_results_root results
 expect_success "bezpieczna sciezka bezwzgledna" validate_safe_absolute_path /home/michal/rdb-experiment repo
 expect_failure "sciezka z przejsciem do rodzica" validate_safe_absolute_path /home/michal/../retractordb repo
@@ -271,6 +296,10 @@ expect_success "wyniki zakorzenione w rdb-experiment" assert_results_use_experim
 expect_success "brak rotacji" assert_no_rotation
 expect_success "build i instalacja tylko z Release-Probe" assert_release_probe_install
 expect_success "wykrywanie workera podlaczone do nadzorcy" assert_worker_discovery_wired
+expect_success "harness exactness K18 przypiety i odseparowany" assert_exactness_k18_wired
+expect_success "README K18 wskazuja master i commit" assert_k18_readmes_pinned
+expect_success "konfiguracja rate K18" \
+  validate_campaign_csv "$REPO_ROOT/config/campaign_rate_k18.csv" rate
 expect_failure "nadzorca odrzuca zly experiment-id" \
   "$REPO_ROOT/start_supervisor.sh" rate --experiment-id invalid
 expect_failure "worker wymaga pelnego kontraktu argumentow" \
@@ -280,7 +309,6 @@ for legacy in \
   "$REPO_ROOT/start_40ms_phase0.sh" \
   "$REPO_ROOT/worker/run_40ms_phase0.sh" \
   "$REPO_ROOT/worker/run_40ms_phase2.sh" \
-  "$REPO_ROOT/worker/run_exactness.sh" \
   "$REPO_ROOT/worker/run_fir_contrast.sh" \
   "$REPO_ROOT/worker/run_flink_baseline.sh" \
   "$REPO_ROOT/worker/run_flink_pantompkins.sh" \
