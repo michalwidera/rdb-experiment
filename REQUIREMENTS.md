@@ -182,6 +182,28 @@ Badanie nie może zostać zatwierdzone, jeżeli:
 
 Każdy taki przypadek kończy się niezerowym kodem i bez commita wyników.
 
+Monitor procesów pomocniczych nie może opierać decyzji wyłącznie na ostatnim
+sprawdzeniu wykonanym przed zakończeniem `xretractor`. Po zakończeniu procesu
+głównego worker zbiera status każdego klienta, samplera i ujścia. Proces
+zakończony wcześniej kodem niezerowym unieważnia badanie; proces nadal aktywny
+jest zatrzymywany kontrolowanie i musi zostać zebrany. Ignorowanie `SIGTERM`
+nie może zawiesić sprzątania: po ograniczonym czasie worker używa `SIGKILL`,
+zbiera proces i unieważnia badanie.
+
+Regresje w `tests/test_orchestration.sh` muszą wymuszać co najmniej:
+
+- rzeczywisty timeout zawieszonej sondy SSH wraz z kontrolą, że proces zniknął;
+- błąd procesu potomnego, również w oknie zakończenia procesu głównego;
+- pustą listę badań;
+- sprzątnięcie procesów po ścieżkach negatywnych, również gdy proces ignoruje
+  `SIGTERM`.
+
+Zestaw uruchamia się poleceniem:
+
+```bash
+./tests/test_orchestration.sh
+```
+
 ## R12. Odtwarzalność i dziennik
 
 `manifest.md` zapisuje co najmniej: identyfikator eksperymentu, pełny commit

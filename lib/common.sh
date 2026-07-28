@@ -38,6 +38,7 @@ ssh_worker() {
 # zawyzalby faktyczny timeout.
 wait_for_worker() {
   local host="$1" port="$2" timeout_s="${3:-600}"
+  local probe_timeout_s="${4:-15}" retry_sleep_s="${5:-10}"
   local ssh_config="${RDB_SSH_CONFIG:-/dev/null}"
   local known_hosts_args=()
   local start deadline
@@ -47,12 +48,12 @@ wait_for_worker() {
   start=$(date +%s)
   deadline=$((start + timeout_s))
   log "Czekam az $host:$port wroci po restarcie (timeout ${timeout_s}s)..."
-  while ! timeout 15 ssh -F "$ssh_config" -p "$port" \
+  while ! timeout --kill-after=5s "${probe_timeout_s}s" ssh -F "$ssh_config" -p "$port" \
         "${known_hosts_args[@]}" \
         -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=5 \
         -o ServerAliveInterval=5 -o ServerAliveCountMax=3 "$host" true 2>/dev/null; do
     [ "$(date +%s)" -ge "$deadline" ] && die "$host nie odpowiedzial po ${timeout_s}s od restartu"
-    sleep 10
+    sleep "$retry_sleep_s"
   done
   log "$host odpowiada po $(( $(date +%s) - start ))s."
   # Daj czas na dojscie sshd/uslug do stabilnego stanu po boot.
@@ -451,9 +452,63 @@ monitor_required_processes() {
 }
 
 terminate_process() {
-  local pid="$1"
+  local pid="$1" grace_s="${2:-5}"
+  local deadline
   [ -n "$pid" ] || return 0
   kill "$pid" 2>/dev/null || true
+  deadline=$((SECONDS + grace_s))
+  while process_is_running "$pid" && [ "$SECONDS" -lt "$deadline" ]; do
+    sleep 0.1
+  done
+  if process_is_running "$pid"; then
+    kill -KILL "$pid" 2>/dev/null || true
+  fi
   wait "$pid" 2>/dev/null || true
   ! kill -0 "$pid" 2>/dev/null
+}
+
+# Konczy wymagany proces po zakonczeniu procesu glownego i zachowuje jego
+# wczesniejszy kod bledu. Domyka okno miedzy ostatnia iteracja monitora a
+# zakonczeniem procesu glownego: dziecko, ktore zdazylo wtedy wyjsc z bledem,
+# nie moze zostac potraktowane jak proces zatrzymany przez nadzorce.
+finalize_required_process() {
+  local pid="$1" label="$2" grace_s="${3:-5}"
+  local term_sent=0 forced_kill=0 rc=0 deadline
+  [ -n "$pid" ] || return 0
+
+  if kill "$pid" 2>/dev/null; then
+    term_sent=1
+    deadline=$((SECONDS + grace_s))
+    while process_is_running "$pid" && [ "$SECONDS" -lt "$deadline" ]; do
+      sleep 0.1
+    done
+    if process_is_running "$pid"; then
+      if kill -KILL "$pid" 2>/dev/null; then
+        forced_kill=1
+      fi
+    fi
+  fi
+  if wait "$pid" 2>/dev/null; then
+    rc=0
+  else
+    rc=$?
+  fi
+  if kill -0 "$pid" 2>/dev/null; then
+    log "BLAD: nie udalo sie zatrzymac procesu $label (pid $pid)"
+    return 1
+  fi
+
+  if [ "$forced_kill" -eq 1 ]; then
+    log "BLAD: $label zignorowal SIGTERM i wymagal SIGKILL"
+    return 1
+  fi
+  if [ "$term_sent" -eq 1 ] && { [ "$rc" -eq 0 ] || [ "$rc" -eq 143 ]; }; then
+    return 0
+  fi
+  if [ "$term_sent" -eq 0 ] && [ "$rc" -eq 0 ]; then
+    return 0
+  fi
+
+  log "BLAD: $label zakonczyl sie kodem $rc przed kontrolowanym zatrzymaniem"
+  return "$rc"
 }

@@ -252,7 +252,7 @@ fi
 cd "$WORKDIR"
 RUN_TIMEOUT=$(( SAMPLES * 30 / 1000 + 120 ))
 RDB_BENCH_CSV="$WORKDIR/e1_probe.csv" \
-  timeout "${RUN_TIMEOUT}s" taskset -c "$XR_CPU" \
+  timeout --kill-after=10s "${RUN_TIMEOUT}s" taskset -c "$XR_CPU" \
   "$XR_BIN" study.rql -k -m "$SAMPLES" -t -g study.toml \
   >"$WORKDIR/xretractor.log" 2>&1 &
 XRETRACTOR_PID=$!
@@ -299,13 +299,17 @@ MONITOR_PID=""
 validate_probe_csv "$WORKDIR/e1_probe.csv" "$SAMPLES" ||
   die "Nieprawidlowy plik sondy; wynik nie zostanie zatwierdzony"
 
-for pid in "${CLIENT_PIDS[@]}"; do
-  terminate_process "$pid" || die "Nie udalo sie zatrzymac klienta xqry (pid $pid)"
+for i in "${!CLIENT_PIDS[@]}"; do
+  pid="${CLIENT_PIDS[$i]}"
+  finalize_required_process "$pid" "xqry-$((i + 1))" ||
+    die "Klient xqry $((i + 1)) zakonczyl sie bledem lub nie zostal zatrzymany"
 done
 CLIENT_PIDS=()
-terminate_process "$METRICS_PID" || die "Nie udalo sie zatrzymac samplera metryk"
+finalize_required_process "$METRICS_PID" "sampler metryk" ||
+  die "Sampler metryk zakonczyl sie bledem lub nie zostal zatrzymany"
 METRICS_PID=""
-terminate_process "$NC_PID" || die "Nie udalo sie zatrzymac ujscia nc"
+finalize_required_process "$NC_PID" "ujscie nc" ||
+  die "Ujscie nc zakonczylo sie bledem lub nie zostalo zatrzymane"
 NC_PID=""
 restore_governor || die "Nie udalo sie przywrocic pierwotnego governora CPU"
 snapshot_state "PO badaniu" "$WORKDIR/state_after.md"

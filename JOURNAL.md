@@ -2946,3 +2946,39 @@ Wynik zapisano z commitem bazowym oraz SHA-256 brudnych diffów, ponieważ zgodn
 z procedurą eksperyment został wykonany przed zatwierdzeniem poprawki.
 
 **Werdykt: K2/G3 spełnia kryterium eksperymentalne.**
+
+---
+
+## 2026-07-28 — K9a: nadzorca odporny na fałszywy sukces
+
+Audyt zmian z commita `4451c20` potwierdził odrzucanie pustej listy badań,
+zewnętrzny timeout sondy SSH i podstawowe sprzątanie, ale ujawnił dwie luki
+w kryterium K9a:
+
+1. monitor sprawdzał dzieci tylko podczas działania `xretractor`; dziecko
+   kończące się kodem `9` w tym samym oknie co proces główny mogło zostać
+   pominięte;
+2. test timeoutu zastępował program `timeout` atrapą zwracającą od razu kod
+   `1`, więc nie dowodził przerwania zawieszonego procesu.
+
+Worker po zakończeniu silnika zbiera teraz rzeczywisty status każdego klienta,
+samplera i ujścia. Kod niezerowy unieważnia badanie. Proces nadal aktywny
+otrzymuje `SIGTERM`; jeżeli nie kończy się w ograniczonym czasie, jest zbierany
+po `SIGKILL`, a badanie również kończy się błędem. Timeouty sondy SSH i
+`xretractor` mają dodatkowy limit `--kill-after`, więc ignorowanie `SIGTERM`
+nie może zamienić timeoutu w bezterminowe oczekiwanie.
+
+Regresja używa rzeczywiście zawieszonej atrapy `ssh` i sprawdza usunięcie jej
+PID-u. Osobne przypadki przypinają pustą konfigurację, kod `7` zwykłego
+dziecka, kod `9` w oknie końcowym oraz proces ignorujący `SIGTERM`.
+
+Weryfikacja lokalna nadzorcy:
+
+- `bash -n`: sukces;
+- `tests/test_orchestration.sh`: **62/62 kontroli**;
+- brak pozostawionych procesów testowych;
+- `git diff --check`: sukces.
+
+Nie uruchamiano kampanii pomiarowej ani restartu workera — kryterium K9a
+dotyczyło wymuszonych ścieżek negatywnych nadzorcy. **K9a spełnione; K18, K5,
+K6 i soak K11 nie są już blokowane przez nadzorcę.**

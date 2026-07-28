@@ -79,9 +79,42 @@ assert_current_worker_resolution() {
 
 assert_wait_timeout() {
   (
-    PATH="$tmp_dir:$PATH"
-    wait_for_worker unavailable 22 0
+    PATH="$tmp_dir/hanging_ssh:$PATH"
+    RDB_TIMEOUT_PID_FILE="$tmp_dir/timeout_pid"
+    export RDB_TIMEOUT_PID_FILE
+    wait_for_worker unavailable 22 0 1 0
   )
+}
+
+assert_process_gone() {
+  local pid="$1"
+  ! kill -0 "$pid" 2>/dev/null
+}
+
+assert_timed_out_ssh_cleaned() {
+  local pid
+  [ -s "$tmp_dir/timeout_pid" ] || return 1
+  pid=$(cat "$tmp_dir/timeout_pid")
+  assert_process_gone "$pid"
+}
+
+assert_child_failure_at_main_exit() {
+  local main_pid dependency_pid
+  (exit 0) &
+  main_pid=$!
+  (exit 9) &
+  dependency_pid=$!
+  sleep 0.1
+  wait_for_required_process "$main_pid" main || return 1
+  monitor_required_processes "$main_pid" dependency "$dependency_pid" || return 1
+  finalize_required_process "$dependency_pid" dependency
+}
+
+assert_stubborn_child_cleanup() {
+  bash -c 'trap "" TERM; exec sleep 30' &
+  stubborn_pid=$!
+  sleep 0.1
+  finalize_required_process "$stubborn_pid" stubborn-child 1
 }
 
 assert_legacy_blocked() {
@@ -94,11 +127,13 @@ assert_legacy_blocked() {
 tmp_dir=$(mktemp -d)
 trap 'rm -rf "$tmp_dir"' EXIT
 
-cat > "$tmp_dir/timeout" <<'EOF'
+mkdir -p "$tmp_dir/hanging_ssh"
+cat > "$tmp_dir/hanging_ssh/ssh" <<'EOF'
 #!/bin/bash
-exit 1
+printf '%s\n' "$$" > "$RDB_TIMEOUT_PID_FILE"
+exec sleep 30
 EOF
-chmod +x "$tmp_dir/timeout"
+chmod +x "$tmp_dir/hanging_ssh/ssh"
 
 cat > "$tmp_dir/probe-good" <<'EOF'
 #!/bin/bash
@@ -196,6 +231,7 @@ expect_success "poprawna kampania clients" validate_campaign_csv "$tmp_dir/clien
 expect_failure "pusta lista badan" validate_campaign_csv "$tmp_dir/empty.csv" rate
 expect_failure "bledny wiersz kampanii" validate_campaign_csv "$tmp_dir/malformed.csv" rate
 expect_failure "osiagalny timeout oczekiwania na worker" assert_wait_timeout
+expect_success "timeout sprzata zawieszona sonde SSH" assert_timed_out_ssh_cleaned
 
 (exit 0) &
 pid=$!
@@ -203,6 +239,10 @@ expect_success "sukces procesu dziecka" wait_for_required_process "$pid" child-o
 (exit 7) &
 pid=$!
 expect_failure "blad procesu dziecka" wait_for_required_process "$pid" child-fail
+expect_success "bledny proces dziecka zostal zebrany" assert_process_gone "$pid"
+expect_failure "blad dziecka przy koncu procesu glownego" assert_child_failure_at_main_exit
+expect_failure "SIGKILL po zignorowaniu SIGTERM" assert_stubborn_child_cleanup
+expect_success "oporny proces dziecka zostal zebrany" assert_process_gone "$stubborn_pid"
 sleep 30 &
 main_pid=$!
 sleep 30 &
@@ -224,7 +264,7 @@ expect_success "monitor zatrzymuje proces glowny po bledzie zaleznosci" \
   terminate_process "$main_pid"
 sleep 30 &
 pid=$!
-expect_success "sprzatanie procesu dziecka" terminate_process "$pid"
+expect_success "sprzatanie procesu dziecka" finalize_required_process "$pid" child-cleanup
 
 expect_success "brak git add/commit/push w repo kodu" assert_no_code_repo_writes
 expect_success "wyniki zakorzenione w rdb-experiment" assert_results_use_experiment_repo

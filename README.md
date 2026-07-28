@@ -153,6 +153,14 @@ Timeout, błąd procesu, brak RT, niezgodny build, pusty lub niekompletny CSV,
 brak pliku albo zmiana repozytorium kodu kończą badanie niezerowym kodem.
 Niepełny wynik nie jest commitowany.
 
+Procesy pomocnicze są monitorowane podczas pracy `xretractor`, a po jego
+zakończeniu ich statusy są zbierane ponownie. Domyka to okno między ostatnim
+sprawdzeniem monitora a końcem procesu głównego: klient, sampler albo ujście,
+które zakończyło się wtedy błędem, nadal unieważnia badanie. Proces działający
+poprawnie do końca pomiaru jest zatrzymywany kontrolowanym `SIGTERM`.
+Jeżeli nie zakończy się w ograniczonym czasie, worker używa `SIGKILL`, zbiera
+proces i unieważnia badanie zamiast czekać bezterminowo.
+
 Po każdym udanym badaniu worker:
 
 1. sprawdza, że repozytorium kodu nadal jest czyste i wskazuje ten sam commit;
@@ -161,3 +169,19 @@ Po każdym udanym badaniu worker:
 
 Po zakończeniu człowiek przegląda pojedynczy commit brancha eksperymentalnego
 i decyduje o merge do `main`.
+
+## Testy orkiestracji
+
+```bash
+./tests/test_orchestration.sh
+```
+
+Testy wymuszają między innymi:
+
+- zawieszoną sondę SSH, rzeczywiste zadziałanie `timeout` i usunięcie procesu;
+- pustą listę badań;
+- błąd dziecka podczas pracy oraz w chwili zakończenia procesu głównego;
+- kontrolowane zatrzymanie pozostałych procesów.
+
+Każda negatywna ścieżka musi zwrócić kod niezerowy, a test kończy się błędem,
+jeżeli pozostawi monitorowany proces.
