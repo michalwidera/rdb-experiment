@@ -1,0 +1,3 @@
+Syntax error @Rql
+line:1:10 at 0x5f6fd2343830
+msg:mismatched input 'i16' expecting {BYTE_T, STRING_T, UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T}

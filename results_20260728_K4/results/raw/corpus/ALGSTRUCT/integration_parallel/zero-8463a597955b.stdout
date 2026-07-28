@@ -1,0 +1,15 @@
+:SUBSTRAT	memory
+A(1/10)	/dev/urandom
+	a: INTEGER
+B(1/10)	/dev/urandom
+	b: INTEGER
+STREAM_HASH_A_B(1/20)	tail=1
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_HASH
+	a: INTEGER
+		PUSH_ID(STREAM_HASH_A_B[0])
+zero(1/20)	tail=1
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	a: INTEGER
+		PUSH_ID(zero[0])

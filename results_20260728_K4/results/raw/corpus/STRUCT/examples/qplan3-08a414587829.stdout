@@ -1,0 +1,15 @@
+C(1/1)	data3.txt
+	a: BYTE
+	b: BYTE
+str3(1/2)	tail=1
+	:- PUSH_STREAM(C)
+	:- STREAM_AGSE(1,1)
+	C_0: BYTE
+		PUSH_ID(str3[0])
+str4(1/1)	tail=2
+	:- PUSH_STREAM(str3)
+	:- STREAM_AGSE(2,-2)
+	str3_0: BYTE
+		PUSH_ID(str4[0])
+	str3_1: BYTE
+		PUSH_ID(str4[1])

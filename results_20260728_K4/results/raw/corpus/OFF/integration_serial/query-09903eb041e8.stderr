@@ -1,0 +1,2 @@
+PLAN bench (strumienie/tokeny, dedup=OFF): wejscie=19/32  przed-dedup=24/37  po-dedup=24/37  wyjscie=24/37
+REWRITE_APPLIED r1=0 r2=0

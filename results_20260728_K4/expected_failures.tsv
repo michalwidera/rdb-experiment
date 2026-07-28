@@ -1,0 +1,6 @@
+path	reason
+test/IntegrationTest_parallel/issue95_loopInCompile/brokenQuery.rql	Regresja celowo zawiera cykliczną zależność i musi zostać odrzucona przez kompilator.
+test/IntegrationTest_serial/Data/query.rql	Nierejestrowany historyczny fixture używa usuniętych typów i16/i8 oraz dawnej składni FILE.
+test/IntegrationTest_serial/Data/ut_example.rql	Nierejestrowany historyczny fixture odwołuje się do niezadeklarowanego strumienia core.
+examples/mwd/query-mwnd.rql	Historyczny przykład interaktywny ma sklejone instrukcje SELECT i DECLARE; dołączony test-mwnd.sh również odrzuca go w trybie compile-only.
+examples/mwd/query-mwnd2.rql	Historyczny przykład interaktywny używa nieaktualnej, niecytowanej ścieżki FILE.

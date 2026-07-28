@@ -2997,3 +2997,43 @@ K6 i soak K11 nie są już blokowane przez nadzorcę.**
 - commit kodu: `bc37186ac87cb944d76cf74c7be92706a4a3a87f`
 - parametry: rate_hz=360, clients=1, samples=20000, sink=null
 - dane: `results_20260728_K18/rate_k18/study_01`
+
+---
+
+## 2026-07-28 — K4: rozdzielenie R1/R2 i liczniki zastosowań
+
+RetractorDB na commicie
+`50e19b75d71ef42c842c7db6214e5c31d5dd86ab` udostępnia w buildzie
+`RDB_BENCH_PROBE=ON` stabilny licznik `REWRITE_APPLIED r1=<n> r2=<n>`.
+R1 rośnie po skutecznej faktoryzacji dopasowanych przesunięć, a R2 liczy
+unikalne węzły `STREAM_ADD`, dla których kanoniczny fingerprint rzeczywiście
+zamienił dzieci. Ukierunkowane testy i pełny Debug CTest przeszły **167/167**.
+
+Zbudowano pięć izolowanych profili Release: `OFF`, `STRUCT`, `STRUCT+R1`,
+`STRUCT+R2` i `ALGSTRUCT`. Każdy przeszedł 6/6 testów
+`optimizer_ablation`, łącznie **30/30**.
+
+Istniejący korpus obejmuje 80 plików RQL: 37 z integracji szeregowej, 18
+z równoległej i 25 przykładów. W każdym profilu 75 plików skompilowano,
+a 5 historycznych lub celowo wadliwych fixture'ów odrzucono zgodnie z jawną
+listą. Zapisano 400 wierszy wynikowych i osobne stdout/stderr dla każdej
+kompilacji.
+
+| Profil | R1 | R2 | Pliki z R1 | Pliki z R2 |
+|---|---:|---:|---:|---:|
+| `OFF` | 0 | 0 | 0 | 0 |
+| `STRUCT` | 0 | 0 | 0 | 0 |
+| `STRUCT+R1` | 5 | 0 | 5 | 0 |
+| `STRUCT+R2` | 0 | 18 | 0 | 13 |
+| `ALGSTRUCT` | 5 | 18 | 5 | 13 |
+
+R1 trafiło wyłącznie w pięciu dedykowanych testach regresyjnych; żaden
+istniejący przykład go nie aktywował. R2 trafiło w 13 plikach, w tym
+w czterech przykładach. Licznik R2 świadczy o zastosowaniu prawa
+przemienności podczas fingerprintowania, nie o usunięciu węzła ani
+przyspieszeniu wykonania.
+
+**Werdykt: K4 spełnione.** Profile osobno izolują R1 i R2, wyłączone reguły
+mają zerowe liczniki, a surowe dane są kompletne. Zerowa reprezentacja R1
+w przykładach pozostaje jawnym zagrożeniem trafności dla K5/K6.
+Dane: `results_20260728_K4/results`.

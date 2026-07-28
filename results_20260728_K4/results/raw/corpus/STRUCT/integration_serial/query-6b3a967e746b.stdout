@@ -1,0 +1,22 @@
+sa(1/16)	datafile1.txt
+	a: UINT
+sb(1/8)	datafile2.txt
+	a: UINT
+c(1/24)	tail=2
+	:- PUSH_STREAM(sa)
+	:- PUSH_STREAM(sb)
+	:- STREAM_HASH
+	c_0: INTEGER
+		PUSH_ID(c[0])
+a2(1/16)	tail=3
+	:- PUSH_STREAM(c)
+	:- PUSH_VAL(1/8)
+	:- STREAM_DEHASH_DIV
+	c_0: INTEGER
+		PUSH_ID(a2[0])
+b2(1/8)	tail=1
+	:- PUSH_STREAM(c)
+	:- PUSH_VAL(1/16)
+	:- STREAM_DEHASH_MOD
+	c_0: INTEGER
+		PUSH_ID(b2[0])

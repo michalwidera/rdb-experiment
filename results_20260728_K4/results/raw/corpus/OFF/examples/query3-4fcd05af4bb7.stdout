@@ -1,0 +1,16 @@
+core0(1/10)	datafile1.txt
+	a: INTEGER
+core1(1/5)	/dev/urandom
+	b: INTEGER
+str1(1/10)
+	:- PUSH_STREAM(core0)
+	:- PUSH_STREAM(core1)
+	:- STREAM_ADD
+	str1_0: INTEGER
+		PUSH_ID(str1[0])
+	str1_1: INTEGER
+		PUSH_ID(str1[1])
+	str1_2: INTEGER
+		PUSH_ID(str1[0])
+	str1_3: INTEGER
+		PUSH_ID(str1[1])

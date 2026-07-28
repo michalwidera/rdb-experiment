@@ -1,0 +1,98 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+FA(1/10)	a.txt
+	value: INTEGER
+FB(1/5)	b.txt
+	value: INTEGER
+STREAM_HASH_FA_FB(1/15)	tail=2
+	:- PUSH_STREAM(FA)
+	:- PUSH_STREAM(FB)
+	:- STREAM_HASH
+	value: INTEGER
+		PUSH_ID(STREAM_HASH_FA_FB[0])
+factored(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_FA_FB)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(factored[0])
+FA2(1/10)	a.txt
+	value: INTEGER
+FB2(1/5)	b.txt
+	value: INTEGER
+STREAM_HASH_FA2_FB2(1/15)	tail=2
+	:- PUSH_STREAM(FA2)
+	:- PUSH_STREAM(FB2)
+	:- STREAM_HASH
+	value: INTEGER
+		PUSH_ID(STREAM_HASH_FA2_FB2[0])
+factor_reference(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_FA2_FB2)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(factor_reference[0])
+DA2(1/10)	a.txt
+	value: INTEGER
+DB2(1/10)	b.txt
+	value: INTEGER
+DB(1/10)	b.txt
+	value: INTEGER
+DA(1/10)	a.txt
+	value: INTEGER
+A(1/10)	a.txt
+	value: INTEGER
+B(1/5)	b.txt
+	value: INTEGER
+STREAM_SELECT_same1(1/10)
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_ADD
+	same1_0: INTEGER
+		PUSH_ID(STREAM_SELECT_same1[0])
+		PUSH_ID(STREAM_SELECT_same1[1])
+		MULTIPLY
+same1(1/10)
+	:- PUSH_STREAM(STREAM_SELECT_same1)
+	same1_0: INTEGER
+		PUSH_ID(same1[0])
+same2(1/10)
+	:- PUSH_STREAM(STREAM_SELECT_same1)
+	same2_0: INTEGER
+		PUSH_ID(same2[0])
+commuted(1/10)
+	:- PUSH_STREAM(B)
+	:- PUSH_STREAM(A)
+	:- STREAM_ADD
+	commuted_0: INTEGER
+		PUSH_ID(commuted[1])
+		PUSH_ID(commuted[0])
+		MULTIPLY
+dedup_owner(1/10)
+	:- PUSH_STREAM(DA)
+	:- PUSH_STREAM(DB)
+	:- STREAM_ADD
+	DA_0: INTEGER
+		PUSH_ID(dedup_owner[0])
+	DB_1: INTEGER
+		PUSH_ID(dedup_owner[1])
+dedup_shifted(1/10)	tail=1
+	:- PUSH_STREAM(dedup_owner)
+	:- STREAM_TIMEMOVE(1)
+	dedup_shifted_0: INTEGER
+		PUSH_ID(dedup_shifted[0])
+	dedup_shifted_1: INTEGER
+		PUSH_ID(dedup_shifted[1])
+dedup_reference_owner(1/10)
+	:- PUSH_STREAM(DA2)
+	:- PUSH_STREAM(DB2)
+	:- STREAM_ADD
+	DA2_0: INTEGER
+		PUSH_ID(dedup_reference_owner[0])
+	DB2_1: INTEGER
+		PUSH_ID(dedup_reference_owner[1])
+dedup_reference(1/10)	tail=1
+	:- PUSH_STREAM(dedup_reference_owner)
+	:- STREAM_TIMEMOVE(1)
+	dedup_reference_0: INTEGER
+		PUSH_ID(dedup_reference[0])
+	dedup_reference_1: INTEGER
+		PUSH_ID(dedup_reference[1])

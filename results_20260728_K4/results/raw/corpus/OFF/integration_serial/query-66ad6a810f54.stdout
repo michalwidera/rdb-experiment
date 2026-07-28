@@ -1,0 +1,7 @@
+:ROTATION	rotation_counter.txt
+core0(1/10)	/dev/urandom
+	a: INTEGER
+str1(1/10)
+	:- PUSH_STREAM(core0)
+	core0_0: INTEGER
+		PUSH_ID(str1[0])

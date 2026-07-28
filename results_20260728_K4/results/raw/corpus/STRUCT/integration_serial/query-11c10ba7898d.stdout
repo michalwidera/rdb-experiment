@@ -1,0 +1,10 @@
+core0(1/16)	datafile1.txt
+	a: UINT
+core1(1/8)	datafile2.txt
+	a: UINT
+str3(1/24)	tail=2
+	:- PUSH_STREAM(core0)
+	:- PUSH_STREAM(core1)
+	:- STREAM_HASH
+	str3_0: INTEGER
+		PUSH_ID(str3[0])
