@@ -1,0 +1,5 @@
+rekordow: fixed=3759 mutant=3759
+mlii-900     fixed[min=5 max=310]  mutant[min=5 max=310]
+mwi*5        fixed[min=0 max=15]  mutant[min=0 max=0]
+detekcja*5   fixed[min=0 max=15]  mutant[min=0 max=0]
+probek z detekcja>0: fixed=563 mutant=0

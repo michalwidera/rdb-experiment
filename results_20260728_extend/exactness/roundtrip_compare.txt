@@ -1,0 +1,9 @@
+c[2i] == b[i]: True
+c[2i+1] == a[i]: True
+a2 == a (bez rekordu zastepczego): True
+b2 == b: True
+wystarczajacy prefiks a2: True
+wystarczajacy prefiks b2: True
+records: a=19999 b=19999 c=39994 a2=19995 b2=19996
+first: a=938 a2=938 b=916 b2=916
+VERDICT: OK

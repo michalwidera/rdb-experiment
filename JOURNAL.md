@@ -3037,3 +3037,87 @@ przyspieszeniu wykonania.
 mają zerowe liczniki, a surowe dane są kompletne. Zerowa reprezentacja R1
 w przykładach pozostaje jawnym zagrożeniem trafności dla K5/K6.
 Dane: `results_20260728_K4/results`.
+
+## 2026-07-28T21:00:04+02:00 — results_20260728_extend / rate_extend / study_1
+
+- wynik: sukces
+- commit kodu: `3db781711a84c08ce794c3924aab533dba6fcbd1`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20260728_extend/rate_extend/study_01`
+
+---
+
+## 2026-07-28 — extend: regresja pojemności AGSE, audyt wyników z 2026-07-28 i luka pokrycia K19
+
+**Ujawnienie.** Po zamknięciu K19, K18 i K4 w przykładzie `examples/ecg/rec205`
+wykryto płaski sygnał detekcji QRS (`ninja ecg-qrs`). Bisekcja wskazała commit
+`bc37186ac87cb944d76cf74c7be92706a4a3a87f` (`K19 - fix (#210)`) — czyli tę samą
+rewizję, na której przypięto K18. W `compiler::computeRequiredCapacities`,
+gałąź `STREAM_AGSE`, pojemność bufora źródła liczono jako `ceilR(retained)`,
+podczas gdy `retained` jest odległością od rekordu najnowszego do najstarszego
+pola okna; bufor musi pomieścić oba końce zakresu, więc poprawna pojemność to
+odległość + 1. Dla źródeł o szerokości 1 odległość wypada całkowita (dla AGSE
+zachodzi `ratio = step/F`), więc pojemność była o jeden rekord za mała: kołowy
+bufor `MEMORY` nadpisywał najstarsze pole okna, a operator czytał w jego miejsce
+rekord najnowszy. Defekt jest obserwowalny wyłącznie w planach łączących
+politykę `MEMORY` z oknem nad strumieniem **obliczanym**; strumienie plikowe
+czytają pełną historię z dysku i defekt maskują. Poprawka:
+`3db781711a84c08ce794c3924aab533dba6fcbd1`.
+
+**Luka pokrycia (`coverage_gap/`).** Zbudowano trzy drzewa Debug z klonów
+repozytorium kodu. `HISTORICAL` (`7942b78`) i `MUTANT` (`3db7817` z odwróconą
+wyłącznie silnikową częścią poprawki) mają bajtowo identyczny kod silnika
+i różnią się jedynie zestawem testów, więc różnica ich wyników jest różnicą mocy
+detekcyjnej testów. Selekcja `K19_ORIGINAL` na drzewie z epoki K19 mutanta
+**nie wykryła** (zielona). Ta sama selekcja na drzewie z rozszerzonym zestawem
+mutanta zabija (`ut_compiler`), a selekcja poszerzona o `it_agse_volatile`
+zabija podwójnie. Wniosek jest ostrzejszy, niż zakładała hipoteza wejściowa:
+luka nie leżała w doborze testów do selekcji — `ut_compiler` był w niej od
+początku — tylko w zawartości zestawu, w którym brakowało przypadku pojemności
+nad źródłem obliczanym oraz jakiegokolwiek przypadku z polityką `MEMORY`.
+
+**Zasięg szkody (`artifact_diff/`).** Ta sama para binarek, trzy warstwy
+obserwacji. Korpus 81 plików RQL: 81/81 identyczny zrzut planu i kod
+zakończenia. Potok `exactness-replay.rql` (17 strumieni): 67/67 artefaktów
+identycznych. Plan z polityką `MEMORY` (`rec205-qrs.rql`, 4000 próbek):
+detekcja obecna w 563 próbkach po poprawce i w 0 przed nią — regresja kasowała
+sygnał w całości, nie tłumiła go.
+
+**Determinizm na poprawionej rewizji (`exactness/`).** Powtórzono procedurę K18
+w jej reżimie (Release-Probe, `/dev/shm`, 20 000 próbek, dwa przebiegi):
+determinizm zachowany, round-trip `a2 == a` i `b2 == b` bez rekordu
+zastępczego. Dodatkowo wykonano porównanie **międzyrewizyjne**: 51 artefaktów
+niebędących `.meta` ma hashe identyczne z zapisanymi w
+`results_20260728_K18/exactness`. Pliki `.meta` są z tego porównania wyłączone
+z konstrukcji — ich nagłówek zawiera znacznik czasu utworzenia.
+
+**Kampania czasowa (`rate_extend/`).** Powtórka 360 Hz / 1 klient / 20 000
+próbek na `3db7817`, przy pliku konfiguracji o tym samym SHA-256 co w K18.
+E1 mediana 1292,8 us (K18: 1312,4), p99 1598,8 (1617,9), max 1816,5 (1838,5);
+queue-emission mediana 1352,7 (1372,8), max 1976,6 (1944,0), czyli 71,2 %
+budżetu slotu. Różnice mieszczą się w ±2 % poza pojedynczym outlierem jitteru
+pobudki (54,3 → 73,1 us). Przy jednym badaniu na kampanię **nie ma podstawy do
+czytania tych różnic jako efektu poprawki**; dane uprawniają wyłącznie do
+wniosku, że rząd wielkości i margines budżetu się nie zmieniły.
+
+**Skutki dla wyników z 2026-07-28.** K19: wynik zapisany pozostaje w mocy
+(testy przechodziły i przechodzą), ale jego uzasadnienie dla twierdzenia
+o pojemności historii było słabsze, niż zapisano — zestaw nie zawierał
+przypadku, który mógłby je obalić. K18: część exactness/replay potwierdzona
+bajtowo na obu rewizjach, powtórka zbędna; etap czasowy 360 Hz zmierzono na
+potoku liczącym `mwi ≡ 0`, więc twierdzenie o potoku detekcji QRS ma pokrycie
+dopiero w `rate_extend`. K4: liczniki R1/R2 i zrzuty planu bez zmian; korpus
+urósł jednak z 80 do 81 plików RQL (nowy test `agse_volatile`), więc ponowny
+przebieg da 405 zamiast 400 wierszy. Przy okazji ujawniono drugą — obok ASLR —
+skazę odtwarzalności `results_20260728_K4/collect.py`: fixture `brokenQuery.rql`
+wypisuje bezwzględną ścieżkę pliku wejściowego, a każda kompilacja idzie
+z innego katalogu tymczasowego, więc jego `stdout_sha256` jest nieodtwarzalny
+między przebiegami. `artifact_diff/run.sh` normalizuje oba artefakty
+środowiskowe.
+
+**Werdykt.** Żaden zapisany wynik z 2026-07-28 nie został unieważniony.
+Powtórki wymagał wyłącznie etap czasowy 360 Hz i został wykonany. Luka pokrycia
+K19 jest zamknięta w kodzie (`ut_compiler`, `it_agse_volatile`) i zmierzona
+tutaj. Otwarte: `results_20260728_K4/collect.py` nadal hashuje wyjście
+z niestabilnymi fragmentami; do naprawy przy następnym przebiegu K4.
+Dane: `results_20260728_extend/`.
