@@ -1,146 +1,163 @@
 # Eksperymenty RetractorDB
 
-Repozytorium trzyma dwie rodziny badań. Łączy je zasada „jeden katalog
-`results_<data>` = jedno badanie” i wspólny dziennik `JOURNAL.md`; różnią się
-protokołem i tym, co w ogóle mierzą.
+Repozytorium przechowuje skrypty, dziennik i wyniki eksperymentów. Kod silnika
+pozostaje w osobnym repozytorium `retractordb`.
 
-| Rodzina | Co bada | Protokół | Przykład |
-|---|---|---|---|
-| **Kampanie wydajnościowe** | ile danych na sekundę wytrzyma dana platforma, jak zachowują się opóźnienia, temperatura i zasoby | `REQUIREMENTS.md`: nadzorca + worker pod Linuksem RT, zapis stanu maszyny przed i po każdym badaniu | `results_20260716` … `results_20260722_thick_mesh` |
-| **Eksperymenty semantyczne** | czy semantyka silnika zgadza się z niezależnym modelem formalnym | lokalny przebieg na zbudowanym silniku, bez workera i bez pomiaru czasu | `results_20260725` (równoważność przeplotu z CSDF/SDF) |
-
-Reszta tego dokumentu opisuje **rodzinę pierwszą**: jak uruchomić kampanię od
-zera na własnym sprzęcie (nadzorca + worker) i co dokładnie zostaje
-zarejestrowane, żeby wynik dało się odtworzyć. Wyniki tej rodziny zasilają
-sekcję *Performance Evaluation* w `paper-arXiv/debs/main-debs.tex`.
-
-Eksperymenty semantyczne mają własne README w swoim katalogu i własny skrypt
-odtwarzający (`run.sh`) — nie przechodzą przez `start_supervisor.sh` i nie
-podlegają protokołowi z `REQUIREMENTS.md`. Wynik `results_20260725` zasila
-sekcję *Related Work* (§3.3 i tabelę `tab:repr`) tej samej pracy.
+| Rodzina | Sposób uruchomienia | Protokół |
+|---|---|---|
+| kampanie czasowe na Raspberry Pi 400 | `start_supervisor.sh` + worker PREEMPT_RT | `REQUIREMENTS.md` |
+| eksperymenty semantyczne | lokalny `run.sh` w katalogu danego eksperymentu | README danego katalogu |
 
 ## Architektura
 
-- **Nadzorca** — maszyna, z której startuje się kampanię (`start_supervisor.sh`).
-  W tym repo: `/home/michal/github/retractordb`.
-- **Worker** — fizyczna maszyna pod Linuksem RT, na której faktycznie chodzi
-  `xretractor`/`xqry` i zbierane są metryki. W tym repo: alias SSH `worker`,
-  repo pod `/home/michal/retractordb` (patrz `REQUIREMENTS.md` @note).
-- Obie maszyny mają wspólne pochodzenie (ten sam `origin`), branch eksperymentu
-  jest tworzony z `master` **dopiero po** scommitowaniu tych skryptów do
-  `master` (pkt 6/26 wymagań: branch eksperymentu nie zawiera zmian w kodzie).
+Na nadzorcy:
 
-## Wymagania wstępne (przed pierwszym uruchomieniem)
+```text
+/home/michal/github/retractordb      # kod i build
+/home/michal/github/rdb-experiment   # skrypty, JOURNAL.md i wyniki
+```
 
-1. Skrypty z tego katalogu są scommitowane na `master` i wypchnięte do `origin`
-   na obu maszynach (`git pull` na workerze).
-2. `examples/ecg/build.sh` uruchomiony choć raz w repo, z którego korzysta
-   worker — generuje `rec205`, `rec205.desc` (źródło dla algorytmu QRS).
-3. Worker ma zainstalowane klucze SSH do `origin` (do `git push`) — pkt 20.
-4. Worker ma **bezhasłowy `sudo reboot`**, bo `start_supervisor.sh` restartuje
-   go fizycznie po każdym badaniu (pkt 4):
+Na workerze:
+
+```text
+/home/michal/retractordb             # kod i build; bez wyników i commitów
+/home/michal/rdb-experiment          # skrypty, JOURNAL.md i wyniki
+```
+
+Repozytoria mają oddzielne historie. Worker nigdy nie zapisuje wyników ani
+commitów do brancha kodu.
+
+## Warunki wstępne
+
+1. Oba repozytoria istnieją i są czyste na nadzorcy oraz workerze.
+2. Wybrany branch kodu jest dostępny w `origin` obu klonów.
+3. Worker odpowiada przez SSH i ma bezhasłowe uprawnienia do:
+
+   ```text
+   reboot
+   setcap
+   zapisu governorów CPU przez tee
    ```
-   # /etc/sudoers.d/rdb-experiment na workerze
-   michal ALL=(root) NOPASSWD: /usr/sbin/reboot
-   ```
-5. `xretractor`/`xqry` na workerze zbudowane z sondą E1/E2E i zainstalowane:
-   ```
-   scripts/buildrdb.sh conan ninja probe && cd build/Release && ninja install
-   ```
-   (`start_supervisor.sh` robi to automatycznie, chyba że podasz `--skip-build`).
-6. `nc` obecny, jeśli chcesz `--sink nc` (patrz niżej).
+
+4. `examples/ecg/build.sh` w repozytorium kodu utworzył `rec205` i
+   `rec205.desc`.
+5. `/dev/shm` na workerze jest zamontowane jako `tmpfs`.
+6. Nadzorca ma programy `nc`, `ssh-keyscan` i `ssh-keygen`. Klucz hosta
+   workera jest już zapisany w `~/.ssh/known_hosts` pod dotychczasowym adresem.
 
 ## Uruchomienie
 
-Z katalogu głównego repo na nadzorcy:
+Z katalogu `rdb-experiment` na nadzorcy:
 
 ```bash
-# Kampania 1: rosnąca częstość napływu danych (natywne 360 Hz -> 10x), pkt 12-14
-examples/experiment/start_supervisor.sh rate
-
-# Kampania 2: rosnąca liczba klientów xqry (1..10) przy ustalonej częstości, pkt 16
-# --rate-hz powinno być ustawione na max. stabilną częstość znalezioną w kampanii 1
-examples/experiment/start_supervisor.sh clients --rate-hz 720
+./start_supervisor.sh rate \
+  --worker 192.168.88.21 \
+  --worker-port 22 \
+  --worker-name pi400 \
+  --worker-subnet 192.168.88.0/24 \
+  --code-branch master \
+  --experiment-id 20260728_performance
 ```
 
-Obie kampanie to dwie różne osie badawcze (pkt 12-14: skalowanie częstości,
-pkt 16: liczba klientów) — nie jedna siatka rate×clients, która byłaby
-wielokrotnie dłuższa na fizycznym sprzęcie — ale zapisują się na **jednym,
-wspólnym branchu eksperymentalnym** (domyślnie `experiment/YYYYMMDD`, bez
-nazwy kampanii w nazwie brancha). Wyniki poszczególnych kampanii trafiają do
-osobnych katalogów (`results/rate/...`, `results/clients/...`), ale
-`commit --amend` + `push --force-with-lease` działają na tym samym branchu i
-tym samym commicie niezależnie od tego, która kampania właśnie się wykonuje —
-zgodnie z pkt 5 na końcu całego eksperymentu (obu kampanii) ma powstać jeden
-commit. Żeby druga kampania trafiła na ten sam branch co pierwsza, podaj
-jawnie ten sam `--branch`, jeśli uruchamiasz je różnego dnia:
+Kampania klientów na tym samym branchu i w tym samym katalogu wyników:
 
 ```bash
-examples/experiment/start_supervisor.sh rate    --branch experiment/20260716
-examples/experiment/start_supervisor.sh clients --branch experiment/20260716 --rate-hz 720
+./start_supervisor.sh clients \
+  --worker 192.168.88.21 \
+  --worker-port 22 \
+  --code-branch master \
+  --experiment-id 20260728_performance \
+  --rate-hz 480
 ```
 
-Każde badanie z pliku `config/campaign_<nazwa>.csv` jest wykonywane po kolei;
-po każdym (poza ostatnim) worker jest **fizycznie restartowany** i nadzorca
-czeka, aż wróci po SSH, zanim zleci kolejne badanie.
+Domyślne ścieżki można zmienić opcjami:
 
-Przed pierwszym badaniem danej kampanii `start_supervisor.sh` generuje na
-workerze `examples/experiment/results/<kampania>/README.md` — opis celu tej
-kampanii i rodzaju prowadzonego badania (nie plik dopisywany ręcznie po
-fakcie). Kolejne uruchomienia tej samej kampanii nadpisują go tą samą treścią.
+```text
+--code-repo
+--worker-code-repo
+--worker-experiment-repo
+--worker-name
+--worker-subnet
+--worker-host-key
+--no-worker-discovery
+```
 
-## Co zostaje zarejestrowane (odtwarzalność)
+Opcja `--skip-build` pomija kompilację, ale nie omija walidacji zainstalowanej
+binarki. Musi ona nadal zgłosić przez `--build-info` build `Release-Probe` z
+`RDB_BENCH_PROBE=ON`.
 
-Dla każdego badania, w `examples/experiment/results/<kampania>/study_NN/`:
+## Zmienny adres IP workera
 
-| Plik | Zawartość |
-|---|---|
-| `state_before.md` / `state_after.md` | `uname -a`, `/etc/os-release`, `lscpu`, `free -h`, `/proc/buddyinfo` (fragmentacja pamięci), `/proc/loadavg`, temperatury stref termicznych, data, parametry badania — pkt 7 i 15 |
-| `e1_probe.csv` | surowe dane sondy `RDB_BENCH_CSV` (`iter,compute_ns,wake_lag_ns,e2e_ns`), skompilowanej z `-DRDB_BENCH_PROBE=ON` |
-| `metrics.csv` | próbkowanie co 1s: `load1`, pamięć użyta/dostępna, temperatura — w trakcie realizacji badania (pkt 11) |
-| `results.md` | streszczenie: wyjście `ecg/e1_stats.py` na `e1_probe.csv` + średnie z `metrics.csv` |
+Nadzorca najpierw używa adresu z `--worker`. Jeżeli połączenie lub kontrola
+tożsamości nie powiedzie się, skanuje wskazaną sieć `/24` na skonfigurowanym
+porcie SSH. Gdy `--worker-subnet` nie podano, sieć jest wyprowadzana z
+numerycznego adresu workera.
 
-Wszystko trafia w jednym commicie na branch eksperymentu poprzez
-`git commit --amend` + `git push --force-with-lease` po każdym badaniu (pkt 5)
-— po zakończeniu całej kampanii branch ma **jeden** commit z wynikami
-wszystkich badań tej kampanii.
+Nowy adres jest akceptowany tylko wtedy, gdy:
 
-## Odtworzenie na własnym sprzęcie
+1. fingerprint klucza hosta zgadza się z wpisem `known_hosts` starego adresu;
+2. `hostname` jest równy wartości `--worker-name`;
+3. istnieją repozytoria kodu i wyników.
 
-Żeby powtórzyć kampanię na innej parze maszyn:
+Jeżeli starego wpisu `known_hosts` nie ma, fingerprint można przekazać jawnie:
 
-1. Zmień `WORKER_HOST`/`WORKER_REPO` przez `--worker`/`--worker-repo`.
-2. Dostosuj `config/campaign_rate.csv` / `config/campaign_clients.csv` — liczba
-   i wartości badań nie są magiczne, to punkt startowy (pkt 12: "początkowo np. 10").
-3. Wynik zależy od sprzętu workera — `state_before.md`/`state_after.md`
-   dokumentują dokładnie, na czym mierzono (jądro, dystrybucja, CPU, pamięć),
-   żeby porównanie między sprzętami było możliwe.
-4. Realny tryb czasu rzeczywistego (`xretractor -t`, SCHED_FIFO) **nie jest
-   włączony domyślnie** w `run_study.sh` (wymaga roota/capabilities) — to
-   świadome uproszczenie; do w pełni miarodajnych liczb E2E (patrz komentarz
-   w `ecg/e1_stats.py`) trzeba rozszerzyć `run_study.sh` o uruchomienie z
-   `sudo ... -t` na docelowym sprzęcie.
+```bash
+--worker-host-key SHA256:...
+```
 
-## Znane ograniczenia / otwarte decyzje
+Skan można wyłączyć przez `--no-worker-discovery`. Nadzorca nie używa
+`StrictHostKeyChecking=no` i zatrzymuje się, jeśli nie może jednoznacznie
+uwierzytelnić workera.
 
-Spisane przy przygotowaniu tych skryptów (zob. też dyskusja w commicie):
+## Układ wyników
 
-- Sonda E1/E2E (`executorsm.cpp`) nie zapisuje domyślnie nigdzie — pisze pod
-  ścieżkę z `RDB_BENCH_CSV`; `run_study.sh` ustawia ją jawnie na plik w
-  `/dev/shm/rdb-experiment/study_<id>/`.
-- **Katalog roboczy to `/dev/shm`, nie `/tmp`.** Na Raspberry Pi 400 (worker
-  użyty przy pierwszym przebiegu tej kampanii) `/tmp` okazał się zwykłym
-  `ext4` na karcie SD (`/dev/mmcblk0p2`), a nie `tmpfs` — użycie samej nazwy
-  `/tmp` nie gwarantuje pamięci RAM (pkt 17 zakłada, że gwarantuje).
-  `/dev/shm` jest w praktyce niemal zawsze prawdziwym `tmpfs`; `run_study.sh`
-  i tak sprawdza to (`[ -d /dev/shm ]`) i przerywa badanie, jeśli katalog nie
-  istnieje, zamiast cicho pisać gdziekolwiek indziej.
-- `bp_coef.txt`/`d_coef.txt` nie mają w repo towarzyszących `.desc` —
-  `xretractor` tworzy je przy pierwszym uruchomieniu w bieżącym katalogu, więc
-  `run_study.sh` **musi** odpalać proces z katalogu w `/dev/shm`, inaczej
-  powstałby artefakt na karcie SD w working tree repo.
-- Ujście danych klientów `xqry` domyślnie to `/dev/null` (`--sink null`);
-  `--sink nc` przepuszcza je przez `nc -lk 127.0.0.1:<port>` na loopback,
-  jeśli chcesz uwzględnić koszt stosu sieciowego w pomiarze.
-- Kończenie kampanii (pkt 21) jest decyzją człowieka na podstawie
-  `results.md` kolejnych badań — nie jest automatyzowane.
+Wyniki od początku trafiają do katalogu docelowego:
+
+```text
+results_20260728_performance/
+  manifest.md
+  rate/
+    README.md
+    study_01/
+      state_before.md
+      state_after.md
+      e1_probe.csv
+      metrics.csv
+      xretractor.log
+      xqry_1.err
+      results.md
+```
+
+Nie istnieje rotacja. Skrypt nie nadpisze istniejącego katalogu kampanii ani
+badania. Zmiana kodu, konfiguracji lub celu wymaga nowego `experiment-id`.
+
+## Metryki
+
+`e1_probe.csv` zawiera:
+
+```text
+iter,compute_ns,wake_lag_ns,e2e_ns
+```
+
+Historyczna nazwa kolumny `e2e_ns` oznacza w aktualnej interpretacji
+`queue-emission latency`: deadline slotu do emisji do kolejki klienta. Nie jest
+to pełny application E2E, ponieważ nie obejmuje odebrania przez `xqry`,
+transportu ani potwierdzenia ujścia.
+
+`metrics.csv` próbkuje co sekundę obciążenie, pamięć i temperaturę. Migawki
+stanu zapisują również commit kodu i pełne `xretractor --build-info`.
+
+## Zachowanie przy błędzie
+
+Timeout, błąd procesu, brak RT, niezgodny build, pusty lub niekompletny CSV,
+brak pliku albo zmiana repozytorium kodu kończą badanie niezerowym kodem.
+Niepełny wynik nie jest commitowany.
+
+Po każdym udanym badaniu worker:
+
+1. sprawdza, że repozytorium kodu nadal jest czyste i wskazuje ten sam commit;
+2. dodaje wynik i wpis w `JOURNAL.md` wyłącznie w `rdb-experiment`;
+3. wykonuje `commit --amend` i `push --force-with-lease`.
+
+Po zakończeniu człowiek przegląda pojedynczy commit brancha eksperymentalnego
+i decyduje o merge do `main`.

@@ -1,114 +1,213 @@
-@zakres Ten dokument definiuje wymagania **kampanii wydajnościowej** (nadzorca + worker, pomiar czasu na sprzęcie RT). Nie obowiązuje eksperymentów semantycznych, które nie mierzą czasu i nie potrzebują workera — te mają własne README i własny skrypt odtwarzający w swoim katalogu wyników (przykład: `results_20260725`). Podział rodzin badań opisuje `README.md`.
+# Wymagania procesu eksperymentalnego RetractorDB
 
-Eksperyment powinien:
-- być procesem prowadzonym na fizycznym sprzęcie z zainstalowanym oprogramowaniem RetractorDB, systemem pracującym pod kontrolą Linux skonfigurowanym w trybie czasu rzeczywistego.
-- mieć zdefinowany cel badawczy: zebranie informacji wymaganych dla celów publikacji naukowej (paper-arXiv/debs/main-debs.tex - Performance Evaluation)
-- składać się z szeregu badań. Każde badanie powinno być poprzedzone zapisaniem stanu maszyny do pliku, wykonaniem badań - zebraniem ich wyników w pliku markdown, ponownym zapisaniem stanu po zrealizowaniu badania. Wysłaniem zebranych danych do repozytorium i zatwierdzeniu. Przeprowadzeniem procesu restartu maszyny workera przez nadzorcę i przygotowaniem do kolejnego badania.
-- Zapis danych realizowany jest na branchu. Dane powinny być zapisywane do repozytorium w jednym commit. Za każdym badaniem wysyłany jest commit --ammed modyfikujący ostatni kommit i wysyłany git push --force-with-lease. Po zakończeniu eksperymentu powinien powstać pojedyńczy commit zawierający pliki/zapisy poszczególnych procesów badawczych.
-- być prowadzony na dwóch maszynach. Obie maszyny mają pobrane aktualne repozytorium z wydzielonym branchem. Branch nie powinien zawierać zmian funkcjonalnych w kodzie - do brancha będa zapisywane jedynie wyniki eskperymentu.
-- zapisać za każdym razem przed uruchomieniem pojedyńczego procesu badawczego stan, konfigurację (informacje o jądrze, systemie, dystrybucji, jego konfiguracji i zasobach), datę wykonania oraz rodzaj przeprowadzonego badania.
-- być uruchamiany ze skryptu na maszynie nadzorcy znajdującego się katalogu examples/experminet/start_superivsor.sh
-- w ramach procesu nadzorcy wydawać polecenia maszynie workera. 
-- w trakcie realizacji procesu na maszynie workera uruchomic ciąg poleceń realizujący wybrany algorytm przetwarzania danych oraz zebrać dane z wbudowanego w oprogramowanie czujników.
-- Zbierać informację o temperaturze, obciążeniu procesora, wykorzystaniu pamięci systemu w celu określenia dostępnych w czasie realizacji zasobów i potencjalnych przyczyn zaburzeń realizacji procesu xretractor w rygorze czasu rzeczywistego.
-- Być podzielony na szereg (początkowo np.3) badań zwiększających szybkość napływu danych i rejestrujących wyniki opóźnień end-2-end oraz temperatury, obciążenia procesora i wykorzystania pamięci w trakcie realizacji badanego algorytmu.
-- Analizować wybrany algorytm (opisany w pracy main-debs.tex/detekcja qry) - dla różnych szybkości napływu. Celem nie jest poprawność realizacji algorytmu ale określenie jakiej szybkości dane na wybranym sprzęcie workera można zrealzować.
-- Zwiększąć w ramach kolejnych badań szybkość napływu danych i rejestrować kolejne wyniki.
-- Dostarczyć informacji: jak system zachowuje się wraz ze wzrostem szybkości napływu danych, czy zmianie ulegają opóźnienia w dostarczaniu wyników (probe), czy wzrasta temperatura urządzenia (czas realizacji eksperymentu), czy po zakończeniu pracy systemu - system wraca do stanu przed eksperymentem (czy system zwalania zasoby lub czy fragmentacja pamięci systemowej w trakcie pracy wzrasta)
-- W trakcie eksperymentu zebrać informację czy dołączenie dołączonych klientów (xqry) (np. od 1 do 10) ma wpływ i jaki na na funkcjonowanie procesu xretractor i system. (Określenie wpływu na proces działający w systemie)
-- Ograniczyć komunikację z kartą sd w trakcie eksperymentu. Analizowany Algorytm powinien przetwarzać dane w pamięci (VOLATILE) i nie tworzyć artefaktów. Dane źródłowe dla xretractor powinny znajdować się w katalogu /tmp znajdującym się w pamięci.
-- ograniczyć pobieranie i wysłanie danych w trakcie realizacji na kartę SD. Dołączane procesy xqry powinny wysyłać dane netcat np. na loopback lub /dev/null a xretractor powinien czytać dane źródłowe z /tmp aby nie dokonywać pomiaru szybkości działania karty sd na której znajduje się system i repozytorium. (Eksperyment w którym będziemy testować system wyposażony w dysk twardy SSD w takim systemie jest zaplanowany) 
-- wykorzystywać sondę ecg/e1_stats.py do realziacji eksperymentu.
-- Każdy eksperyment kończy się zatwierdzonym commit w repozytorium zrealizowanym na maszynie workera (maszyna ma zainstalowane klucze ssh), po czym dane są analizowane i podejmowana jest decyzja o modyfikacji eksperymentu (np. tego pliku) w celu wyzacznia kolejnych szczegółowych celów badawczych i/lub skierowaniu badań w określonym celu.
-- zakończyć proces powtarzania kolejnych eksperymentów po osiagnięciu celu badawczego: Określeniu zbioru informacji - jak szybkie dane możemy analizować na wybranej platformie sprzętowej bez straty dokładności, ilu klientów możemy podłączyć w trakcie realizacji procesu, jakie opóźnienie wnosi proces xretractor poprzez realizację badanego algorytmu end-2-end. 
-- być udokumentowany, zapisany i zarejestrowany w sposób dający możliwość odtworzenia (przynajmniej teoretycznie) procesu badawczego we własnych warunkach na własnym sprzęcie (inny host nadzorcy/workera, inne parametry badań).
-- prace eksperymentalne prowadzić na branchu experminet/nazwa_eksperymentu. Przed rozpoczęciem eksperymentu jeśli istnieje katalog results - zrotować wyniki do results_<poprzednia_data_commit_do_journal>. Do tego branch zapisywać wyniki i aktualizować journal.md. Po zakończeniu ekperymentu przygotować brancz do merge do master. 
-- móc składać się z wielu kampanii badawczych (np. skalowanie szybkości napływu danych - pkt 12-14, oraz liczba dołączonych klientów xqry - pkt 16). Każda kampania zapisuje swoje wyniki do osobnego katalogu, ale wszystkie kampanie tego samego eksperymentu są zatwierdzane (commit --amend + push --force-with-lease, pkt 5) na jednym, wspólnym branchu eksperymentalnym - nie tworzymy osobnego brancha per kampania.
-- każdy katalog kampanii (osobny katalog wyników, patrz punkt wyżej) ma dołączony plik README.md opisujący cel tej konkretnej kampanii i rodzaj prowadzonego w jej ramach badania. Plik ten jest generowany automatycznie przez proces nadzorcy PRZED rozpoczęciem pierwszego badania danej kampanii (nie dopisywany ręcznie po fakcie) - to uzupełnienie pkt 7 (który dotyczy stanu pojedynczego badania) o kontekst na poziomie całej kampanii.
-- w przypadku przerwania eksperymentu i dostarczenia nowego kodu do analizy, poprzednie wyniki powinny zostać przeniesione do katalogu z kolejnym numerem rotacji - a nowe wyniki z nowego eksperymentu powinny trafić do pustego, nowego rezultatu. Celem jest zachowanie kontekstu.
-- proces badawczy musi być dokumentowany na bieżąco w dzienniku badawczym (examples/experiment/JOURNAL.md): każdy krok, wynik (sukces i porażka), postawiona hipoteza, jej weryfikacja lub obalenie, podjęta decyzja i plan kolejnych działań. Wpisy są datowane i dopisywane chronologicznie (nie przepisujemy historii - błędne hipotezy zostają w dzienniku jako część drogi badawczej). Dziennik jest częścią infrastruktury eksperymentu i żyje na gałęzi master; commit wpisu powinien towarzyszyć zmianie, której dotyczy.
-- **rozpoczynać się wyłącznie przy czystym katalogu podmodułu wskazującym na HEAD gałęzi śledzonej.** Warunek dotyczy podmodułu `examples/experiment` (repozytorium `rdb-experiment`) i jest sprawdzany PRZED pierwszym badaniem, nie po fakcie. Wymagane jednocześnie: brak zmian w plikach śledzonych, HEAD podmodułu równy szczytowi gałęzi śledzonej, oraz wskaźnik (gitlink) w repozytorium nadrzędnym wskazujący ten sam commit. Weryfikacja i doprowadzenie do tego stanu: `scripts/update-submodule.sh` (kod wyjścia 0 = warunek spełniony; 3 = niezatwierdzone zmiany; 5 = wskaźnik cofnąłby się).
-- **jeżeli niezatwierdzone zmiany w podmodule wprowadziliśmy sami - zatwierdzenie należy do człowieka i musi nastąpić PRZED rozpoczęciem eksperymentu.** Asystent nie commituje samodzielnie: pokazuje diff, nazywa pliki i czeka na decyzję. Powód jest operacyjny, nie proceduralny: eksperyment zapisuje wyniki na wspólnej gałęzi przez `commit --amend` + `push --force-with-lease` (pkt 5), więc wystartowanie z brudnego drzewa wciąga niezatwierdzoną pracę w amend albo prowadzi do rozbieżnych historii i konfliktu przy push. **Konfliktu nie wolno dopuścić** - jest to warunek zatrzymujący, nie ostrzeżenie: przy niespełnionym stanie wejściowym eksperymentu nie rozpoczynamy.
+## Zakres
 
-@note Branch repozytorium na maszynie nadzorcy znajduje się w katalogu /home/michal/github/retractordb
-@note Branch repozytoriumna maszynie workera znajduje się w katalogu /home/michal/retractordb
-@note Oba branche wskazują na ten sam korzeń w drzewie repozytorium.
-@note Przed rozpoczęciem eksperymenu na branchu nie ma żadnych zmian i zawiera on to co znajduje się w głęzi master. Identyfikatorem tej gałęzi (master) - jest podpisywany eksperyment
-@note Podmoduł jest wyłączony z automatycznej aktualizacji: `git config submodule.examples/experiment.update none` (konfiguracja lokalna każdego klonu, nie jest wersjonowana - po świeżym klonie trzeba ją ustawić ponownie). Bez tego `git submodule update` po zmianie gałęzi repozytorium nadrzędnego przewija katalog eksperymentu do commitu zapisanego przez tę gałąź - a różne gałęzie zapisują różne, często starsze commity. Wtedy katalog przestaje pokazywać HEAD i warunek wejściowy eksperymentu jest niespełniony.
-@note Pkt 17 zakłada, że `/tmp` jest w pamięci - na sprzęcie workera to nieprawda: zweryfikowano (Pi 400), że `/tmp` to zwykły ext4 na karcie SD (`/dev/mmcblk0p2`), nie tmpfs. Katalogiem faktycznie gwarantującym RAM jest `/dev/shm` - tego (nie `/tmp`) używają skrypty.
-@note po zakończeniu eksperymentów z algorytmem adetekcji qrs i profilowaniem systemu - zrób krótki test określający jak szybki napływ danych jest w stanie przetworzyć prosty filtr FIR (dla kontrastu badawczego) - użyj testu retractordb/test/IntegrationTest_parallel/dsp do zbudowania przykładu.
+Dokument definiuje wymagania kampanii wykonywanych na fizycznym workerze
+Raspberry Pi 400 pod Linuksem PREEMPT_RT. Eksperymenty semantyczne, które nie
+mierzą czasu i mają własny `run.sh` w katalogu wyników, nie korzystają z
+nadzorcy opisanego poniżej.
 
----
+Cele poszczególnych kampanii wynikają z:
 
-## Plan badawczy — kampanie baseline (rozszerzenie dla celów publikacji)
+- `paper-arXiv/debs/main-debs.tex`;
+- `paper-arXiv/debs/research_plan.md`;
+- README wygenerowanego przed pierwszym badaniem kampanii.
 
-Dopisane 2026-07-17, po ukończeniu kampanii rate/clients/fir-contrast
-(JOURNAL.md, dni 0–2). Cel: dostarczyć dane do dwóch pozostałych
-podsekcji Performance Evaluation w main-debs.tex — 7.5 Baselines
-(sec:eval-baselines) i 7.6 Exactness and Replay Stability
-(sec:eval-exact). Obowiązuje pełna metodyka z pkt 1–27 (migawki stanu,
-dziennik, rotacja, wspólny branch eksperymentu).
+## R1. Dwa niezależne repozytoria
 
-### Kampania baseline-numpy (priorytet 1)
+Proces korzysta z dwóch niezależnych repozytoriów na obu maszynach:
 
-- Cel: zmiennoprzecinkowy punkt odniesienia dla 7.5(i) — koszt dokładnej
-  semantyki wymiernej — oraz dane wejściowe dla 7.6 (błąd resamplingu
-  float zestawiony z tożsamością okrężną przeplotu/rozplotu).
-- Implementacja: potok Pan–Tompkinsa o etapach identycznych z
-  rec205-detect.rql, w float64, NumPy/SciPy w venv na workerze
-  (koła aarch64 dostępne dla Ubuntu 24.04; wersje pakietów przypięte
-  i zapisane w results.md).
-- Dwa tryby pomiaru, raportowane OSOBNO (nie wolno ich uśredniać ani
-  porównywać wprost — mierzą co innego):
-  1. per-slot: pętla próbka-po-próbce (okna na collections.deque),
-     pomiar na zegarze monotonicznym per interwał — odpowiednik metryki
-     E1; zawiera narzut interpretera CPython (odnotować przy
-     interpretacji);
-  2. batch: wektoryzowany scipy.signal.lfilter na całym nagraniu —
-     przepustowość batch, bez semantyki slotowej.
-- Dyscyplina środowiska identyczna z kampaniami QRS: governor
-  performance, taskset -c 3 (rdzeń izolowany), SCHED_FIFO 50 przez
-  os.sched_setscheduler, 20 000 próbek, dane w /dev/shm, sampler
-  metrics.csv; wyniki do results_YYYYMMDD/baseline-numpy/ wg konwencji
-  kampanii (results.md + surowe CSV + migawki stanu).
-- Hipoteza do weryfikacji: koszt semantyki wymiernej jest pomijalny
-  (profil callgrind z dnia 1: boost::rational <0,4% instrukcji);
-  ewentualne różnice zdominuje model wykonania (interpreter vs
-  skompilowany silnik), nie arytmetyka.
-- Część dla 7.6: (a) dwukrotny przebieg silnika na identycznym wejściu
-  → równość artefaktów co do bitu; (b) round-trip
-  interleave/de-interleave w silniku (tożsamość, wniosek cor:exact)
-  vs scipy.signal.resample/resample_poly (skumulowany błąd float,
-  raportowany jako norma błędu w funkcji długości nagrania).
+| Rola | Nadzorca | Worker | Branch bazowy |
+|---|---|---|---|
+| kod i build | `/home/michal/github/retractordb` | `/home/michal/retractordb` | `master` |
+| skrypty, dziennik i wyniki | `/home/michal/github/rdb-experiment` | `/home/michal/rdb-experiment` | `main` |
 
-### Kampania baseline-flink (priorytet 2, expected fail)
+Branch kodu i branch wyników mają osobne historie oraz osobne identyfikatory.
+Manifest eksperymentu zapisuje pełny commit kodu i bazowy commit repozytorium
+wyników.
 
-- Cel: próba punktu odniesienia DSMS głównego nurtu dla 7.5(ii).
-  UWAGA: sama próba instalacji i uruchomienia jest wynikiem badawczym —
-  także negatywnym — i podlega regule dziennika (pkt 27); porażkę
-  dokumentujemy z przyczynami, nie ukrywamy.
-- Plan próby: OpenJDK 17/21 aarch64 z repozytorium Ubuntu; Flink w
-  trybie local/MiniCluster (jeden JVM), heap ≤2 GB, checkpointing
-  wyłączony; równoważny dataflow Pan–Tompkinsa; pomiar per rekord.
-- Zastrzeżenia (dlaczego spodziewamy się niepowodzenia lub wyniku
-  nieporównywalnego):
-  1. RAM: Pi 400 ma 4 GB; JobManager + TaskManager + heap + metaspace
-     obok systemu i klientów grozi OOM lub swapowaniem na kartę SD
-     (co samo w sobie unieważnia pomiar);
-  2. jitter JVM: GC i kompilacja JIT zaburzają rozkłady per slot przy
-     360 Hz — brak odpowiednika sondy E1/E2E, ogony nieporównywalne;
-  3. model wykonania: Flink nie ma semantyki slotowej 1/Δ — bufory
-     sieciowe i event-time wnoszą opóźnienia rzędu ms niezależne od
-     obliczeń; porównanie łatwo zakwestionować jako strawman;
-  4. izolacja rdzenia: pozostawienie całego JVM na 3 rdzeniach to
-     konfiguracja nietypowa dla Flinka (wynik nie będzie reprezentować
-     „Flinka w warunkach zalecanych").
-- Kryterium stopu: jeśli instalacja, uruchomienie lub stabilny przebieg
-  20 000 próbek nie powiedzie się w budżecie 1 dnia roboczego —
-  zamykamy próbę wpisem w dzienniku (wynik negatywny + przyczyny),
-  a w 7.5(ii) artykułu opisujemy powód braku porównania.
-- Opcja zapasowa (jeśli Flink odpadnie): baseline „engine-double" —
-  wariant silnika z double zamiast arytmetyki wymiernej (przełącznik
-  kompilacji), izolujący koszt semantyki przy wszystkich pozostałych
-  czynnikach stałych; tańszy pomiarowo i trudniejszy do zakwestionowania
-  niż porównanie międzysystemowe.
+## R2. Bezwzględny zakaz zapisu wyników do repozytorium kodu
+
+Worker traktuje repozytorium `retractordb` wyłącznie jako źródło kodu, danych
+wejściowych i binarki.
+
+W trakcie eksperymentu w repozytorium kodu nie wolno:
+
+- tworzyć katalogów ani plików wynikowych;
+- wykonywać `git add`, `git commit`, `git push` ani `commit --amend`;
+- zmieniać brancha lub commita po zakończeniu preflight;
+- pozostawić jakiejkolwiek zmiany widocznej w `git status --short`.
+
+Wszystkie wyniki, manifesty, README kampanii, wpisy `JOURNAL.md`, commity i
+pushe trafiają wyłącznie do brancha repozytorium `rdb-experiment`. Naruszenie
+tej zasady unieważnia badanie i zatrzymuje skrypt przed commitem wyników.
+
+## R3. Docelowy katalog wyników bez rotacji
+
+Każdy eksperyment od początku zapisuje dane bezpośrednio do katalogu:
+
+```text
+results_YYYYMMDD_typ/
+  manifest.md
+  kampania/
+    README.md
+    study_NN/
+```
+
+Katalog jest docelowy i niemutowalny w zakresie ukończonych badań. Nie istnieje
+katalog przejściowy `results/`, mechanizm `rotated/NN` ani późniejsze
+przenoszenie wyników.
+
+Jeżeli eksperyment zostanie przerwany albo zmieni się kod, konfiguracja lub cel,
+dotychczasowy katalog pozostaje bez zmian, a kolejna próba otrzymuje nowy
+identyfikator i nowy katalog `results_YYYYMMDD_typ`.
+
+## R4. Branch i jeden commit wyników
+
+Wyniki eksperymentu są zapisywane na branchu
+`experiment/YYYYMMDD_typ` repozytorium `rdb-experiment`.
+
+Pierwszy commit tworzy manifest i README kampanii. Każde zakończone badanie:
+
+1. dodaje wyłącznie pliki z docelowego katalogu i wpis w `JOURNAL.md`;
+2. wykonuje `git commit --amend`;
+3. wysyła `git push --force-with-lease`.
+
+Po zakończeniu eksperymentu branch zawiera jeden commit z kompletem wyników.
+Merge do `main` wykonuje człowiek po przeglądzie. Branch kodu jest przygotowany
+poza procesem pomiarowym; eksperyment nie tworzy na nim żadnych commitów.
+
+## R5. Warunki wejściowe
+
+Przed utworzeniem brancha wyników nadzorca zatrzymuje proces, jeżeli:
+
+- którekolwiek z dwóch lokalnych repozytoriów ma niezacommitowane zmiany;
+- na workerze brakuje któregokolwiek repozytorium;
+- którekolwiek repozytorium workera ma niezacommitowane zmiany;
+- worker nie wskazuje pełnego commita kodu zapisanego w manifeście;
+- nie można jednoznacznie odnaleźć i uwierzytelnić workera;
+- docelowy katalog kampanii już istnieje;
+- `/dev/shm` nie jest systemem plików `tmpfs`;
+- build lub środowisko czasu rzeczywistego nie przechodzi walidacji.
+
+## R6. Build pomiarowy
+
+Kod jest budowany profilem `scripts/buildrdb.sh probe` w izolowanym katalogu
+`build/Release-Probe`. Instalacja pochodzi z tego samego katalogu.
+
+Przed badaniem `xretractor --build-info` musi dokładnie potwierdzić wszystkie
+optymalizacje produkcyjne oraz:
+
+```text
+RDB_BENCH_PROBE=ON
+```
+
+Brak lub niezgodność sondy jest błędem, a nie ostrzeżeniem.
+
+## R7. Środowisko czasu rzeczywistego
+
+Badanie czasowe wymaga:
+
+- jądra PREEMPT_RT;
+- governora `performance`;
+- przypięcia `xretractor` do izolowanego rdzenia 3;
+- procesów tła na rdzeniach 0–2;
+- aktywnego wątku `SCHED_FIFO` o priorytecie 50;
+- capabilities `cap_sys_nice` i `cap_ipc_lock`;
+- danych roboczych i sondy w zweryfikowanym `/dev/shm`.
+
+Brak któregokolwiek warunku zatrzymuje badanie. Skrypt nie może kontynuować
+w trybie zdegradowanym.
+
+## R8. Przebieg pojedynczego badania
+
+Pojedyncze badanie wykonuje kolejno:
+
+1. zapis pełnego stanu maszyny przed pomiarem;
+2. uruchomienie algorytmu i klientów;
+3. rejestrację sondy oraz metryk systemowych;
+4. sprawdzenie kodu zakończenia procesu i kompletności danych;
+5. zatrzymanie procesów i przywrócenie zmienionej konfiguracji;
+6. zapis stanu maszyny po pomiarze;
+7. utworzenie raportu i wpisu w `JOURNAL.md`;
+8. ponowną kontrolę, że repozytorium kodu pozostało czyste;
+9. amend i push wyłącznie w `rdb-experiment`.
+
+Pomiędzy badaniami nadzorca wykonuje `sync`, restartuje workera i czeka na jego
+powrót z ograniczonym czasem oczekiwania.
+
+## R9. Rejestrowane dane
+
+Każde `study_NN` zawiera co najmniej:
+
+- `state_before.md` i `state_after.md`;
+- `e1_probe.csv`;
+- `metrics.csv`;
+- `xretractor.log`;
+- `results.md`.
+
+Stan maszyny obejmuje datę, parametry badania, commit kodu, konfigurację builda,
+jądro, dystrybucję, CPU, pamięć, fragmentację, obciążenie, temperaturę,
+kernel cmdline, governor i częstotliwości CPU.
+
+`metrics.csv` rejestruje w trakcie pomiaru temperaturę, obciążenie i pamięć.
+Źródła, pliki robocze oraz artefakty tworzone przez silnik pozostają w
+`/dev/shm`; wynik jest kopiowany do repozytorium dopiero po zakończeniu
+mierzonej pętli.
+
+## R10. Znaczenie metryk
+
+Sonda `RDB_BENCH_CSV` mierzy:
+
+- czas `processRows`;
+- opóźnienie pobudki względem deadline'u;
+- `queue-emission latency`, czyli czas od deadline'u do emisji wyniku do
+  kolejki klienta.
+
+Ostatnia metryka nie obejmuje pobrania przez klienta, transportu ani
+potwierdzenia ujścia i nie może być nazywana pełnym application end-to-end.
+Pełny E2E wymaga osobnej sondy `source -> engine -> client -> transport ->
+sink acknowledgement`.
+
+## R11. Walidacja i fałszywy sukces
+
+Badanie nie może zostać zatwierdzone, jeżeli:
+
+- `xretractor`, klient lub wymagany sampler kończy się błędem;
+- zadziała timeout;
+- sonda jest pusta, ma zły nagłówek albo nieoczekiwaną liczbę rekordów;
+- brakuje któregokolwiek obowiązkowego pliku;
+- nie udało się posprzątać procesów;
+- repozytorium kodu zmieniło stan lub commit.
+
+Każdy taki przypadek kończy się niezerowym kodem i bez commita wyników.
+
+## R12. Odtwarzalność i dziennik
+
+`manifest.md` zapisuje co najmniej: identyfikator eksperymentu, pełny commit
+kodu, branch kodu, bazowy commit wyników, branch wyników, żądany i rzeczywisty
+adres workera, jego hostname, sieć wykrywania oraz datę.
+README kampanii zapisuje cel, konfigurację i jej SHA-256.
+
+`JOURNAL.md` jest uzupełniany chronologicznie na branchu wyników. Zachowuje
+również wyniki negatywne, decyzje i zmiany hipotez; historii nie przepisuje się
+po fakcie.
+
+## R13. Wykrywanie zmienionego adresu workera
+
+Nadzorca najpierw próbuje połączyć się z adresem podanym przez `--worker`.
+Krótki skan sieci jest uruchamiany wyłącznie wtedy, gdy ten adres nie odpowiada
+albo nie wskazuje oczekiwanego workera.
+
+Skan:
+
+- obejmuje wyłącznie jedną wskazaną lub wywnioskowaną sieć IPv4 `/24`;
+- sprawdza wyłącznie skonfigurowany port SSH;
+- wymaga zgodności fingerprintu klucza hosta SSH z wcześniej zaufanym wpisem
+  `known_hosts` albo wartością `--worker-host-key`;
+- wymaga oczekiwanego hostname oraz obecności obu repozytoriów;
+- akceptuje dokładnie jednego kandydata.
+
+Brak zaufanego fingerprintu, brak kandydata albo wielu pasujących kandydatów
+zatrzymuje proces. Wykrywanie nie może używać `StrictHostKeyChecking=no` ani
+traktować samego otwartego portu jako potwierdzenia tożsamości.
