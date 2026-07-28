@@ -1,0 +1,112 @@
+Test project /home/michal/.tmp/rdb-extend/mutant/build/Debug
+      Start  45: it_agse1
+ 1/12 Test  #45: it_agse1 .........................   Passed    1.44 sec
+      Start  46: it_agse2
+ 2/12 Test  #46: it_agse2 .........................   Passed    0.50 sec
+      Start  47: it_agse3
+ 3/12 Test  #47: it_agse3 .........................   Passed    1.43 sec
+      Start  48: it_agse_volatile
+ 4/12 Test  #48: it_agse_volatile .................***Failed   14.03 sec
+
+      Start  52: it_deinterleave_roundtrip-run
+ 5/12 Test  #52: it_deinterleave_roundtrip-run ....   Passed    1.50 sec
+      Start  72: it_k19_boundaries
+ 6/12 Test  #72: it_k19_boundaries ................   Passed    0.15 sec
+      Start  98: ut_compiler-setup
+ 7/12 Test  #98: ut_compiler-setup ................   Passed    0.00 sec
+      Start  99: ut_compiler
+ 8/12 Test  #99: ut_compiler ......................***Failed    3.03 sec
+==69519== Memcheck, a memory error detector
+==69519== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==69519== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==69519== Command: /home/michal/.tmp/rdb-extend/mutant/build/Debug/test/UnitTest/test_compiler
+==69519== 
+[==========] Running 17 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from xparser
+[ RUN      ] xparser.check_compile
+[       OK ] xparser.check_compile (614 ms)
+[ RUN      ] xparser.check_compile_result
+[       OK ] xparser.check_compile_result (7 ms)
+[ RUN      ] xparser.check_parserRQLString
+[       OK ] xparser.check_parserRQLString (3 ms)
+[ RUN      ] xparser.check_topological_sort
+[       OK ] xparser.check_topological_sort (1 ms)
+[ RUN      ] xparser.check_multiline_backslash
+[       OK ] xparser.check_multiline_backslash (12 ms)
+[----------] 5 tests from xparser (644 ms total)
+
+[----------] 12 tests from xcompiler
+[ RUN      ] xcompiler.shares_commutative_add_select_computation
+[       OK ] xcompiler.shares_commutative_add_select_computation (259 ms)
+[ RUN      ] xcompiler.shares_syntactically_identical_add_select_computation
+[       OK ] xcompiler.shares_syntactically_identical_add_select_computation (26 ms)
+[ RUN      ] xcompiler.does_not_share_order_sensitive_selects
+[       OK ] xcompiler.does_not_share_order_sensitive_selects (40 ms)
+[ RUN      ] xcompiler.does_not_share_different_result_shapes
+[       OK ] xcompiler.does_not_share_different_result_shapes (56 ms)
+[ RUN      ] xcompiler.preserves_add_grouping_in_computation_fingerprint
+[       OK ] xcompiler.preserves_add_grouping_in_computation_fingerprint (154 ms)
+[ RUN      ] xcompiler.toggles_substrate_deduplication
+[       OK ] xcompiler.toggles_substrate_deduplication (33 ms)
+[ RUN      ] xcompiler.toggles_matched_hash_time_move_factorization
+[       OK ] xcompiler.toggles_matched_hash_time_move_factorization (80 ms)
+[ RUN      ] xcompiler.does_not_rewrite_existing_queries_during_import
+[       OK ] xcompiler.does_not_rewrite_existing_queries_during_import (44 ms)
+[ RUN      ] xcompiler.computes_startup_latency
+[       OK ] xcompiler.computes_startup_latency (181 ms)
+[ RUN      ] xcompiler.agse_capacity_covers_whole_window_over_computed_source
+/home/michal/.tmp/rdb-extend/mutant/test/UnitTest/test_compiler.cpp:398: Failure
+Expected equality of these values:
+  instance.maxCapacity.at("mid")
+    Which is: 3
+  4
+
+[  FAILED  ] xcompiler.agse_capacity_covers_whole_window_over_computed_source (35 ms)
+[ RUN      ] xcompiler.startup_latency_is_preserved_by_shift_matching_identity
+[       OK ] xcompiler.startup_latency_is_preserved_by_shift_matching_identity (38 ms)
+[ RUN      ] xcompiler.rewrites_preserve_observable_field_names
+[       OK ] xcompiler.rewrites_preserve_observable_field_names (25 ms)
+[----------] 12 tests from xcompiler (984 ms total)
+
+[----------] Global test environment tear-down
+[==========] 17 tests from 2 test suites ran. (1653 ms total)
+[  PASSED  ] 16 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] xcompiler.agse_capacity_covers_whole_window_over_computed_source
+
+ 1 FAILED TEST
+==69519== 
+==69519== HEAP SUMMARY:
+==69519==     in use at exit: 591,980 bytes in 7,741 blocks
+==69519==   total heap usage: 41,652 allocs, 33,911 frees, 3,767,331 bytes allocated
+==69519== 
+==69519== LEAK SUMMARY:
+==69519==    definitely lost: 0 bytes in 0 blocks
+==69519==    indirectly lost: 0 bytes in 0 blocks
+==69519==      possibly lost: 0 bytes in 0 blocks
+==69519==    still reachable: 591,980 bytes in 7,741 blocks
+==69519==         suppressed: 0 bytes in 0 blocks
+==69519== Reachable blocks (those to which a pointer was found) are not shown.
+==69519== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==69519== 
+==69519== For lists of detected and suppressed errors, rerun with: -s
+==69519== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+      Start 104: ut_dataModel-setup
+ 9/12 Test #104: ut_dataModel-setup ...............   Passed    0.00 sec
+      Start 105: ut_dataModel
+10/12 Test #105: ut_dataModel .....................   Passed    5.52 sec
+      Start 156: ut_soperations-setup
+11/12 Test #156: ut_soperations-setup .............   Passed    0.00 sec
+      Start 157: ut_soperations
+12/12 Test #157: ut_soperations ...................   Passed    0.77 sec
+
+83% tests passed, 2 tests failed out of 12
+
+Total Test time (real) =  28.40 sec
+
+The following tests FAILED:
+	 48 - it_agse_volatile (Failed)
+	 99 - ut_compiler (Failed)
+Errors while running CTest

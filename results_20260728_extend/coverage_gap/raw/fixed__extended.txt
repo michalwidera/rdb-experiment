@@ -1,0 +1,29 @@
+Test project /home/michal/.tmp/rdb-extend/fixed/build/Debug
+      Start  45: it_agse1
+ 1/12 Test  #45: it_agse1 .........................   Passed    1.44 sec
+      Start  46: it_agse2
+ 2/12 Test  #46: it_agse2 .........................   Passed    0.50 sec
+      Start  47: it_agse3
+ 3/12 Test  #47: it_agse3 .........................   Passed    1.43 sec
+      Start  48: it_agse_volatile
+ 4/12 Test  #48: it_agse_volatile .................   Passed   14.03 sec
+      Start  52: it_deinterleave_roundtrip-run
+ 5/12 Test  #52: it_deinterleave_roundtrip-run ....   Passed    1.50 sec
+      Start  72: it_k19_boundaries
+ 6/12 Test  #72: it_k19_boundaries ................   Passed    0.15 sec
+      Start  98: ut_compiler-setup
+ 7/12 Test  #98: ut_compiler-setup ................   Passed    0.00 sec
+      Start  99: ut_compiler
+ 8/12 Test  #99: ut_compiler ......................   Passed    3.02 sec
+      Start 104: ut_dataModel-setup
+ 9/12 Test #104: ut_dataModel-setup ...............   Passed    0.00 sec
+      Start 105: ut_dataModel
+10/12 Test #105: ut_dataModel .....................   Passed    5.42 sec
+      Start 156: ut_soperations-setup
+11/12 Test #156: ut_soperations-setup .............   Passed    0.00 sec
+      Start 157: ut_soperations
+12/12 Test #157: ut_soperations ...................   Passed    0.77 sec
+
+100% tests passed, 0 tests failed out of 12
+
+Total Test time (real) =  28.30 sec
