@@ -187,6 +187,18 @@ MANIFEST="$EXPERIMENT_REPO/$RESULTS_ROOT/manifest.md"
 if [ -e "$MANIFEST" ]; then
   grep -qF -- "- commit kodu: \`$CODE_COMMIT\`" "$MANIFEST" ||
     die "$RESULTS_ROOT istnieje dla innego commita kodu; utworz nowy experiment-id"
+  grep -qF -- "- branch kodu: \`$CODE_BRANCH\`" "$MANIFEST" ||
+    die "$RESULTS_ROOT istnieje dla innego brancha kodu; utworz nowy experiment-id"
+  cat >> "$MANIFEST" <<EOF
+
+## Uruchomienie kampanii $CAMPAIGN
+
+- utworzono: $(date -Is)
+- kampania wykonawcza: \`$CAMPAIGN\`
+- worker: \`$WORKER_HOST:$WORKER_PORT\` (hostname: \`$WORKER_NAME\`)
+- adres zadany nadzorcy: \`$REQUESTED_WORKER_HOST\`
+- siec wykrywania: \`${WORKER_SUBNET:-automatycznie wywnioskowana /24}\`
+EOF
 else
   cat > "$MANIFEST" <<EOF
 # Manifest eksperymentu $EXPERIMENT_ID
@@ -210,6 +222,7 @@ cat > "$EXPERIMENT_REPO/$CAMPAIGN_RESULTS_DIR/README.md" <<EOF
 
 - eksperyment: \`$EXPERIMENT_ID\`
 - branch wynikow: \`$EXPERIMENT_BRANCH\`
+- branch kodu: \`$CODE_BRANCH\`
 - commit kodu: \`$CODE_COMMIT\`
 - konfiguracja: \`config/campaign_${CAMPAIGN}.csv\`
 - SHA-256 konfiguracji: \`$CONFIG_SHA256\`

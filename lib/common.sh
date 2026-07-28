@@ -62,7 +62,7 @@ wait_for_worker() {
 
 validate_experiment_id() {
   local experiment_id="$1"
-  [[ "$experiment_id" =~ ^[0-9]{8}_[a-z0-9][a-z0-9_-]*$ ]] || {
+  [[ "$experiment_id" =~ ^[0-9]{8}_[A-Za-z0-9][A-Za-z0-9_-]*$ ]] || {
     log "BLAD: identyfikator eksperymentu musi miec postac YYYYMMDD_typ (otrzymano: $experiment_id)"
     return 1
   }
@@ -70,7 +70,7 @@ validate_experiment_id() {
 
 validate_results_root() {
   local results_root="$1"
-  [[ "$results_root" =~ ^results_[0-9]{8}_[a-z0-9][a-z0-9_-]*$ ]] || {
+  [[ "$results_root" =~ ^results_[0-9]{8}_[A-Za-z0-9][A-Za-z0-9_-]*$ ]] || {
     log "BLAD: katalog wynikow musi miec postac results_YYYYMMDD_typ (otrzymano: $results_root)"
     return 1
   }

@@ -1,0 +1,12 @@
+
+=== RT requirements check ===
+[OK]   CAP_SYS_NICE / root        — required for SCHED_FIFO
+[OK]   CAP_IPC_LOCK / root        — required for mlockall
+[OK]   PREEMPT_RT kernel          — /sys/kernel/realtime=1
+[WARN] RT throttling disabled     — sched_rt_runtime_us=950000  (set to -1 to disable throttling)
+[WARN] RLIMIT_MEMLOCK unlimited   — cur=496074752 bytes
+      Current scheduler      — SCHED_OTHER
+=============================
+
+WARN:  RT throttling active. Disable: echo -1 > /proc/sys/kernel/sched_rt_runtime_us
+
