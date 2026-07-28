@@ -1,0 +1,14 @@
+core(1/1)	datafile.txt
+	a: INTEGER
+str1(2/1)	tail=1
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(2,-2)
+	core_0: INTEGER
+		PUSH_ID(str1[0])
+	core_1: INTEGER
+		PUSH_ID(str1[1])
+str2(1/1)	tail=3
+	:- PUSH_STREAM(str1)
+	:- STREAM_AGSE(1,1)
+	str1_0: INTEGER
+		PUSH_ID(str2[0])

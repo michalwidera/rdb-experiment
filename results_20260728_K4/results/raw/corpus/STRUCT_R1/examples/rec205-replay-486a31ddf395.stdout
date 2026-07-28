@@ -1,0 +1,9 @@
+ecg(1/360)	rec205
+	MLII: INTEGER
+	V1: INTEGER
+s205out(1/360)
+	:- PUSH_STREAM(ecg)
+	s205out_0: INTEGER
+		PUSH_ID(s205out[0])
+	s205out_1: INTEGER
+		PUSH_ID(s205out[1])

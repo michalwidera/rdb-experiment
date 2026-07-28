@@ -1,0 +1,43 @@
+coreRnd(1/10)	/dev/urandom
+	a: BYTE
+str3(1/10)	tail=2
+	:- PUSH_STREAM(coreRnd)
+	:- STREAM_AGSE(1,2)
+	coreRnd_0: BYTE
+		PUSH_ID(str3[0])
+	coreRnd_1: BYTE
+		PUSH_ID(str3[1])
+str4(1/10)	tail=2
+	:- PUSH_STREAM(str3)
+	str4_0: INTEGER
+		PUSH_ID(str4[1])
+		PUSH_ID(str4[0])
+		SUBTRACT
+str5(1/10)	tail=10
+	:- PUSH_STREAM(coreRnd)
+	:- STREAM_AGSE(1,10)
+	coreRnd_0: BYTE
+		PUSH_ID(str5[0])
+	coreRnd_1: BYTE
+		PUSH_ID(str5[1])
+	coreRnd_2: BYTE
+		PUSH_ID(str5[2])
+	coreRnd_3: BYTE
+		PUSH_ID(str5[3])
+	coreRnd_4: BYTE
+		PUSH_ID(str5[4])
+	coreRnd_5: BYTE
+		PUSH_ID(str5[5])
+	coreRnd_6: BYTE
+		PUSH_ID(str5[6])
+	coreRnd_7: BYTE
+		PUSH_ID(str5[7])
+	coreRnd_8: BYTE
+		PUSH_ID(str5[8])
+	coreRnd_9: BYTE
+		PUSH_ID(str5[9])
+str6(1/10)	tail=10
+	:- PUSH_STREAM(str5)
+	:- STREAM_AVG
+	avg: RATIONAL
+		PUSH_ID(str6[0])

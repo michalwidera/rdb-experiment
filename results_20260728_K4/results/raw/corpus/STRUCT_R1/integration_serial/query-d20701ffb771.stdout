@@ -1,0 +1,32 @@
+:SUBSTRAT	memory
+s1(1/1)	data1.dat
+	a: INTEGER
+s2(1/1)	data2.dat
+	b: INTEGER
+mysum(1/1)
+	:- PUSH_STREAM(s1)
+	:- PUSH_STREAM(s2)
+	:- STREAM_ADD
+	s1_0: INTEGER
+		PUSH_ID(mysum[0])
+	s2_1: INTEGER
+		PUSH_ID(mysum[1])
+shifted(1/1)	tail=1
+	:- PUSH_STREAM(mysum)
+	:- STREAM_TIMEMOVE(1)
+	s1_0: INTEGER
+		PUSH_ID(shifted[0])
+	s2_1: INTEGER
+		PUSH_ID(shifted[1])
+s3(1/1)	data3.dat
+	c: INTEGER
+merged(1/1)	tail=1
+	:- PUSH_STREAM(s3)
+	:- PUSH_STREAM(shifted)
+	:- STREAM_ADD
+	s3_0: INTEGER
+		PUSH_ID(merged[0])
+	STREAM_TIMEMOVE_STREAM_ADD_s1_s2_1: INTEGER
+		PUSH_ID(merged[1])
+	STREAM_TIMEMOVE_STREAM_ADD_s1_s2_2: INTEGER
+		PUSH_ID(merged[2])

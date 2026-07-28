@@ -1,0 +1,3 @@
+Syntax error @Rql
+line:1:54 at 0x565664ee6060
+msg:mismatched input '<EOF>' expecting {SELECT, DECLARE, STORAGE, ROTATION, SUBSTRAT, RULE}

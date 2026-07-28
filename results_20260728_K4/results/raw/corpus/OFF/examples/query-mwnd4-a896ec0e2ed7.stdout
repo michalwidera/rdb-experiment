@@ -1,0 +1,8 @@
+core(1/1)	datafile2.txt
+	a: INTEGER
+	b: INTEGER
+str4(1/2)	tail=1
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(1,1)
+	core_0: INTEGER
+		PUSH_ID(str4[0])

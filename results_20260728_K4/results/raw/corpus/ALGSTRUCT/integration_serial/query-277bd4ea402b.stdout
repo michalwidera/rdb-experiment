@@ -1,0 +1,47 @@
+core1(1/10)	datafile.txt
+	b: INTEGER
+signalText0(1/10)	tail=4
+	:- PUSH_STREAM(core1)
+	:- STREAM_AGSE(1,4)
+	core1_0: INTEGER
+		PUSH_ID(signalText0[0])
+	core1_1: INTEGER
+		PUSH_ID(signalText0[1])
+	core1_2: INTEGER
+		PUSH_ID(signalText0[2])
+	core1_3: INTEGER
+		PUSH_ID(signalText0[3])
+signalTextR(1/10)	tail=4
+	:- PUSH_STREAM(core1)
+	:- STREAM_AGSE(1,-4)
+	core1_0: INTEGER
+		PUSH_ID(signalTextR[0])
+	core1_1: INTEGER
+		PUSH_ID(signalTextR[1])
+	core1_2: INTEGER
+		PUSH_ID(signalTextR[2])
+	core1_3: INTEGER
+		PUSH_ID(signalTextR[3])
+signalText3(1/5)	tail=1
+	:- PUSH_STREAM(core1)
+	:- STREAM_AGSE(2,2)
+	core1_0: INTEGER
+		PUSH_ID(signalText3[0])
+	core1_1: INTEGER
+		PUSH_ID(signalText3[1])
+signalText5(1/10)	tail=3
+	:- PUSH_STREAM(signalText3)
+	:- STREAM_AGSE(1,1)
+	signalText3_0: INTEGER
+		PUSH_ID(signalText5[0])
+signalText1(1/5)	tail=2
+	:- PUSH_STREAM(core1)
+	:- STREAM_AGSE(2,4)
+	core1_0: INTEGER
+		PUSH_ID(signalText1[0])
+	core1_1: INTEGER
+		PUSH_ID(signalText1[1])
+	core1_2: INTEGER
+		PUSH_ID(signalText1[2])
+	core1_3: INTEGER
+		PUSH_ID(signalText1[3])

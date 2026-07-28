@@ -1,0 +1,17 @@
+core0(1/1)	datafile1.txt
+	a: UINT
+str4(1/1)
+	:- PUSH_STREAM(core0)
+	str4_0: INTEGER
+		PUSH_ID(str4[0])
+	RULE regulation1
+		PUSH_ID(str4[0])
+		PUSH_VAL(20)
+		CMP_EQUAL
+		PUSH_ID(str4[0])
+		PUSH_VAL(23)
+		CMP_EQUAL
+		OR
+		DO SYSTEM 'echo "test"'
+core1(2/1)	datafile2.txt
+	a: UINT

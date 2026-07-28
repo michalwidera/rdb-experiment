@@ -1,0 +1,71 @@
+:STORAGE	temp/
+A(1/10)	datafile1.txt
+	v: INTEGER
+STREAM_TIMEMOVE_A(1/10)	tail=2
+	:- PUSH_STREAM(A)
+	:- STREAM_TIMEMOVE(2)
+	v: INTEGER
+		PUSH_ID(STREAM_TIMEMOVE_A[0])
+B(1/5)	datafile2.txt
+	v: INTEGER
+STREAM_TIMEMOVE_B(1/5)	tail=1
+	:- PUSH_STREAM(B)
+	:- STREAM_TIMEMOVE(1)
+	v: INTEGER
+		PUSH_ID(STREAM_TIMEMOVE_B[0])
+lhs(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_TIMEMOVE_A)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_B)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(lhs[0])
+A2(1/10)	datafile1b.txt
+	v: INTEGER
+B2(1/5)	datafile2b.txt
+	v: INTEGER
+STREAM_HASH_A2_B2(1/15)	tail=2
+	:- PUSH_STREAM(A2)
+	:- PUSH_STREAM(B2)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(STREAM_HASH_A2_B2[0])
+rhs(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A2_B2)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(rhs[0])
+C2(3/10)	datafile1b.txt
+	v: INTEGER
+D2(1/5)	datafile2b.txt
+	v: INTEGER
+STREAM_HASH_C2_D2(3/25)	tail=2
+	:- PUSH_STREAM(C2)
+	:- PUSH_STREAM(D2)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(STREAM_HASH_C2_D2[0])
+phase_rhs(3/25)	tail=7
+	:- PUSH_STREAM(STREAM_HASH_C2_D2)
+	:- STREAM_TIMEMOVE(5)
+	v: INTEGER
+		PUSH_ID(phase_rhs[0])
+C(3/10)	datafile1.txt
+	v: INTEGER
+shifted_c(3/10)	tail=2
+	:- PUSH_STREAM(C)
+	:- STREAM_TIMEMOVE(2)
+	v: INTEGER
+		PUSH_ID(shifted_c[0])
+D(1/5)	datafile2.txt
+	v: INTEGER
+shifted_d(1/5)	tail=3
+	:- PUSH_STREAM(D)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(shifted_d[0])
+phase_lhs(3/25)	tail=7
+	:- PUSH_STREAM(shifted_c)
+	:- PUSH_STREAM(shifted_d)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(phase_lhs[0])

@@ -1,0 +1,184 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+q(1/5)	b.txt
+	qx: INTEGER
+	qy: INTEGER
+p(1/10)	a.txt
+	px: INTEGER
+	py: INTEGER
+STREAM_ADD_q_p(1/10)
+	:- PUSH_STREAM(q)
+	:- PUSH_STREAM(p)
+	:- STREAM_ADD
+	q_0: INTEGER
+		PUSH_ID(STREAM_ADD_q_p[0])
+	q_1: INTEGER
+		PUSH_ID(STREAM_ADD_q_p[1])
+	p_2: INTEGER
+		PUSH_ID(STREAM_ADD_q_p[2])
+	p_3: INTEGER
+		PUSH_ID(STREAM_ADD_q_p[3])
+r(3/10)	c.txt
+	rx: INTEGER
+	ry: INTEGER
+x2(1/10)
+	:- PUSH_STREAM(STREAM_ADD_q_p)
+	:- PUSH_STREAM(r)
+	:- STREAM_ADD
+	x2_0: INTEGER
+		PUSH_ID(x2[2])
+		PUSH_ID(x2[0])
+		MULTIPLY
+		PUSH_ID(x2[4])
+		ADD
+	x2_1: INTEGER
+		PUSH_ID(x2[3])
+		PUSH_ID(x2[1])
+		MULTIPLY
+		PUSH_ID(x2[5])
+		ADD
+b(1/5)	b.txt
+	bx: INTEGER
+	by: INTEGER
+a(1/10)	a.txt
+	ax: INTEGER
+	ay: INTEGER
+n2(1/10)
+	:- PUSH_STREAM(b)
+	:- PUSH_STREAM(a)
+	:- STREAM_ADD
+	n2_0: INTEGER
+		PUSH_ID(n2[1])
+	n2_1: INTEGER
+		PUSH_ID(n2[2])
+d1(1/10)
+	:- PUSH_STREAM(a)
+	:- PUSH_STREAM(b)
+	:- STREAM_ADD
+	a_0: INTEGER
+		PUSH_ID(d1[0])
+	a_1: INTEGER
+		PUSH_ID(d1[1])
+	b_2: INTEGER
+		PUSH_ID(d1[2])
+	b_3: INTEGER
+		PUSH_ID(d1[3])
+d2(1/10)
+	:- PUSH_STREAM(b)
+	:- PUSH_STREAM(a)
+	:- STREAM_ADD
+	b_0: INTEGER
+		PUSH_ID(d2[0])
+	b_1: INTEGER
+		PUSH_ID(d2[1])
+	a_2: INTEGER
+		PUSH_ID(d2[2])
+	a_3: INTEGER
+		PUSH_ID(d2[3])
+n1(1/10)
+	:- PUSH_STREAM(a)
+	:- PUSH_STREAM(b)
+	:- STREAM_ADD
+	n1_0: INTEGER
+		PUSH_ID(n1[0])
+	n1_1: INTEGER
+		PUSH_ID(n1[3])
+e2(1/10)
+	:- PUSH_STREAM(b)
+	:- PUSH_STREAM(a)
+	:- STREAM_ADD
+	e2_0: INTEGER
+		PUSH_ID(e2[2])
+	e2_1: INTEGER
+		PUSH_ID(e2[1])
+STREAM_ADD_p_q(1/10)
+	:- PUSH_STREAM(p)
+	:- PUSH_STREAM(q)
+	:- STREAM_ADD
+	p_0: INTEGER
+		PUSH_ID(STREAM_ADD_p_q[0])
+	p_1: INTEGER
+		PUSH_ID(STREAM_ADD_p_q[1])
+	q_2: INTEGER
+		PUSH_ID(STREAM_ADD_p_q[2])
+	q_3: INTEGER
+		PUSH_ID(STREAM_ADD_p_q[3])
+STREAM_ADD_r_q(1/5)
+	:- PUSH_STREAM(r)
+	:- PUSH_STREAM(q)
+	:- STREAM_ADD
+	r_0: INTEGER
+		PUSH_ID(STREAM_ADD_r_q[0])
+	r_1: INTEGER
+		PUSH_ID(STREAM_ADD_r_q[1])
+	q_2: INTEGER
+		PUSH_ID(STREAM_ADD_r_q[2])
+	q_3: INTEGER
+		PUSH_ID(STREAM_ADD_r_q[3])
+x3(1/10)
+	:- PUSH_STREAM(STREAM_ADD_r_q)
+	:- PUSH_STREAM(p)
+	:- STREAM_ADD
+	x3_0: INTEGER
+		PUSH_ID(x3[4])
+		PUSH_ID(x3[2])
+		MULTIPLY
+		PUSH_ID(x3[0])
+		ADD
+	x3_1: INTEGER
+		PUSH_ID(x3[5])
+		PUSH_ID(x3[3])
+		MULTIPLY
+		PUSH_ID(x3[1])
+		ADD
+e1(1/10)
+	:- PUSH_STREAM(a)
+	:- PUSH_STREAM(b)
+	:- STREAM_ADD
+	e1_0: INTEGER
+		PUSH_ID(e1[0])
+	e1_1: INTEGER
+		PUSH_ID(e1[3])
+c1(1/10)
+	:- PUSH_STREAM(a)
+	:- PUSH_STREAM(b)
+	:- STREAM_ADD
+	c1_0: INTEGER
+		PUSH_ID(c1[0])
+		PUSH_ID(c1[2])
+		MULTIPLY
+	c1_1: INTEGER
+		PUSH_ID(c1[1])
+		PUSH_ID(c1[3])
+		MULTIPLY
+c2(1/10)
+	:- PUSH_STREAM(b)
+	:- PUSH_STREAM(a)
+	:- STREAM_ADD
+	c2_0: INTEGER
+		PUSH_ID(c2[2])
+		PUSH_ID(c2[0])
+		MULTIPLY
+	c2_1: INTEGER
+		PUSH_ID(c2[3])
+		PUSH_ID(c2[1])
+		MULTIPLY
+x1(1/10)
+	:- PUSH_STREAM(STREAM_ADD_p_q)
+	:- PUSH_STREAM(r)
+	:- STREAM_ADD
+	x1_0: INTEGER
+		PUSH_ID(x1[0])
+		PUSH_ID(x1[2])
+		MULTIPLY
+		PUSH_ID(x1[4])
+		ADD
+	x1_1: INTEGER
+		PUSH_ID(x1[1])
+		PUSH_ID(x1[3])
+		MULTIPLY
+		PUSH_ID(x1[5])
+		ADD
+c(3/10)	c.txt
+	cx: INTEGER
+	cy: INTEGER

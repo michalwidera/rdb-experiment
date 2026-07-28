@@ -1,0 +1,30 @@
+adata(1/5)	file.dat
+	b: INTEGER
+bdata(1/1)	file.dat
+	d: INTEGER
+d0(1/1)
+	:- PUSH_STREAM(bdata)
+	d0_0: INTEGER
+		PUSH_VAL(77)
+d1(1/6)	tail=5
+	:- PUSH_STREAM(adata)
+	:- PUSH_STREAM(d0)
+	:- STREAM_HASH
+	d1_0: INTEGER
+		PUSH_ID(d1[0])
+d2(1/5)	tail=6
+	:- PUSH_STREAM(d1)
+	:- PUSH_VAL(1/1)
+	:- STREAM_DEHASH_DIV
+	d2_0: INTEGER
+		PUSH_ID(d2[0])
+d3(1/5)	tail=5
+	:- PUSH_STREAM(d1)
+	:- PUSH_VAL(1/1)
+	:- STREAM_DEHASH_MOD
+	d3_0: INTEGER
+		PUSH_ID(d3[0])
+datacrc(1/5)	datacrc.dat
+	a: INTEGER
+datadat(1/4)	datanocrc.dat
+	e: INTEGER

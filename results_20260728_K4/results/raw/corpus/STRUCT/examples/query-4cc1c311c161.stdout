@@ -1,0 +1,11 @@
+source(1/50)	/dev/urandom
+	data1: BYTE
+	data2: BYTE
+output(1/50)
+	:- PUSH_STREAM(source)
+	output_0: INTEGER
+		PUSH_ID(output[0])
+		PUSH_VAL(25)
+		DIVIDE
+		PUSH_VAL(100)
+		DIVIDE
