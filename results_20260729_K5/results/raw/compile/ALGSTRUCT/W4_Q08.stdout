@@ -1,0 +1,212 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+A(1/10)	a.txt
+	value: INTEGER
+B(1/5)	b.txt
+	value: INTEGER
+STREAM_HASH_A_B(1/15)	tail=2
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_HASH
+	value: INTEGER
+		PUSH_ID(STREAM_HASH_A_B[0])
+w4_out_000(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_000_0: INTEGER
+		PUSH_ID(w4_out_000[0])
+		PUSH_ID(w4_out_000[0])
+		MULTIPLY
+		PUSH_ID(w4_out_000[0])
+		ADD
+		PUSH_ID(w4_out_000[0])
+		PUSH_ID(w4_out_000[0])
+		MULTIPLY
+		PUSH_ID(w4_out_000[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_000_1: INTEGER
+		PUSH_ID(w4_out_000[0])
+		PUSH_ID(w4_out_000[0])
+		ADD
+		PUSH_ID(w4_out_000[0])
+		PUSH_ID(w4_out_000[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_001(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_001_0: INTEGER
+		PUSH_ID(w4_out_001[0])
+		PUSH_ID(w4_out_001[0])
+		MULTIPLY
+		PUSH_ID(w4_out_001[0])
+		ADD
+		PUSH_ID(w4_out_001[0])
+		PUSH_ID(w4_out_001[0])
+		MULTIPLY
+		PUSH_ID(w4_out_001[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_001_1: INTEGER
+		PUSH_ID(w4_out_001[0])
+		PUSH_ID(w4_out_001[0])
+		ADD
+		PUSH_ID(w4_out_001[0])
+		PUSH_ID(w4_out_001[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_002(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_002_0: INTEGER
+		PUSH_ID(w4_out_002[0])
+		PUSH_ID(w4_out_002[0])
+		MULTIPLY
+		PUSH_ID(w4_out_002[0])
+		ADD
+		PUSH_ID(w4_out_002[0])
+		PUSH_ID(w4_out_002[0])
+		MULTIPLY
+		PUSH_ID(w4_out_002[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_002_1: INTEGER
+		PUSH_ID(w4_out_002[0])
+		PUSH_ID(w4_out_002[0])
+		ADD
+		PUSH_ID(w4_out_002[0])
+		PUSH_ID(w4_out_002[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_003(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_003_0: INTEGER
+		PUSH_ID(w4_out_003[0])
+		PUSH_ID(w4_out_003[0])
+		MULTIPLY
+		PUSH_ID(w4_out_003[0])
+		ADD
+		PUSH_ID(w4_out_003[0])
+		PUSH_ID(w4_out_003[0])
+		MULTIPLY
+		PUSH_ID(w4_out_003[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_003_1: INTEGER
+		PUSH_ID(w4_out_003[0])
+		PUSH_ID(w4_out_003[0])
+		ADD
+		PUSH_ID(w4_out_003[0])
+		PUSH_ID(w4_out_003[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_004(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_004_0: INTEGER
+		PUSH_ID(w4_out_004[0])
+		PUSH_ID(w4_out_004[0])
+		MULTIPLY
+		PUSH_ID(w4_out_004[0])
+		ADD
+		PUSH_ID(w4_out_004[0])
+		PUSH_ID(w4_out_004[0])
+		MULTIPLY
+		PUSH_ID(w4_out_004[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_004_1: INTEGER
+		PUSH_ID(w4_out_004[0])
+		PUSH_ID(w4_out_004[0])
+		ADD
+		PUSH_ID(w4_out_004[0])
+		PUSH_ID(w4_out_004[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_005(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_005_0: INTEGER
+		PUSH_ID(w4_out_005[0])
+		PUSH_ID(w4_out_005[0])
+		MULTIPLY
+		PUSH_ID(w4_out_005[0])
+		ADD
+		PUSH_ID(w4_out_005[0])
+		PUSH_ID(w4_out_005[0])
+		MULTIPLY
+		PUSH_ID(w4_out_005[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_005_1: INTEGER
+		PUSH_ID(w4_out_005[0])
+		PUSH_ID(w4_out_005[0])
+		ADD
+		PUSH_ID(w4_out_005[0])
+		PUSH_ID(w4_out_005[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_006(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_006_0: INTEGER
+		PUSH_ID(w4_out_006[0])
+		PUSH_ID(w4_out_006[0])
+		MULTIPLY
+		PUSH_ID(w4_out_006[0])
+		ADD
+		PUSH_ID(w4_out_006[0])
+		PUSH_ID(w4_out_006[0])
+		MULTIPLY
+		PUSH_ID(w4_out_006[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_006_1: INTEGER
+		PUSH_ID(w4_out_006[0])
+		PUSH_ID(w4_out_006[0])
+		ADD
+		PUSH_ID(w4_out_006[0])
+		PUSH_ID(w4_out_006[0])
+		SUBTRACT
+		MULTIPLY
+w4_out_007(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	w4_out_007_0: INTEGER
+		PUSH_ID(w4_out_007[0])
+		PUSH_ID(w4_out_007[0])
+		MULTIPLY
+		PUSH_ID(w4_out_007[0])
+		ADD
+		PUSH_ID(w4_out_007[0])
+		PUSH_ID(w4_out_007[0])
+		MULTIPLY
+		PUSH_ID(w4_out_007[0])
+		ADD
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+	w4_out_007_1: INTEGER
+		PUSH_ID(w4_out_007[0])
+		PUSH_ID(w4_out_007[0])
+		ADD
+		PUSH_ID(w4_out_007[0])
+		PUSH_ID(w4_out_007[0])
+		SUBTRACT
+		MULTIPLY

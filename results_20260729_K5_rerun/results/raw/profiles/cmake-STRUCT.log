@@ -1,0 +1,57 @@
+-- Using Conan toolchain: /home/michal/github/retractordb/build/Conan-K5r-Profiles/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: Defining architecture flag: -m64
+-- Conan toolchain: C++ Standard 23 with extensions ON
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning at CMakeLists.txt:78 (message):
+  RDB_BENCH_PROBE=ON — benchmark probe compiled in; NOT a production build.
+
+
+-- RDB_OPT_DEDUP_SUBSTRATES=ON
+-- RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+-- RDB_OPT_COMMUTATIVE_ADD=OFF
+-- RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=OFF
+-- RDB_BENCH_PROBE=ON
+-- ccache not found, skipping (install: scripts/buildrdb.sh toolchain, or apt install ccache)
+-- Conan: Component target declared 'Boost::diagnostic_definitions'
+-- Conan: Component target declared 'Boost::disable_autolinking'
+-- Conan: Component target declared 'Boost::dynamic_linking'
+-- Conan: Component target declared 'Boost::headers'
+-- Conan: Component target declared 'Boost::boost'
+-- Conan: Component target declared 'boost::_libboost'
+-- Conan: Component target declared 'Boost::container'
+-- Conan: Component target declared 'Boost::exception'
+-- Conan: Component target declared 'Boost::program_options'
+-- Conan: Component target declared 'Boost::regex'
+-- Conan: Component target declared 'Boost::stacktrace'
+-- Conan: Component target declared 'Boost::stacktrace_addr2line'
+-- Conan: Component target declared 'Boost::stacktrace_backtrace'
+-- Conan: Component target declared 'Boost::stacktrace_basic'
+-- Conan: Component target declared 'Boost::stacktrace_from_exception'
+-- Conan: Component target declared 'Boost::stacktrace_noop'
+-- Conan: Target declared 'boost::boost'
+-- Conan: Target declared 'libbacktrace::libbacktrace'
+-- Conan: Component target declared 'spdlog::spdlog_header_only'
+-- Conan: Component target declared 'fmt::fmt'
+-- Conan: Target declared 'antlr4_static'
+-- Conan: Component target declared 'GTest::gtest'
+-- Conan: Component target declared 'GTest::gtest_main'
+-- Conan: Component target declared 'GTest::gmock'
+-- Conan: Component target declared 'GTest::gmock_main'
+-- Conan: Target declared 'gtest::gtest'
+-- Conan: Target declared 'antlr4::antlr4'
+-- Conan: Target declared 'openjdk::openjdk'
+-- Conan: Target declared 'magic_enum::magic_enum'
+-- Conan: Target declared 'tomlplusplus::tomlplusplus'
+-- Required tool: /usr/bin/valgrind
+-- setup descgrammar in PROJECT_SOURCE_DIR=/home/michal/github/retractordb/src/rdb/lib
+-- setup rqlgrammar in PROJECT_SOURCE_DIR=/home/michal/github/retractordb/src/retractor/lib
+-- Remove folder /home/michal/github/retractordb/build/K5r-STRUCT/test
+-- Copy folder /home/michal/github/retractordb/test to /home/michal/github/retractordb/build/K5r-STRUCT/test/..
+-- Configuring done (2.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/michal/github/retractordb/build/K5r-STRUCT

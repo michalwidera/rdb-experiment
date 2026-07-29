@@ -1,0 +1,314 @@
+[
+  {
+    "family": "W1",
+    "case": "W1",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 6
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 6
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q02",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 10
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q04",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 18
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q08",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 34
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q16",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 66
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q32",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 130
+  },
+  {
+    "family": "W3",
+    "case": "W3_d1",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 34
+  },
+  {
+    "family": "W3",
+    "case": "W3_d2",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=10, ALGSTRUCT=6"
+    ],
+    "artefakty_publiczne": 35
+  },
+  {
+    "family": "W3",
+    "case": "W3_d3",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=16, ALGSTRUCT=10"
+    ],
+    "artefakty_publiczne": 36
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 6
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q02",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 10
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q04",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 18
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q08",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 34
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q16",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 66
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q32",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2"
+    ],
+    "artefakty_publiczne": 130
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q01",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 27
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q02",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 31
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q04",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 39
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q08",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 55
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q16",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 87
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q32",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2",
+      "różnica w mlii.desc (45 vs 45 bajtów)",
+      "różnica w mwi.desc (44 vs 43 bajtów)"
+    ],
+    "artefakty_publiczne": 151
+  },
+  {
+    "family": "W5",
+    "case": "W5_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=0, ALGSTRUCT=0"
+    ],
+    "artefakty_publiczne": 6
+  },
+  {
+    "family": "W6",
+    "case": "W6_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=4"
+    ],
+    "artefakty_publiczne": 6
+  },
+  {
+    "family": "W7",
+    "case": "W7_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [
+      "artefakty wewnętrzne (pominięte): STRUCT=0, ALGSTRUCT=0"
+    ],
+    "artefakty_publiczne": 14
+  }
+]

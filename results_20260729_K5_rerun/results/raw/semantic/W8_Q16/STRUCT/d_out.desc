@@ -1,0 +1,4 @@
+{	INTEGER d_out_0
+	RETMEMORY 1
+	TYPE MEMORY
+}

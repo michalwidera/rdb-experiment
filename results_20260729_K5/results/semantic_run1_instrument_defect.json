@@ -1,0 +1,296 @@
+[
+  {
+    "family": "W1",
+    "case": "W1",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 10
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 10
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q02",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 14
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q04",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 22
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q08",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 38
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q16",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 70
+  },
+  {
+    "family": "W2",
+    "case": "W2_Q32",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 134
+  },
+  {
+    "family": "W3",
+    "case": "W3_d1",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 38
+  },
+  {
+    "family": "W3",
+    "case": "W3_d2",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta', 'STREAM_TIMEMOVE_S1.desc', 'STREAM_TIMEMOVE_S1.meta', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1.desc', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1.meta']"
+    ],
+    "artefakty": 45
+  },
+  {
+    "family": "W3",
+    "case": "W3_d3",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta', 'STREAM_TIMEMOVE_S1.desc', 'STREAM_TIMEMOVE_S1.meta', 'STREAM_TIMEMOVE_S2.desc', 'STREAM_TIMEMOVE_S2.meta', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B.meta', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1.desc', 'STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1.desc', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1.meta', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1_S2.desc', 'STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1_S2.meta']"
+    ],
+    "artefakty": 52
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 10
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q02",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 14
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q04",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 22
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q08",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 38
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q16",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 70
+  },
+  {
+    "family": "W4",
+    "case": "W4_Q32",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_A.desc', 'STREAM_TIMEMOVE_A.meta', 'STREAM_TIMEMOVE_B.desc', 'STREAM_TIMEMOVE_B.meta'] tylko ALGSTRUCT=['STREAM_HASH_A_B.desc', 'STREAM_HASH_A_B.meta']"
+    ],
+    "artefakty": 134
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q01",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 31
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q02",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 35
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q04",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 43
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q08",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 59
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q16",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 91
+  },
+  {
+    "family": "W8",
+    "case": "W8_Q32",
+    "cycles": 600,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": false,
+    "uwagi": [
+      "różny zestaw artefaktów: tylko STRUCT=['STREAM_TIMEMOVE_mlii.desc', 'STREAM_TIMEMOVE_mlii.meta', 'STREAM_TIMEMOVE_mwi.desc', 'STREAM_TIMEMOVE_mwi.meta'] tylko ALGSTRUCT=['STREAM_HASH_mlii_mwi.desc', 'STREAM_HASH_mlii_mwi.meta']"
+    ],
+    "artefakty": 155
+  },
+  {
+    "family": "W5",
+    "case": "W5_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [],
+    "artefakty": 6
+  },
+  {
+    "family": "W6",
+    "case": "W6_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [],
+    "artefakty": 10
+  },
+  {
+    "family": "W7",
+    "case": "W7_Q01",
+    "cycles": 200,
+    "STRUCT_rc": 0,
+    "ALGSTRUCT_rc": 0,
+    "identyczne": true,
+    "uwagi": [],
+    "artefakty": 14
+  }
+]

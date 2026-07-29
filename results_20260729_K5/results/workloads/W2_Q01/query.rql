@@ -1,0 +1,5 @@
+STORAGE 'temp'
+SUBSTRAT 'memory'
+DECLARE value INTEGER STREAM A, 1/10 FILE 'a.txt'
+DECLARE value INTEGER STREAM B, 1/5 FILE 'b.txt'
+SELECT * STREAM w2_out_000 FROM (A>2)#(B>1)

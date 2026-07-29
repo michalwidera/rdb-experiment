@@ -1,0 +1,2 @@
+PLAN bench (publiczne/substraty/tokeny-from/tokeny-pol, dedup=ON): wejscie=14/0/25/21  przed-dedup=14/1/25/79  po-dedup=14/1/25/79  wyjscie=14/1/25/163
+REWRITE_APPLIED r1=1 r2=1
