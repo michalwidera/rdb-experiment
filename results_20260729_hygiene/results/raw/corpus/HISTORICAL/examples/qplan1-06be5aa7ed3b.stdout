@@ -1,0 +1,12 @@
+A(1/1)	data1.txt
+	a: BYTE
+B(2/1)	data2.txt
+	a: BYTE
+str1(1/1)
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_ADD
+	A_0: BYTE
+		PUSH_ID(str1[0])
+	B_1: BYTE
+		PUSH_ID(str1[1])

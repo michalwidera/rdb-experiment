@@ -1,0 +1,4 @@
+{	INTEGER value
+	RETMEMORY 1
+	TYPE MEMORY
+}

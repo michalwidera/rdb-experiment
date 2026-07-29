@@ -1,0 +1,35 @@
+source(1/100)	data.txt
+	value: INTEGER
+agse(1/100)	tail=3
+	:- PUSH_STREAM(source)
+	:- STREAM_AGSE(1,3)
+	source_0: INTEGER
+		PUSH_ID(agse[0])
+	source_1: INTEGER
+		PUSH_ID(agse[1])
+	source_2: INTEGER
+		PUSH_ID(agse[2])
+agse_mirror(1/100)	tail=3
+	:- PUSH_STREAM(source)
+	:- STREAM_AGSE(1,-3)
+	source_0: INTEGER
+		PUSH_ID(agse_mirror[0])
+	source_1: INTEGER
+		PUSH_ID(agse_mirror[1])
+	source_2: INTEGER
+		PUSH_ID(agse_mirror[2])
+sub_same(1/100)	tail=1
+	:- PUSH_STREAM(source)
+	:- STREAM_SUBTRACT(1/100)
+	value: INTEGER
+		PUSH_ID(sub_same[0])
+sum3(1/100)	tail=3
+	:- PUSH_STREAM(agse)
+	:- STREAM_SUM
+	sum: RATIONAL
+		PUSH_ID(sum3[0])
+sub2(1/50)	tail=1
+	:- PUSH_STREAM(source)
+	:- STREAM_SUBTRACT(1/50)
+	value: INTEGER
+		PUSH_ID(sub2[0])
