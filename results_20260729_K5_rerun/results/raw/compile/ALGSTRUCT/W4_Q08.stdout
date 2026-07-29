@@ -1,0 +1,628 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+A(1/10)	a.txt
+	value: INTEGER
+B(1/5)	b.txt
+	value: INTEGER
+STREAM_HASH_A_B(1/15)	tail=2
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_HASH
+	value: INTEGER
+		PUSH_ID(STREAM_HASH_A_B[0])
+w4_out_002(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_002[0])
+w4_p_002(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_002)
+	w4_p_002_0: INTEGER
+		PUSH_ID(w4_p_002[0])
+w4_win_002(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_002)
+	:- STREAM_AGSE(1,30)
+	w4_p_002_0: INTEGER
+		PUSH_ID(w4_win_002[0])
+	w4_p_002_1: INTEGER
+		PUSH_ID(w4_win_002[1])
+	w4_p_002_2: INTEGER
+		PUSH_ID(w4_win_002[2])
+	w4_p_002_3: INTEGER
+		PUSH_ID(w4_win_002[3])
+	w4_p_002_4: INTEGER
+		PUSH_ID(w4_win_002[4])
+	w4_p_002_5: INTEGER
+		PUSH_ID(w4_win_002[5])
+	w4_p_002_6: INTEGER
+		PUSH_ID(w4_win_002[6])
+	w4_p_002_7: INTEGER
+		PUSH_ID(w4_win_002[7])
+	w4_p_002_8: INTEGER
+		PUSH_ID(w4_win_002[8])
+	w4_p_002_9: INTEGER
+		PUSH_ID(w4_win_002[9])
+	w4_p_002_10: INTEGER
+		PUSH_ID(w4_win_002[10])
+	w4_p_002_11: INTEGER
+		PUSH_ID(w4_win_002[11])
+	w4_p_002_12: INTEGER
+		PUSH_ID(w4_win_002[12])
+	w4_p_002_13: INTEGER
+		PUSH_ID(w4_win_002[13])
+	w4_p_002_14: INTEGER
+		PUSH_ID(w4_win_002[14])
+	w4_p_002_15: INTEGER
+		PUSH_ID(w4_win_002[15])
+	w4_p_002_16: INTEGER
+		PUSH_ID(w4_win_002[16])
+	w4_p_002_17: INTEGER
+		PUSH_ID(w4_win_002[17])
+	w4_p_002_18: INTEGER
+		PUSH_ID(w4_win_002[18])
+	w4_p_002_19: INTEGER
+		PUSH_ID(w4_win_002[19])
+	w4_p_002_20: INTEGER
+		PUSH_ID(w4_win_002[20])
+	w4_p_002_21: INTEGER
+		PUSH_ID(w4_win_002[21])
+	w4_p_002_22: INTEGER
+		PUSH_ID(w4_win_002[22])
+	w4_p_002_23: INTEGER
+		PUSH_ID(w4_win_002[23])
+	w4_p_002_24: INTEGER
+		PUSH_ID(w4_win_002[24])
+	w4_p_002_25: INTEGER
+		PUSH_ID(w4_win_002[25])
+	w4_p_002_26: INTEGER
+		PUSH_ID(w4_win_002[26])
+	w4_p_002_27: INTEGER
+		PUSH_ID(w4_win_002[27])
+	w4_p_002_28: INTEGER
+		PUSH_ID(w4_win_002[28])
+	w4_p_002_29: INTEGER
+		PUSH_ID(w4_win_002[29])
+w4_avg_002(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_002)
+	:- STREAM_AVG
+	w4_avg_002_0: INTEGER
+		PUSH_ID(w4_avg_002[0])
+w4_out_004(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_004[0])
+w4_p_004(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_004)
+	w4_p_004_0: INTEGER
+		PUSH_ID(w4_p_004[0])
+w4_out_000(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_000[0])
+w4_p_000(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_000)
+	w4_p_000_0: INTEGER
+		PUSH_ID(w4_p_000[0])
+w4_out_005(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_005[0])
+w4_p_005(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_005)
+	w4_p_005_0: INTEGER
+		PUSH_ID(w4_p_005[0])
+w4_win_005(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_005)
+	:- STREAM_AGSE(1,30)
+	w4_p_005_0: INTEGER
+		PUSH_ID(w4_win_005[0])
+	w4_p_005_1: INTEGER
+		PUSH_ID(w4_win_005[1])
+	w4_p_005_2: INTEGER
+		PUSH_ID(w4_win_005[2])
+	w4_p_005_3: INTEGER
+		PUSH_ID(w4_win_005[3])
+	w4_p_005_4: INTEGER
+		PUSH_ID(w4_win_005[4])
+	w4_p_005_5: INTEGER
+		PUSH_ID(w4_win_005[5])
+	w4_p_005_6: INTEGER
+		PUSH_ID(w4_win_005[6])
+	w4_p_005_7: INTEGER
+		PUSH_ID(w4_win_005[7])
+	w4_p_005_8: INTEGER
+		PUSH_ID(w4_win_005[8])
+	w4_p_005_9: INTEGER
+		PUSH_ID(w4_win_005[9])
+	w4_p_005_10: INTEGER
+		PUSH_ID(w4_win_005[10])
+	w4_p_005_11: INTEGER
+		PUSH_ID(w4_win_005[11])
+	w4_p_005_12: INTEGER
+		PUSH_ID(w4_win_005[12])
+	w4_p_005_13: INTEGER
+		PUSH_ID(w4_win_005[13])
+	w4_p_005_14: INTEGER
+		PUSH_ID(w4_win_005[14])
+	w4_p_005_15: INTEGER
+		PUSH_ID(w4_win_005[15])
+	w4_p_005_16: INTEGER
+		PUSH_ID(w4_win_005[16])
+	w4_p_005_17: INTEGER
+		PUSH_ID(w4_win_005[17])
+	w4_p_005_18: INTEGER
+		PUSH_ID(w4_win_005[18])
+	w4_p_005_19: INTEGER
+		PUSH_ID(w4_win_005[19])
+	w4_p_005_20: INTEGER
+		PUSH_ID(w4_win_005[20])
+	w4_p_005_21: INTEGER
+		PUSH_ID(w4_win_005[21])
+	w4_p_005_22: INTEGER
+		PUSH_ID(w4_win_005[22])
+	w4_p_005_23: INTEGER
+		PUSH_ID(w4_win_005[23])
+	w4_p_005_24: INTEGER
+		PUSH_ID(w4_win_005[24])
+	w4_p_005_25: INTEGER
+		PUSH_ID(w4_win_005[25])
+	w4_p_005_26: INTEGER
+		PUSH_ID(w4_win_005[26])
+	w4_p_005_27: INTEGER
+		PUSH_ID(w4_win_005[27])
+	w4_p_005_28: INTEGER
+		PUSH_ID(w4_win_005[28])
+	w4_p_005_29: INTEGER
+		PUSH_ID(w4_win_005[29])
+w4_avg_005(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_005)
+	:- STREAM_AVG
+	w4_avg_005_0: INTEGER
+		PUSH_ID(w4_avg_005[0])
+w4_out_003(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_003[0])
+w4_out_007(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_007[0])
+w4_p_007(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_007)
+	w4_p_007_0: INTEGER
+		PUSH_ID(w4_p_007[0])
+w4_win_007(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_007)
+	:- STREAM_AGSE(1,30)
+	w4_p_007_0: INTEGER
+		PUSH_ID(w4_win_007[0])
+	w4_p_007_1: INTEGER
+		PUSH_ID(w4_win_007[1])
+	w4_p_007_2: INTEGER
+		PUSH_ID(w4_win_007[2])
+	w4_p_007_3: INTEGER
+		PUSH_ID(w4_win_007[3])
+	w4_p_007_4: INTEGER
+		PUSH_ID(w4_win_007[4])
+	w4_p_007_5: INTEGER
+		PUSH_ID(w4_win_007[5])
+	w4_p_007_6: INTEGER
+		PUSH_ID(w4_win_007[6])
+	w4_p_007_7: INTEGER
+		PUSH_ID(w4_win_007[7])
+	w4_p_007_8: INTEGER
+		PUSH_ID(w4_win_007[8])
+	w4_p_007_9: INTEGER
+		PUSH_ID(w4_win_007[9])
+	w4_p_007_10: INTEGER
+		PUSH_ID(w4_win_007[10])
+	w4_p_007_11: INTEGER
+		PUSH_ID(w4_win_007[11])
+	w4_p_007_12: INTEGER
+		PUSH_ID(w4_win_007[12])
+	w4_p_007_13: INTEGER
+		PUSH_ID(w4_win_007[13])
+	w4_p_007_14: INTEGER
+		PUSH_ID(w4_win_007[14])
+	w4_p_007_15: INTEGER
+		PUSH_ID(w4_win_007[15])
+	w4_p_007_16: INTEGER
+		PUSH_ID(w4_win_007[16])
+	w4_p_007_17: INTEGER
+		PUSH_ID(w4_win_007[17])
+	w4_p_007_18: INTEGER
+		PUSH_ID(w4_win_007[18])
+	w4_p_007_19: INTEGER
+		PUSH_ID(w4_win_007[19])
+	w4_p_007_20: INTEGER
+		PUSH_ID(w4_win_007[20])
+	w4_p_007_21: INTEGER
+		PUSH_ID(w4_win_007[21])
+	w4_p_007_22: INTEGER
+		PUSH_ID(w4_win_007[22])
+	w4_p_007_23: INTEGER
+		PUSH_ID(w4_win_007[23])
+	w4_p_007_24: INTEGER
+		PUSH_ID(w4_win_007[24])
+	w4_p_007_25: INTEGER
+		PUSH_ID(w4_win_007[25])
+	w4_p_007_26: INTEGER
+		PUSH_ID(w4_win_007[26])
+	w4_p_007_27: INTEGER
+		PUSH_ID(w4_win_007[27])
+	w4_p_007_28: INTEGER
+		PUSH_ID(w4_win_007[28])
+	w4_p_007_29: INTEGER
+		PUSH_ID(w4_win_007[29])
+w4_avg_007(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_007)
+	:- STREAM_AVG
+	w4_avg_007_0: INTEGER
+		PUSH_ID(w4_avg_007[0])
+w4_out_001(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_001[0])
+w4_p_001(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_001)
+	w4_p_001_0: INTEGER
+		PUSH_ID(w4_p_001[0])
+w4_out_006(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(w4_out_006[0])
+w4_p_006(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_006)
+	w4_p_006_0: INTEGER
+		PUSH_ID(w4_p_006[0])
+w4_win_006(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_006)
+	:- STREAM_AGSE(1,30)
+	w4_p_006_0: INTEGER
+		PUSH_ID(w4_win_006[0])
+	w4_p_006_1: INTEGER
+		PUSH_ID(w4_win_006[1])
+	w4_p_006_2: INTEGER
+		PUSH_ID(w4_win_006[2])
+	w4_p_006_3: INTEGER
+		PUSH_ID(w4_win_006[3])
+	w4_p_006_4: INTEGER
+		PUSH_ID(w4_win_006[4])
+	w4_p_006_5: INTEGER
+		PUSH_ID(w4_win_006[5])
+	w4_p_006_6: INTEGER
+		PUSH_ID(w4_win_006[6])
+	w4_p_006_7: INTEGER
+		PUSH_ID(w4_win_006[7])
+	w4_p_006_8: INTEGER
+		PUSH_ID(w4_win_006[8])
+	w4_p_006_9: INTEGER
+		PUSH_ID(w4_win_006[9])
+	w4_p_006_10: INTEGER
+		PUSH_ID(w4_win_006[10])
+	w4_p_006_11: INTEGER
+		PUSH_ID(w4_win_006[11])
+	w4_p_006_12: INTEGER
+		PUSH_ID(w4_win_006[12])
+	w4_p_006_13: INTEGER
+		PUSH_ID(w4_win_006[13])
+	w4_p_006_14: INTEGER
+		PUSH_ID(w4_win_006[14])
+	w4_p_006_15: INTEGER
+		PUSH_ID(w4_win_006[15])
+	w4_p_006_16: INTEGER
+		PUSH_ID(w4_win_006[16])
+	w4_p_006_17: INTEGER
+		PUSH_ID(w4_win_006[17])
+	w4_p_006_18: INTEGER
+		PUSH_ID(w4_win_006[18])
+	w4_p_006_19: INTEGER
+		PUSH_ID(w4_win_006[19])
+	w4_p_006_20: INTEGER
+		PUSH_ID(w4_win_006[20])
+	w4_p_006_21: INTEGER
+		PUSH_ID(w4_win_006[21])
+	w4_p_006_22: INTEGER
+		PUSH_ID(w4_win_006[22])
+	w4_p_006_23: INTEGER
+		PUSH_ID(w4_win_006[23])
+	w4_p_006_24: INTEGER
+		PUSH_ID(w4_win_006[24])
+	w4_p_006_25: INTEGER
+		PUSH_ID(w4_win_006[25])
+	w4_p_006_26: INTEGER
+		PUSH_ID(w4_win_006[26])
+	w4_p_006_27: INTEGER
+		PUSH_ID(w4_win_006[27])
+	w4_p_006_28: INTEGER
+		PUSH_ID(w4_win_006[28])
+	w4_p_006_29: INTEGER
+		PUSH_ID(w4_win_006[29])
+w4_avg_006(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_006)
+	:- STREAM_AVG
+	w4_avg_006_0: INTEGER
+		PUSH_ID(w4_avg_006[0])
+w4_win_001(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_001)
+	:- STREAM_AGSE(1,30)
+	w4_p_001_0: INTEGER
+		PUSH_ID(w4_win_001[0])
+	w4_p_001_1: INTEGER
+		PUSH_ID(w4_win_001[1])
+	w4_p_001_2: INTEGER
+		PUSH_ID(w4_win_001[2])
+	w4_p_001_3: INTEGER
+		PUSH_ID(w4_win_001[3])
+	w4_p_001_4: INTEGER
+		PUSH_ID(w4_win_001[4])
+	w4_p_001_5: INTEGER
+		PUSH_ID(w4_win_001[5])
+	w4_p_001_6: INTEGER
+		PUSH_ID(w4_win_001[6])
+	w4_p_001_7: INTEGER
+		PUSH_ID(w4_win_001[7])
+	w4_p_001_8: INTEGER
+		PUSH_ID(w4_win_001[8])
+	w4_p_001_9: INTEGER
+		PUSH_ID(w4_win_001[9])
+	w4_p_001_10: INTEGER
+		PUSH_ID(w4_win_001[10])
+	w4_p_001_11: INTEGER
+		PUSH_ID(w4_win_001[11])
+	w4_p_001_12: INTEGER
+		PUSH_ID(w4_win_001[12])
+	w4_p_001_13: INTEGER
+		PUSH_ID(w4_win_001[13])
+	w4_p_001_14: INTEGER
+		PUSH_ID(w4_win_001[14])
+	w4_p_001_15: INTEGER
+		PUSH_ID(w4_win_001[15])
+	w4_p_001_16: INTEGER
+		PUSH_ID(w4_win_001[16])
+	w4_p_001_17: INTEGER
+		PUSH_ID(w4_win_001[17])
+	w4_p_001_18: INTEGER
+		PUSH_ID(w4_win_001[18])
+	w4_p_001_19: INTEGER
+		PUSH_ID(w4_win_001[19])
+	w4_p_001_20: INTEGER
+		PUSH_ID(w4_win_001[20])
+	w4_p_001_21: INTEGER
+		PUSH_ID(w4_win_001[21])
+	w4_p_001_22: INTEGER
+		PUSH_ID(w4_win_001[22])
+	w4_p_001_23: INTEGER
+		PUSH_ID(w4_win_001[23])
+	w4_p_001_24: INTEGER
+		PUSH_ID(w4_win_001[24])
+	w4_p_001_25: INTEGER
+		PUSH_ID(w4_win_001[25])
+	w4_p_001_26: INTEGER
+		PUSH_ID(w4_win_001[26])
+	w4_p_001_27: INTEGER
+		PUSH_ID(w4_win_001[27])
+	w4_p_001_28: INTEGER
+		PUSH_ID(w4_win_001[28])
+	w4_p_001_29: INTEGER
+		PUSH_ID(w4_win_001[29])
+w4_avg_001(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_001)
+	:- STREAM_AVG
+	w4_avg_001_0: INTEGER
+		PUSH_ID(w4_avg_001[0])
+w4_win_004(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_004)
+	:- STREAM_AGSE(1,30)
+	w4_p_004_0: INTEGER
+		PUSH_ID(w4_win_004[0])
+	w4_p_004_1: INTEGER
+		PUSH_ID(w4_win_004[1])
+	w4_p_004_2: INTEGER
+		PUSH_ID(w4_win_004[2])
+	w4_p_004_3: INTEGER
+		PUSH_ID(w4_win_004[3])
+	w4_p_004_4: INTEGER
+		PUSH_ID(w4_win_004[4])
+	w4_p_004_5: INTEGER
+		PUSH_ID(w4_win_004[5])
+	w4_p_004_6: INTEGER
+		PUSH_ID(w4_win_004[6])
+	w4_p_004_7: INTEGER
+		PUSH_ID(w4_win_004[7])
+	w4_p_004_8: INTEGER
+		PUSH_ID(w4_win_004[8])
+	w4_p_004_9: INTEGER
+		PUSH_ID(w4_win_004[9])
+	w4_p_004_10: INTEGER
+		PUSH_ID(w4_win_004[10])
+	w4_p_004_11: INTEGER
+		PUSH_ID(w4_win_004[11])
+	w4_p_004_12: INTEGER
+		PUSH_ID(w4_win_004[12])
+	w4_p_004_13: INTEGER
+		PUSH_ID(w4_win_004[13])
+	w4_p_004_14: INTEGER
+		PUSH_ID(w4_win_004[14])
+	w4_p_004_15: INTEGER
+		PUSH_ID(w4_win_004[15])
+	w4_p_004_16: INTEGER
+		PUSH_ID(w4_win_004[16])
+	w4_p_004_17: INTEGER
+		PUSH_ID(w4_win_004[17])
+	w4_p_004_18: INTEGER
+		PUSH_ID(w4_win_004[18])
+	w4_p_004_19: INTEGER
+		PUSH_ID(w4_win_004[19])
+	w4_p_004_20: INTEGER
+		PUSH_ID(w4_win_004[20])
+	w4_p_004_21: INTEGER
+		PUSH_ID(w4_win_004[21])
+	w4_p_004_22: INTEGER
+		PUSH_ID(w4_win_004[22])
+	w4_p_004_23: INTEGER
+		PUSH_ID(w4_win_004[23])
+	w4_p_004_24: INTEGER
+		PUSH_ID(w4_win_004[24])
+	w4_p_004_25: INTEGER
+		PUSH_ID(w4_win_004[25])
+	w4_p_004_26: INTEGER
+		PUSH_ID(w4_win_004[26])
+	w4_p_004_27: INTEGER
+		PUSH_ID(w4_win_004[27])
+	w4_p_004_28: INTEGER
+		PUSH_ID(w4_win_004[28])
+	w4_p_004_29: INTEGER
+		PUSH_ID(w4_win_004[29])
+w4_avg_004(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_004)
+	:- STREAM_AVG
+	w4_avg_004_0: INTEGER
+		PUSH_ID(w4_avg_004[0])
+w4_p_003(1/15)	tail=5
+	:- PUSH_STREAM(w4_out_003)
+	w4_p_003_0: INTEGER
+		PUSH_ID(w4_p_003[0])
+w4_win_003(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_003)
+	:- STREAM_AGSE(1,30)
+	w4_p_003_0: INTEGER
+		PUSH_ID(w4_win_003[0])
+	w4_p_003_1: INTEGER
+		PUSH_ID(w4_win_003[1])
+	w4_p_003_2: INTEGER
+		PUSH_ID(w4_win_003[2])
+	w4_p_003_3: INTEGER
+		PUSH_ID(w4_win_003[3])
+	w4_p_003_4: INTEGER
+		PUSH_ID(w4_win_003[4])
+	w4_p_003_5: INTEGER
+		PUSH_ID(w4_win_003[5])
+	w4_p_003_6: INTEGER
+		PUSH_ID(w4_win_003[6])
+	w4_p_003_7: INTEGER
+		PUSH_ID(w4_win_003[7])
+	w4_p_003_8: INTEGER
+		PUSH_ID(w4_win_003[8])
+	w4_p_003_9: INTEGER
+		PUSH_ID(w4_win_003[9])
+	w4_p_003_10: INTEGER
+		PUSH_ID(w4_win_003[10])
+	w4_p_003_11: INTEGER
+		PUSH_ID(w4_win_003[11])
+	w4_p_003_12: INTEGER
+		PUSH_ID(w4_win_003[12])
+	w4_p_003_13: INTEGER
+		PUSH_ID(w4_win_003[13])
+	w4_p_003_14: INTEGER
+		PUSH_ID(w4_win_003[14])
+	w4_p_003_15: INTEGER
+		PUSH_ID(w4_win_003[15])
+	w4_p_003_16: INTEGER
+		PUSH_ID(w4_win_003[16])
+	w4_p_003_17: INTEGER
+		PUSH_ID(w4_win_003[17])
+	w4_p_003_18: INTEGER
+		PUSH_ID(w4_win_003[18])
+	w4_p_003_19: INTEGER
+		PUSH_ID(w4_win_003[19])
+	w4_p_003_20: INTEGER
+		PUSH_ID(w4_win_003[20])
+	w4_p_003_21: INTEGER
+		PUSH_ID(w4_win_003[21])
+	w4_p_003_22: INTEGER
+		PUSH_ID(w4_win_003[22])
+	w4_p_003_23: INTEGER
+		PUSH_ID(w4_win_003[23])
+	w4_p_003_24: INTEGER
+		PUSH_ID(w4_win_003[24])
+	w4_p_003_25: INTEGER
+		PUSH_ID(w4_win_003[25])
+	w4_p_003_26: INTEGER
+		PUSH_ID(w4_win_003[26])
+	w4_p_003_27: INTEGER
+		PUSH_ID(w4_win_003[27])
+	w4_p_003_28: INTEGER
+		PUSH_ID(w4_win_003[28])
+	w4_p_003_29: INTEGER
+		PUSH_ID(w4_win_003[29])
+w4_avg_003(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_003)
+	:- STREAM_AVG
+	w4_avg_003_0: INTEGER
+		PUSH_ID(w4_avg_003[0])
+w4_win_000(1/15)	tail=35
+	:- PUSH_STREAM(w4_p_000)
+	:- STREAM_AGSE(1,30)
+	w4_p_000_0: INTEGER
+		PUSH_ID(w4_win_000[0])
+	w4_p_000_1: INTEGER
+		PUSH_ID(w4_win_000[1])
+	w4_p_000_2: INTEGER
+		PUSH_ID(w4_win_000[2])
+	w4_p_000_3: INTEGER
+		PUSH_ID(w4_win_000[3])
+	w4_p_000_4: INTEGER
+		PUSH_ID(w4_win_000[4])
+	w4_p_000_5: INTEGER
+		PUSH_ID(w4_win_000[5])
+	w4_p_000_6: INTEGER
+		PUSH_ID(w4_win_000[6])
+	w4_p_000_7: INTEGER
+		PUSH_ID(w4_win_000[7])
+	w4_p_000_8: INTEGER
+		PUSH_ID(w4_win_000[8])
+	w4_p_000_9: INTEGER
+		PUSH_ID(w4_win_000[9])
+	w4_p_000_10: INTEGER
+		PUSH_ID(w4_win_000[10])
+	w4_p_000_11: INTEGER
+		PUSH_ID(w4_win_000[11])
+	w4_p_000_12: INTEGER
+		PUSH_ID(w4_win_000[12])
+	w4_p_000_13: INTEGER
+		PUSH_ID(w4_win_000[13])
+	w4_p_000_14: INTEGER
+		PUSH_ID(w4_win_000[14])
+	w4_p_000_15: INTEGER
+		PUSH_ID(w4_win_000[15])
+	w4_p_000_16: INTEGER
+		PUSH_ID(w4_win_000[16])
+	w4_p_000_17: INTEGER
+		PUSH_ID(w4_win_000[17])
+	w4_p_000_18: INTEGER
+		PUSH_ID(w4_win_000[18])
+	w4_p_000_19: INTEGER
+		PUSH_ID(w4_win_000[19])
+	w4_p_000_20: INTEGER
+		PUSH_ID(w4_win_000[20])
+	w4_p_000_21: INTEGER
+		PUSH_ID(w4_win_000[21])
+	w4_p_000_22: INTEGER
+		PUSH_ID(w4_win_000[22])
+	w4_p_000_23: INTEGER
+		PUSH_ID(w4_win_000[23])
+	w4_p_000_24: INTEGER
+		PUSH_ID(w4_win_000[24])
+	w4_p_000_25: INTEGER
+		PUSH_ID(w4_win_000[25])
+	w4_p_000_26: INTEGER
+		PUSH_ID(w4_win_000[26])
+	w4_p_000_27: INTEGER
+		PUSH_ID(w4_win_000[27])
+	w4_p_000_28: INTEGER
+		PUSH_ID(w4_win_000[28])
+	w4_p_000_29: INTEGER
+		PUSH_ID(w4_win_000[29])
+w4_avg_000(1/15)	tail=35
+	:- PUSH_STREAM(w4_win_000)
+	:- STREAM_AVG
+	w4_avg_000_0: INTEGER
+		PUSH_ID(w4_avg_000[0])

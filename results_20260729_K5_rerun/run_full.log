@@ -1,0 +1,30 @@
+Profile zbudowane i zweryfikowane.
+OK: 40 przypadków w /home/michal/github/rdb-experiment/results_20260729_K5_rerun/results/workloads
+OK: 5 profili x 40 przypadków; wykluczone: 0
+W1: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q02: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q04: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q08: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q16: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W2_Q32: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W3_d1: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W3_d2: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=10, ALGSTRUCT=6']
+W3_d3: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=16, ALGSTRUCT=10']
+W4_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W4_Q02: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W4_Q04: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W4_Q08: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W4_Q16: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W4_Q32: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2']
+W8_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W8_Q02: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W8_Q04: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W8_Q08: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W8_Q16: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W8_Q32: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=2', 'dozwolona zmiana pojemności: mlii.desc: RETMEMORY 30 → 63; mwi.desc: RETMEMORY 30 → 4']
+W5_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=0, ALGSTRUCT=0']
+W6_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=4, ALGSTRUCT=4']
+W7_Q01: identyczne=True ['artefakty wewnętrzne (pominięte): STRUCT=0, ALGSTRUCT=0']
+Werdykt: GO
+K5 zakończone; werdykt: /home/michal/github/rdb-experiment/results_20260729_K5_rerun/results/summary.md

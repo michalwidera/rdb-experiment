@@ -1,0 +1,38 @@
+STORAGE 'temp'
+SUBSTRAT 'memory'
+DECLARE value INTEGER STREAM A, 1/10 FILE 'a.txt'
+DECLARE value INTEGER STREAM B, 1/5 FILE 'b.txt'
+SELECT * STREAM w7_sa FROM A>2
+SELECT * STREAM w7_sb FROM B>1
+SELECT * STREAM w7_out_000 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_001 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_002 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_003 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_004 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_005 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_006 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_007 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_008 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_009 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_010 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_011 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_012 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_013 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_014 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_015 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_016 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_017 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_018 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_019 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_020 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_021 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_022 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_023 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_024 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_025 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_026 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_027 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_028 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_029 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_030 FROM w7_sa#w7_sb
+SELECT * STREAM w7_out_031 FROM w7_sa#w7_sb

@@ -1,0 +1,4 @@
+{	INTEGER bp_coef[25]
+	REF "bp_coef.txt"
+	TYPE TEXTSOURCE
+}

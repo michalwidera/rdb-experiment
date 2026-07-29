@@ -1,0 +1,353 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+ecg(1/360)	rec205
+	MLII: INTEGER
+	V1: INTEGER
+mlii(1/360)
+	:- PUSH_STREAM(ecg)
+	mlii_0: INTEGER
+		PUSH_ID(mlii[0])
+STREAM_TIMEMOVE_mlii(1/360)	tail=29
+	:- PUSH_STREAM(mlii)
+	:- STREAM_TIMEMOVE(29)
+	mlii_0: INTEGER
+		PUSH_ID(STREAM_TIMEMOVE_mlii[0])
+mlii_win(1/360)	tail=25
+	:- PUSH_STREAM(mlii)
+	:- STREAM_AGSE(1,25)
+	mlii_0: INTEGER
+		PUSH_ID(mlii_win[0])
+	mlii_1: INTEGER
+		PUSH_ID(mlii_win[1])
+	mlii_2: INTEGER
+		PUSH_ID(mlii_win[2])
+	mlii_3: INTEGER
+		PUSH_ID(mlii_win[3])
+	mlii_4: INTEGER
+		PUSH_ID(mlii_win[4])
+	mlii_5: INTEGER
+		PUSH_ID(mlii_win[5])
+	mlii_6: INTEGER
+		PUSH_ID(mlii_win[6])
+	mlii_7: INTEGER
+		PUSH_ID(mlii_win[7])
+	mlii_8: INTEGER
+		PUSH_ID(mlii_win[8])
+	mlii_9: INTEGER
+		PUSH_ID(mlii_win[9])
+	mlii_10: INTEGER
+		PUSH_ID(mlii_win[10])
+	mlii_11: INTEGER
+		PUSH_ID(mlii_win[11])
+	mlii_12: INTEGER
+		PUSH_ID(mlii_win[12])
+	mlii_13: INTEGER
+		PUSH_ID(mlii_win[13])
+	mlii_14: INTEGER
+		PUSH_ID(mlii_win[14])
+	mlii_15: INTEGER
+		PUSH_ID(mlii_win[15])
+	mlii_16: INTEGER
+		PUSH_ID(mlii_win[16])
+	mlii_17: INTEGER
+		PUSH_ID(mlii_win[17])
+	mlii_18: INTEGER
+		PUSH_ID(mlii_win[18])
+	mlii_19: INTEGER
+		PUSH_ID(mlii_win[19])
+	mlii_20: INTEGER
+		PUSH_ID(mlii_win[20])
+	mlii_21: INTEGER
+		PUSH_ID(mlii_win[21])
+	mlii_22: INTEGER
+		PUSH_ID(mlii_win[22])
+	mlii_23: INTEGER
+		PUSH_ID(mlii_win[23])
+	mlii_24: INTEGER
+		PUSH_ID(mlii_win[24])
+bpf(1/1)	bp_coef.txt
+	bp_coef: INTEGER
+bp_acc(1/360)	tail=25
+	:- PUSH_STREAM(mlii_win)
+	:- PUSH_STREAM(bpf)
+	:- STREAM_ADD
+	bp_acc_0: INTEGER
+		PUSH_ID(bp_acc[0])
+		PUSH_ID(bp_acc[25])
+		MULTIPLY
+	bp_acc_1: INTEGER
+		PUSH_ID(bp_acc[1])
+		PUSH_ID(bp_acc[26])
+		MULTIPLY
+	bp_acc_2: INTEGER
+		PUSH_ID(bp_acc[2])
+		PUSH_ID(bp_acc[27])
+		MULTIPLY
+	bp_acc_3: INTEGER
+		PUSH_ID(bp_acc[3])
+		PUSH_ID(bp_acc[28])
+		MULTIPLY
+	bp_acc_4: INTEGER
+		PUSH_ID(bp_acc[4])
+		PUSH_ID(bp_acc[29])
+		MULTIPLY
+	bp_acc_5: INTEGER
+		PUSH_ID(bp_acc[5])
+		PUSH_ID(bp_acc[30])
+		MULTIPLY
+	bp_acc_6: INTEGER
+		PUSH_ID(bp_acc[6])
+		PUSH_ID(bp_acc[31])
+		MULTIPLY
+	bp_acc_7: INTEGER
+		PUSH_ID(bp_acc[7])
+		PUSH_ID(bp_acc[32])
+		MULTIPLY
+	bp_acc_8: INTEGER
+		PUSH_ID(bp_acc[8])
+		PUSH_ID(bp_acc[33])
+		MULTIPLY
+	bp_acc_9: INTEGER
+		PUSH_ID(bp_acc[9])
+		PUSH_ID(bp_acc[34])
+		MULTIPLY
+	bp_acc_10: INTEGER
+		PUSH_ID(bp_acc[10])
+		PUSH_ID(bp_acc[35])
+		MULTIPLY
+	bp_acc_11: INTEGER
+		PUSH_ID(bp_acc[11])
+		PUSH_ID(bp_acc[36])
+		MULTIPLY
+	bp_acc_12: INTEGER
+		PUSH_ID(bp_acc[12])
+		PUSH_ID(bp_acc[37])
+		MULTIPLY
+	bp_acc_13: INTEGER
+		PUSH_ID(bp_acc[13])
+		PUSH_ID(bp_acc[38])
+		MULTIPLY
+	bp_acc_14: INTEGER
+		PUSH_ID(bp_acc[14])
+		PUSH_ID(bp_acc[39])
+		MULTIPLY
+	bp_acc_15: INTEGER
+		PUSH_ID(bp_acc[15])
+		PUSH_ID(bp_acc[40])
+		MULTIPLY
+	bp_acc_16: INTEGER
+		PUSH_ID(bp_acc[16])
+		PUSH_ID(bp_acc[41])
+		MULTIPLY
+	bp_acc_17: INTEGER
+		PUSH_ID(bp_acc[17])
+		PUSH_ID(bp_acc[42])
+		MULTIPLY
+	bp_acc_18: INTEGER
+		PUSH_ID(bp_acc[18])
+		PUSH_ID(bp_acc[43])
+		MULTIPLY
+	bp_acc_19: INTEGER
+		PUSH_ID(bp_acc[19])
+		PUSH_ID(bp_acc[44])
+		MULTIPLY
+	bp_acc_20: INTEGER
+		PUSH_ID(bp_acc[20])
+		PUSH_ID(bp_acc[45])
+		MULTIPLY
+	bp_acc_21: INTEGER
+		PUSH_ID(bp_acc[21])
+		PUSH_ID(bp_acc[46])
+		MULTIPLY
+	bp_acc_22: INTEGER
+		PUSH_ID(bp_acc[22])
+		PUSH_ID(bp_acc[47])
+		MULTIPLY
+	bp_acc_23: INTEGER
+		PUSH_ID(bp_acc[23])
+		PUSH_ID(bp_acc[48])
+		MULTIPLY
+	bp_acc_24: INTEGER
+		PUSH_ID(bp_acc[24])
+		PUSH_ID(bp_acc[49])
+		MULTIPLY
+bp_out(1/360)	tail=25
+	:- PUSH_STREAM(bp_acc)
+	:- STREAM_SUM
+	bp_out_0: INTEGER
+		PUSH_ID(bp_out[0])
+		PUSH_VAL(1000)
+		DIVIDE
+bp_win(1/360)	tail=30
+	:- PUSH_STREAM(bp_out)
+	:- STREAM_AGSE(1,5)
+	bp_out_0: INTEGER
+		PUSH_ID(bp_win[0])
+	bp_out_1: INTEGER
+		PUSH_ID(bp_win[1])
+	bp_out_2: INTEGER
+		PUSH_ID(bp_win[2])
+	bp_out_3: INTEGER
+		PUSH_ID(bp_win[3])
+	bp_out_4: INTEGER
+		PUSH_ID(bp_win[4])
+df(1/1)	d_coef.txt
+	d_coef: INTEGER
+d_acc(1/360)	tail=30
+	:- PUSH_STREAM(bp_win)
+	:- PUSH_STREAM(df)
+	:- STREAM_ADD
+	d_acc_0: INTEGER
+		PUSH_ID(d_acc[0])
+		PUSH_ID(d_acc[5])
+		MULTIPLY
+	d_acc_1: INTEGER
+		PUSH_ID(d_acc[1])
+		PUSH_ID(d_acc[6])
+		MULTIPLY
+	d_acc_2: INTEGER
+		PUSH_ID(d_acc[2])
+		PUSH_ID(d_acc[7])
+		MULTIPLY
+	d_acc_3: INTEGER
+		PUSH_ID(d_acc[3])
+		PUSH_ID(d_acc[8])
+		MULTIPLY
+	d_acc_4: INTEGER
+		PUSH_ID(d_acc[4])
+		PUSH_ID(d_acc[9])
+		MULTIPLY
+d_out(1/360)	tail=30
+	:- PUSH_STREAM(d_acc)
+	:- STREAM_SUM
+	d_out_0: INTEGER
+		PUSH_ID(d_out[0])
+sq_out(1/360)	tail=30
+	:- PUSH_STREAM(d_out)
+	sq_out_0: INTEGER
+		PUSH_ID(sq_out[0])
+		PUSH_ID(sq_out[0])
+		MULTIPLY
+		PUSH_VAL(1000)
+		DIVIDE
+mwi_win(1/360)	tail=60
+	:- PUSH_STREAM(sq_out)
+	:- STREAM_AGSE(1,30)
+	sq_out_0: INTEGER
+		PUSH_ID(mwi_win[0])
+	sq_out_1: INTEGER
+		PUSH_ID(mwi_win[1])
+	sq_out_2: INTEGER
+		PUSH_ID(mwi_win[2])
+	sq_out_3: INTEGER
+		PUSH_ID(mwi_win[3])
+	sq_out_4: INTEGER
+		PUSH_ID(mwi_win[4])
+	sq_out_5: INTEGER
+		PUSH_ID(mwi_win[5])
+	sq_out_6: INTEGER
+		PUSH_ID(mwi_win[6])
+	sq_out_7: INTEGER
+		PUSH_ID(mwi_win[7])
+	sq_out_8: INTEGER
+		PUSH_ID(mwi_win[8])
+	sq_out_9: INTEGER
+		PUSH_ID(mwi_win[9])
+	sq_out_10: INTEGER
+		PUSH_ID(mwi_win[10])
+	sq_out_11: INTEGER
+		PUSH_ID(mwi_win[11])
+	sq_out_12: INTEGER
+		PUSH_ID(mwi_win[12])
+	sq_out_13: INTEGER
+		PUSH_ID(mwi_win[13])
+	sq_out_14: INTEGER
+		PUSH_ID(mwi_win[14])
+	sq_out_15: INTEGER
+		PUSH_ID(mwi_win[15])
+	sq_out_16: INTEGER
+		PUSH_ID(mwi_win[16])
+	sq_out_17: INTEGER
+		PUSH_ID(mwi_win[17])
+	sq_out_18: INTEGER
+		PUSH_ID(mwi_win[18])
+	sq_out_19: INTEGER
+		PUSH_ID(mwi_win[19])
+	sq_out_20: INTEGER
+		PUSH_ID(mwi_win[20])
+	sq_out_21: INTEGER
+		PUSH_ID(mwi_win[21])
+	sq_out_22: INTEGER
+		PUSH_ID(mwi_win[22])
+	sq_out_23: INTEGER
+		PUSH_ID(mwi_win[23])
+	sq_out_24: INTEGER
+		PUSH_ID(mwi_win[24])
+	sq_out_25: INTEGER
+		PUSH_ID(mwi_win[25])
+	sq_out_26: INTEGER
+		PUSH_ID(mwi_win[26])
+	sq_out_27: INTEGER
+		PUSH_ID(mwi_win[27])
+	sq_out_28: INTEGER
+		PUSH_ID(mwi_win[28])
+	sq_out_29: INTEGER
+		PUSH_ID(mwi_win[29])
+mwi(1/360)	tail=60
+	:- PUSH_STREAM(mwi_win)
+	:- STREAM_AVG
+	mwi_0: INTEGER
+		PUSH_ID(mwi[0])
+STREAM_TIMEMOVE_mwi(1/360)	tail=89
+	:- PUSH_STREAM(mwi)
+	:- STREAM_TIMEMOVE(29)
+	mwi_0: INTEGER
+		PUSH_ID(STREAM_TIMEMOVE_mwi[0])
+mon_006(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_006[0])
+mon_005(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_005[0])
+mon_002(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_002[0])
+mon_000(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_000[0])
+mon_001(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_001[0])
+mon_004(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_004[0])
+mon_003(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_003[0])
+mon_007(1/720)	tail=179
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mlii)
+	:- PUSH_STREAM(STREAM_TIMEMOVE_mwi)
+	:- STREAM_HASH
+	mlii_0: INTEGER
+		PUSH_ID(mon_007[0])

@@ -1,0 +1,2 @@
+PLAN bench (publiczne/substraty/tokeny-from/tokeny-pol, dedup=OFF): wejscie=6/0/6/2  przed-dedup=6/0/6/2  po-dedup=6/0/6/2  wyjscie=6/0/6/2
+REWRITE_APPLIED r1=0 r2=0

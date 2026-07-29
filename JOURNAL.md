@@ -3121,3 +3121,65 @@ K19 jest zamknięta w kodzie (`ut_compiler`, `it_agse_volatile`) i zmierzona
 tutaj. Otwarte: `results_20260728_K4/collect.py` nadal hashuje wyjście
 z niestabilnymi fragmentami; do naprawy przy następnym przebiegu K4.
 Dane: `results_20260728_extend/`.
+
+## 2026-07-29 — K5: punkt go/no-go, werdykt GO (po naprawie silnika)
+
+**Przebieg dwuetapowy.** Pierwsza kampania (`results_20260729_K5/`, kod
+`0e0f701`) została zatrzymana decyzją człowieka **przed** rozstrzygnięciem
+go/no-go, bo przy budowie rodziny W4 ujawniła wadę silnika niezwiązaną
+z badanymi regułami. Druga (`results_20260729_K5_rerun/`, kod `2a5aa86`)
+rozstrzyga kryterium na naprawionym kodzie.
+
+**Wada (`resolveStreamIntervals`).** Dwie ścieżki — program jednoelementowy
+(`SELECT expr STREAM x FROM y`) oraz `STREAM_AGSE` — przyjmowały nierozwiązany
+interwał źródła (`getDelta() == 0`) bez żądania kolejnego przebiegu, wbrew temu,
+co robią gałęzie dwuargumentowe. Warunek zakończenia
+(`unresolvedCount >= prevUnresolved`) był przy tym heurystyką postępu, nie
+detektorem cykli. Skutkiem było odrzucenie planu bezcyklicznego jako
+cyklicznego albo zerowy interwał (`bad rational: zero denominator`) — zależnie
+od kolejności po `coreInstance.sort()`. Objaw niemonotoniczny w liczbie
+zapytań: `Q ∈ {4,5,6,8,12}` zawodziło, `{1,2,3,7,9,10,16,20,32}` przechodziło.
+Wada jest **niezależna od R1 i R2** — near-miss, w którym reguła nie odpala,
+zawodził identycznie. Naprawa: `issue_213-defect-interval` → `master`
+(`Fix (#214)`); warunek końca oparty na braku postępu.
+
+**Luka pokrycia w pierwszym teście regresji.** Test napisany do tej naprawy
+przechodził także na niepoprawionym silniku, bo `parserRQLString` bez dyrektyw
+`STORAGE`/`SUBSTRAT` układa plan w kolejności, która wady nie trafia. Po
+dodaniu dyrektyw i przemiataniu długości `{4,5,6,8,12}` test zabija
+niepoprawiony silnik na wszystkich pięciu, łapiąc oba objawy. Sprawdzone
+mutacyjnie w obie strony — to ten sam rodzaj luki, co opisany 2026-07-28
+przy K19.
+
+**Wynik K5 (powtórka).** Pięć profili × 40 przypadków, zero wykluczeń.
+
+| Rodzina | net | r1 | oszczędność tokenów FROM |
+|---|---|---|---|
+| W1 | −1 | 1 | 2 |
+| W2 wspólne `phi`, `Q = 1..32` | −1 | `= Q` | 2, 3, 5, 9, 17, 33 |
+| W3 głębokość `d = 1,2,3` | −1, −2, −3 | 8, 9, 10 | 9, 11, 13 |
+| W4 kosztowny operator | −1 | `= Q` | 2, 3, 5, 9, 17, 33 |
+| W5 kontrola negatywna | 0 | 0 | 0 |
+| W6 near-miss | 0 | 0 | 0 |
+| W7 materializacja | 0 | 0 | 0 |
+| W8 EKG (zewnętrznie umotywowana) | −1 | `= Q` | 2, 3, 5, 9, 17, 33 |
+
+Warunki (a), (b), (c) spełnione, kwalifikator W8 spełniony → **GO**.
+Odpowiedź na G6 jest niuansowana i tak musi zostać zaraportowana: liczba
+usuniętych węzłów **nie** rośnie z `Q` — wspólny `phi` to jeden węzeł niezależnie
+od liczby konsumentów — natomiast oszczędność tokenów FROM rośnie liniowo z `Q`,
+a liczba węzłów rośnie z **głębokością** wspólnego podplanu.
+
+**Dwa rozstrzygnięcia metodologiczne, oba ujawnione.** (1) Pierwszy przebieg
+kontroli semantycznej porównywał sidecary substratów, czyli to, czego zmiana
+JEST optymalizacją — warunek (b) był przez to niespełnialny zawsze, gdy reguła
+zadziałała; poprawka opisana w `instrument_defect_semantic.md`, surowy wynik
+zachowany. (2) `RETMEMORY` w `.desc` zmienia się wraz z kształtem planu
+(`computeRequiredCapacities`). Pierwsza kampania tego nie rozstrzygnęła
+(`verdict_open_question.md`); powtórka definiuje „wynik zachowany" **przed
+danymi**, wyłączając wyłącznie to jedno pole i wymagając wypisania zmian
+imiennie. Dane wszystkich monitorów W8 są bajtowo identyczne.
+
+**Otwarte.** `results_20260728_K4/collect.py` nadal hashuje wyjście
+z niestabilnymi fragmentami. Dane: `results_20260729_K5/`,
+`results_20260729_K5_rerun/`.
