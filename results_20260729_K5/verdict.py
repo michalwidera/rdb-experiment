@@ -130,11 +130,26 @@ def main() -> int:
         lines.append(f"- **{family}** — net: {net}")
         lines.append(f"  - oszczędność tokenów FROM: {tokens}")
 
+    depth_series = sorted(
+        (record for record in comparisons if record["family"] == "W3"),
+        key=lambda record: record["param"],
+    )
+    if len(depth_series) >= 2:
+        net = ", ".join(f"{record['param']}: {record['net']}" for record in depth_series)
+        tokens = ", ".join(
+            f"{record['param']}: {record['struct_tokeny_from'] - record['algstruct_tokeny_from']}"
+            for record in depth_series
+        )
+        lines.append(f"- **W3** (Q stałe, zmienna głębokość) — net: {net}")
+        lines.append(f"  - oszczędność tokenów FROM: {tokens}")
+
     lines += ["", "## Kontrola semantyczna", "",
-              "| Przypadek | Cykli | Artefaktów | Identyczne |", "|---|---:|---:|---|"]
+              "Porównywane są artefakty strumieni nazwanych przez użytkownika. Substraty",
+              "są pominięte — ich nazwy zmienia sama badana reguła.", "",
+              "| Przypadek | Cykli | Artefaktów publicznych | Identyczne |", "|---|---:|---:|---|"]
     for record in semantic:
         lines.append(
-            f"| `{record['case']}` | {record['cycles']} | {record.get('artefakty', '-')} | "
+            f"| `{record['case']}` | {record['cycles']} | {record.get('artefakty_publiczne', '-')} | "
             f"{'tak' if record['identyczne'] else 'NIE — ' + '; '.join(record['uwagi'])} |"
         )
 

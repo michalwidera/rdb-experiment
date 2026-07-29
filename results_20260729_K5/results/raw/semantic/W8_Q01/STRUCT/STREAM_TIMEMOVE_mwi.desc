@@ -1,0 +1,4 @@
+{	INTEGER mwi_0
+	RETMEMORY 4
+	TYPE MEMORY
+}

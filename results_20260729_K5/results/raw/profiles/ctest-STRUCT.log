@@ -1,0 +1,23 @@
+Test project /home/michal/github/retractordb/build/K5-STRUCT
+    Start 75: it_optimizer_ablation-build-info
+1/9 Test #75: it_optimizer_ablation-build-info .........................   Passed    0.00 sec
+    Start 76: it_optimizer_ablation-plan
+2/9 Test #76: it_optimizer_ablation-plan ...............................   Passed    0.03 sec
+    Start 77: it_optimizer_ablation-semantic
+3/9 Test #77: it_optimizer_ablation-semantic ...........................   Passed    2.41 sec
+    Start 78: it_optimizer_ablation-factor-semantic
+4/9 Test #78: it_optimizer_ablation-factor-semantic ....................   Passed    2.41 sec
+    Start 79: it_optimizer_ablation-factor-shared-substrate-semantic
+5/9 Test #79: it_optimizer_ablation-factor-shared-substrate-semantic ...   Passed    2.41 sec
+    Start 80: it_optimizer_ablation-factor-name-collision-semantic
+6/9 Test #80: it_optimizer_ablation-factor-name-collision-semantic .....   Passed    2.41 sec
+    Start 81: it_optimizer_ablation-factor-multiquery-semantic
+7/9 Test #81: it_optimizer_ablation-factor-multiquery-semantic .........   Passed    2.42 sec
+    Start 82: it_optimizer_ablation-dedup-steady-semantic
+8/9 Test #82: it_optimizer_ablation-dedup-steady-semantic ..............   Passed    2.41 sec
+    Start 83: it_optimizer_ablation-dedup-exact-semantic
+9/9 Test #83: it_optimizer_ablation-dedup-exact-semantic ...............   Passed    2.41 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Total Test time (real) =  16.91 sec

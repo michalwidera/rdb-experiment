@@ -140,6 +140,12 @@ def main() -> int:
             raw_base = output / "raw/compile" / slug / case
             observations[profile["profile"]][case] = compile_case(binary, workloads / case, code_repo, raw_base)
 
+    if problems:
+        # Bez kompletu profili porównanie STRUCT/ALGSTRUCT nie ma sensu.
+        for problem in problems:
+            print(problem)
+        return 2
+
     # Przypadek wchodzi do reguły decyzyjnej tylko wtedy, gdy kompiluje się
     # czysto pod KAŻDYM profilem. Inaczej różnica mogłaby pochodzić z wady
     # kompilatora (defect_interval_resolution.md), a nie z badanych reguł.

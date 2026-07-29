@@ -1,0 +1,4 @@
+{	INTEGER value
+	REF "a.txt"
+	TYPE TEXTSOURCE
+}
