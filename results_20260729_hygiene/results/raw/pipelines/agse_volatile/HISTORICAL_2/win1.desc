@@ -1,0 +1,6 @@
+{	INTEGER source_0
+	INTEGER source_1
+	INTEGER source_2
+	RETMEMORY 1
+	TYPE MEMORY
+}

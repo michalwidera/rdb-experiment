@@ -1,0 +1,30 @@
+core(1/2)	datafile3.dat
+	a: INTEGER
+agreagteSerialize(1/2)	tail=2
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(1,2)
+	core_0: INTEGER
+		PUSH_ID(agreagteSerialize[0])
+	core_1: INTEGER
+		PUSH_ID(agreagteSerialize[1])
+agregate(1/1)	tail=1
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(2,2)
+	core_0: INTEGER
+		PUSH_ID(agregate[0])
+	core_1: INTEGER
+		PUSH_ID(agregate[1])
+agregateMirror(1/1)	tail=1
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(2,-2)
+	core_0: INTEGER
+		PUSH_ID(agregateMirror[0])
+	core_1: INTEGER
+		PUSH_ID(agregateMirror[1])
+aggreageSelective(3/2)	tail=1
+	:- PUSH_STREAM(core)
+	:- STREAM_AGSE(3,-2)
+	core_0: INTEGER
+		PUSH_ID(aggreageSelective[0])
+	core_1: INTEGER
+		PUSH_ID(aggreageSelective[1])

@@ -1,0 +1,5 @@
+{	INTEGER cbx
+	INTEGER cby
+	REF "q.txt"
+	TYPE TEXTSOURCE
+}

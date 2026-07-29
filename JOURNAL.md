@@ -3183,3 +3183,61 @@ imiennie. Dane wszystkich monitorów W8 są bajtowo identyczne.
 **Otwarte.** `results_20260728_K4/collect.py` nadal hashuje wyjście
 z niestabilnymi fragmentami. Dane: `results_20260729_K5/`,
 `results_20260729_K5_rerun/`.
+
+## 2026-07-29 — Badanie higieniczne: `Fix (#214)` nie unieważnił żadnego zapisanego wyniku
+
+**Po co.** `Fix (#214)` naprawił `resolveStreamIntervals`, czyli kod wspólny dla
+wszystkich profili ablacyjnych i wszystkich zapytań, a wyniki K4, K18 i K19 są
+zapisane na wcześniejszych rewizjach. Zdanie „żaden zapisany wynik nie został
+unieważniony" wymagało pokrycia w danych, nie w rozumowaniu autora poprawki.
+
+**Jak.** Dwa drzewa silnika — `HISTORICAL` `0e0f701` z klonu repozytorium kodu
+i `FIXED` `2a5aa86` — zbudowane tym samym toolchainem, z identycznymi
+przełącznikami potwierdzonymi porównaniem `--build-info`. Warunek ważności
+sprawdzony wprost: `git diff` między commitami obejmuje wyłącznie
+`compiler.cpp` i `test_compiler.cpp`, więc żaden plik `.rql` ani plik danych się
+nie zmienił. Kontrola pozytywna: skrypt przerywa, gdyby drzewo historyczne
+stało na commicie z poprawką.
+
+Warstwa pierwsza — **81 plików RQL × 2 silniki**, compile-only, porównanie
+zrzutu planu, kodu zakończenia i liczników `REWRITE_APPLIED`. Warstwa druga —
+**4 potoki × 3 przebiegi**, porównanie bajtowe wszystkich artefaktów.
+
+**Wynik: BRAK WPŁYWU.** Zero różnic w zrzutach planu, zero zmian statusu
+kompilacji (76 skompilowanych, 5 oczekiwanych odrzuceń po obu stronach), zero
+różnic w licznikach (R1=8, R2=18 identycznie), 142 artefakty bajtowo identyczne
+w trzech deterministycznych potokach. Poprawka zamieniła wyłącznie porażki
+w sukcesy, zgodnie z zamiarem.
+
+**Uwaga do liczników.** R1=8 nie jest sprzeczne z zapisanym w K4 R1=5: tamta
+liczba pochodzi z `50e19b7` i korpusu 80 plików, sprzed zniesienia warunku
+jednego konsumenta w R1 i przed dodaniem `agse_volatile` oraz
+`r1_identity_nulls`. Że wzrost nie pochodzi z tej poprawki, widać stąd, że oba
+drzewa raportują tę samą wartość.
+
+**Dwie wady instrumentu, obie w harnessie, obie znalezione pierwszym
+przebiegiem** (`instrument_defects.md`, surowe wyniki zachowane):
+
+1. Pierwszy przebieg dał fałszywy alarm „WPŁYW WYKRYTY" na potoku `dsp`, którego
+   wejściem jest `/dev/urandom`. Ten sam silnik, dwa przebiegi → te same
+   różnice. Poprawka nie polega na usunięciu kłopotliwego potoku, tylko na
+   dodaniu **kontroli determinizmu** jako elementu badania: trzeci przebieg tym
+   samym silnikiem, a potok niedeterministyczny jest wyłączany z kryterium
+   z podaniem powodu. Ta klasa błędu ujawni się sama w przyszłych przebiegach.
+2. Groźniejsza: potoki `rec205-qrs` i `agse_volatile` nie mają dyrektywy
+   `STORAGE`, więc piszą do katalogu roboczego, a kolektor zbierał wyłącznie
+   z `temp/`. Raportowały `identyczne: true` przy **zerze porównanych
+   artefaktów** — połowa warstwy artefaktowej była pusta i przechodziła.
+   Poprawka: artefakt definiowany różnicowo (snapshot hashy przed przebiegiem,
+   zbieranie plików nowych i zmienionych) oraz **puste porównanie jako
+   porażka**. Po poprawce 142 artefakty zamiast 116 przy dwóch potokach pustych.
+
+**Wniosek metodologiczny do stosowania dalej.** Obie wady to ta sama klasa co
+luka pokrycia z K19 i z pierwszego testu regresji do `Fix (#214)`: **milczenie
+instrumentu wyglądało jak sukces**. Każde porównanie musi raportować liczbę
+porównanych rzeczy, a zero musi być błędem — sam wynik „zgodne" nie odróżnia
+zgodności od braku danych.
+
+**Zamknięty dług.** Normalizacja wyjścia przed hashowaniem (ścieżka katalogu
+roboczego → `<WORK>`) usuwa nieodtwarzalność odnotowaną 2026-07-28 przy
+`results_20260728_K4/collect.py`. Dane: `results_20260729_hygiene/`.

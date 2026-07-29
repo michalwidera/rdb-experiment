@@ -1,0 +1,10 @@
+:STORAGE	temp/
+core0(1/8)	data.txt
+	a: INTEGER
+	b: INTEGER
+str_null(1/8)
+	:- PUSH_STREAM(core0)
+	str_null_0: INTEGER
+		PUSH_ID(str_null[0])
+	str_null_1: INTEGER
+		PUSH_ID(str_null[1])

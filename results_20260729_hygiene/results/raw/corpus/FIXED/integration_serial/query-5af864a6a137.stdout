@@ -1,0 +1,14 @@
+:STORAGE	temp/
+src(1/8)	data.txt
+	a: INTEGER
+	b: FLOAT
+dst(1/8)
+	:- PUSH_STREAM(src)
+	dst_0: STRING
+		PUSH_ID(dst[0])
+		CALL2
+		PUSH_VAL(_test)
+		ADD
+	dst_1: STRING
+		PUSH_ID(dst[1])
+		CALL2

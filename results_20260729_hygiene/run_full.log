@@ -1,0 +1,11 @@
+Drzewa gotowe: HISTORICAL=0e0f701 FIXED=2a5aa86
+korpus: 81 plików
+różnice planu: 0
+zmiany statusu kompilacji: 0
+różnice liczników R1/R2: 0
+examples/ecg/rec205/rec205-qrs.rql: identyczne=True 
+test/IntegrationTest_parallel/dsp/query.rql: identyczne=False ['różnica w accRow (37400 vs 37400 bajtów)', 'różnica w output (1496 vs 1496 bajtów)', 'różnica w outputAll (2992 vs 2992 bajtów)', 'różnica w signalRow (9350 vs 9350 bajtów)']
+test/IntegrationTest_serial/optimizer_ablation/query.rql: identyczne=True 
+test/IntegrationTest_serial/agse_volatile/query.rql: identyczne=True 
+Werdykt: WPŁYW WYKRYTY
+Badanie zakończone; wynik: /home/michal/github/rdb-experiment/results_20260729_hygiene/results/summary.md

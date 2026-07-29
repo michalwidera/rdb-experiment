@@ -1,0 +1,49 @@
+core0(1/10)	datafile2.dat
+	a: INTEGER
+	b: INTEGER
+core1(1/20)	datafile3.dat
+	c: INTEGER
+	d: INTEGER
+str1(1/30)	tail=1
+	:- PUSH_STREAM(core0)
+	:- PUSH_STREAM(core1)
+	:- STREAM_HASH
+	a: INTEGER
+		PUSH_ID(str1[0])
+	b: INTEGER
+		PUSH_ID(str1[1])
+str2(1/20)
+	:- PUSH_STREAM(core0)
+	:- PUSH_STREAM(core1)
+	:- STREAM_ADD
+	core0_0: INTEGER
+		PUSH_ID(str2[0])
+	core0_1: INTEGER
+		PUSH_ID(str2[1])
+	core1_2: INTEGER
+		PUSH_ID(str2[2])
+	core1_3: INTEGER
+		PUSH_ID(str2[3])
+str5(4/39)
+	:- PUSH_STREAM(core0)
+	:- PUSH_VAL(4/1)
+	:- STREAM_DEHASH_MOD
+	a: INTEGER
+		PUSH_ID(str5[0])
+	b: INTEGER
+		PUSH_ID(str5[1])
+str4(3/28)	tail=1
+	:- PUSH_STREAM(core0)
+	:- PUSH_VAL(3/2)
+	:- STREAM_DEHASH_DIV
+	a: INTEGER
+		PUSH_ID(str4[0])
+	b: INTEGER
+		PUSH_ID(str4[1])
+str3(1/2)	tail=1
+	:- PUSH_STREAM(core0)
+	:- STREAM_SUBTRACT(1/2)
+	a: INTEGER
+		PUSH_ID(str3[0])
+	b: INTEGER
+		PUSH_ID(str3[1])
