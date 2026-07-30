@@ -1,0 +1,43 @@
+[
+  {
+    "potok": "examples/ecg/rec205/rec205-qrs.rql",
+    "cykli": 4000,
+    "HISTORICAL_rc": 0,
+    "FIXED_rc": 0,
+    "deterministyczny": true,
+    "identyczne": true,
+    "uwagi": [],
+    "artefaktow": 15
+  },
+  {
+    "potok": "test/IntegrationTest_parallel/dsp/query.rql",
+    "cykli": 400,
+    "HISTORICAL_rc": 0,
+    "FIXED_rc": 0,
+    "deterministyczny": false,
+    "identyczne": null,
+    "uwagi": [
+      "potok niedeterministyczny — dwa przebiegi tym samym silnikiem dają różne bajty; wyłączony z kryterium, bo nie odróżnia zmiany kodu od zmiany wejścia"
+    ]
+  },
+  {
+    "potok": "test/IntegrationTest_serial/optimizer_ablation/query.rql",
+    "cykli": 200,
+    "HISTORICAL_rc": 0,
+    "FIXED_rc": 0,
+    "deterministyczny": true,
+    "identyczne": true,
+    "uwagi": [],
+    "artefaktow": 116
+  },
+  {
+    "potok": "test/IntegrationTest_serial/agse_volatile/query.rql",
+    "cykli": 200,
+    "HISTORICAL_rc": 0,
+    "FIXED_rc": 0,
+    "deterministyczny": true,
+    "identyczne": true,
+    "uwagi": [],
+    "artefaktow": 11
+  }
+]

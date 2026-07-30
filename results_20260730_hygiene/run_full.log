@@ -1,0 +1,15 @@
+Uwaga: harness testowy zmieniony miedzy commitami (nie wplywa na to badanie):
+  test/IntegrationTest_serial/optimizer_ablation/verify.sh
+Drzewa gotowe: HISTORICAL=2a5aa86 FIXED=bb3a521
+korpus: 81 plików
+różnice planu: 0
+zmiany statusu kompilacji: 0
+różnice liczników R1/R2: 0
+examples/ecg/rec205/rec205-qrs.rql: identyczne=True 
+test/IntegrationTest_parallel/dsp/query.rql: NIEDETERMINISTYCZNY — wyłączony z kryterium
+test/IntegrationTest_serial/optimizer_ablation/query.rql: identyczne=True 
+test/IntegrationTest_serial/agse_volatile/query.rql: identyczne=True 
+Werdykt: BRAK WPŁYWU
+dowody porazki: brak (badanie bez roznic)
+Badanie zakończone; wynik: /home/michal/github/rdb-experiment/results_20260730_hygiene/results/summary.md
+results/raw.tar.gz b582f33356f73bf0a4e2f200733d5cc0c8a5bd2cac2c5367f61c61db290695b5 (813 plików)
