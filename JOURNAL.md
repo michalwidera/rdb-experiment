@@ -3290,3 +3290,58 @@ a potok `dsp` jest niedeterministyczny.
 Prowenancja trafiła do `manifest.md`, nie do `README.md` kampanii, bo manifesty
 K5 i K5_rerun przypinają `SHA-256` swojego README — zmiana README unieważniłaby
 tę kontrolę.
+
+## 2026-07-30 — Badanie higieniczne: `bb3a521` bez wpływu na zapisane wyniki
+
+**Po co.** `bb3a521` („Scalenie modyfikacji sond testowych") dodał trzy
+instrumenty wymagane przez K6 — `COMPILE_NS`, `PLAN capacity`, `MATERIALIZED` —
+dotykając `compiler.cpp` (`compile()`) i `storage.cc` (`storage::write`), czyli
+kodu wspólnego dla wszystkich profili i wszystkich zapytań. `storage::write`
+jest ścieżką gorącą wykonywaną raz na rekord. Argument „to jest za `#ifdef`" nie
+wystarcza, bo kampanie pomiarowe budują z `RDB_BENCH_PROBE=ON` (R6) — dla nich
+nowy kod nie jest wyłączony, lecz jest właśnie tym, co działa.
+
+**Jak.** Dwa drzewa Release, oba z sondą, identyczne przełączniki potwierdzone
+pustym `build-info-diff.txt`: `HISTORICAL` `2a5aa86` z klonu, `FIXED` `bb3a521`.
+Warunek ważności sprawdzany **maszynowo**: różnica między commitami nie może
+obejmować wejść silnika (`*.rql`, `examples/`). Warunek spełniony; zmiana
+w `optimizer_ablation/verify.sh` została zgłoszona jako nieblokująca, bo to
+harness testowy, którego badanie nie uruchamia. Kontrola pozytywna przerywa
+przebieg, gdyby drzewo historyczne stało na commicie docelowym.
+
+Warstwa pierwsza — 81 plików RQL × 2 silniki, compile-only. Warstwa druga —
+4 potoki × 3 przebiegi, porównanie bajtowe; trzeci przebieg to kontrola
+determinizmu.
+
+**Wynik: BRAK WPŁYWU.** Zero różnic w zrzutach planu, zero zmian statusu
+kompilacji (76 skompilowanych, 5 oczekiwanych odrzuceń po obu stronach), zero
+różnic w licznikach (R1=8, R2=18 identycznie), 142 artefakty bajtowo identyczne
+w trzech deterministycznych potokach. `dsp` wyłączony przez kontrolę
+determinizmu — czyta `/dev/urandom`, co mechanizm wykrył samodzielnie.
+**Wyniki K4, K18, K19 i K5 pozostają w mocy.**
+
+**Dwie wady wykryte w kampanii, obie w harnessie, obie odnotowane w manifeście.**
+
+1. **Katalog roboczy wewnątrz katalogu wyników.** `results/.trees` (klon i build
+   drzewa historycznego) wnosił 3814 plików i `tests/test_artifacts.sh` słusznie
+   odrzucił katalog jako nieprzeglądalny. `.gitignore` chronił repozytorium, ale
+   nie przeglądalność katalogu, o którą upiera się R14 — katalog roboczy jest
+   buildem, nie wynikiem. Domyślna lokalizacja przeniesiona do
+   `<repo_kodu>/build/HYG2-trees`. Wada odziedziczona po
+   `results_20260729_hygiene`, gdzie test przeszedł **tylko dlatego**, że
+   katalog roboczy usunięto wcześniej ręcznie przy porządkowaniu dysku. Zielony
+   wynik tamtej kampanii był więc przypadkiem, nie własnością harnessu.
+2. **Raport nosił commity z poprzedniej kampanii.** `verdict.py` miał je
+   zaszyte w kodzie, więc pierwszy wygenerowany `summary.md` wypisał
+   `0e0f701` → `2a5aa86` i tytuł „Fix (#214)" zamiast badanej pary.
+   Poprawione u źródła: `build_trees.sh` zapisuje `results/commits.tsv` na
+   podstawie **faktycznie zbudowanych** drzew, a raport je odczytuje. Dane się
+   nie zmieniły — nagłówek przeliczono z tych samych `corpus.json`
+   i `pipelines.json`.
+
+Druga wada jest tej samej klasy co wcześniejsze: raport twierdził coś
+sprawdzalnie nieprawdziwego o własnym przedmiocie, a nikt poza czytającym nie
+mógł tego wychwycić. Stąd reguła: **dane identyfikujące badanie muszą pochodzić
+z badania, nie z szablonu.**
+
+Dane: `results_20260730_hygiene/`.

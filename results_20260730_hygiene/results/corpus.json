@@ -1,0 +1,18 @@
+{
+  "korpus": 81,
+  "historical": {
+    "skompilowane": 76,
+    "odrzucone": 5,
+    "r1": 8,
+    "r2": 18
+  },
+  "fixed": {
+    "skompilowane": 76,
+    "odrzucone": 5,
+    "r1": 8,
+    "r2": 18
+  },
+  "plan_differences": [],
+  "status_changes": [],
+  "counter_differences": []
+}
