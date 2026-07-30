@@ -1,5 +1,0 @@
-{	INTEGER cax
-	INTEGER cay
-	RETMEMORY 4
-	TYPE MEMORY
-}

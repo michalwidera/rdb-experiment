@@ -1,7 +1,0 @@
-:STORAGE	temp/
-src(1/8)	data.txt
-	a: INTEGER
-dst(1/8)
-	:- PUSH_STREAM(src)
-	dst_0: INTEGER
-		PUSH_ID(dst[0])

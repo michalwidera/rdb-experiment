@@ -1,8 +1,0 @@
-{	INTEGER d_acc_0
-	INTEGER d_acc_1
-	INTEGER d_acc_2
-	INTEGER d_acc_3
-	INTEGER d_acc_4
-	RETMEMORY 1
-	TYPE MEMORY
-}

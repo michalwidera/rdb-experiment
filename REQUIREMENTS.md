@@ -233,3 +233,50 @@ Skan:
 Brak zaufanego fingerprintu, brak kandydata albo wielu pasujących kandydatów
 zatrzymuje proces. Wykrywanie nie może używać `StrictHostKeyChecking=no` ani
 traktować samego otwartego portu jako potwierdzenia tożsamości.
+
+## R14. Higiena artefaktów surowych
+
+Katalog wyników jest przeznaczony do przeglądu przez człowieka i przez IDE.
+Kampania nie może zostawić w nim tysięcy luźnych plików: taki katalog nie da się
+przejrzeć, a merytorycznie wnosi tyle, co jego indeks.
+
+Surowe artefakty silnika — `.desc`, `.meta`, `.shadow`, dane strumieni, zrzuty
+`stdout`/`stderr` pojedynczych kompilacji — powstają w `/dev/shm` i tam są
+porównywane. Do repozytorium trafiają według trzech reguł:
+
+1. **Dowód porażki jest plikiem.** Artefakt imiennie wskazany w werdykcie
+   negatywnym (różnica bajtowa, nieoczekiwane odrzucenie, timeout) jest
+   kopiowany do `results/evidence/` z zachowaniem nazwy z werdyktu.
+2. **Sukces jest skrótem.** Zrzuty i drzewa udanych przebiegów nie stają się
+   plikami; ich `SHA-256` i rozmiar zapisuje raport kampanii.
+3. **Reszta jest jednym archiwum.** Katalog surowy jest pakowany do
+   deterministycznego `tar.gz` z indeksem `SHA-256` obok — na koniec badania,
+   **również gdy badanie zawiodło**, bo dowód porażki nie może być zachowany
+   w gorszej formie niż dowód sukcesu.
+
+Mechanizm współdzielony: `lib/artifacts.py` i `lib/artifacts.sh`. Skrypt
+kampanii pakuje przez pułapkę `EXIT`, która zachowuje kod wyjścia badania:
+
+```bash
+source "$experiment_repo/lib/artifacts.sh"
+artifacts_pack_on_exit results/raw results/workloads
+```
+
+Kompaktowanie zmienia formę zapisu, nie treść. Indeks dowodzi tożsamości bajtów
+i pozwala odnaleźć plik bez rozpakowywania, więc nie narusza niemutowalności
+ukończonego badania z R3. Katalog już istniejący porządkuje
+`./compact_results.sh <katalog_wynikow>`.
+
+Manifest badania przypina, w części „Artefakty surowe": commit repozytorium
+kodu, commit repozytorium wyników, `SHA-256` każdego archiwum oraz dosłowny ciąg
+poleceń odtwarzających artefakty od zera. Odtwarzalność wyniku nie może zależeć
+od przechowywania samych artefaktów.
+
+Regresja wymusza: zastąpienie drzewa archiwum, zgodność rozpakowanego archiwum
+z indeksem, determinizm archiwum, pakowanie po porażce z zachowaniem kodu
+wyjścia, brak plików dla przebiegów udanych oraz limit luźnych plików w każdym
+katalogu `results_*`:
+
+```bash
+./tests/test_artifacts.sh
+```

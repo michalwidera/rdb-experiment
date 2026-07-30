@@ -1,5 +1,0 @@
-{	INTEGER cax
-	INTEGER cay
-	REF "p.txt"
-	TYPE TEXTSOURCE
-}

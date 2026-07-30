@@ -131,6 +131,48 @@ results_20260728_performance/
 Nie istnieje rotacja. Skrypt nie nadpisze istniejącego katalogu kampanii ani
 badania. Zmiana kodu, konfiguracji lub celu wymaga nowego `experiment-id`.
 
+## Higiena artefaktów surowych
+
+Wymaganie `REQUIREMENTS.md` R14: katalog wyników zostaje przeglądalny. Surowe
+drzewa artefaktów silnika powstają w `/dev/shm`, a w repozytorium zostaje
+dowód porażki jako plik, skrót `SHA-256` dla przebiegów udanych i jedno
+archiwum na katalog surowy.
+
+`run.sh` kampanii pakuje przez pułapkę `EXIT` — również po porażce:
+
+```bash
+source "$experiment_repo/lib/artifacts.sh"
+artifacts_pack_on_exit results/raw results/workloads
+```
+
+Kolektor w Pythonie nie zapisuje zrzutów udanego przebiegu i kopiuje wyłącznie
+artefakty wskazane w werdykcie:
+
+```python
+sys.path.insert(0, f"{experiment_repo}/lib")
+import artifacts
+
+record = artifacts.keep_output(raw_base, stdout, stderr, evidence=returncode != 0)
+artifacts.keep_evidence(differing, work / "temp", output / "evidence" / case)
+```
+
+Katalog, który już rozrósł się do tysięcy plików:
+
+```bash
+./compact_results.sh results_20260729_K5 \
+  --evidence results/raw/semantic/W8_Q01/STRUCT/mlii.desc
+```
+
+Narzędzie kopiuje dowody do `results/evidence/`, pakuje `results/raw`
+i `results/workloads` do `tar.gz` z indeksem `SHA-256` i wypisuje tabelę do
+przypięcia w manifeście. Pojedynczy plik odzyskuje się bez rozpakowywania
+całości:
+
+```bash
+grep mwi.desc results_20260729_K5/results/raw.index.tsv
+tar -xzOf results_20260729_K5/results/raw.tar.gz raw/semantic/W8_Q01/STRUCT/mwi.desc
+```
+
 ## Metryki
 
 `e1_probe.csv` zawiera:
@@ -174,6 +216,7 @@ i decyduje o merge do `main`.
 
 ```bash
 ./tests/test_orchestration.sh
+./tests/test_artifacts.sh
 ```
 
 Testy wymuszają między innymi:
@@ -185,3 +228,8 @@ Testy wymuszają między innymi:
 
 Każda negatywna ścieżka musi zwrócić kod niezerowy, a test kończy się błędem,
 jeżeli pozostawi monitorowany proces.
+
+Drugi zestaw pilnuje higieny artefaktów (R14): determinizmu archiwum, zgodności
+rozpakowanego drzewa z indeksem, pakowania po porażce z zachowaniem kodu wyjścia
+oraz limitu luźnych plików w każdym katalogu `results_*`. Kampania, która zaleje
+katalog wyników tysiącami plików, nie przejdzie tego testu.

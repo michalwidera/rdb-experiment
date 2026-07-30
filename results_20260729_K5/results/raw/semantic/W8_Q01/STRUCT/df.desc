@@ -1,4 +1,0 @@
-{	INTEGER d_coef[5]
-	REF "d_coef.txt"
-	TYPE TEXTSOURCE
-}

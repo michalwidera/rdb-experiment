@@ -1,7 +1,0 @@
-:STORAGE	temp/
-core0(1/5)	datafile2.dat
-	a: INTEGER
-str1(1/5)
-	:- PUSH_STREAM(core0)
-	str1_0: INTEGER
-		PUSH_ID(str1[0])

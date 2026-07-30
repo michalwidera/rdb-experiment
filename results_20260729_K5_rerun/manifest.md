@@ -48,9 +48,62 @@ procedury nadzorcy. Worker wchodzi dopiero w K6.
 | R12 odtwarzalność | ten manifest, `README.md` z SHA-256, wpis w `JOURNAL.md` |
 | R13 wykrywanie workera | **nie dotyczy** |
 
+## Artefakty surowe
+
+Kampania wytworzyła 4328 surowych plików artefaktów silnika. Zgodnie z
+`REQUIREMENTS.md` R14 zostały w katalogu jako archiwa z indeksem:
+
+| Archiwum | Plików | Bajtów | SHA-256 |
+|---|---:|---:|---|
+| `results/raw.tar.gz` | 4213 | 194945 | `cd20f8d38984ac4164a9b45a4aee601441271215ff223785b0790d2df59503dd` |
+| `results/workloads.tar.gz` | 115 | 8319 | `a10c708ab839ba7aae5e9c713ee7094f7d81b34a9dd86ae91749cb78b1901f0c` |
+
+Katalogu `results/evidence/` nie ma i to jest treść werdyktu: wszystkie 25
+przypadków kontroli semantycznej dały artefakty identyczne co do bajtu, więc
+żaden plik surowy nie jest dowodem czegokolwiek poza własną zgodnością.
+Zgodność jest zapisana w `results/semantic.json`, a tożsamość bajtów archiwum
+potwierdza `results/raw.index.tsv`.
+
+Pojedynczy artefakt wyjmuje się bez rozpakowywania całości:
+
+```bash
+grep w4_avg_000.desc results/raw.index.tsv
+tar -xzOf results/raw.tar.gz raw/semantic/W4_Q32/ALGSTRUCT/w4_avg_000.desc
+```
+
+### Odtworzenie artefaktów
+
+| Repozytorium | Commit | Branch |
+|---|---|---|
+| `retractordb` (kod) | `2a5aa86148cc4e76ccc0adb8f3e2fa9f450b9123` | `master` |
+| `rdb-experiment` (skrypty i wyniki) | `c081a0bb889e148d3d8ffa201d9781c4b216e484` | `experiment/20260729_K5` |
+
+```bash
+git -C /home/michal/github/retractordb checkout 2a5aa861   # drzewo musi być czyste
+git -C /home/michal/github/rdb-experiment checkout c081a0bb
+cd /home/michal/github/rdb-experiment/results_20260729_K5_rerun
+./run.sh                       # build_profiles.sh + generate.py + collect.py + semantic.py + verdict.py
+```
+
+`run.sh` weryfikuje commit kodu i czystość obu repozytoriów przed pierwszą
+kompilacją, więc pomyłka w `checkout` zatrzymuje przebieg. Zgodność odtworzonych
+artefaktów z zapisanymi sprawdza indeks:
+
+```bash
+python3 ../lib/artifacts.py index results/raw /tmp/raw.index.tsv
+diff results/raw.index.tsv /tmp/raw.index.tsv
+```
+
+Zrzuty `stdout` kompilacji zawierają ścieżkę katalogu roboczego w `/dev/shm`
+i nie są odtwarzalne bajtowo; porównywalne są artefakty silnika oraz liczniki
+w `results/counts.json`.
+
 ## Odstępstwa
 
 1. **R4, jeden commit.** Człowiek zezwolił 2026-07-29 na commity w trakcie
    realizacji na branchu `experiment/20260729_K5`.
 2. **R9, `e1_probe.csv` i `metrics.csv`.** Nie powstają — dotyczą sondy
    czasowej, której ta kampania nie uruchamia.
+3. **R14, kompaktowanie po fakcie.** Kampania powstała przed wprowadzeniem R14;
+   archiwa utworzył `compact_results.sh` 2026-07-30. Treść artefaktów nie
+   zmieniła się — dowodzą tego indeksy `SHA-256`.

@@ -1,5 +1,0 @@
-{	INTEGER cbx
-	INTEGER cby
-	RETMEMORY 4
-	TYPE MEMORY
-}

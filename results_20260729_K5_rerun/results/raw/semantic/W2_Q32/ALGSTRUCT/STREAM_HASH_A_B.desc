@@ -1,4 +1,0 @@
-{	INTEGER value
-	RETMEMORY 4
-	TYPE MEMORY
-}

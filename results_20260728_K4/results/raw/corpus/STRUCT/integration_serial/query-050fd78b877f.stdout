@@ -1,9 +1,0 @@
-:STORAGE	temp/
-src(1/8)	data.txt
-	d: INTEGER
-dst(1/8)
-	:- PUSH_STREAM(src)
-	dst_0: INTEGER
-		PUSH_VAL(100)
-		PUSH_ID(dst[0])
-		DIVIDE

@@ -1,6 +1,0 @@
-core(1/1)	dane.txt
-	a: INTEGER
-ping(1/1)
-	:- PUSH_STREAM(core)
-	core_0: INTEGER
-		PUSH_ID(ping[0])

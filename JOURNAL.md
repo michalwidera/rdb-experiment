@@ -3241,3 +3241,52 @@ zgodności od braku danych.
 **Zamknięty dług.** Normalizacja wyjścia przed hashowaniem (ścieżka katalogu
 roboczego → `<WORK>`) usuwa nieodtwarzalność odnotowaną 2026-07-28 przy
 `results_20260728_K4/collect.py`. Dane: `results_20260729_hygiene/`.
+
+## 2026-07-30 — R14: higiena artefaktów, katalogi wyników z powrotem przeglądalne
+
+Cztery ostatnie kampanie zostawiły w repozytorium **8849 luźnych plików** — same
+`results_20260729_K5_rerun` 4346. Taki katalog nie da się przejrzeć ręcznie,
+a IDE i narzędzia indeksujące dławią się na drzewie artefaktów silnika. Wartość
+merytoryczna była w niewielkiej części: kampania czytała z tych plików kilka
+bajtów, które i tak trafiły do `summary.md`, a `semantic.py` kopiowało do
+repozytorium całe drzewo `temp/` — wraz z artefaktami wewnętrznymi, **jawnie
+pomijanymi w porównaniu**.
+
+**Nowe wymaganie R14.** Surowe artefakty powstają w `/dev/shm` i tam są
+porównywane. Do repozytorium trafiają wg trzech reguł: dowód porażki jest
+plikiem w `results/evidence/`, przebieg udany zostawia wyłącznie `SHA-256`
+w raporcie, a resztę zachowuje jedno deterministyczne archiwum `tar.gz`
+z indeksem obok. Pakowanie idzie przez pułapkę `EXIT`, więc dzieje się także po
+porażce — dowód porażki nie może być zachowany w gorszej formie niż dowód
+sukcesu — i zachowuje kod wyjścia badania.
+
+Mechanizm: `lib/artifacts.py`, `lib/artifacts.sh`, `compact_results.sh`.
+Regresja: `tests/test_artifacts.sh` (8 kontroli) wymusza determinizm archiwum,
+zgodność rozpakowanego drzewa z indeksem, pakowanie po porażce, brak plików dla
+przebiegów udanych oraz limit 300 luźnych plików w każdym `results_*`.
+
+**Sprzątnięcie po fakcie.** Cztery katalogi skompaktowane: 8777 plików surowych
+zamieniono na 6 archiwów z indeksami `SHA-256` i 49 plików dowodowych, więc
+z 8849 plików w tych katalogach zostało 133:
+
+| Katalog | Plików przed | Plików po | Dowody luzem |
+|---|---:|---:|---|
+| `results_20260728_K4` | 833 | 40 | 25 × `stderr` oczekiwanych odrzuceń, po jednym na profil |
+| `results_20260729_K5` | 2838 | 50 | 24 × `.desc` różniące się bajtowo w `W8_*` — treść werdyktu NO-GO |
+| `results_20260729_K5_rerun` | 4346 | 22 | brak — wszystkie 25 przypadków identyczne co do bajtu |
+| `results_20260729_hygiene` | 832 | 21 | brak — werdykt pozytywny |
+
+Kompaktowanie zmienia formę, nie treść: rozpakowane archiwum zgadza się
+z indeksem bajt w bajt (sprawdzone dla `results_20260729_K5/results/raw.tar.gz`,
+2701 plików). Niemutowalność ukończonego badania z R3 pozostaje zachowana.
+
+**Odtwarzalność zamiast przechowywania.** Każdy manifest ma teraz sekcję
+„Artefakty surowe": tabelę archiwów z `SHA-256`, wskazanie dowodów porażki oraz
+parę commitów `retractordb` + `rdb-experiment` z dosłownym ciągiem poleceń
+odtwarzającym artefakty od zera. Zapisano też, co **nie jest** odtwarzalne
+bajtowo: zrzuty `stdout` zawierają ścieżkę katalogu roboczego w `/dev/shm`,
+a potok `dsp` jest niedeterministyczny.
+
+Prowenancja trafiła do `manifest.md`, nie do `README.md` kampanii, bo manifesty
+K5 i K5_rerun przypinają `SHA-256` swojego README — zmiana README unieważniłaby
+tę kontrolę.

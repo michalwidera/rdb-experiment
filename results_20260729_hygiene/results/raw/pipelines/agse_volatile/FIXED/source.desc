@@ -1,4 +1,0 @@
-{	INTEGER value
-	REF "data.txt"
-	TYPE TEXTSOURCE
-}

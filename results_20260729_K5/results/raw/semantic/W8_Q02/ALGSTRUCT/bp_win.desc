@@ -1,8 +1,0 @@
-{	INTEGER bp_out_0
-	INTEGER bp_out_1
-	INTEGER bp_out_2
-	INTEGER bp_out_3
-	INTEGER bp_out_4
-	RETMEMORY 1
-	TYPE MEMORY
-}

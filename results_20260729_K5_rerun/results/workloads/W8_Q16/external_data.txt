@@ -1,3 +1,0 @@
-examples/ecg/rec205/rec205
-examples/ecg/rec205/bp_coef.txt
-examples/ecg/rec205/d_coef.txt
