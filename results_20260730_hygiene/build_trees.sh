@@ -15,7 +15,7 @@ jobs=${HYG2_BUILD_JOBS:-4}
 historical_commit=2a5aa86148cc4e76ccc0adb8f3e2fa9f450b9123
 fixed_commit=bb3a5216b952432818b23a26365001fe4f7627f5
 
-trees_root=${HYG2_TREES:-"$here/.trees"}
+trees_root=${HYG2_TREES:-"$code_repo/build/HYG2-trees"}
 raw="$here/results/raw/build"
 mkdir -p "$raw" "$trees_root"
 

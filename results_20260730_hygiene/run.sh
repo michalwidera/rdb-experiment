@@ -8,7 +8,7 @@ experiment_repo=$(realpath ..)
 code_repo=${RDB_CODE_REPO:-"$experiment_repo/../retractordb"}
 code_repo=$(realpath "$code_repo")
 fixed_commit=bb3a5216b952432818b23a26365001fe4f7627f5
-trees_root=${HYG2_TREES:-"$here/.trees"}
+trees_root=${HYG2_TREES:-"$code_repo/build/HYG2-trees"}
 
 if [ -n "$(git -C "$code_repo" status --porcelain=v1 --untracked-files=all)" ]; then
   echo "Repozytorium kodu musi być czyste przed przebiegiem." >&2; exit 1

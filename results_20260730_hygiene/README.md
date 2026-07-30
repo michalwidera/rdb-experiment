@@ -110,3 +110,10 @@ sprawdzana jest wyłącznie równoważność zachowania.
 przez pułapkę `EXIT`, **również gdy badanie zawiedzie**. Artefakty imiennie
 wskazane w werdykcie negatywnym są wcześniej kopiowane do `results/evidence/`;
 lista jest zapisywana w `results/evidence_list.txt` także wtedy, gdy jest pusta.
+
+Katalog roboczy z klonem drzewa historycznego leży **poza** katalogiem wyników,
+w `<repo_kodu>/build/HYG2-trees` (nadpisywalne przez `HYG2_TREES`). W pierwszym
+przebiegu tej kampanii był w `results/.trees` i wnosił 3814 plików, przez co
+`tests/test_artifacts.sh` słusznie odrzucił katalog jako nieprzeglądalny —
+`.gitignore` chronił repozytorium, ale nie przeglądalność katalogu, o którą
+R14 się upiera. Katalog roboczy jest buildem, nie wynikiem.

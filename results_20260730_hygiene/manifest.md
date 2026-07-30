@@ -12,7 +12,7 @@
 | Branch wyników | `experiment/20260730_hygiene` |
 | Maszyna | `B850MDESK` (nadzorca) |
 | Worker pomiarowy | **nie użyty** — badanie nie mierzy czasu |
-| SHA-256 `README.md` | `405cbdac38ea86c70ce244b3b516cbbfc6f7eb0633d38a6057c549ec12f78b8f` |
+| SHA-256 `README.md` | `921f83e83621c2d5c7ae7b0f0550511c3b831cf8acc66089a8d32a5fc1d40a8d` |
 | Werdykt | **BRAK WPŁYWU** |
 
 ## Co badane
@@ -94,11 +94,17 @@ Zrzuty `stdout` kompilacji są normalizowane (ścieżka katalogu roboczego → `
 | R6 build pomiarowy | oba drzewa Release z `RDB_BENCH_PROBE=ON`, `--build-info` weryfikowane bajtowo |
 | R7 środowisko RT | **nie dotyczy** — brak metryk czasowych |
 | R12 odtwarzalność | ten manifest, `README.md` z SHA-256, wpis w `JOURNAL.md` |
-| R14 higiena artefaktów | `results/raw` spakowany przez pułapkę `EXIT`; 9 luźnych plików w `results/` |
+| R14 higiena artefaktów | `results/raw` spakowany przez pułapkę `EXIT`; 19 plików w katalogu kampanii; `tests/test_artifacts.sh` 8/8 |
 
 ## Odstępstwa
 
-1. **Raport pierwszego przebiegu nosił commity z poprzedniej kampanii.**
+1. **Katalog roboczy leżał wewnątrz katalogu wyników.** `results/.trees` (klon
+   i build drzewa historycznego) wnosił 3814 plików i `tests/test_artifacts.sh`
+   słusznie odrzucił katalog jako nieprzeglądalny. Domyślna lokalizacja
+   przeniesiona do `<repo_kodu>/build/HYG2-trees`. Wada odziedziczona po
+   `results_20260729_hygiene`, gdzie test przeszedł tylko dlatego, że katalog
+   roboczy usunięto wcześniej ręcznie przy porządkowaniu dysku.
+2. **Raport pierwszego przebiegu nosił commity z poprzedniej kampanii.**
    `verdict.py` miał je zaszyte w kodzie. Poprawione: `build_trees.sh` zapisuje
    `results/commits.tsv` na podstawie **faktycznie zbudowanych** drzew, a raport
    je odczytuje. Dane badania nie zmieniły się — poprawka dotyczyła wyłącznie
