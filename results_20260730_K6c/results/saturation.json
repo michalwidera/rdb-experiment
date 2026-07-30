@@ -1,0 +1,86 @@
+{
+  "case": "W8_Q32",
+  "reps": 5,
+  "slots": 3000,
+  "runs": 30,
+  "observations": [
+    {
+      "rate_hz": 360,
+      "profile": "STRUCT",
+      "slot_ns": 1388888.888888889,
+      "slot_nominal_ns": 2777777.777777778,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2504747.0,
+      "reps": 5
+    },
+    {
+      "rate_hz": 360,
+      "profile": "ALGSTRUCT",
+      "slot_ns": 1388888.888888889,
+      "slot_nominal_ns": 2777777.777777778,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2572426.0,
+      "reps": 5
+    },
+    {
+      "rate_hz": 480,
+      "profile": "STRUCT",
+      "slot_ns": 1041666.6666666666,
+      "slot_nominal_ns": 2083333.3333333333,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2671587.0,
+      "reps": 5
+    },
+    {
+      "rate_hz": 480,
+      "profile": "ALGSTRUCT",
+      "slot_ns": 1041666.6666666666,
+      "slot_nominal_ns": 2083333.3333333333,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2766049.5,
+      "reps": 5
+    },
+    {
+      "rate_hz": 540,
+      "profile": "STRUCT",
+      "slot_ns": 925925.925925926,
+      "slot_nominal_ns": 1851851.851851852,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2554513.5,
+      "reps": 5
+    },
+    {
+      "rate_hz": 540,
+      "profile": "ALGSTRUCT",
+      "slot_ns": 925925.925925926,
+      "slot_nominal_ns": 1851851.851851852,
+      "client_stream": "mon_000",
+      "slot_from": "silnik",
+      "overrun_median": 0.9894736842105263,
+      "overrun_max": 0.9894736842105263,
+      "overrun_min": 0.9894736842105263,
+      "compute_median_ns": 2520414.0,
+      "reps": 5
+    }
+  ]
+}

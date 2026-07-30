@@ -36,7 +36,24 @@ W trakcie eksperymentu w repozytorium kodu nie wolno:
 - tworzyć katalogów ani plików wynikowych;
 - wykonywać `git add`, `git commit`, `git push` ani `commit --amend`;
 - zmieniać brancha lub commita po zakończeniu preflight;
-- pozostawić jakiejkolwiek zmiany widocznej w `git status --short`.
+- pozostawić jakiejkolwiek zmiany widocznej w odcisku drzewa roboczego.
+
+**Odcisk drzewa obejmuje pliki ignorowane.** `git status --short` jest ślepy na
+`.gitignore`, a artefakty silnika w `examples/ecg/rec205/` są tam wypisane
+imiennie. Trzy kampanie z rzędu raportowały „repozytorium kodu czyste", mając
+w nim 34 pliki wyjściowe poprzedniego przebiegu (wykryte 2026-07-30 przy
+przygotowaniu K6, wyczyszczone). Obowiązują dwie kontrole z `lib/common.sh`:
+
+- `require_input_dirs_pristine <repo> <ścieżki…>` — katalogi wejściowe muszą
+  przed badaniem zawierać **zero** plików nieśledzonych i ignorowanych; zero
+  sprawdzonych ścieżek jest błędem, nie zgodnością;
+- `code_tree_fingerprint` przed badaniem i `require_code_tree_unchanged` po nim
+  — porównanie obejmuje pliki ignorowane, z wyjątkiem katalogów budowy, które
+  kampania tworzy sama.
+
+Dane wejściowe pochodzące z repozytorium kodu są **kopiowane** do `/dev/shm`,
+nie symlinkowane: symlink daje silnikowi ścieżkę, przy której artefakt może
+powstać w repozytorium kodu.
 
 Wszystkie wyniki, manifesty, README kampanii, wpisy `JOURNAL.md`, commity i
 pushe trafiają wyłącznie do brancha repozytorium `rdb-experiment`. Naruszenie
@@ -198,10 +215,20 @@ Regresje w `tests/test_orchestration.sh` muszą wymuszać co najmniej:
 - sprzątnięcie procesów po ścieżkach negatywnych, również gdy proces ignoruje
   `SIGTERM`.
 
-Zestaw uruchamia się poleceniem:
+Regresje w `tests/test_code_guard.sh` muszą wymuszać co najmniej:
+
+- wykrycie artefaktu **ignorowanego** w katalogu wejściowym repozytorium kodu,
+  wraz z dowodem, że `git status --short` go nie widzi;
+- wykrycie zmiany drzewa powstałej w trakcie badania;
+- pominięcie katalogów budowy w odcisku;
+- błąd przy zerowej liczbie sprawdzonych ścieżek;
+- bajtową weryfikację profilu ablacyjnego przez `--build-info`.
+
+Zestawy uruchamia się poleceniami:
 
 ```bash
 ./tests/test_orchestration.sh
+./tests/test_code_guard.sh
 ```
 
 ## R12. Odtwarzalność i dziennik

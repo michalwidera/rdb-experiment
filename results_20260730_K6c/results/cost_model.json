@@ -1,0 +1,434 @@
+{
+  "features": [
+    "tokeny",
+    "bajty_trwale_na_slot",
+    "bajty_pamieciowe_na_slot"
+  ],
+  "coefficients": {
+    "tokeny": 32674.643346558696,
+    "bajty_trwale_na_slot": -14046.573878152863,
+    "bajty_pamieciowe_na_slot": -62868.72693233383
+  },
+  "train_families": [
+    "W2",
+    "W3",
+    "W5",
+    "W7"
+  ],
+  "test_families": [
+    "W4",
+    "W9"
+  ],
+  "train_points": 22,
+  "test_points": 18,
+  "skipped_observations": 0,
+  "plan_counters_compared": 14,
+  "plan_counters_problems": [],
+  "train": [
+    {
+      "case": "W2_Q01",
+      "family": "W2",
+      "scale": 12,
+      "predicted_ns": 97107.81736171184,
+      "measured_ns": 399681.0,
+      "relative_error": -0.7570366933586739
+    },
+    {
+      "case": "W2_Q01",
+      "family": "W2",
+      "scale": 24,
+      "predicted_ns": 96554.17419791938,
+      "measured_ns": 387366.0,
+      "relative_error": -0.7507417424401744
+    },
+    {
+      "case": "W2_Q01",
+      "family": "W2",
+      "scale": 36,
+      "predicted_ns": 96369.6264766552,
+      "measured_ns": 198332.0,
+      "relative_error": -0.514099457088845
+    },
+    {
+      "case": "W2_Q08",
+      "family": "W2",
+      "scale": 12,
+      "predicted_ns": 718658.5465765964,
+      "measured_ns": 733380.0,
+      "relative_error": -0.0200734318135258
+    },
+    {
+      "case": "W2_Q08",
+      "family": "W2",
+      "scale": 24,
+      "predicted_ns": 717285.5199365783,
+      "measured_ns": 704140.0,
+      "relative_error": 0.01866890098074012
+    },
+    {
+      "case": "W2_Q08",
+      "family": "W2",
+      "scale": 36,
+      "predicted_ns": 716827.8443899057,
+      "measured_ns": 1015026.0,
+      "relative_error": -0.2937837608200128
+    },
+    {
+      "case": "W2_Q32",
+      "family": "W2",
+      "scale": 12,
+      "predicted_ns": 2849689.618170486,
+      "measured_ns": 2603248.0,
+      "relative_error": 0.09466697685755865
+    },
+    {
+      "case": "W2_Q32",
+      "family": "W2",
+      "scale": 24,
+      "predicted_ns": 2845507.276754837,
+      "measured_ns": 2607469.0,
+      "relative_error": 0.09129093260738172
+    },
+    {
+      "case": "W2_Q32",
+      "family": "W2",
+      "scale": 36,
+      "predicted_ns": 2844113.1629496207,
+      "measured_ns": 2651083.0,
+      "relative_error": 0.072811814247091
+    },
+    {
+      "case": "W3_d1",
+      "family": "W3",
+      "scale": 12,
+      "predicted_ns": 718658.5465765964,
+      "measured_ns": 733455.0,
+      "relative_error": -0.020173634951569697
+    },
+    {
+      "case": "W3_d1",
+      "family": "W3",
+      "scale": 24,
+      "predicted_ns": 717285.5199365783,
+      "measured_ns": 703269.0,
+      "relative_error": 0.019930524360633483
+    },
+    {
+      "case": "W3_d1",
+      "family": "W3",
+      "scale": 36,
+      "predicted_ns": 716827.8443899057,
+      "measured_ns": 730529.0,
+      "relative_error": -0.018755115279604658
+    },
+    {
+      "case": "W3_d3",
+      "family": "W3",
+      "scale": 12,
+      "predicted_ns": 1162271.6554991277,
+      "measured_ns": 1114321.0,
+      "relative_error": 0.043031276893397585
+    },
+    {
+      "case": "W3_d3",
+      "family": "W3",
+      "scale": 24,
+      "predicted_ns": 1159240.6104239523,
+      "measured_ns": 1117987.0,
+      "relative_error": 0.03689990171974481
+    },
+    {
+      "case": "W3_d3",
+      "family": "W3",
+      "scale": 36,
+      "predicted_ns": 1159240.6104239523,
+      "measured_ns": 1116340.0,
+      "relative_error": 0.03842969921704171
+    },
+    {
+      "case": "W5_Q32",
+      "family": "W5",
+      "scale": 12,
+      "predicted_ns": 2837629.009091012,
+      "measured_ns": 2716469.0,
+      "relative_error": 0.044602021628449354
+    },
+    {
+      "case": "W5_Q32",
+      "family": "W5",
+      "scale": 24,
+      "predicted_ns": 2835756.1325739254,
+      "measured_ns": 2661710.0,
+      "relative_error": 0.06538884122384686
+    },
+    {
+      "case": "W5_Q32",
+      "family": "W5",
+      "scale": 36,
+      "predicted_ns": 2835131.840401563,
+      "measured_ns": 2686041.0,
+      "relative_error": 0.055505794737147666
+    },
+    {
+      "case": "W7_Q32",
+      "family": "W7",
+      "scale": 6,
+      "predicted_ns": 3003164.5892461543,
+      "measured_ns": 3266512.0,
+      "relative_error": -0.08062037144019238
+    },
+    {
+      "case": "W7_Q32",
+      "family": "W7",
+      "scale": 12,
+      "predicted_ns": 2995477.991873943,
+      "measured_ns": 3237778.0,
+      "relative_error": -0.07483527534193425
+    },
+    {
+      "case": "W7_Q32",
+      "family": "W7",
+      "scale": 24,
+      "predicted_ns": 2991634.693187837,
+      "measured_ns": 3239093.0,
+      "relative_error": -0.07639740717915879
+    },
+    {
+      "case": "W7_Q32",
+      "family": "W7",
+      "scale": 36,
+      "predicted_ns": 2990353.5936258016,
+      "measured_ns": 3255332.0,
+      "relative_error": -0.08139827408516194
+    }
+  ],
+  "test": [
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 1,
+      "predicted_ns": 870544.448567668,
+      "measured_ns": 9535864.0,
+      "relative_error": -0.9087083825264635
+    },
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 3,
+      "predicted_ns": 870544.448567668,
+      "measured_ns": 9165465.0,
+      "relative_error": -0.9050190635644053
+    },
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 6,
+      "predicted_ns": 305786.1094071647,
+      "measured_ns": 10387087.0,
+      "relative_error": -0.9705609369203162
+    },
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 12,
+      "predicted_ns": -47187.85256814846,
+      "measured_ns": 9916221.0,
+      "relative_error": -1.0047586527738892
+    },
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 24,
+      "predicted_ns": -223674.83355580686,
+      "measured_ns": 8098850.0,
+      "relative_error": -1.0276180980701959
+    },
+    {
+      "case": "W4_Q08",
+      "family": "W4",
+      "scale": 36,
+      "predicted_ns": -282503.8272183578,
+      "measured_ns": 8142357.0,
+      "relative_error": -1.034695583504673
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 1,
+      "predicted_ns": 3450422.447383767,
+      "measured_ns": 33021955.0,
+      "relative_error": -0.8955112606935668
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 3,
+      "predicted_ns": 3450422.447383767,
+      "measured_ns": 32948617.0,
+      "relative_error": -0.8952786865869433
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 6,
+      "predicted_ns": 1195580.3392039095,
+      "measured_ns": 33290360.0,
+      "relative_error": -0.9640862898687815
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 12,
+      "predicted_ns": -213695.97840849572,
+      "measured_ns": 35153231.0,
+      "relative_error": -1.006078985411284
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 24,
+      "predicted_ns": -918334.1372147058,
+      "measured_ns": 34727750.0,
+      "relative_error": -1.0264438132967066
+    },
+    {
+      "case": "W4_Q32",
+      "family": "W4",
+      "scale": 36,
+      "predicted_ns": -1153213.5234834352,
+      "measured_ns": 34521610.0,
+      "relative_error": -1.0334055544768461
+    },
+    {
+      "case": "W9_Q08",
+      "family": "W9",
+      "scale": 12,
+      "predicted_ns": 6146900.16585003,
+      "measured_ns": 885805.0,
+      "relative_error": 5.939337851841015
+    },
+    {
+      "case": "W9_Q08",
+      "family": "W9",
+      "scale": 24,
+      "predicted_ns": 6143154.412815855,
+      "measured_ns": 883231.0,
+      "relative_error": 5.955320196886041
+    },
+    {
+      "case": "W9_Q08",
+      "family": "W9",
+      "scale": 36,
+      "predicted_ns": 6141905.828471132,
+      "measured_ns": 1250040.0,
+      "relative_error": 3.913367435018985
+    },
+    {
+      "case": "W9_Q32",
+      "family": "W9",
+      "scale": 12,
+      "predicted_ns": 24587600.66340012,
+      "measured_ns": 3369517.0,
+      "relative_error": 6.297069776884972
+    },
+    {
+      "case": "W9_Q32",
+      "family": "W9",
+      "scale": 24,
+      "predicted_ns": 24572617.65126342,
+      "measured_ns": 3349592.0,
+      "relative_error": 6.336003206140754
+    },
+    {
+      "case": "W9_Q32",
+      "family": "W9",
+      "scale": 36,
+      "predicted_ns": 24567623.313884526,
+      "measured_ns": 3332571.0,
+      "relative_error": 6.371972964382312
+    }
+  ],
+  "validation_tier_b": [
+    {
+      "case": "W2_Q01",
+      "predicted_ns": 97107.81736171184,
+      "tier_b_median_ns": 131906.0,
+      "relative_error": -0.2638104607697008
+    },
+    {
+      "case": "W2_Q08",
+      "predicted_ns": 718658.5465765964,
+      "tier_b_median_ns": 633628.0,
+      "relative_error": 0.13419632114836536
+    },
+    {
+      "case": "W2_Q32",
+      "predicted_ns": 2849689.618170486,
+      "tier_b_median_ns": 2450930.0,
+      "relative_error": 0.16269726926941439
+    },
+    {
+      "case": "W3_d1",
+      "predicted_ns": 718658.5465765964,
+      "tier_b_median_ns": 629338.0,
+      "relative_error": 0.1419277821720545
+    },
+    {
+      "case": "W3_d3",
+      "predicted_ns": 1162271.6554991277,
+      "tier_b_median_ns": 623518.5,
+      "relative_error": 0.8640532005050816
+    },
+    {
+      "case": "W4_Q08",
+      "predicted_ns": 870544.448567668,
+      "tier_b_median_ns": 8093583.0,
+      "relative_error": -0.8924401654288752
+    },
+    {
+      "case": "W4_Q32",
+      "predicted_ns": 3450422.447383767,
+      "tier_b_median_ns": 32427084.5,
+      "relative_error": -0.8935944288366792
+    },
+    {
+      "case": "W5_Q32",
+      "predicted_ns": 2837629.009091012,
+      "tier_b_median_ns": 2484977.5,
+      "relative_error": 0.1419133610227908
+    },
+    {
+      "case": "W7_Q32",
+      "predicted_ns": 3003164.5892461543,
+      "tier_b_median_ns": 3048354.5,
+      "relative_error": -0.014824362046423964
+    },
+    {
+      "case": "W8_Q01",
+      "predicted_ns": -5848132.329930842,
+      "tier_b_median_ns": 517276.0,
+      "relative_error": -12.305632447534473
+    },
+    {
+      "case": "W8_Q08",
+      "predicted_ns": -5314255.632672095,
+      "tier_b_median_ns": 1053700.5,
+      "relative_error": -6.043421382709883
+    },
+    {
+      "case": "W9_Q08",
+      "predicted_ns": 6146900.16585003,
+      "tier_b_median_ns": 824903.0,
+      "relative_error": 6.4516642148834835
+    },
+    {
+      "case": "W9_Q32",
+      "predicted_ns": 24587600.66340012,
+      "tier_b_median_ns": 3059138.0,
+      "relative_error": 7.037427753635214
+    }
+  ],
+  "mae_train": 0.1485973567396312,
+  "mae_test": 2.5825131521582305,
+  "mae_validation": 2.719046396150957
+}

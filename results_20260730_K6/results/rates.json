@@ -1,0 +1,11 @@
+{
+  "scale": 36,
+  "delta_a": "1/360",
+  "delta_b": "1/180",
+  "delta_phi": "1/540",
+  "f_phi_hz": 540.0,
+  "slot_phi_ms": 1.8518518518518519,
+  "rows": 8000,
+  "w9_fields": 16,
+  "note": "W8 nie podlega skalowaniu \u2014 rate zamro\u017cony na 360 Hz przez deklaracj\u0119 \u017ar\u00f3d\u0142a rec205."
+}

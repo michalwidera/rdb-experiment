@@ -1,0 +1,13 @@
+# Cache bajtkodu Pythona. Skrypty kampanii importuja sie nawzajem w katalogu
+# wynikow, wiec bez tego kazdy przebieg brudzi repozytorium wynikow i wywraca
+# kontrole czystosci przed kolejnym badaniem.
+__pycache__/
+
+# Surowe archiwa raw.tar.gz KAZDEGO badania trzymane poza git (moga przekroczyc
+# limit 100 MB GitHub przy wysokim rate/slotach lub w soak-testach; W8 = 155 MB).
+# Audyt integralnosci: indeks SHA-256 zostaje w git. Kopia surowego tara
+# przenoszona na hosta pod nazwa <kampania>_<badanie>_raw.tar.gz (unikalna, nie
+# kolidujaca), obok indeksu o tym samym rdzeniu nazwy: <...>_raw.index.tsv --
+# tak jak wywodzi ja lib/artifacts.py. Polityka kampanio-niezalezna. Decyzja 2026-07-31.
+# Wzorzec lapie i bezimienny 'raw.tar.gz' (worker), i nazwany '..._raw.tar.gz' (host).
+*raw.tar.gz

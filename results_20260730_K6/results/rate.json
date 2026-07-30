@@ -1,0 +1,262 @@
+{
+  "scale": null,
+  "checked_runs": 96,
+  "observations": [
+    {
+      "scale": 36,
+      "case": "W2_Q32",
+      "profile": "OFF",
+      "p99_ns": 2550075.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W2_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 2513446.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W3_d3",
+      "profile": "OFF",
+      "p99_ns": 1067270.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W3_d3",
+      "profile": "STRUCT",
+      "p99_ns": 1069159.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W4_Q32",
+      "profile": "OFF",
+      "p99_ns": 32658573.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W4_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 35621316.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W9_Q32",
+      "profile": "OFF",
+      "p99_ns": 3424364.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 36,
+      "case": "W9_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 3754861.0,
+      "budget_ns": 925925.925925926,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W2_Q32",
+      "profile": "OFF",
+      "p99_ns": 2527055.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W2_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 2516870.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W3_d3",
+      "profile": "OFF",
+      "p99_ns": 1114029.0,
+      "budget_ns": 1388888.888888889,
+      "fits": true
+    },
+    {
+      "scale": 24,
+      "case": "W3_d3",
+      "profile": "STRUCT",
+      "p99_ns": 1067714.0,
+      "budget_ns": 1388888.888888889,
+      "fits": true
+    },
+    {
+      "scale": 24,
+      "case": "W4_Q32",
+      "profile": "OFF",
+      "p99_ns": 34923657.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W4_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 35497685.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W9_Q32",
+      "profile": "OFF",
+      "p99_ns": 3345548.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 24,
+      "case": "W9_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 3124678.0,
+      "budget_ns": 1388888.888888889,
+      "fits": false
+    },
+    {
+      "scale": 12,
+      "case": "W2_Q32",
+      "profile": "OFF",
+      "p99_ns": 3254547.0,
+      "budget_ns": 2777777.777777778,
+      "fits": false
+    },
+    {
+      "scale": 12,
+      "case": "W2_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 2549924.0,
+      "budget_ns": 2777777.777777778,
+      "fits": true
+    },
+    {
+      "scale": 12,
+      "case": "W3_d3",
+      "profile": "OFF",
+      "p99_ns": 1072862.0,
+      "budget_ns": 2777777.777777778,
+      "fits": true
+    },
+    {
+      "scale": 12,
+      "case": "W3_d3",
+      "profile": "STRUCT",
+      "p99_ns": 1077862.0,
+      "budget_ns": 2777777.777777778,
+      "fits": true
+    },
+    {
+      "scale": 12,
+      "case": "W4_Q32",
+      "profile": "OFF",
+      "p99_ns": 34766772.0,
+      "budget_ns": 2777777.777777778,
+      "fits": false
+    },
+    {
+      "scale": 12,
+      "case": "W4_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 35587298.0,
+      "budget_ns": 2777777.777777778,
+      "fits": false
+    },
+    {
+      "scale": 12,
+      "case": "W9_Q32",
+      "profile": "OFF",
+      "p99_ns": 3347027.0,
+      "budget_ns": 2777777.777777778,
+      "fits": false
+    },
+    {
+      "scale": 12,
+      "case": "W9_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 3943819.0,
+      "budget_ns": 2777777.777777778,
+      "fits": false
+    },
+    {
+      "scale": 6,
+      "case": "W2_Q32",
+      "profile": "OFF",
+      "p99_ns": 2638014.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    },
+    {
+      "scale": 6,
+      "case": "W2_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 3322657.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    },
+    {
+      "scale": 6,
+      "case": "W3_d3",
+      "profile": "OFF",
+      "p99_ns": 1080972.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    },
+    {
+      "scale": 6,
+      "case": "W3_d3",
+      "profile": "STRUCT",
+      "p99_ns": 1076620.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    },
+    {
+      "scale": 6,
+      "case": "W4_Q32",
+      "profile": "OFF",
+      "p99_ns": 35297568.0,
+      "budget_ns": 5555555.555555556,
+      "fits": false
+    },
+    {
+      "scale": 6,
+      "case": "W4_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 35483602.0,
+      "budget_ns": 5555555.555555556,
+      "fits": false
+    },
+    {
+      "scale": 6,
+      "case": "W9_Q32",
+      "profile": "OFF",
+      "p99_ns": 3980058.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    },
+    {
+      "scale": 6,
+      "case": "W9_Q32",
+      "profile": "STRUCT",
+      "p99_ns": 3587154.0,
+      "budget_ns": 5555555.555555556,
+      "fits": true
+    }
+  ]
+}

@@ -1,0 +1,966 @@
+{
+  "compiled_runs": 230,
+  "expected_runs": 230,
+  "comparisons": 46,
+  "problems": [],
+  "mismatches": [],
+  "records": [
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W1",
+      "case": "W1",
+      "param": "-",
+      "q": 1,
+      "net": -1,
+      "r1": 1,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 1,
+      "source": "K5",
+      "nodes_struct": 5,
+      "nodes_alg": 4,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W2",
+      "case": "W2_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": -1,
+      "r1": 1,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 1,
+      "source": "K5",
+      "nodes_struct": 5,
+      "nodes_alg": 4,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W2",
+      "case": "W2_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": -1,
+      "r1": 2,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 2,
+      "source": "K5",
+      "nodes_struct": 6,
+      "nodes_alg": 5,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W2",
+      "case": "W2_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": -1,
+      "r1": 4,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 4,
+      "source": "K5",
+      "nodes_struct": 8,
+      "nodes_alg": 7,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W2",
+      "case": "W2_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": -1,
+      "r1": 8,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 8,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 11,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W2",
+      "case": "W2_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": -1,
+      "r1": 16,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 16,
+      "source": "K5",
+      "nodes_struct": 20,
+      "nodes_alg": 19,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W2",
+      "case": "W2_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": -1,
+      "r1": 32,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 32,
+      "source": "K5",
+      "nodes_struct": 36,
+      "nodes_alg": 35,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W3",
+      "case": "W3_d1",
+      "param": "d=1",
+      "q": 8,
+      "net": -1,
+      "r1": 8,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 8,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 11,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W3",
+      "case": "W3_d2",
+      "param": "d=2",
+      "q": 8,
+      "net": -2,
+      "r1": 9,
+      "r2": 0,
+      "expected_net": -2,
+      "expected_r1": 9,
+      "source": "K5",
+      "nodes_struct": 16,
+      "nodes_alg": 14,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B",
+        "STREAM_TIMEMOVE_S1",
+        "STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B",
+        "STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W3",
+      "case": "W3_d3",
+      "param": "d=3",
+      "q": 8,
+      "net": -3,
+      "r1": 10,
+      "r2": 0,
+      "expected_net": -3,
+      "expected_r1": 10,
+      "source": "K5",
+      "nodes_struct": 20,
+      "nodes_alg": 17,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B",
+        "STREAM_TIMEMOVE_S1",
+        "STREAM_TIMEMOVE_S2",
+        "STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B",
+        "STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1"
+      ],
+      "added": [
+        "STREAM_HASH_A_B",
+        "STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_S1",
+        "STREAM_HASH_STREAM_HASH_STREAM_TIMEMOVE_STREAM_HASH_STREAM_TIMEMOVE_A_STREAM_TIMEMOVE_B_STREAM_TIMEMOVE_S1_S2"
+      ]
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W4",
+      "case": "W4_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": -1,
+      "r1": 1,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 1,
+      "source": "K5",
+      "nodes_struct": 8,
+      "nodes_alg": 7,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W4",
+      "case": "W4_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": -1,
+      "r1": 2,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 2,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 11,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W4",
+      "case": "W4_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": -1,
+      "r1": 4,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 4,
+      "source": "K5",
+      "nodes_struct": 20,
+      "nodes_alg": 19,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W4",
+      "case": "W4_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": -1,
+      "r1": 8,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 8,
+      "source": "K5",
+      "nodes_struct": 36,
+      "nodes_alg": 35,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W4",
+      "case": "W4_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": -1,
+      "r1": 16,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 16,
+      "source": "K5",
+      "nodes_struct": 68,
+      "nodes_alg": 67,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W4",
+      "case": "W4_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": -1,
+      "r1": 32,
+      "r2": 0,
+      "expected_net": -1,
+      "expected_r1": 32,
+      "source": "K5",
+      "nodes_struct": 132,
+      "nodes_alg": 131,
+      "removed": [
+        "STREAM_TIMEMOVE_A",
+        "STREAM_TIMEMOVE_B"
+      ],
+      "added": [
+        "STREAM_HASH_A_B"
+      ]
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W5",
+      "case": "W5_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 3,
+      "nodes_alg": 3,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W5",
+      "case": "W5_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 6,
+      "nodes_alg": 6,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W5",
+      "case": "W5_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 12,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W5",
+      "case": "W5_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 24,
+      "nodes_alg": 24,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W5",
+      "case": "W5_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 48,
+      "nodes_alg": 48,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W5",
+      "case": "W5_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 96,
+      "nodes_alg": 96,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W6",
+      "case": "W6_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 5,
+      "nodes_alg": 5,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W6",
+      "case": "W6_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 6,
+      "nodes_alg": 6,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W6",
+      "case": "W6_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 8,
+      "nodes_alg": 8,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W6",
+      "case": "W6_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 12,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W6",
+      "case": "W6_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 20,
+      "nodes_alg": 20,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W6",
+      "case": "W6_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 36,
+      "nodes_alg": 36,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W7",
+      "case": "W7_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 5,
+      "nodes_alg": 5,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W7",
+      "case": "W7_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 6,
+      "nodes_alg": 6,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W7",
+      "case": "W7_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 8,
+      "nodes_alg": 8,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W7",
+      "case": "W7_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 12,
+      "nodes_alg": 12,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W7",
+      "case": "W7_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 20,
+      "nodes_alg": 20,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W7",
+      "case": "W7_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "K5",
+      "nodes_struct": 36,
+      "nodes_alg": 36,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W8",
+      "case": "W8_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": -1,
+      "r1": 1,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 1,
+      "source": "K5",
+      "nodes_struct": 16,
+      "nodes_alg": 15,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 2,
+      "family": "W8",
+      "case": "W8_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": -1,
+      "r1": 2,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 2,
+      "source": "K5",
+      "nodes_struct": 17,
+      "nodes_alg": 16,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 4,
+      "exec_alg": 4,
+      "family": "W8",
+      "case": "W8_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": -1,
+      "r1": 4,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 4,
+      "source": "K5",
+      "nodes_struct": 19,
+      "nodes_alg": 18,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 8,
+      "exec_alg": 8,
+      "family": "W8",
+      "case": "W8_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": -1,
+      "r1": 8,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 8,
+      "source": "K5",
+      "nodes_struct": 23,
+      "nodes_alg": 22,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 16,
+      "exec_alg": 16,
+      "family": "W8",
+      "case": "W8_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": -1,
+      "r1": 16,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 16,
+      "source": "K5",
+      "nodes_struct": 31,
+      "nodes_alg": 30,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 32,
+      "exec_alg": 32,
+      "family": "W8",
+      "case": "W8_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": -1,
+      "r1": 32,
+      "r2": 1,
+      "expected_net": -1,
+      "expected_r1": 32,
+      "source": "K5",
+      "nodes_struct": 47,
+      "nodes_alg": 46,
+      "removed": [
+        "STREAM_TIMEMOVE_mlii",
+        "STREAM_TIMEMOVE_mwi"
+      ],
+      "added": [
+        "STREAM_HASH_mlii_mwi"
+      ]
+    },
+    {
+      "exec_struct": 1,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q01",
+      "param": "Q=1",
+      "q": 1,
+      "net": 0,
+      "r1": 0,
+      "r2": 0,
+      "expected_net": 0,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 3,
+      "nodes_alg": 3,
+      "removed": [],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q02",
+      "param": "Q=2",
+      "q": 2,
+      "net": 1,
+      "r1": 0,
+      "r2": 1,
+      "expected_net": null,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 4,
+      "nodes_alg": 5,
+      "removed": [],
+      "added": [
+        "STREAM_SELECT_w9_out_000"
+      ]
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q04",
+      "param": "Q=4",
+      "q": 4,
+      "net": -1,
+      "r1": 0,
+      "r2": 2,
+      "expected_net": null,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 8,
+      "nodes_alg": 7,
+      "removed": [
+        "STREAM_SELECT_w9_out_001"
+      ],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q08",
+      "param": "Q=8",
+      "q": 8,
+      "net": -1,
+      "r1": 0,
+      "r2": 4,
+      "expected_net": null,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 12,
+      "nodes_alg": 11,
+      "removed": [
+        "STREAM_SELECT_w9_out_001"
+      ],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q16",
+      "param": "Q=16",
+      "q": 16,
+      "net": -1,
+      "r1": 0,
+      "r2": 8,
+      "expected_net": null,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 20,
+      "nodes_alg": 19,
+      "removed": [
+        "STREAM_SELECT_w9_out_001"
+      ],
+      "added": []
+    },
+    {
+      "exec_struct": 2,
+      "exec_alg": 1,
+      "family": "W9",
+      "case": "W9_Q32",
+      "param": "Q=32",
+      "q": 32,
+      "net": -1,
+      "r1": 0,
+      "r2": 16,
+      "expected_net": null,
+      "expected_r1": 0,
+      "source": "mechanizm K6",
+      "nodes_struct": 36,
+      "nodes_alg": 35,
+      "removed": [
+        "STREAM_SELECT_w9_out_001"
+      ],
+      "added": []
+    }
+  ]
+}

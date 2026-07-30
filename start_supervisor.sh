@@ -6,6 +6,7 @@
 #   ./start_supervisor.sh rate [opcje]
 #   ./start_supervisor.sh rate_dense [opcje]
 #   ./start_supervisor.sh clients --rate-hz N [opcje]
+#   ./start_supervisor.sh ablation --experiment-id 20260730_K6b [opcje]
 #
 # Najwazniejsze opcje:
 #   --experiment-id ID          YYYYMMDD_typ; wyniki trafia do results_ID
@@ -20,7 +21,10 @@
 #   --no-worker-discovery       nie skanuj sieci po utracie dotychczasowego adresu
 #   --worker-code-repo PATH     repo kodu na workerze (domyslnie /home/michal/retractordb)
 #   --worker-experiment-repo P  repo wynikow na workerze (domyslnie /home/michal/rdb-experiment)
-#   --skip-build                pomin build, ale nadal wymagaj zweryfikowanej binarki Release-Probe
+#   --reps N                    kampania ablacyjna: powtorzenia na komorke (domyslnie 15)
+#                               (rate i budzet slotow pochodza z results/rate.json,
+#                                czyli z kalibracji per rodzina -- nie z opcji)
+#   --skip-build                pomin build, ale nadal wymagaj zweryfikowanych binarek
 #   --reboot-timeout SEK        czas oczekiwania na powrot workera (domyslnie 600)
 set -euo pipefail
 
@@ -29,13 +33,14 @@ EXPERIMENT_REPO="$SCRIPT_DIR"
 # shellcheck source=lib/common.sh
 source "$EXPERIMENT_REPO/lib/common.sh"
 
-[ $# -ge 1 ] || die "Usage: $0 <rate|rate_dense|clients> [opcje]"
+[ $# -ge 1 ] || die "Usage: $0 <rate|rate_dense|clients|ablation> [opcje]"
 CAMPAIGN="$1"
 shift
 case "$CAMPAIGN" in
   rate|rate_*) CAMPAIGN_KIND="rate" ;;
   clients) CAMPAIGN_KIND="clients" ;;
-  *) die "campaign musi byc 'rate', 'rate_<wariant>' albo 'clients'" ;;
+  ablation|ablation_*) CAMPAIGN_KIND="ablation" ;;
+  *) die "campaign musi byc 'rate', 'rate_<wariant>', 'clients' albo 'ablation[_<wariant>]'" ;;
 esac
 validate_campaign_name "$CAMPAIGN" || exit 1
 
@@ -54,6 +59,10 @@ EXPERIMENT_BRANCH=""
 CODE_BRANCH="master"
 SINK="null"
 RATE_HZ=360
+# Kampania ablacyjna (K6b): powtorzenia na komorke. Rate per rodzina i budzet
+# slotow sa wyznaczone przez kalibracje i czytane z results/rate.json przez
+# skrypt workera -- nadzorca ich nie podaje i nie moze nadpisac.
+REPS=15
 SKIP_BUILD=0
 REBOOT_TIMEOUT=600
 
@@ -72,6 +81,7 @@ while [ $# -gt 0 ]; do
     --worker-code-repo|--worker-repo) WORKER_CODE_REPO="$2"; shift 2 ;;
     --worker-experiment-repo) WORKER_EXPERIMENT_REPO="$2"; shift 2 ;;
     --rate-hz) RATE_HZ="$2"; shift 2 ;;
+    --reps) REPS="$2"; shift 2 ;;
     --sink) SINK="$2"; shift 2 ;;
     --skip-build) SKIP_BUILD=1; shift ;;
     --reboot-timeout) REBOOT_TIMEOUT="$2"; shift 2 ;;
@@ -96,6 +106,9 @@ validate_safe_absolute_path "$WORKER_EXPERIMENT_REPO" "repozytorium wynikow work
   [ "$WORKER_PORT" -ge 1 ] && [ "$WORKER_PORT" -le 65535 ] ||
   die "Port SSH musi byc liczba z zakresu 1-65535"
 [[ "$RATE_HZ" =~ ^[0-9]+$ ]] && [ "$RATE_HZ" -gt 0 ] || die "rate-hz musi byc dodatnia liczba calkowita"
+if [ "$CAMPAIGN_KIND" = "ablation" ]; then
+  [[ "$REPS" =~ ^[0-9]+$ ]] && [ "$REPS" -ge 2 ] || die "reps musi byc >= 2"
+fi
 [[ "$REBOOT_TIMEOUT" =~ ^[0-9]+$ ]] && [ "$REBOOT_TIMEOUT" -gt 0 ] ||
   die "reboot-timeout musi byc dodatnia liczba calkowita"
 [ "$SINK" = "null" ] || [ "$SINK" = "nc" ] || die "sink musi byc 'null' albo 'nc'"
@@ -131,6 +144,9 @@ log "Worker: $WORKER_HOST:$WORKER_PORT"
 
 # Kod jest tylko zrodlem binarki. Wyniki nigdy nie sa commitowane do tego repozytorium.
 [ -z "$(git -C "$CODE_REPO" status --short)" ] || die "Repozytorium kodu na nadzorcy nie jest czyste"
+# R2 utwardzone: katalogi wejsciowe nie moga zawierac artefaktow silnika, takze
+# tych ukrytych przez .gitignore (defekt wykryty 2026-07-30).
+require_input_dirs_pristine "$CODE_REPO" examples/ecg || exit 1
 [ -z "$(git -C "$EXPERIMENT_REPO" status --short)" ] ||
   die "Repozytorium rdb-experiment na nadzorcy nie jest czyste"
 git -C "$CODE_REPO" fetch origin "$CODE_BRANCH" --quiet
@@ -177,6 +193,8 @@ mkdir -p "$EXPERIMENT_REPO/$CAMPAIGN_RESULTS_DIR"
 
 if [ "$CAMPAIGN_KIND" = "rate" ]; then
   CAMPAIGN_GOAL="Ustalenie granicy czestosci naplywu danych dla potoku Pan-Tompkins-inspired na wskazanej rewizji RetractorDB."
+elif [ "$CAMPAIGN_KIND" = "ablation" ]; then
+  CAMPAIGN_GOAL="Pomiar kosztu i korzysci czasowej regul algebraicznych R1 i R2 na pieciu profilach ablacyjnych (K6, luka G8)."
 else
   CAMPAIGN_GOAL="Ustalenie wplywu 1-3 klientow xqry na queue-emission latency i zasoby systemu przy ustalonej czestosci."
 fi
@@ -185,9 +203,11 @@ CONFIG_SHA256=$(sha256sum "$CONFIG_CSV" | awk '{print $1}')
 EXPERIMENT_BASE=$(git -C "$EXPERIMENT_REPO" rev-parse origin/main)
 MANIFEST="$EXPERIMENT_REPO/$RESULTS_ROOT/manifest.md"
 if [ -e "$MANIFEST" ]; then
-  grep -qF -- "- commit kodu: \`$CODE_COMMIT\`" "$MANIFEST" ||
+  # Manifest moze byc napisany rekami (kampania z predeklaracja), wiec liczy sie
+  # obecnosc commita i brancha, nie uklad wiersza.
+  grep -qF -- "$CODE_COMMIT" "$MANIFEST" ||
     die "$RESULTS_ROOT istnieje dla innego commita kodu; utworz nowy experiment-id"
-  grep -qF -- "- branch kodu: \`$CODE_BRANCH\`" "$MANIFEST" ||
+  grep -qF -- "$CODE_BRANCH" "$MANIFEST" ||
     die "$RESULTS_ROOT istnieje dla innego brancha kodu; utworz nowy experiment-id"
   cat >> "$MANIFEST" <<EOF
 
@@ -255,7 +275,41 @@ ssh_worker "$WORKER_HOST" "$WORKER_PORT" "
   git -C '$WORKER_EXPERIMENT_REPO' checkout -B '$EXPERIMENT_BRANCH' 'origin/$EXPERIMENT_BRANCH'
 "
 
-if [ "$SKIP_BUILD" -ne 1 ]; then
+if [ "$CAMPAIGN_KIND" = "ablation" ]; then
+  if [ "$SKIP_BUILD" -ne 1 ]; then
+    log "Budowanie pieciu profili ablacyjnych na workerze (K6-*)..."
+    ssh_worker "$WORKER_HOST" "$WORKER_PORT" "
+      set -e
+      cd '$WORKER_EXPERIMENT_REPO/$RESULTS_ROOT'
+      K6_BUILD_JOBS=3 K6_SETCAP=1 K6_RUN_CTEST=1 \
+        K6_RAW_DIR='$WORKER_CODE_REPO/build/K6-logs' \
+        RDB_CODE_REPO='$WORKER_CODE_REPO' ./build_profiles.sh
+      # Klient xqry i niezmienny warunek 'zainstalowana binarka to Release-Probe'
+      # pochodza z profilu domyslnego, wiec nie trzeba szostego builda.
+      cmake --install '$WORKER_CODE_REPO/build/K6-ALGSTRUCT'
+      source '$WORKER_EXPERIMENT_REPO/lib/common.sh'
+      verify_probe_binary \"\$HOME/.local/bin/xretractor\"
+    "
+  else
+    log "Pomijam build; weryfikuje piec profili i zainstalowana binarke..."
+    ssh_worker "$WORKER_HOST" "$WORKER_PORT" "
+      set -e
+      source '$WORKER_EXPERIMENT_REPO/lib/common.sh'
+      checked=0
+      while IFS=\$'\\t' read -r profile slug dedup share commutative factor; do
+        [ \"\$profile\" = 'profile' ] && continue
+        [ -n \"\$profile\" ] || continue
+        binary='$WORKER_CODE_REPO'/build/K6-\$slug/src/retractor/xretractor
+        verify_probe_binary_profile \"\$binary\" \"\$dedup\" \"\$share\" \"\$commutative\" \"\$factor\"
+        getcap \"\$binary\" | grep -q 'cap_ipc_lock,cap_sys_nice=ep\|cap_sys_nice,cap_ipc_lock=ep' || {
+          echo \"BLAD: brak capabilities RT na \$binary\" >&2; exit 1; }
+        checked=\$((checked + 1))
+      done < '$WORKER_EXPERIMENT_REPO/$RESULTS_ROOT/profiles.tsv'
+      [ \"\$checked\" -eq 5 ] || { echo \"BLAD: zweryfikowano \$checked profili, oczekiwano 5\" >&2; exit 1; }
+      verify_probe_binary \"\$HOME/.local/bin/xretractor\"
+    "
+  fi
+elif [ "$SKIP_BUILD" -ne 1 ]; then
   log "Budowanie i instalacja izolowanego Release-Probe na workerze..."
   ssh_worker "$WORKER_HOST" "$WORKER_PORT" "
     set -e
@@ -293,12 +347,30 @@ for row in "${ROWS[@]}"; do
     rate_hz="$col2"
     clients="$col3"
     samples="$col4"
+  elif [ "$CAMPAIGN_KIND" = "ablation" ]; then
+    family="$col2"
+    reps="$col3"
   else
     rate_hz="$RATE_HZ"
     clients="$col2"
     samples="$col3"
   fi
 
+  if [ "$CAMPAIGN_KIND" = "ablation" ]; then
+    log "--- Badanie $IDX/$TOTAL: id=$study_id rodzina=$family reps=$reps (rate z rate.json) ---"
+    ssh_worker "$WORKER_HOST" "$WORKER_PORT" \
+      "'$WORKER_EXPERIMENT_REPO/worker/run_ablation_study.sh' \
+        --code-repo '$WORKER_CODE_REPO' \
+        --experiment-repo '$WORKER_EXPERIMENT_REPO' \
+        --code-commit '$CODE_COMMIT' \
+        --experiment-branch '$EXPERIMENT_BRANCH' \
+        --results-root '$RESULTS_ROOT' \
+        --campaign '$CAMPAIGN' \
+        --study-id '$study_id' \
+        --family '$family' \
+        --reps '$reps'" ||
+      die "Badanie $study_id ($family) nie powiodlo sie; wynik nie zostal zatwierdzony"
+  else
   log "--- Badanie $IDX/$TOTAL: id=$study_id rate=${rate_hz}Hz clients=$clients samples=$samples ---"
   ssh_worker "$WORKER_HOST" "$WORKER_PORT" \
     "'$WORKER_EXPERIMENT_REPO/worker/run_study.sh' \
@@ -314,6 +386,7 @@ for row in "${ROWS[@]}"; do
       --samples '$samples' \
       --sink '$SINK'" ||
     die "Badanie $study_id nie powiodlo sie; wynik nie zostal zatwierdzony"
+  fi
 
   git -C "$EXPERIMENT_REPO" fetch origin "$EXPERIMENT_BRANCH" --quiet
   [ -z "$(git -C "$EXPERIMENT_REPO" status --short)" ] ||

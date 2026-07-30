@@ -223,6 +223,11 @@ expect_failure "katalog przejsciowy results" validate_results_root results
 expect_success "bezpieczna sciezka bezwzgledna" validate_safe_absolute_path /home/michal/rdb-experiment repo
 expect_failure "sciezka z przejsciem do rodzica" validate_safe_absolute_path /home/michal/../retractordb repo
 expect_success "poprawna kampania wariantowa" validate_campaign_name rate_dense
+# Kazdy rodzaj z case w start_supervisor.sh musi przechodzic walidacje nazwy --
+# rozjazd miedzy tymi dwoma miejscami zatrzymal Tier B kampanii K6b.
+expect_success "kampania ablacyjna" validate_campaign_name ablation
+expect_success "kampania ablacyjna wariantowa" validate_campaign_name ablation_k6b
+expect_failure "kampania nieznanego rodzaju" validate_campaign_name saturation
 expect_failure "kampania z metaznakami" validate_campaign_name "rate';touch_x"
 expect_success "poprawny branch wynikow" validate_git_branch experiment/20260728_performance branch
 expect_failure "branch wygladajacy jak opcja" validate_git_branch --force branch

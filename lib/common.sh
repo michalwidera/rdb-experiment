@@ -88,7 +88,10 @@ validate_safe_absolute_path() {
 
 validate_campaign_name() {
   local campaign="$1"
-  [[ "$campaign" =~ ^(rate(_[a-z0-9_-]+)?|clients)$ ]] || {
+  # Rodzaje musza zgadzac sie z case w start_supervisor.sh. Kampania `ablation`
+  # zostala dodana przy K6, ale nie tutaj -- kalibracja K6 padla wczesniej, wiec
+  # niezgodnosc wyszla dopiero przy Tier B kampanii K6b.
+  [[ "$campaign" =~ ^(rate(_[a-z0-9_-]+)?|clients|ablation(_[a-z0-9_-]+)?)$ ]] || {
     log "BLAD: nieprawidlowa nazwa kampanii: $campaign"
     return 1
   }
@@ -306,6 +309,74 @@ require_disjoint_repositories() {
   esac
 }
 
+# Odcisk drzewa roboczego repozytorium kodu (R2).
+#
+# `git status --short` jest SLEPY na pliki wypisane w .gitignore, a artefakty
+# silnika w examples/ecg/rec205/ sa tam wypisane imiennie. Trzy kampanie z rzedu
+# raportowaly czyste repozytorium kodu, w ktorym lezaly wyniki poprzedniego
+# przebiegu (wykryte 2026-07-30, 34 pliki). Odcisk obejmuje wiec rowniez pliki
+# ignorowane. Katalogi budowy sa wylaczone, bo kampania sama je tworzy.
+code_tree_fingerprint() {
+  local repo="$1" out="$2" count
+  # Filtr przez awk, nie grep: `grep -v` bez dopasowania zwraca 1, co pod
+  # `pipefail` zamienialoby CZYSTE drzewo w awarie kontroli. Kontrola, ktora
+  # zawodzi wlasnie wtedy, gdy wszystko jest w porzadku, jest bezuzyteczna.
+  git -C "$repo" status --porcelain=v1 --untracked-files=all --ignored=matching |
+    awk '!/^!! build\//' | LC_ALL=C sort > "$out" || {
+    log "BLAD: nie mozna zebrac odcisku drzewa kodu: $repo"
+    return 1
+  }
+  count=$(wc -l < "$out")
+  log "odcisk drzewa kodu $repo: $count wpisow (bez build/)"
+}
+
+require_code_tree_unchanged() {
+  local repo="$1" before="$2" after
+  [ -s "$before" ] || [ -f "$before" ] || {
+    log "BLAD: brak odcisku odniesienia: $before"
+    return 1
+  }
+  after=$(mktemp) || return 1
+  code_tree_fingerprint "$repo" "$after" || { rm -f "$after"; return 1; }
+  if ! diff -u "$before" "$after" >&2; then
+    log "BLAD: drzewo robocze repozytorium kodu zmienilo sie w trakcie badania"
+    rm -f "$after"
+    return 1
+  fi
+  rm -f "$after"
+}
+
+# Katalogi wejsciowe musza byc wolne od artefaktow silnika PRZED badaniem.
+# Zwraca blad rowniez wtedy, gdy nie sprawdzono zadnej sciezki: zero
+# sprawdzonych rzeczy nie jest zgodnoscia (wniosek metodologiczny K5h/K5i).
+require_input_dirs_pristine() {
+  local repo="$1"
+  shift
+  local path scanned=0 found=0 listing
+  [ $# -gt 0 ] || {
+    log "BLAD: require_input_dirs_pristine bez sciezek do sprawdzenia"
+    return 1
+  }
+  for path in "$@"; do
+    [ -e "$repo/$path" ] || {
+      log "BLAD: brak sprawdzanej sciezki wejsciowej: $repo/$path"
+      return 1
+    }
+    scanned=$((scanned + 1))
+    listing=$(git -C "$repo" status --porcelain=v1 --untracked-files=all \
+      --ignored=matching -- "$path") || return 1
+    if [ -n "$listing" ]; then
+      found=$((found + $(printf '%s\n' "$listing" | wc -l)))
+      printf '%s\n' "$listing" >&2
+    fi
+  done
+  [ "$found" -eq 0 ] || {
+    log "BLAD: katalogi wejsciowe zawieraja $found artefaktow (rowniez ignorowanych); wyczysc je przed badaniem"
+    return 1
+  }
+  log "katalogi wejsciowe czyste: sprawdzono $scanned sciezek, 0 artefaktow"
+}
+
 validate_campaign_csv() {
   local csv="$1" kind="$2"
   local expected_header row study_id col2 col3 col4 extra count=0
@@ -316,6 +387,7 @@ validate_campaign_csv() {
   case "$kind" in
     rate) expected_header="study_id,rate_hz,clients,samples" ;;
     clients) expected_header="study_id,clients,samples" ;;
+    ablation) expected_header="study_id,family,reps" ;;
     *) log "BLAD: nieznany rodzaj kampanii: $kind"; return 1 ;;
   esac
   IFS= read -r row < "$csv"
@@ -333,6 +405,12 @@ validate_campaign_csv() {
     }
     if [ "$kind" = "rate" ]; then
       [[ "$study_id" =~ ^[0-9]+$ && "$col2" =~ ^[0-9]+$ && "$col3" =~ ^[0-9]+$ && "$col4" =~ ^[0-9]+$ ]] || {
+        log "BLAD: nieprawidlowy wiersz konfiguracji: $row"
+        return 1
+      }
+    elif [ "$kind" = "ablation" ]; then
+      # Rodzina jest identyfikatorem workloadu (W2, W9), nie liczba.
+      [[ "$study_id" =~ ^[0-9]+$ && "$col2" =~ ^W[0-9]+$ && "$col3" =~ ^[0-9]+$ && -z "$col4" ]] || {
         log "BLAD: nieprawidlowy wiersz konfiguracji: $row"
         return 1
       }
@@ -362,8 +440,11 @@ require_tmpfs() {
   }
 }
 
-verify_probe_binary() {
-  local binary="$1"
+# Weryfikacja binarki wobec ZADANEGO profilu ablacyjnego (K6: piec profili).
+# Porownanie jest bajtowe wzgledem pelnego bloku --build-info, nie grepem po
+# jednej linii: profil rozni sie od profilu wylacznie wartosciami tych piatek.
+verify_probe_binary_profile() {
+  local binary="$1" dedup="$2" share="$3" commutative="$4" factor="$5"
   local actual expected
   [ -x "$binary" ] || {
     log "BLAD: brak wykonywalnej binarki xretractor: $binary"
@@ -374,14 +455,21 @@ verify_probe_binary() {
     return 1
   }
   expected=$(printf '%s\n' \
-    "RDB_OPT_DEDUP_SUBSTRATES=ON" \
-    "RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON" \
-    "RDB_OPT_COMMUTATIVE_ADD=ON" \
-    "RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON" \
+    "RDB_OPT_DEDUP_SUBSTRATES=$dedup" \
+    "RDB_OPT_SHARE_EQUIVALENT_SELECTS=$share" \
+    "RDB_OPT_COMMUTATIVE_ADD=$commutative" \
+    "RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=$factor" \
     "RDB_BENCH_PROBE=ON")
   [ "$actual" = "$expected" ] || {
+    log "BLAD: $binary nie jest oczekiwanym profilem ($dedup/$share/$commutative/$factor)"
+    diff -u <(printf '%s\n' "$expected") <(printf '%s\n' "$actual") >&2 || true
+    return 1
+  }
+}
+
+verify_probe_binary() {
+  verify_probe_binary_profile "$1" ON ON ON ON || {
     log "BLAD: zainstalowana binarka nie jest oczekiwanym buildem Release-Probe"
-    printf '%s\n' "$actual" >&2
     return 1
   }
 }

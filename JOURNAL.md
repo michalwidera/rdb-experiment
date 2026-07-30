@@ -3345,3 +3345,723 @@ mógł tego wychwycić. Stąd reguła: **dane identyfikujące badanie muszą poc
 z badania, nie z szablonu.**
 
 Dane: `results_20260730_hygiene/`.
+
+## 2026-07-30 — K6: przygotowanie kampanii, trzeci defekt klasy „milczenie instrumentu"
+
+**Decyzja o zakresie.** K6 nie wprowadza żadnej zmiany w silniku. Cała
+instrumentacja z §9.2 istnieje po K5i (`COMPILE_NS`, `PLAN bench`,
+`PLAN capacity`, `MATERIALIZED`, sonda E1), a peak RSS, CPU time i checksum leżą
+poza silnikiem. Kod jest zamrożony na `bb3a521`; branch w repozytorium kodu
+powstanie **wyłącznie reaktywnie**, jeżeli kampania wykryje defekt — ścieżką
+K5 → `issue_213` → K5 rerun. Powód nie jest wygodą: każda zmiana `master`
+unieważnia przypięcie wyników i wymusza kolejne badanie higieniczne.
+
+**Defekt wykryty przy preflight, naprawiony u źródła.** Katalog
+`examples/ecg/rec205/` w repozytorium **kodu** zawierał 34 artefakty silnika
+(`STREAM_ADD_mlii_mwi`, `.desc`, `.meta`, `.shadow`, `temp/`), jeden z datą
+`2026-07-29 21:03`. Kontrola R2 raportowała zero, bo lokalny `.gitignore`
+wypisuje te nazwy imiennie, a `git status --short` jest ślepy na pliki
+ignorowane. Trzy kampanie z rzędu twierdziły „repozytorium kodu czyste", mając
+w nim wyniki poprzedniego przebiegu.
+
+To **trzeci** defekt tej samej klasy co dwa z badań higienicznych: milczenie
+instrumentu wyglądało jak sukces. Naprawa:
+
+1. artefakty usunięte (`git clean -xdf` po ścieżce; 15 plików śledzonych, w tym
+   wszystkie wejścia, nietknięte);
+2. `lib/common.sh`: `code_tree_fingerprint`, `require_code_tree_unchanged`
+   i `require_input_dirs_pristine` — odcisk obejmuje pliki ignorowane, katalogi
+   budowy są z niego wyłączone, a zerowa liczba sprawdzonych ścieżek jest
+   błędem;
+3. `tests/test_code_guard.sh` — 7 regresji, w tym **dowód, że stary strażnik
+   defektu nie widzi** (atrapa weryfikuje, że `git status --short` milczy);
+4. R2 i R11 w `REQUIREMENTS.md` przepisane; dane wejściowe są od teraz
+   **kopiowane** do `/dev/shm`, nie symlinkowane do repozytorium kodu.
+
+**Wada wykryta przez własny test.** Pierwsza wersja odcisku filtrowała katalogi
+budowy przez `grep -v`, który bez dopasowania zwraca 1; pod `pipefail`
+zamieniało to **czyste** drzewo w awarię kontroli. Kontrola zawodząca dokładnie
+wtedy, gdy wszystko jest w porządku, jest bezużyteczna. Filtr przepisany na
+`awk`. Wada nie ujawniłaby się na workerze, którego drzewo ma 28 plików
+ignorowanych w `examples/experiment/` — ujawniła ją atrapa czystego repozytorium.
+
+Regresje po zmianie: 7 nowych, 8 higieny artefaktów, 66 orkiestracji.
+
+**Uwaga o workerze.** `~/retractordb/examples/experiment/` na `pi400` zawiera
+28 plików ignorowanych — wyniki kampanii sprzed wydzielenia `rdb-experiment`.
+Leżą poza katalogami wejściowymi K6, więc nie blokują kampanii, ale nie są
+sprzątnięte i zostają odnotowane.
+
+## 2026-07-30 — K6.1 i K6.1b: workloady w rate pomiarowym, kontrola wejściowa, W9
+
+**Rodziny przeskalowane, struktura niezmieniona.** `generate.py` produkuje osiem
+rodzin K5 w konstrukcji bez zmian i z mnożnikiem rate'u `--scale` z zamrożonej
+drabiny `{36, 24, 12, 6}`. Kontrola wejściowa dla `s = 36` (540 Hz): **230
+kompilacji, 46 porównań, zero niezgodności** — `net` i `r1` odtwarzają tabelę
+werdyktu K5, w tym `−1, −2, −3` dla W3 i zera dla kontroli W5/W6/W7. Warunek
+unieważniający nr 4 spełniony; K6 mierzy te plany, które K5 rozstrzygnął.
+
+**W9 działa, ale nie tak, jak przewidziałem — i to jest wynik.** Przewidywana
+wartość `net = −2` (przez analogię do `select_cse_commutative_add`) jest błędna.
+Zmierzone: `net = +1` dla `Q = 2` i `net = −1` dla `Q ≥ 4`, `r2 = Q/2`.
+
+Mechanizm z predeklaracji potwierdził się dokładnie: liczba wykonań kosztownego
+programu pól na slot spada **z 2 do 1** dla każdego `Q ≥ 2`. Pod `STRUCT`
+deduplikacja strukturalna scala każdą połowę osobno (dwa substraty
+`STREAM_SELECT_*`), pod `ALGSTRUCT` zostaje jeden. Dla `Q = 2` `STRUCT` nie ma
+w ogóle substratu — dwa strumienie publiczne liczą same — więc R2 **dodaje**
+węzeł wspólny i zamienia publiczne na lekkie projekcje: plan rośnie, praca
+maleje.
+
+**Konsekwencje.** Kryterium wejściowe W9 zmienione z węzłowego na mechanizmowe
+(`exec_STRUCT = 2`, `exec_ALGSTRUCT = 1`, `r2 ≥ 1`); metryka główna kampanii bez
+zmian. `W9_Q02` staje się samodzielnym wynikiem dla artykułu: rozmiar planu
+i koszt wykonania idą w **przeciwne strony**, co jest dowodem z własnego systemu
+na to, dlaczego H4 zabrania zastępowania korzyści rozmiarem planu.
+
+Wszystko powyżej powstało **przed** pierwszym pomiarem czasu i przed
+uruchomieniem czegokolwiek na workerze; zapis w `README.md` jako addendum
+z datą, predeklaracja nietknięta.
+
+**Dane:** `results_20260730_K6/results/counters.md`, `counters.json`,
+`rates.json`.
+
+## 2026-07-30T16:05+02:00 — results_20260730_K6 / krok K6.0
+
+- wynik: **kalibracja odrzuciła całą drabinę**, `scale = null`, kampania nie wystartowała
+- commit kodu: `bb3a5216b952432818b23a26365001fe4f7627f5`
+- przebiegów kalibracyjnych: 96 (4 wartości `s` × 4 komórki × 2 profile × 3 powtórzenia)
+- powód: `W4_Q32` ma `p99(compute_ns)` ≈ 35 ms **niezależnie od rate'u** (32,66 ms przy
+  `s=36`, 35,48 ms przy `s=6`), więc żaden szczebel nie spełnia `p99 <= 0,5 * slot(phi)`.
+  Pozostałe komórki mieszczą się przy `s=6`: `W2_Q32` 2,6–3,3 ms, `W3_d3` 1,08 ms,
+  `W9_Q32` 3,6–4,0 ms.
+- diagnostyka (`results/evidence/diag_w4*`, **nie są danymi kampanii**): koszt liniowy w Q
+  (`W4_Q01` 0,98 ms, `W4_Q08` 7,89 ms, `W4_Q32` 32,29 ms mediany) i stały co-slot
+  (`p99/mediana` 1,06–1,20). Brak ogona outlierów, brak podejrzenia defektu silnika.
+- przyczyna źródłowa: **błąd modelu w predeklaracji**, nie w silniku. Okno `@(1,30)`
+  w rodzinie W4 (`generate.py:114-124`) liczy 30 próbek w każdym slocie, więc praca na slot
+  nie maleje przy dłuższym slocie. Drabina zakładała milcząco, że koszt każdej rodziny
+  skaluje się z rate'em — dla okien próbkowych to założenie jest fałszywe.
+- reżim zachowany: governor przywrócony do `ondemand`, odcisk drzewa kodu bez zmian,
+  katalogi wejściowe czyste, żaden krok nie zapisał danych kampanii.
+- decyzja o dalszym postępowaniu należy do człowieka: drabina i próg są zamrożone, więc
+  zmiana wymaga nowego katalogu wyników z nową predeklaracją (R3).
+
+## 2026-07-30T16:20+02:00 — decyzja człowieka po nieudanej kalibracji K6.0
+
+Kampania K6 w katalogu `results_20260730_K6` **nie zostanie wznowiona** — jej drabina
+rate'u opierała się na fałszywym założeniu (koszt każdej rodziny skaluje się z rate'em),
+a predeklaracja zabrania korygowania parametru po zobaczeniu danych. Katalog zostaje
+nietknięty jako zapis nieudanej kalibracji (R3).
+
+Zatwierdzony kierunek: **nowy katalog `results_20260730_K6b` z predeklaracją v2**.
+Parametry zamrożone decyzją człowieka 2026-07-30, przed wygenerowaniem danych:
+
+- drabina rozszerzona: `s ∈ {36, 24, 12, 6, 3, 1}`, `f_phi = 15 * s` Hz;
+- **rate wybierany per rodzina**, nie globalnie: największe `s`, przy którym każda komórka
+  tej rodziny w najgorszym profilu spełnia `p99(compute_ns) <= 0,5 * slot(phi)`.
+  Uzasadnienie wyboru „per rodzina", a nie „per komórka": przy różnych rate'ach dla `Q08`
+  i `Q32` porównanie skalowania w Q wewnątrz rodziny byłoby skażone rate'em;
+- komórka niemieszcząca się nawet przy `s=1` wypada z Tier B i jest **raportowana jako
+  wykluczona** wraz z liczbami i przyczyną. Z pomiarów K6.0 dotyczy to `W4_Q32`
+  (wymaga `f_phi <= 14 Hz`);
+- budżet przebiegu `slots = clamp(round(8 s / slot), 400, 6000)` — podłoga obniżona
+  z 1500 na 400, bo przy 15 Hz 1500 slotów to 100 s na przebieg; 400 slotów × 15 powtórzeń
+  daje 6000 próbek na komórkę;
+- **nowy warunek unieważniający:** rate nieidentyczny dla wszystkich profili w obrębie
+  jednej komórki unieważnia kampanię;
+- bez zmian względem v1: 5 profili, 15 powtórzeń, losowa kolejność wariantów, metryka
+  główna = mediana `compute_ns`, próg istotności 10%, klasy A/B/C, pozostałe warunki
+  unieważniające, `W8` na stałych 360 Hz, Tier A niezależny od rate'u (generowany przy `s=6`);
+- przeniesione przez referencję, bez powtarzania (obie są niezależne od rate'u):
+  `results_20260730_K6/results/counters.md` (230 kompilacji, 0 niezgodności) oraz
+  `results_20260730_K6/results/functional_matrix.md` (45/45).
+
+Ustalenie uboczne, warte zapisania niezależnie od kampanii: w `W4_Q32` profil `STRUCT`
+nie jest szybszy od `OFF` (35,59 vs 34,77 ms p99). Współdzielenie podplanu `(A>2)#(B>1)`
+nie daje korzyści czasowej, bo koszt zdominowany jest przez 32 niewspółdzielone okna
+`@(1,30)`. Rodzina W4 w obecnej postaci mierzy własne okna, nie dedup.
+
+## 2026-07-30T16:35+02:00 — uzupełnienie zakresu K6b: model kosztu slotu
+
+Dodatek do zatwierdzonych parametrów v2, zapisany **przed wygenerowaniem danych**.
+Reguła wyboru rate'u pozostaje bez zmian i pozostaje empiryczna: o tym, który szczebel
+drabiny wchodzi, rozstrzyga pełne przemiecenie drabiny, nie predykcja.
+
+Do zakresu K6b dochodzi produkt uboczny bez dodatkowych przebiegów pomiarowych:
+`results/cost_model.md` — model kosztu slotu dopasowany na danych, które i tak powstają.
+Wejście: pary (komórka, rate, `p99`) z kalibracji oraz liczniki Tier A (`PLAN bench`,
+`PLAN capacity`, `MATERIALIZED`). Postać `a * tokeny + b * materializacje + c * bajty`,
+dopasowanie na części rodzin, predykcja na pozostałych, walidacja na medianach Tier B.
+
+Uzasadnienie: plan jest statyczny, a harmonogram deterministyczny, więc praca na slot
+jest wielkością znaną w czasie kompilacji — brakuje wyłącznie stałych maszyny. Kalibracja
+v1 ustaliła jedną informację (żaden szczebel nie przechodzi) kosztem 96 przebiegów;
+przy działającym modelu byłoby to rachunkiem.
+
+Model musi ważyć materializacje osobno od tokenów: `W4_Q32` to ~33 µs na element okna,
+czyli koszt siedzi w zapisach przez `storage`, nie w arytmetyce. Model liczący same tokeny
+pomyliłby się o rzędy wielkości. Sprawdzalna przepowiednia: ta sama komórka na
+`SUBSTRAT memory` powinna być radykalnie tańsza.
+
+Etap drugi — kontrola dopuszczenia planu wewnątrz `xretractor` — jest zmianą w silniku
+i **nie należy do K6b**: osobny `issue_NNN` z badaniem higienicznym po zamknięciu kampanii.
+Zgłoszone jako **K20** w `paper-arXiv/debs/research_plan.md`.
+
+## 2026-07-30 — K6b: predeklaracja v2, rate wybierany per rodzina
+
+Nowy katalog `results_20260730_K6b` z predeklaracją v2, zamrożoną **przed**
+wygenerowaniem jakichkolwiek danych. `results_20260730_K6` zostaje zamknięty
+i nietknięty (R3) jako zapis nieudanej kalibracji.
+
+**Co nazwano wprost.** Predeklaracja v1 nie miała błędu w silniku, tylko
+w modelu: drabina `{36, 24, 12, 6}` zakładała milcząco, że koszt pracy na slot
+maleje razem z rate'em. Dla okna `@(1,30)` w rodzinie W4 to jest fałsz —
+30 próbek na slot niezależnie od jego długości — więc `W4_Q32` ma `p99 ≈ 35 ms`
+na każdym szczeblu i jedna komórka zablokowała całą kampanię.
+
+**Cztery zmiany v2** (parametry zatwierdzone przez człowieka, wpisy 16:20
+i 16:35): drabina rozszerzona o `3` i `1`; rate wybierany **per rodzina**, nie
+globalnie; komórka niemieszcząca się przy `s = 1` wypada z Tier B i jest
+raportowana jako **wykluczona** wraz z wymaganym `f_phi`; nowy warunek
+unieważniający nr 6 — rate nieidentyczny w obrębie komórki. Budżet przebiegu
+`slots = clamp(round(8 s / slot), 400, 6000)`.
+
+**Rodzina, a nie komórka, jako jednostka rate'u** — bo rate per komórka
+skaziłby porównanie skalowania w `Q` wewnątrz rodziny, a rate globalny wiąże
+rodziny, między którymi żadne porównanie nie zachodzi.
+
+**Zmiany w kodzie.** `calibrate.py` przemiata drabinę per rodzina i przestaje
+mierzyć rodzinę rozstrzygniętą wyżej; reguła domykająca (wykluczenia + rate na
+ocalałych komórkach) jest wydzielona jako funkcja czysta `resolve_rates`, żeby
+dało się ją sprawdzić bez uruchamiania silnika. `matrix.tsv` dostaje kolumnę
+`rate` (`calibration` albo `fixed:360`) zamiast globalnego `--scale`.
+`run_ablation_study.sh` i `start_supervisor.sh` przestają przyjmować `--scale`
+i `--samples` — rate rodziny, `f_phi` i budżet slotów czytają z `rate.json`,
+a komórki wykluczone pomijają w planie i raportują imiennie. `runs.csv` niesie
+kolumny `scale` i `f_phi_hz` przy każdym przebiegu, bo rate przestał być stałą
+kampanii. Nowa regresja `tests/test_rate_guard.sh` (10 kontroli).
+
+**Kalibracja mierzy teraz ten sam przebieg co kampania.** v1 kalibrowała bez
+`RDB_BENCH_PLAN` i `RDB_BENCH_MATERIALIZE`, choć Tier B je włącza. v2 włącza
+wszystkie trzy instrumenty; przy okazji daje to wektor cech każdej komórce
+kalibracyjnej — również tej, która wypadnie z Tier B i inaczej nie miałaby
+żadnych liczników dla modelu kosztu slotu.
+
+**Przeniesione przez referencję, nie powtarzane** (obie niezależne od rate'u):
+`results_20260730_K6/results/counters.md` (230 kompilacji, 0 niezgodności) oraz
+`functional_matrix.md` (45/45). Warunek unieważniający nr 4 jest spełniony na
+mocy tych plików.
+
+Regresje po zmianie: 10 kontroli rate'u, 66 orkiestracji, 8 higieny artefaktów,
+7 strażnika repozytorium kodu. Silnik bez zmian, drzewo kodu czyste.
+
+## 2026-07-30T19:30:50+02:00 — results_20260730_K6b / krok calibrate
+
+- wynik: sukces
+- commit kodu: `bb3a5216b952432818b23a26365001fe4f7627f5`
+- K6b.0 kalibracja: przebiegow=264, rate per rodzina: W2=s6, W3=s24, W4=s3, W5=s6, W7=s6, W8=szrodlo, W9=s6; komorki wykluczone: W4_Q32
+
+## 2026-07-30T19:33:54+02:00 — results_20260730_K6b / krok tier-a
+
+- wynik: sukces
+- commit kodu: `bb3a5216b952432818b23a26365001fe4f7627f5`
+- K6b.3 Tier A: 3450 kompilacji, scale=6, reps=15
+
+## 2026-07-30 — K6b: kalibracja, Tier A i czwarty defekt klasy „milczenie instrumentu"
+
+**K6b.0 — kalibracja przeszła.** 264 przebiegi, 11 komórek Tier B podlegających
+drabinie, 3 powtórzenia na komórkę i profil. Rate per rodzina:
+
+| Rodzina | `s` | `f_phi` | slotów |
+|---|---:|---:|---:|
+| W2 | 6 | 90 Hz | 720 |
+| W3 | 24 | 360 Hz | 2880 |
+| W4 | 3 | 45 Hz | 400 |
+| W5 | 6 | 90 Hz | 720 |
+| W7 | 6 | 90 Hz | 720 |
+| W8 | — | 360 Hz (źródło) | 2880 |
+| W9 | 6 | 90 Hz | 720 |
+
+**`W4_Q32` wykluczona z Tier B**: 35 291 µs przy budżecie 33 333 µs na
+najniższym szczeblu, wymaga `f_phi <= 14,17 Hz`. Przewidywanie człowieka
+z 16:20 („wymaga `f_phi <= 14 Hz`") potwierdzone co do liczby.
+
+Zmiana v2 zarabia na siebie w jednej liczbie: **W3 biegnie na 360 Hz, W4 na
+45 Hz — osiem razy wolniej**. Rate globalny musiałby zejść do 45 Hz dla
+wszystkich rodzin, a v1 nie potrafiła nawet tego, bo jedna komórka blokowała
+drabinę w całości.
+
+Wszystkie 44 obserwacje kalibracyjne mają liczniki planu i materializacji, więc
+model kosztu ma wektor cech także dla `W4_Q32`, której Tier B już nie zmierzy.
+
+Oszacowanie czasu kalibracji w predeklaracji (40–50 min) było zaniżone:
+faktycznie 60 min. To była proza, nie zamrożony parametr — nic nie unieważnia,
+ale zostaje odnotowane.
+
+**K6b.3 — Tier A przeszedł.** 3450 kompilacji (46 przypadków × 5 profili ×
+15 powtórzeń) w 95 sekund. Plan zakładał ~2,4 h; oszacowanie było zawyżone
+o dwa rzędy wielkości, bo kompilacja jednego przypadku to ~30 ms.
+
+**Dwa defekty wykryte przy pierwszym uruchomieniu Tier B.**
+
+1. `validate_campaign_name` w `lib/common.sh` przyjmowała wyłącznie
+   `rate*` i `clients`, choć `start_supervisor.sh` obsługuje `ablation` od K6.
+   Rozjazd między `case` w skrypcie a walidatorem nigdy nie wyszedł, bo K6 padł
+   na kalibracji, przed pierwszym badaniem Tier B. Naprawione, regresja
+   wymusza teraz zgodność każdego rodzaju kampanii z walidatorem
+   (`tests/test_orchestration.sh`, 69 kontroli).
+
+2. **Czwarty defekt klasy „milczenie instrumentu".** Pętla przebiegów
+   w `run_ablation_study.sh` miała postać `while read ... done < plan.tsv`, więc
+   procesy potomne dziedziczyły **plik planu jako stdin**. Klient `xqry` czytał
+   go do EOF i kończył się kodem 0, zanim skrypt sprawdził, czy żyje — badanie
+   padało na „klient xqry nie uruchomil sie", z pustym `xqry.err` i bez żadnej
+   wskazówki, co się stało.
+
+   Głośny skutek był tym łagodniejszym. Cichszy: potomek **konsumował** plan,
+   więc pętla gubiłaby przebiegi bez ani jednego komunikatu. Złapałaby to
+   dopiero reguła zliczania (`executed == TOTAL_RUNS`) — i to jest dokładnie
+   ten rodzaj sytuacji, dla którego ta reguła istnieje.
+
+   Rozstrzygnięcie eksperymentalne w `/dev/shm`, poza repozytoriami: ten sam
+   kod z `xqry ... < /dev/null` — klient żyje; bez tego — martwy, kod 0.
+   Naprawa: plan czytany z deskryptora 9 (`read <&9` … `done 9< plan.tsv`),
+   stdin odcięty każdemu procesowi potomnemu w pętli. Regresja:
+   `tests/test_rate_guard.sh`, kontrole 11 i 12 (12 kontroli łącznie).
+
+   Dowód zachowany jako
+   `results/evidence/harness_defect_stdin_study_01_W2.tar.gz` — pod nazwą, która
+   mówi wprost, że to defekt harnessu, nie dane kampanii. `results/evidence/README.md`
+   ostrzega, że sonda ma 389 slotów z 719, bo silnik został zatrzymany
+   w połowie przez sprzątanie po błędzie.
+
+Żaden z tych dwóch defektów nie dotyczy silnika. Kod pozostaje zamrożony na
+`bb3a521`, drzewo czyste na obu maszynach, żaden przebieg pomiarowy nie został
+zatwierdzony na podstawie tych porażek.
+
+## 2026-07-30T20:28:47+02:00 — results_20260730_K6b / ablation / study_1 (W2)
+
+- wynik: sukces
+- commit kodu: `bb3a5216b952432818b23a26365001fe4f7627f5`
+- parametry: rodzina=W2, reps=15, slots=720, scale=6, f_phi=90 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 180
+- dane: `results_20260730_K6b/ablation/study_01_W2`
+
+## 2026-07-30T20:56:01+02:00 — results_20260730_K6b / ablation / study_1 (W2)
+
+- wynik: sukces
+- commit kodu: `bb3a5216b952432818b23a26365001fe4f7627f5`
+- parametry: rodzina=W2, reps=15, slots=720, scale=6, f_phi=90 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 180
+- dane: `results_20260730_K6b/ablation/study_01_W2`
+
+## 2026-07-30 — K6b: kampania ZATRZYMANA przed werdyktem; klient ginie w rodzinie W8
+
+Tier B zatrzymany po badaniu 1. Zapisane: `ablation/study_01_W2` (180
+przebiegów, zatwierdzone i wypchnięte). Badanie 2 (W3) padło, a diagnostyka
+odsłoniła dwie rzeczy, z których druga jest warunkiem unieważniającym nr 5.
+
+**Zatrzymanie jest wykonaniem inwariantu, nie porażką procesu.** „Reakcją na
+niespodziankę jest ZATRZYMANIE i nowy katalog wyników, nie korekta parametru."
+
+### Trzy defekty harnessu, naprawione (żaden nie dotyczy silnika)
+
+1. `validate_campaign_name` nie znała rodzaju `ablation`, choć
+   `start_supervisor.sh` obsługuje go od K6.
+2. Pętla przebiegów oddawała plan jako stdin procesom potomnym; `xqry` czytał go
+   do EOF i wychodził zerem. Cichszy skutek: potomek konsumował plan, więc pętla
+   gubiłaby przebiegi.
+3. Ścieżka commitu nie przeżywała przesuniętego wierzchołka brancha. R4 trzyma
+   jeden commit kampanii, więc push nadzorcy w trakcie badania unieważniał
+   dzierżawę i 19 minut poprawnego pomiaru szło do kosza. Naprawa: worker
+   odświeża branch tuż przed commitem, wpis do JOURNAL-a powstaje po odświeżeniu.
+
+Wszystkie trzy leżały w ścieżkach, które **nigdy wcześniej nie wykonały się do
+końca** — K6 padł na kalibracji, przed pierwszym badaniem Tier B.
+
+### Ustalenie nr 4: `slot(phi)` nie opisuje rzeczywistego interwału W3 i W8
+
+Predeklaracja definiuje `slot(phi) = 1/(15·s)`, czyli interwał przeplotu **dwóch**
+strumieni `A#B`. Rodziny, których strumień wyjściowy jest zagnieżdżonym
+przepłotem, tykają gęściej — częstotliwości się sumują. Przy `s = 24`:
+
+| komórka | nominalny slot | rzeczywisty `phi` | rzeczywisty slot | `p99` | udział slotu |
+|---|---:|---:|---:|---:|---:|
+| `W3_d1` | 2778 µs | 360 Hz | 2778 µs | 886 µs | 32 % |
+| `W3_d3` | 2778 µs | **810 Hz** | **1235 µs** | 1122 µs | **91 %** |
+
+Reguła 50 % została zastosowana **dokładnie tak, jak zapisana**, i słusznie
+uznała, że `W3_d3` się mieści. Ale jej intencja — „porównanie profili musi
+zachodzić w reżimie nienasyconym" — dla tej komórki nie jest osiągnięta.
+
+To jest ten sam rodzaj błędu co w v1: model rate'u nie opisuje pracy, którą
+rodzina faktycznie wykonuje. W v1 chodziło o okno próbkowe (W4), tutaj
+o zagnieżdżony przepłot (W3, i analogicznie `mon_j` w W8).
+
+### Ustalenie nr 5: klient `xqry` kończy się przed silnikiem w rodzinie W8
+
+**To jest warunek unieważniający nr 5** (defekt wykryty przez kampanię).
+
+Pomiar w `results/evidence/client_early_exit_measurements.md`, dziewięć komórek,
+sekwencja odtworzona jak w skrypcie badania, w `/dev/shm`:
+
+- `W8_Q08` i `W8_Q32`: klient znika po ~3 s, gdy silnik pracuje jeszcze 3–9 s.
+  Kod wyjścia raz 4 (`interrupted`), raz 0. `W8_Q01` przeżył. Niedeterministyczne
+  i zależne od `Q`.
+- `W3_d3`: to co innego — klient wychodzi kodem 10 razem z silnikiem, bo silnik
+  kończy 2880 slotów w 3,05 s i zdejmuje pamięć współdzieloną. Koniec krótkiego
+  przebiegu, nie awaria.
+
+`xqry -s <stream> -r` **nie jest klientem krótkotrwałym**: `-r` to tryb wyjścia,
+a limit elementów `-m` domyślnie wynosi 0, czyli brak limitu. Wyjście po trzech
+sekundach przy serwerze pracującym dwanaście nie ma uzasadnienia w interfejsie.
+
+**Dlaczego to blokuje kampanię, a nie tylko irytuje.** Predeklaracja wymaga
+dokładnie jednego klienta na przebieg, a `e2e_ns` jest zdefiniowane jako
+queue-emission latency **do tego klienta**. Klient znikający w jednej czwartej
+przebiegu sprawia, że przez resztę mierzy się co innego niż zapisano. Dotyczy to
+**W8** — jedynej rodziny umotywowanej zewnętrznie, tej, która zamyka lukę G7.
+
+Nie ustalono, czy przyczyna leży w kliencie, w warstwie IPC silnika, czy
+w środowisku. **Pełna diagnoza należy do osobnego `issue_NNN` z badaniem
+higienicznym, nie do wnętrza kampanii** — dokładnie ścieżką K5 →
+`issue_213-defect-interval` → K5 rerun.
+
+### Stan po zatrzymaniu
+
+- silnik: `bb3a521`, zero zmian, drzewa czyste na obu maszynach;
+- governor przywrócony do `ondemand`, brak procesów silnika na workerze;
+- `results_20260730_K6b` zawiera: predeklarację v2, `results/rate.json`
+  (rate per rodzina, `W4_Q32` wykluczona), `results/calibration.md` (264
+  przebiegi), `results/compile_runs.csv` (Tier A, 3450 kompilacji),
+  `ablation/study_01_W2` (180 przebiegów) oraz dowody w `results/evidence/`;
+- Tier B jest **niekompletny** (1 badanie z 7) i nie wolno go raportować jako
+  wyniku kampanii;
+- decyzja o dalszym postępowaniu należy do człowieka.
+
+## 2026-07-31T09:09:29+02:00 — results_20260730_K6c / krok calibrate (przerwany)
+
+- wynik: **zatrzymany po 8 s, zero pomiarów** — defekt harnessu, nie silnika
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`, drzewa czyste na obu
+  maszynach; governor wrócił do `ondemand`, brak procesów silnika na workerze
+
+Pierwsza komórka (`W2_Q01`, strumień `w2_out_000`) przerwała na
+`silnik zakończył się przed odpowiedzią o strumień`. Silnik kończył się z
+`FATAL: storage: path 'temp/' is not a directory`, kod 1. Odtworzone
+deterministycznie: ta sama komórka bez `temp/` → kod 1, z `temp/` → kod 0.
+
+Przyczyna: `measure_cell` podawało do `measure_interval` **surowy** katalog
+z `generate.py`, a ten zostawia same wejścia. Nagłówek RQL to `STORAGE 'temp'`,
+więc katalog przebiegu musi mieć `temp/` — czego wymagał zresztą wprost
+docstring `measure_interval`. Wszyscy pozostali konsumenci stawiają katalog
+sami (`run_once`, `saturation.py`, `check_counters.py`); ścieżka „slot
+z silnika" była w v3 nowa i jako jedyna tego nie robiła.
+
+Przy okazji wyszedł drugi, cichszy defekt tej samej ścieżki: `run_once`
+pomijało `external_data.txt` zamiast je rozwiązywać, więc **W8** — w kalibracji
+nowa w v3 — pracowałaby bez plików ECG. Silnik tego nie sygnalizuje: przebieg
+kończy się kodem 0 i produkuje komplet slotów. Zmierzone na `W8_Q01`, 3000
+slotów, profil OFF, rdzeń 3: p99 1 270 673 ns bez wejścia wobec 1 332 487 ns
+z wejściem. Wartości nie interpretujemy — werdykt należy do K6c.6 — ale rate
+W8 i budżet 50 % stoją na p99, więc kalibracja musi stawiać katalog tak samo
+jak `check_counters.py`.
+
+Naprawa: obie ścieżki używają teraz wspólnego `stage()` z `check_counters.py`
+(`temp/` + dane + pliki rozwiązane z manifestu), `code_repo` doprowadzony do
+`measure_cell` i `run_once`. Regresja `tests/test_slot_guard.sh` #11 uruchamia
+`measure_cell` NAPRAWDĘ (podstawiony wyłącznie silnik) i sprawdza 11 rzeczy
+w katalogu przebiegu; kontrola #3 przestała przypinać wadliwe wywołanie.
+Oba defekty wstrzyknięte z osobna czerwienią zestaw. Całość: 123 kontrole,
+0 błędów.
+
+Kalibracja nie ma ani jednej liczby pomiarowej — nic nie zostało skażone,
+katalog wyników pozostaje ten sam.
+
+## 2026-07-31T10:09:48+02:00 — results_20260730_K6c / krok calibrate
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- K6c.0 kalibracja: przebiegow=258, rate per rodzina: W2=s12, W3=s12, W4=s1, W5=s12, W7=s6, W8=zrodlo, W9=s12; slotow per komorka (slot z silnika): W2_Q01=1440, W2_Q08=1440, W2_Q32=1440, W3_d1=1440, W3_d3=3240, W4_Q08=400, W4_Q32=400, W5_Q32=1440, W7_Q32=720, W8_Q01=5760, W8_Q08=5760, W8_Q32=5760, W9_Q08=960, W9_Q32=960; komorki wykluczone: brak
+
+## 2026-07-31T10:30:09+02:00 — results_20260730_K6c / krok tier-a
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- K6c.3 Tier A: 3450 kompilacji, scale=6, reps=15
+
+## 2026-07-31T10:51:58+02:00 — results_20260730_K6c / ablation / study_1 (W2)
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- parametry: rodzina=W2, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W2_Q01=1440 slotow@180 Hz; W2_Q08=1440 slotow@180 Hz; W2_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 180
+- dane: `results_20260730_K6c/ablation/study_01_W2`
+
+## 2026-07-31T11:11:51+02:00 — results_20260730_K6c / ablation / study_2 (W3)
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- parametry: rodzina=W3, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W3_d1=1440 slotow@180 Hz; W3_d3=3240 slotow@405 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 120
+- dane: `results_20260730_K6c/ablation/study_02_W3`
+
+## 2026-07-31T12:03:22+02:00 — results_20260730_K6c / ablation / study_3 (W4)
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- parametry: rodzina=W4, reps=15, scale=1, f_phi generatora=15 Hz
+- budzet slotow per komorka: W4_Q08=400 slotow@15 Hz; W4_Q32=400 slotow@15 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 120
+- dane: `results_20260730_K6c/ablation/study_03_W4`
+
+## 2026-07-31T12:15:01+02:00 — results_20260730_K6c / ablation / study_4 (W5)
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- parametry: rodzina=W5, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W5_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 60
+- dane: `results_20260730_K6c/ablation/study_04_W5`
+
+## 2026-07-31T12:26:40+02:00 — results_20260730_K6c / ablation / study_5 (W7)
+
+- wynik: sukces
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- parametry: rodzina=W7, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W7_Q32=720 slotow@90 Hz
+- komorki wykluczone przez kalibracje: brak
+- przebiegow: 60
+- dane: `results_20260730_K6c/ablation/study_05_W7`
+
+## 2026-07-31T12:43:51+02:00 — results_20260730_K6c / badanie 6 (W8) — PRZERWANE
+
+- wynik: **warunek unieważniający nr 5** — klient `xqry` zniknął w trakcie przebiegu
+- commit kodu: `e1e5181141f96965da4a092f7e7191f8cb0b2748`
+- Tier B zatrzymany na 5 z 7 badań; `study_06_W8` nie powstało, W9 nieuruchomione
+
+```
+[2026-07-31 12:31:58] BLAD: W8_Q32_ALGSTRUCT_r03: klient xqry zniknal, choc silnik nadal dziala
+```
+
+Fakty z dowodu (`results/evidence/ablation_study_06_W8.tar.gz`, 199 plików,
+sha256 `a1bb6e46…`, indeks obok): `xqry.err` ma zero bajtów — klient zniknął
+bez komunikatu; sonda złapała **1170 slotów z 5760** zaplanowanych, czyli
+**20,3 %** przebiegu; log silnika bez śladu awarii, silnik pracował dalej.
+
+To jest ten sam warunek i ta sama rodzina, na których zatrzymano K6b, gdzie
+opisano go jako „klient znikający w jednej czwartej przebiegu". Tu jest jedna
+piąta — sygnatura ta sama.
+
+**Istotne dla przypięcia kampanii.** K6c została przypięta do `e1e5181`
+właśnie dlatego, że ten commit naprawiał defekt klienta. Badanie higieniczne
+tego commita (`results_20260731_hygiene`, `c836a60`) porównało 78 poleceń
+klienta, w tym 70 razy `-t`, i orzekło „brak wpływu" — ale porównywało
+ZGODNOŚĆ WYNIKÓW, a nie PRZEŻYWALNOŚĆ klienta pod obciążeniem, więc tego trybu
+awarii wykryć nie mogło. Naprawa w `e1e5181` go nie usunęła.
+
+Przyczyny nie diagnozowano: zgodnie z README pełna diagnoza należy do osobnego
+`issue_NNN` z badaniem higienicznym, nie do wnętrza kampanii. Otwarty branch:
+`issue_217-client-unexpected-close` w repozytorium kodu.
+
+Stan po zatrzymaniu: governor przywrócony do `ondemand`, brak procesów silnika
+i klienta, repozytorium kodu nietknięte, kampania na `b39d183` z kompletnym
+materiałem dla W2, W3, W4, W5, W7 (540 przebiegów). Tier B jest niekompletny
+i — jak w K6b — nie wolno go raportować jako wyniku kampanii.
+
+### Odstępstwo operacyjne, świadome i zapisane
+
+Między badaniami Tier B czekałem po reboocie na spadek `load1` poniżej 0,60
+(mierzone co 20 s, limit 400 s). Protokół R8 wymaga reboota i `sync`, ale
+czasu wystudzenia nie deklaruje. Powód: bez czekania badania 2–7 startowałyby
+przy `load1` ~1,5–2,0, podczas gdy badanie 1 ruszyło przy 0,52. Osiągnięte
+wartości startowe: W2 0,52, W3 0,57, W4 0,50, W5 0,54, W7 0,49, W8 0,59.
+Pierwotny próg 0,30 był poniżej tła maszyny i dla W4 nie został osiągnięty
+w 400 s — badanie ruszyło mimo to, co odnotowano.
+
+## 2026-07-31 — K6c: diagnoza zatrzymania na W8; „cicha śmierć klienta" obalona
+
+Diagnoza ustalenia nr 5 (K6b) i zatrzymania K6c, wykonana z materiału
+dowodowego `ablation_study_06_W8.tar.gz` oraz z logu klienta na workerze.
+Rozstrzygnięcie zapisane w `results_20260730_K6c/README.md`, sekcja
+„Zatrzymanie na W8", **przed** jakimkolwiek ponownym pomiarem.
+
+### Klient nie ginie — kończy się czysto, a komunikat jest wyrzucany
+
+`xqry` woła `setupLoggerMain(argv[0], dual=true)`: console sink to **stdout**,
+a nie stderr; wszystkie ścieżki błędu w `qryLauncher.cpp` używają `std::println`
+— również stdout. Na stderr klient nie pisze **nigdy**. Harness uruchamia go
+jako `>/dev/null 2>xqry.err`, więc `xqry.err` ma 0 bajtów w każdym przebiegu,
+także w tych z `exit_code 0` (sprawdzone: 5 przebiegów w dowodzie, wszystkie 0).
+
+**Puste `xqry.err` nie było objawem — było artefaktem konstrukcji harnessa.**
+To ono utrzymywało przez dwie kampanie hipotezę o crashu klienta.
+
+Prawdziwy komunikat leżał w `/tmp/xqry.log` na workerze (mtime 12:31, ta sama
+minuta co wpis `BLAD`):
+
+```
+260731 12:31:57.879 ipc_transport.cpp:136 [E] server not found
+260731 12:31:57.879 qry.cpp:67 [E] serwer nie odpowiedzial na komende 'get' ... (strumien: mon_000)
+```
+
+Klient wyszedł kodem 110 (`timed_out`) po ~100 ms, przy dołączaniu — a nie po
+¼ przebiegu. Kontrola żywotności w harnessie stoi `sleep 1` po starcie klienta;
+1170 slotów w sondzie to skutek ubicia silnika przez `die`, nie miara tego,
+jak długo klient żył.
+
+### Mechanizm
+
+Wątek przetwarzania dostaje SCHED_FIFO 50 (`rtActivate` →
+`sched_setscheduler(0,…)` — tylko wątek wołający). Wątek komunikacyjny
+`commandProcessorLoop` powstaje wcześniej i zostaje SCHED_OTHER. `taskset`
+przypina oba do jednego rdzenia. Budżet klienta na odpowiedź na `get` to
+10 prób × 10 ms = 100 ms. Przy wysyceniu rdzenia wątek komunikacyjny dostaje
+CPU dopiero w oknie throttlingu RT i w 100 ms się nie mieści.
+
+Duty z sondy przebiegu, który padł, wobec slotu 1389 µs: `W8_Q32` 177 % średnio
+(po rozgrzaniu 200–220 %), `W8_Q08` 72 %, `W8_Q01` 39 %. Zgadza się co do rzędu
+z kalibracją, która zadeklarowała 243 % / 133 % / 61 % **przed** kampanią.
+
+### Dlaczego to nie jest „niespodzianka" w sensie reguły o nowym katalogu
+
+Warunek (W8 poza budżetem 50 %) był zadeklarowany w `calibration.md` przed
+kampanią, z jawnym pozostawieniem decyzji człowiekowi. Pomiar go potwierdził,
+nie zaskoczył. Nowy katalog wyników nie jest zakładany. Nieprzewidziane było
+tylko to, że przy takim duty klient nie zdąży się dołączyć — i to jest defekt
+kodu, naprawiany poza kampanią na `issue_217-client-unexpected-close`.
+
+### Decyzja o zakresie powtórzeń
+
+Tier A (3450 kompilacji), kalibracja (258 przebiegów) i Tier B (540 przebiegów:
+W2, W3, W4, W5, W7) **zostają**. Uzasadnienie i warunek jego falsyfikacji —
+w README. Skrót: naprawa rusza wyłącznie fazę przed dołączeniem klienta oraz
+miejsce, gdzie ląduje komunikat błędu; obie ścieżki w zaliczonym przebiegu nie
+wykonują się. Gdyby naprawa musiała ruszyć `producer()`, `boradcast()` albo
+format rekordu, argument upada i 540 przebiegów wymaga powtórzenia.
+
+Do zmierzenia zostaje W8 i W9, potem K6c.5, K6c.6, K6c.7 — na nowym przypięciu,
+z przebudowanymi profilami i przebudowanym `xqry`.
+
+## 2026-07-31 — K6c: naprawa issue_217 scalona; drugie przypięcie kampanii
+
+Naprawa klienta scalona do `master` w repozytorium kodu jako **`e1c13bb`**
+(„Klient xqry: diagnostyka na stderr i realny budzet czekania (issue_217) (#218)").
+Zakres: diagnostyka klienta przeniesiona na STDERR oraz budżet oczekiwania na
+pierwszą odpowiedź serwera liczony zegarem, domyślnie 3 s zamiast 100 ms.
+Dwie regresje, obie wykazane jako czerwone przed naprawą:
+`ut_ipc_transport.netClient_default_budget_survives_briefly_starved_server`
+(101 ms zamiast 3 s) oraz `it_issue217_client_diag_stderr` (stderr pusty,
+komunikat na stdout). `ctest` 172/172 w Debug i w Release.
+
+### Kampania ma odtąd dwa przypięcia
+
+| materiał | commit |
+|---|---|
+| kalibracja, Tier A, Tier B W2–W7 (540 przebiegów) | `e1e5181` |
+| Tier B W8 i W9, K6c.5 | `e1c13bb` |
+
+Uzasadnienie ważności już zebranego materiału i warunek jego falsyfikacji są
+w README, sekcja „Zatrzymanie na W8". Argument, że `e1c13bb` nie rusza ścieżki
+pomiarowej silnika, ma ten sam kształt co argument o `_kbhit` przy `e1e5181`:
+zmiana w `uxSysTermTools.cpp` dotyczy wyłącznie gałęzi `dual`, do której silnik
+nie wchodzi (`launcher.cpp:221` woła z `dual=false`; jedynym binarium z
+`dual=true` jest `xqry`), a zmieniona domyślna wartość
+`ipc.client_response_max_fails` jest przez silnik walidowana, lecz nieużywana.
+
+Kontrola #8 w `tests/test_slot_guard.sh` wymaga teraz obu przypięć w README.
+
+## 2026-07-31 — K6c: badanie 6 (W8) na `e1c13bb` — PRZERWANE PONOWNIE, przyczyna ustalona
+
+Badanie uruchomione 13:45:44 na przypięciu `e1c13bb` (naprawa issue_217),
+z aparaturą przebudowaną w całości: pięć profili, `xqry` z tego samego commita,
+kontrola pochodzenia klienta przeszła (`klient xqry: e1c13bb (zgodny
+z przypieciem)`). Reboot i wystudzenie wg protokołu: `load1 = 0,47` po 151 s.
+
+Przerwane po 5 z 180 przebiegów, na **tej samej komórce co poprzednio**:
+`W8_Q32_ALGSTRUCT_r03`. Dowód: `results/evidence/ablation_study_06_W8_proba2.tar.gz`,
+199 plików, sha256 `e9b14e02…`, indeks obok. Dowód pierwszej próby
+(`…_W8.tar.gz`, sha256 `a1bb6e46…`) zachowany bez zmian.
+
+### Co naprawa dała, a czego nie dała
+
+**Dała: awaria jest nazwana.** `xqry.err` ma teraz 159 bajtów zamiast zera:
+
+```
+server not found
+serwer nie odpowiedzial na komende 'get' w wyznaczonym czasie (strumien: mon_000)
+xqry: mon_000: serwer nie odpowiedzial w wyznaczonym czasie
+```
+
+Harness zgłasza `xqry zakonczyl sie kodem 110 przed kontrolowanym zatrzymaniem`
+zamiast „klient zniknął". Silnik przeszedł **pełne 5759 slotów** (poprzednio
+1170), bo klient przeżył kontrolę żywotności i `die` nie ubiło przebiegu
+w trakcie. Cztery przebiegi przed feralnym zaliczyły się kodem 0 (`W8_Q01` ×3,
+`W8_Q08` ×1).
+
+**Nie dała: `W8_Q32` nadal się nie mierzy** — i nie da się tego naprawić po
+stronie klienta. Klient odczekał pełne 3 s nowego budżetu i nie dostał nic.
+
+### Przyczyna, ustalona i domknięta
+
+Worker startuje z `isolcpus=3 nohz_full=3 rcu_nocbs=3` (`/proc/cmdline`);
+`nproc` w normalnej powłoce to 3, bo rdzeń 3 jest wyjęty ze schedulera. Silnik
+jest tam przypinany przez `taskset -c 3` **całym procesem**, więc na izolowanym
+rdzeniu siedzą OBA jego wątki:
+
+- wątek przetwarzania — SCHED_FIFO 50 po `rtActivate`,
+- wątek komunikacyjny `commandProcessorLoop` — SCHED_OTHER, bo powstaje
+  (`executorsm.cpp:579`) przed `rtActivate`, a `sched_setscheduler(0,…)`
+  dotyczy wyłącznie wątku wołającego.
+
+W `W8_Q32` duty wynosi **212 %** slotu (średnia z 5759 slotów; ostatnie 200 →
+209,9 %), więc wątek RT jest **bez przerwy runnable** i nigdy nie oddaje rdzenia.
+Throttling RT nie ratuje sytuacji: `sched_rt_runtime_us=950000` przy okresie
+1 000 000 µs dawałby 5 % okna, ale kolejka RT izolowanego rdzenia pożycza
+niewykorzystany budżet z rdzeni 0–2, na których nie ma zadań RT, więc dławienie
+faktycznie nie zachodzi.
+
+**Wniosek: przy duty ≥ 100 % wątek komunikacyjny silnika nie jest szeregowany
+w ogóle, więc żaden budżet po stronie klienta nie wystarczy.** Komórki
+o duty < 100 % (`W8_Q01` 39 %, `W8_Q08` 72 % średnio) dołączają klienta bez
+problemu — i dołączyły.
+
+To jest inny defekt niż naprawiony w issue_217 i wykracza poza klienta.
+Decyzja o dalszym postępowaniu należy do człowieka; kampania zatrzymana,
+parametrów nie ruszano.
+
+## 2026-07-31T20:15:26+02:00 — results_20260730_K6c / ablation / study_6 (W8)
+
+- wynik: sukces
+- commit kodu: `1bb2d2ce8bec35cd0ab46d168249b706ccbaf303`
+- parametry: rodzina=W8, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W8_Q01=5760 slotow@720 Hz; W8_Q08=5760 slotow@720 Hz; W8_Q32=5760 slotow@720 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: W8_Q32
+- przebiegow: 120
+- dane: `results_20260730_K6c/ablation/study_06_W8`
+
+## 2026-07-31T21:02:36+02:00 — results_20260730_K6c / ablation / study_7 (W9)
+
+- wynik: sukces
+- commit kodu: `1bb2d2ce8bec35cd0ab46d168249b706ccbaf303`
+- parametry: rodzina=W9, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W9_Q08=960 slotow@120 Hz; W9_Q32=960 slotow@120 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20260730_K6c/ablation/study_07_W9`
+
+## 2026-07-31T22:06:57+02:00 — results_20260730_K6c / krok saturation
+
+- wynik: sukces
+- commit kodu: `1bb2d2ce8bec35cd0ab46d168249b706ccbaf303`
+- K6c.5 punkt saturacji zmierzony
