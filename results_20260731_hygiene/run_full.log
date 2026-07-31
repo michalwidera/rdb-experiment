@@ -1,0 +1,101 @@
+Uwaga: harness testowy zmieniony miedzy commitami (nie wplywa na to badanie):
+  test/UnitTest/test_ipc_transport.cpp
+  test/UnitTest/test_qry.cpp
+  test/UnitTest/test_uxSysTermTools.cpp
+Drzewa gotowe: HISTORICAL=bb3a521 FIXED=e1e5181
+korpus: 81 plików
+różnice planu: 0
+zmiany statusu kompilacji: 0
+różnice liczników R1/R2: 0
+examples/ecg/rec205/rec205-qrs.rql: identyczne=True 
+test/IntegrationTest_parallel/dsp/query.rql: NIEDETERMINISTYCZNY — wyłączony z kryterium
+test/IntegrationTest_serial/optimizer_ablation/query.rql: identyczne=True 
+test/IntegrationTest_serial/agse_volatile/query.rql: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql hello: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql dir: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql diryaml: NIEDETERMINISTYCZNE — wyłączone z kryterium
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:FA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:FB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_FA_FB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:factored: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:MA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:MB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_MA_MB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:mixed_hash: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:FA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:FB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_FA2_FB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:QA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:QB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_QA2_QB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:multi_reference: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:CA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:CB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_CA2_CB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:CA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:CB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_CA_CB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:QA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:QB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_HASH_QA_QB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:multi2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_TIMEMOVE_CA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_TIMEMOVE_CB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:collide_user: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:factor_reference: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:collide_reference: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:multi1: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_TIMEMOVE_MA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:DB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:DA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:A: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:B: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_SELECT_commuted: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:same1: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:DA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:MA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:DB: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:STREAM_TIMEMOVE_MA2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:dedup_owner: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:dedup_shifted: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:mixed_shift: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:same2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:commuted: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:dedup_reference_owner: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:MB2: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:mixed_shift_reference: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:dedup_reference: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql select:A: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql select:B: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql select:CA: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql detail:brak: identyczne=True 
+test/IntegrationTest_serial/optimizer_ablation/query.rql select:brak: identyczne=True sciezka juz zawodzila; komunikat diagnostyczny (tresc poprawki, nie odstepstwo)
+examples/ecg/rec205/rec205-qrs.rql hello: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql dir: NIEDETERMINISTYCZNE — wyłączone z kryterium
+examples/ecg/rec205/rec205-qrs.rql diryaml: NIEDETERMINISTYCZNE — wyłączone z kryterium
+examples/ecg/rec205/rec205-qrs.rql detail:ecg: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mlii: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mlii_win: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:bpf: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:bp_acc: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:bp_out: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:bp_win: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:df: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:d_acc: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:d_out: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:sq_out: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mwi_win: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mwi: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:STREAM_ADD_mlii_mwi: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mwi_long: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:mwi_thr: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql detail:qrs_out: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql select:bp_acc: NIEDETERMINISTYCZNE — wyłączone z kryterium
+examples/ecg/rec205/rec205-qrs.rql select:bp_out: NIEDETERMINISTYCZNE — wyłączone z kryterium
+examples/ecg/rec205/rec205-qrs.rql select:bp_win: NIEDETERMINISTYCZNE — wyłączone z kryterium
+examples/ecg/rec205/rec205-qrs.rql detail:brak: identyczne=True 
+examples/ecg/rec205/rec205-qrs.rql select:brak: identyczne=True sciezka juz zawodzila; komunikat diagnostyczny (tresc poprawki, nie odstepstwo)
+Werdykt: BRAK WPŁYWU
+dowody porazki: brak (badanie bez roznic)
+Badanie zakończone; wynik: /home/michal/github/rdb-experiment/results_20260731_hygiene/results/summary.md
+results/raw.tar.gz 42bc80319943ad697dede45e1cab78b4b9fb9ff94c0671ed66217872ca54b50f (1370 plików)

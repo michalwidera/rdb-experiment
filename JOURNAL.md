@@ -4065,3 +4065,43 @@ parametrów nie ruszano.
 - wynik: sukces
 - commit kodu: `1bb2d2ce8bec35cd0ab46d168249b706ccbaf303`
 - K6c.5 punkt saturacji zmierzony
+## 2026-07-31 — Badanie higieniczne `e1e5181`: brak wpływu
+
+`e1e5181` („Poprawka klienta po eksperymencie (#216)") naprawił defekt wykryty
+przez zatrzymaną kampanię K6b: `xqry` kończył się przed silnikiem i meldował
+przy tym sukces. Kampania K6c jest do tego commita przypięta, więc pytanie
+brzmiało, czy naprawa zepsuła cokolwiek, co przedtem działało.
+
+**Werdykt: BRAK WPŁYWU.** Korpus 81 plików RQL — zero różnic w zrzutach planu,
+zero zmian statusu kompilacji, zero różnic w licznikach R1/R2 (oba drzewa: 76
+skompilowanych, 5 odrzuconych, R1=8, R2=18). Trzy deterministyczne potoki
+bajtowo identyczne (33, 116 i 11 artefaktów), `dsp` wyłączony jak zwykle.
+Klient: 78 poleceń porównanych, zero niezgodnych, 6 wyłączonych z podaną
+przyczyną.
+
+Badanie dostało **trzecią warstwę**, której poprzednie nie miały. Rozkład zmian
+był tu odwrotny niż wcześniej: 164 linie w kliencie wobec 7 w silniku. Warstwa
+porównująca tylko silnik odpowiadałaby więc na pytanie, którego nikt nie zadaje,
+i przeszłaby w ciszy. Warstwa 3 trzyma silnik stały i porównuje dwie wersje
+`xqry`; najważniejszą jej pozycją jest `-t`, bo kalibracja K6c czyta z niego
+pole `delta` — porównane 70 razy, za każdym razem identycznie.
+
+**Pierwszy przebieg warstwy 3 był nieważny — wina instrumentu.** Wyciągał nazwy
+strumieni z `xqry -d` przez podział po białych znakach, a tabela jest rozdzielana
+pionowymi kreskami; porównał przez to 66 razy polecenie `-t |`, czyli 66 razy to
+samo nic, i zaraportował 66 zgodności. Ten sam tryb porażki co w K5h/K5i, tylko
+głośniejszy: instrument nie milczał, lecz liczył puste porównania. Wyniki
+odrzucone w całości, badanie powtórzone w komplecie.
+
+Druga wada pierwszego przebiegu: kod zawężał zadeklarowaną regułę „odstępstwem
+jest przejście z zera na niezero" do samego kodu wyjścia i zgłaszał jako wpływ
+zamierzony komunikat diagnostyczny na ścieżce, która już przedtem zawodziła.
+Uzgodnione z regułą i doprecyzowane w predeklaracji tabelą: `rc = 0` przed
+poprawką → porównanie ścisłe; `rc != 0` → zmiana kodu albo komunikatu jest
+treścią poprawki i jest raportowana osobno.
+
+Stąd reguła, ogólniejsza od obu: **kryterium zapisane słowami i kryterium
+zapisane w kodzie muszą dać się zestawić.** Rozjazd między nimi nie zgłasza się
+sam — wygląda jak wynik.
+
+Dane: `results_20260731_hygiene/`.
