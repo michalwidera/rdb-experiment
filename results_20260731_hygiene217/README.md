@@ -83,6 +83,10 @@ Dwie binarki silnika, identyczna konfiguracja profilu (`RDB_OPT_*`,
   niestosowalny — 240 rebootów nie wchodzi w grę — więc dryf termiczny
   kontrolujemy przeplotem, a nie odstępem. To jest świadome odstępstwo i musi
   zostać zapisane w `JOURNAL.md`.
+- **Governor CPU:** `performance` na czas pomiaru, przywracany zawsze —
+  ten sam warunek, co `set_performance_governor` w harnessie kampanii.
+  Bez tego pomiar biegnie na `ondemand`, gdzie skalowanie częstotliwości
+  dokłada wariancji: `W2_Q32` STRUCT dało 3,18 ms wobec 2,46 ms w kampanii.
 - **Metryka główna:** `compute_ns`. Uboczne, raportowane bez mocy decyzyjnej:
   `e2e_ns` (p50, p99).
 

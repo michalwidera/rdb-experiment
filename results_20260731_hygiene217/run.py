@@ -24,7 +24,10 @@ import statistics
 import subprocess
 import sys
 import time
+from glob import glob
 from pathlib import Path
+
+GOVERNOR_GLOB = "/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "results_20260730_K6c"))
 from check_counters import stage  # noqa: E402
@@ -41,6 +44,26 @@ XR_CPU = "3"
 BG_CPUS = "0-2"
 
 STUDY_TOML = "[scheduling]\nrt_priority = 50\n"
+
+
+def read_governor() -> str:
+    return Path(sorted(glob(GOVERNOR_GLOB))[0]).read_text(encoding="utf-8").strip()
+
+
+def set_governor(name: str) -> None:
+    """Ten sam warunek, co w kampanii (`set_performance_governor`).
+
+    Bez tego pomiar biegnie na `ondemand`, a skalowanie częstotliwości dokłada
+    wariancji i podnosi czasy — zmierzone: `W2_Q32` STRUCT 3,18 ms wobec 2,46 ms
+    w kampanii. Iloraz w dużej mierze by to skrócił, ale badanie ma odtwarzać
+    warunki kampanii, a nie własne.
+    """
+    subprocess.run(f"echo {name} | sudo -n tee {GOVERNOR_GLOB} >/dev/null",
+                   shell=True, check=True)
+    for path in glob(GOVERNOR_GLOB):
+        actual = Path(path).read_text(encoding="utf-8").strip()
+        if actual != name:
+            raise RuntimeError(f"nie ustawiono governora {name} dla {path} (jest {actual})")
 
 
 def percentile(values: list[int], q: float) -> int:
@@ -149,25 +172,34 @@ def main() -> int:
 
     done = 0
     total = len(CELLS) * len(PROFILES) * args.reps * len(SIDES)
-    with out_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fields)
-        writer.writeheader()
-        for cell_name, cell in CELLS.items():
-            case_dir = workloads / cell_name
-            for profile in PROFILES:
-                for rep in range(args.reps):
-                    # Przeplot: kolejność stron zależy od parzystości powtórzenia.
-                    order = SIDES if rep % 2 == 0 else tuple(reversed(SIDES))
-                    for side in order:
-                        result = measure(binaries[(side, profile)], case_dir, code_repo,
-                                         work_root / "run", cell)
-                        writer.writerow({"cell": cell_name, "profile": profile,
-                                         "side": side, "rep": rep, **result})
-                        handle.flush()
-                        done += 1
-                        print(f"[{done}/{total}] {cell_name} {profile} {side} r{rep} "
-                              f"compute_med={result['compute_median_ns']} client_rc={result['client_rc']}",
-                              flush=True)
+    original_governor = read_governor()
+    set_governor("performance")
+    print(f"governor: {original_governor} -> performance", flush=True)
+    try:
+        with out_path.open("w", newline="", encoding="utf-8") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fields)
+            writer.writeheader()
+            for cell_name, cell in CELLS.items():
+                case_dir = workloads / cell_name
+                for profile in PROFILES:
+                    for rep in range(args.reps):
+                        # Przeplot: kolejność stron zależy od parzystości powtórzenia.
+                        order = SIDES if rep % 2 == 0 else tuple(reversed(SIDES))
+                        for side in order:
+                            result = measure(binaries[(side, profile)], case_dir, code_repo,
+                                             work_root / "run", cell)
+                            writer.writerow({"cell": cell_name, "profile": profile,
+                                             "side": side, "rep": rep, **result})
+                            handle.flush()
+                            done += 1
+                            print(f"[{done}/{total}] {cell_name} {profile} {side} r{rep} "
+                                  f"compute_med={result['compute_median_ns']} client_rc={result['client_rc']}",
+                                  flush=True)
+    finally:
+        # Governor wraca ZAWSZE, także po przerwaniu — inaczej maszyna zostaje
+        # w `performance` i psuje warunki następnego badania.
+        set_governor(original_governor)
+        print(f"governor przywrocony: {original_governor}", flush=True)
 
     print(f"zapisano {done} przebiegow do {out_path}")
     return 0
