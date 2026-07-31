@@ -76,22 +76,52 @@ Dwie binarki silnika, identyczna konfiguracja profilu (`RDB_OPT_*`,
   nieprzydatne: tam wątek komunikacyjny i tak nie dostawał CPU, więc nie było
   czego przenosić.
 - **Profile:** `ALGSTRUCT` i `STRUCT` — dokładnie licznik i mianownik `r(c)`.
-- **Powtórzenia:** 15 na (komórka × profil × commit) = **120 przebiegów**.
+- **Powtórzenia:** 30 na (komórka × profil × commit) = **240 przebiegów**.
+  Liczba wyznaczona analizą mocy, nie przyjęta z kampanii — patrz niżej.
 - **Przeplot.** Kolejność `PRZED`/`PO` naprzemienna w obrębie każdej pary
   (komórka, profil, powtórzenie). Protokół R8 (reboot między badaniami) jest tu
-  niestosowalny — 120 rebootów nie wchodzi w grę — więc dryf termiczny
+  niestosowalny — 240 rebootów nie wchodzi w grę — więc dryf termiczny
   kontrolujemy przeplotem, a nie odstępem. To jest świadome odstępstwo i musi
   zostać zapisane w `JOURNAL.md`.
 - **Metryka główna:** `compute_ns`. Uboczne, raportowane bez mocy decyzyjnej:
   `e2e_ns` (p50, p99).
+
+## Liczba powtórzeń — wyznaczona, nie odziedziczona
+
+Kampania używa 15 powtórzeń. Przepisanie tej liczby tutaj byłoby założeniem, bo
+kryterium jest inne: kampania wykrywa efekty ≥ 10 %, a to badanie ma **wykazać
+równoważność** z marginesem 0,02, co jest wymaganiem pięciokrotnie ostrzejszym.
+
+Moc policzona **przed pomiarem**, na niezależnych danych — zamkniętych badaniach
+Tier B (`study_01_W2`, `study_02_W3`, po 15 powtórzeń na profil). Symulacja
+zakłada, że hipoteza zerowa jest PRAWDZIWA (obie strony losowane z tej samej
+populacji) i podaje szerokość `CI(c)`, jakiej należy się spodziewać:
+
+| komórka | reps=15 | reps=30 | reps=45 |
+|---|---|---|---|
+| `W2_Q32` | (−0,0127; +0,0127) | (−0,0070; +0,0073) | (−0,0033; +0,0033) |
+| `W3_d3` | (−0,0047; +0,0047) | (−0,0034; +0,0035) | (−0,0030; +0,0030) |
+
+Realne CV median `compute_ns` między przebiegami: `W2_Q32` 1,42 % (STRUCT)
+i 0,63 % (ALGSTRUCT).
+
+Przy 15 powtórzeniach `W2_Q32` mieści się w marginesie, ale zostaje **0,007
+zapasu** z każdej strony — prawdziwy efekt tej wielkości dałby werdykt
+„nierozstrzygnięte", czyli 25 minut pomiaru bez odpowiedzi. **Przyjmujemy 30**;
+zapas rośnie trzykrotnie, a koszt z ~25 do ~50 minut. 45 powtórzeń nie kupuje
+już nic istotnego dla `W3_d3`.
+
+Ta zmiana została wprowadzona **przed jakimkolwiek pomiarem** i wyłącznie na
+podstawie danych już istniejących. Po pierwszym przebiegu liczba powtórzeń jest
+zamrożona.
 
 ## Kryterium — zamrożone przed pomiarem
 
 Dla każdej komórki `c`:
 
 ```
-r_PRZED(c) = mediana₁₅(ALGSTRUCT, e1c13bb) / mediana₁₅(STRUCT, e1c13bb)
-r_PO(c)    = mediana₁₅(ALGSTRUCT, 1bb2d2c) / mediana₁₅(STRUCT, 1bb2d2c)
+r_PRZED(c) = mediana₃₀(ALGSTRUCT, e1c13bb) / mediana₃₀(STRUCT, e1c13bb)
+r_PO(c)    = mediana₃₀(ALGSTRUCT, 1bb2d2c) / mediana₃₀(STRUCT, 1bb2d2c)
 Δ(c)       = r_PO(c) − r_PRZED(c)
 ```
 
@@ -122,7 +152,7 @@ efektu.
   przypięcia i uzasadnienie.
 - **JEST WPŁYW** → Tier B powtarzamy w **całości**, w nowym katalogu wyników,
   na `1bb2d2c`. 540 przebiegów przechodzi do materiału historycznego.
-- **NIEROZSTRZYGNIĘTE** → zwiększamy liczbę powtórzeń do 30 i powtarzamy
+- **NIEROZSTRZYGNIĘTE** → zwiększamy liczbę powtórzeń do 60 i powtarzamy
   badanie; jeżeli nadal nierozstrzygnięte, traktujemy jak **JEST WPŁYW**,
   bo ciężar dowodu leży po stronie twierdzenia o ważności.
 
