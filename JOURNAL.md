@@ -4176,3 +4176,35 @@ bajtowo — gałąź była w całości wchłonięta przez `7942b78` i została s
 `experiment/20260730_K6`, `experiment/20260731_hygiene`,
 `experiment/20260731_hygiene217`. Skasowano 13 gałęzi lokalnych, każdą po
 weryfikacji; SHA-e w logu sesji, reflog trzyma je ~90 dni.
+
+## 2026-07-31 — badanie higieniczne `1bb2d2c`: BRAK WPŁYWU, 540 przebiegów Tier B zostaje
+
+240 przebiegów (2 komórki × 2 profile × 2 strony × 30 powtórzeń), zero błędów
+klienta, zero niepełnych sond. Werdykt wg kryterium zamrożonego przed pomiarem:
+
+| komórka | Δ | CI95 | margines | werdykt |
+|---|---:|---|---:|---|
+| `W2_Q32` | −0,0077 | (−0,0107; −0,0049) | ±0,02 | BRAK WPŁYWU |
+| `W3_d3` | −0,0126 | (−0,0150; −0,0097) | ±0,02 | BRAK WPŁYWU |
+
+**Efekt jest realny, tylko mały.** Oba CI nie zawierają zera, a profile poszły
+w przeciwne strony (STRUCT +0,4 %, ALGSTRUCT −0,35…−0,76 %), więc nie jest to
+przesunięcie wspólne skracające się w ilorazie. Zaszedł scenariusz, którego
+predeklaracja się obawiała — nierówne dotknięcie profili o różnych zbiorach
+roboczych — ale o rząd wielkości poniżej progu istotności kampanii (10 %).
+
+**Skutek, zapisany przed pomiarem:** 540 przebiegów Tier B (W2, W3, W4, W5, W7)
+zostaje ważne. Do domierzenia W8 (bez `Q32`) i W9 na `1bb2d2c`.
+
+**Bias do zapamiętania przy zestawianiu rodzin:** na `1bb2d2c` iloraz wychodzi
+0,8–1,3 % niżej niż na `e1c13bb`, czyli minimalnie korzystniej dla `ALGSTRUCT`.
+Żadna komórka nie może przez to zmienić klasy (próg 10 %), ale różnica do 1,3
+punktu procentowego między rodzinami z różnych przypięć może pochodzić
+z aparatury.
+
+Dwie rzeczy złapane w trakcie i naprawione przed właściwym pomiarem: pierwsze
+uruchomienie biegło na governorze `ondemand` (kampania ustawia `performance`) —
+`W2_Q32` STRUCT dawał 3,18 ms zamiast 2,39 ms; oraz uzasadnienie wyboru komórek
+przez „rozpięcie częstotliwości slotu" okazało się błędne, bo ekspozycja zależy
+od długości luki, nie od częstotliwości. Zestaw zostawiono decyzją człowieka,
+słabość zapisana w predeklaracji.

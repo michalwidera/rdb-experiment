@@ -1,0 +1,16 @@
+metryka: compute_median_ns
+komorek porownanych: 2
+
+--- W2_Q32 ---
+  przebiegow w grupach: {('PRZED', 'STRUCT'): 30, ('PO', 'STRUCT'): 30, ('PRZED', 'ALGSTRUCT'): 30, ('PO', 'ALGSTRUCT'): 30}
+  r_PRZED = 0.9970   r_PO = 0.9893
+  delta   = -0.0077   CI95 = (-0.0107; -0.0049)   margines +/-0.02
+  werdykt komorki: BRAK WPLYWU
+
+--- W3_d3 ---
+  przebiegow w grupach: {('PRZED', 'STRUCT'): 30, ('PO', 'STRUCT'): 30, ('PRZED', 'ALGSTRUCT'): 30, ('PO', 'ALGSTRUCT'): 30}
+  r_PRZED = 1.1005   r_PO = 1.0879
+  delta   = -0.0126   CI95 = (-0.0150; -0.0097)   margines +/-0.02
+  werdykt komorki: BRAK WPLYWU
+
+=== WERDYKT (2 komorek): BRAK WPLYWU ===
