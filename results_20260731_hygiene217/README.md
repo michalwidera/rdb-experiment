@@ -175,6 +175,40 @@ przemilczanym ograniczeniu.
   `rtActivate`, więc zmiana powinowactwa nie może ich dotknąć — to argument,
   nie pomiar, i jako argument jest zapisany.
 
+### Ograniczenie doliczone po starcie pomiaru (2026-07-31, przebieg 57/240)
+
+Kryterium ani zestaw komórek NIE zostały zmienione — to jest zapis słabości
+wyboru, nie jego korekta. Człowiek zdecydował o pozostawieniu zestawu.
+
+Wybierając `W2_Q32` i `W3_d3` uzasadniłem je m.in. „rozpięciem zakresu
+częstotliwości slotu" (180 i 405 Hz). To uzasadnienie było błędne. Wątek
+komunikacyjny budzi się co 1 ms, więc jego ekspozycja na mierzony rdzeń zależy
+od **długości luki** między końcem obliczeń a końcem slotu, nie od
+częstotliwości slotu:
+
+| komórka | slot | p99 | luka | pobudek IPC w luce |
+|---|---:|---:|---:|---:|
+| `W4_Q32` | 66 667 µs | 33 022 | 33 645 | **33,6** |
+| `W7_Q32` | 11 111 | 3 267 | 7 845 | 7,8 |
+| `W9_Q32` | 8 333 | 3 370 | 4 964 | 5,0 |
+| `W2_Q32` | 5 556 | 2 603 | 2 952 | 3,0 |
+| `W3_d3` | 2 469 | 1 114 | 1 355 | **1,4** |
+
+Mierzone komórki mają więc **najmniejszą** ekspozycję spośród wszystkich
+z duty < 100 %; `W3_d3` bywa slotem bez ani jednej pobudki.
+
+**Co to znaczy dla werdyktu.** Werdykt `BRAK WPŁYWU` z tego zestawu jest
+słabszy, niż byłby z `W4_Q32`: mówi „przy ekspozycji 1,4–3,0 pobudki na slot
+iloraz jest zachowany", a nie „przy dowolnej ekspozycji". Werdykt `JEST WPŁYW`
+byłby natomiast **mocniejszy** — efekt widoczny przy najmniejszej ekspozycji
+tym bardziej wystąpi przy większej.
+
+Przeciwwaga, dla której zestaw uznano za wystarczający: metryką jest iloraz,
+a zaśmiecenie cache jest wspólne dla obu profili i skraca się w nim. Zaburzy go
+tylko nierówne skrócenie, czyli różnica **zbiorów roboczych** profili. Ta jest
+największa tam, gdzie dedup ma najwięcej do usunięcia — a `W2_Q32` (32 identyczne
+selekty) jest pod tym względem przypadkiem skrajnym w całej kampanii.
+
 ## Higiena artefaktów (R14)
 
 Surowe artefakty w `/dev/shm`, do repo `tar.gz` + indeks SHA-256. Repozytorium
