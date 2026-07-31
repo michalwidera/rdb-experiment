@@ -209,6 +209,34 @@ tylko nierówne skrócenie, czyli różnica **zbiorów roboczych** profili. Ta j
 największa tam, gdzie dedup ma najwięcej do usunięcia — a `W2_Q32` (32 identyczne
 selekty) jest pod tym względem przypadkiem skrajnym w całej kampanii.
 
+## Zdarzenia w trakcie pomiaru
+
+**2026-07-31, przebieg ~57–94: dołożone zewnętrzne chłodzenie workera
+(wentylator).** Zmiana aparatury w trakcie pomiaru, odnotowana obowiązkowo.
+
+Sprawdzone, czy zostawiła ślad w danych — nie zostawiła:
+
+| blok | pierwsza połowa | druga połowa | różnica |
+|---|---:|---:|---:|
+| `W2_Q32` STRUCT (60 przebiegów) | 2391,7 µs | 2390,9 µs | 0,03 % |
+| `W2_Q32` ALGSTRUCT (38 przebiegów) | 2374,7 µs | 2375,3 µs | 0,03 % |
+
+Wentylator wszedł na styku obu bloków, więc gdyby działał, skok byłby widoczny
+właśnie tam. Przyczyna braku efektu: `vcgencmd get_throttled` zwraca `0x0` —
+bity **trwałe** również zerowe, więc dławienia termicznego nie było ani razu,
+a rdzeń 3 pracował na 1 800 000 kHz przez cały pomiar. Temperatura wpływa na
+czas obliczeń przez częstotliwość; skoro ta się nie zmieniła, spadek 45 → 37 °C
+tylko powiększył zapas do progu.
+
+Pomiar nie został wznowiony. Gdyby dławienie wystąpiło (`get_throttled` ≠ 0),
+decyzja byłaby odwrotna.
+
+**Zabezpieczenie konstrukcyjne, niezależne od powyższego.** Nawet gdyby warunki
+zmieniły się skokowo, statystyką decyzyjną jest `Δ = r_PO − r_PRZED`, a nie sam
+iloraz. Przesunięcie wspólne dla obu stron skraca się w różnicy, bo w obrębie
+każdego bloku profilu strony są przeplecione co powtórzenie. Bias przeżyłby
+tylko wtedy, gdyby dotknął stron NIERÓWNO — czemu przeplot właśnie zapobiega.
+
 ## Higiena artefaktów (R14)
 
 Surowe artefakty w `/dev/shm`, do repo `tar.gz` + indeks SHA-256. Repozytorium
