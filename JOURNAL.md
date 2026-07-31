@@ -4129,3 +4129,50 @@ jeden commit kampanii) i broni się wartownikiem `Experiment-Branch: <branch>`
 w treści wierzchołkowego commita. Commity higieniczne tego markera nie mają,
 więc na wspólnej gałęzi harness odmówiłby startu. Wartownik działa poprawnie —
 to argument za osobnymi gałęziami, nie defekt.
+
+## 2026-07-31 — korekta reguły kasowania gałęzi: `merge-base` nie wystarcza przy squashu
+
+Reguła zapisana we wpisie wyżej („gałąź wolno skasować po
+`git merge-base --is-ancestor <branch> origin/main`") jest poprawna dla
+`rdb-experiment`, ale **zawodzi dla `retractordb`**. Powód: oba repozytoria
+scalają inaczej.
+
+| repozytorium | sposób scalenia | test |
+|---|---|---|
+| `rdb-experiment` | merge commit (PR do `main`) | `git merge-base --is-ancestor` |
+| `retractordb` | **squash** (PR do `master`) | patrz niżej |
+
+Przy squashu wierzchołek gałęzi nigdy nie jest przodkiem `master` — łatka wchodzi
+pod nowym SHA. Test przodka daje wtedy fałszywe „niescalone" dla gałęzi, które
+są wchłonięte w całości.
+
+### Dlaczego `git cherry` też nie wystarcza
+
+Przy sprzątaniu użyto `git cherry origin/master <branch>` (porównanie patch-id).
+Zadziałał dla `issue_217-client-unexpected-close`, bo ta gałąź miała JEDEN
+commit i squash dał identyczną łatkę. **Zawiódł dla `results_20260728_K4_IMPL`**,
+która miała DWA commity (`cformat`, `K4: count optimizer rule applications`):
+squash skleił je w jeden commit `7942b78` (PR #211), więc patch-id żadnego
+z osobna nie pasował i oba zostały zgłoszone jako nieobecne w `master`.
+Gałąź została na tej podstawie błędnie zachowana jako „ryzykowna".
+
+`git cherry` jest więc wiarygodny tylko dla gałęzi JEDNOCOMMITOWYCH.
+
+### Test odporny na squash, niezależnie od liczby commitów
+
+Porównanie **skumulowanej** łatki gałęzi z łatką commita scalającego:
+
+```bash
+base=$(git merge-base origin/master BRANCH)
+diff <(git diff "$base" BRANCH) <(git diff SQUASH^ SQUASH)
+```
+
+Dla `results_20260728_K4_IMPL` obie łatki mają 138 linii i są identyczne
+bajtowo — gałąź była w całości wchłonięta przez `7942b78` i została skasowana.
+
+### Stan po sprzątaniu
+
+`retractordb`: wyłącznie `master`. `rdb-experiment`: `main`,
+`experiment/20260730_K6`, `experiment/20260731_hygiene`,
+`experiment/20260731_hygiene217`. Skasowano 13 gałęzi lokalnych, każdą po
+weryfikacji; SHA-e w logu sesji, reflog trzyma je ~90 dni.
