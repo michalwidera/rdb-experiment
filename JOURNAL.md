@@ -4105,3 +4105,27 @@ zapisane w kodzie muszą dać się zestawić.** Rozjazd między nimi nie zgłasz
 sam — wygląda jak wynik.
 
 Dane: `results_20260731_hygiene/`.
+## 2026-07-31 — audyt gałęzi: `experiment/20260731_hygiene` istniało tylko lokalnie
+
+Przy pytaniu o konsolidację gałęzi wyszło, że `experiment/20260731_hygiene`
+(`c836a60`, badanie higieniczne `e1e5181`) **nie było ani na origin, ani
+w `main`** — istniało wyłącznie na dysku nadzorcy. README kampanii K6c powołuje
+się na to badanie jako na uzasadnienie przypięcia do `e1e5181`, więc utrata
+dysku odebrałaby kampanii jej własny dowód. Gałąź wypchnięta na origin.
+
+Mechanizm ryzyka: `main` jest gałęzią integracyjną, skończone eksperymenty
+wchodzą tam przez PR, a gałąź jest kasowana z origin. `git fetch --prune`
+usunął już lokalne referencje do `20260729_hygiene`, `20260730_hygiene`,
+`20260728_K18`, `K19`, `K4`, `extend` i `20260729_K5` — te przetrwały, bo
+wcześniej weszły do `main`. `20260731_hygiene` do `main` nie weszło.
+
+**Wniosek proceduralny:** gałąź eksperymentu wolno skasować dopiero po
+potwierdzeniu, że jej wierzchołek jest przodkiem `main`. Kontrola:
+`git merge-base --is-ancestor <branch> origin/main`.
+
+Przy okazji ustalono, dlaczego kampania i badanie higieniczne nie mogą dzielić
+gałęzi: `run_ablation_study.sh` robi `git commit --amend` na wierzchołku (R4,
+jeden commit kampanii) i broni się wartownikiem `Experiment-Branch: <branch>`
+w treści wierzchołkowego commita. Commity higieniczne tego markera nie mają,
+więc na wspólnej gałęzi harness odmówiłby startu. Wartownik działa poprawnie —
+to argument za osobnymi gałęziami, nie defekt.
