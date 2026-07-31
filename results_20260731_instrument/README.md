@@ -67,11 +67,30 @@ zmierzonym na `1bb2d2c`. Założenie jest **sprawdzane, nie zakładane** — bad
 higieniczne niżej jest warunkiem wstępnym i jego negatywny wynik unieważnia całe
 badanie.
 
-**Zagrożenie trafności, które z tego zostaje i musi trafić do raportu:** cechy i cele
-pochodzą z różnych drzew kodu. Nawet przy przechodzącym badaniu higienicznym jest to
-słabsze niż pomiar z jednego drzewa i tak ma być opisane. Wariant mocniejszy (pełna
-rekalibracja czasowa na buildzie instrumentowanym) był rozważony i **świadomie
+**Zagrożenie trafności nr 1, które z tego zostaje i musi trafić do raportu:** cechy
+i cele pochodzą z różnych drzew kodu. Nawet przy przechodzącym badaniu higienicznym
+jest to słabsze niż pomiar z jednego drzewa i tak ma być opisane. Wariant mocniejszy
+(pełna rekalibracja czasowa na buildzie instrumentowanym) był rozważony i **świadomie
 odrzucony** ze względu na koszt — decyzja człowieka 2026-07-31.
+
+## Gdzie badanie jest wykonywane — i drugie zagrożenie
+
+**Cechy zbierane na nadzorcy (x86-64), cele pochodzą z workera (aarch64, PREEMPT_RT).**
+Worker jest potrzebny, gdy mierzy się czas; to badanie czasu nie mierzy, a liczniki E4
+są funkcją geometrii planu — okno długości `L` daje `L` odwiedzin na slot niezależnie
+od tego, jak szybko procesor je wykona. Potwierdzone empirycznie przy przygotowaniu:
+liczniki wychodzą identyczne z `-t` (SCHED_FIFO + `taskset`) i bez niego, więc tryb
+szeregowania na nie nie wpływa.
+
+**Zagrożenie trafności nr 2:** zestawienie jest międzyplatformowe. Podstawą, że wolno,
+jest wykazana wcześniej **bitowa identyczność artefaktów między architekturami**
+(x86-64 vs aarch64) — skoro artefakty są bit w bit te same, plan i jego geometria też,
+a liczniki są ich funkcją. **To jest argument z wcześniejszego wyniku, nie pomiar
+wykonany w tym badaniu.** Kontrola empiryczna (zbudowanie `abe075e` z sondą na workerze
+i porównanie liczników dla kilku komórek) była rozważona i **świadomie odrzucona** ze
+względu na koszt budowy na Pi 400 — decyzja człowieka 2026-07-31. Gdyby wynik modelu
+miał kiedykolwiek posłużyć za podstawę kontroli dopuszczenia planu w silniku, tę
+kontrolę należy wykonać.
 
 ## Warunek wstępny — badanie higieniczne
 

@@ -1,0 +1,84 @@
+{
+  "train_families": [
+    "W2",
+    "W3",
+    "W5",
+    "W7",
+    "W8"
+  ],
+  "test_families": [
+    "W4",
+    "W9"
+  ],
+  "historical_mae_test": 258.3,
+  "baseline_mae_test": 296.22501955820894,
+  "beats_baseline": false,
+  "success_mae_test": 50.0,
+  "observations": 43,
+  "variants": [
+    {
+      "variant": "v1",
+      "features": [
+        "tokeny",
+        "bajty_trwale",
+        "bajty_pamieciowe"
+      ],
+      "singular": false,
+      "coefficients": {
+        "tokeny": 24012.927861773514,
+        "bajty_trwale": -2914.0282979918406,
+        "bajty_pamieciowe": -18988.81087686323
+      },
+      "mae_train": 13.113020536991993,
+      "mae_test": 296.22501955820894,
+      "negative": [
+        "bajty_trwale",
+        "bajty_pamieciowe"
+      ]
+    },
+    {
+      "variant": "v2",
+      "features": [
+        "tokeny",
+        "bajty_trwale",
+        "bajty_pamieciowe",
+        "agse_elements"
+      ],
+      "singular": false,
+      "coefficients": {
+        "tokeny": 32169.376333644217,
+        "bajty_trwale": -13367.101628822104,
+        "bajty_pamieciowe": -61137.89855723834,
+        "agse_elements": 221868.91535667903
+      },
+      "mae_train": 14.545421762104018,
+      "mae_test": 439.21135536938374,
+      "negative": [
+        "bajty_trwale",
+        "bajty_pamieciowe"
+      ]
+    },
+    {
+      "variant": "v3",
+      "features": [
+        "agse_elements",
+        "agse_reads",
+        "eval_tokens"
+      ],
+      "singular": true
+    },
+    {
+      "variant": "v4",
+      "features": [
+        "agse_elements",
+        "agse_reads",
+        "eval_tokens",
+        "bajty_trwale"
+      ],
+      "singular": true
+    }
+  ],
+  "graded_variant": "v2",
+  "passed": false,
+  "verdict": "CECHA NIC NIE WNOSI -- v2 nie jest lepszy od v1 na tym samym podziale"
+}

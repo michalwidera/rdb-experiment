@@ -1,0 +1,69 @@
+{
+  "train_families": [
+    "W2",
+    "W3",
+    "W5",
+    "W7"
+  ],
+  "test_families": [
+    "W4",
+    "W9"
+  ],
+  "reference_mae_test": 258.3,
+  "success_mae_test": 50.0,
+  "observations": 43,
+  "variants": [
+    {
+      "variant": "v1",
+      "features": [
+        "tokeny",
+        "bajty_trwale",
+        "bajty_pamieciowe"
+      ],
+      "singular": false,
+      "coefficients": {
+        "tokeny": 32674.643346558696,
+        "bajty_trwale": -14046.573878152863,
+        "bajty_pamieciowe": -62868.72693233383
+      },
+      "mae_train": 14.85973567396312,
+      "mae_test": 258.25131521582307,
+      "negative": [
+        "bajty_trwale",
+        "bajty_pamieciowe"
+      ]
+    },
+    {
+      "variant": "v2",
+      "features": [
+        "tokeny",
+        "bajty_trwale",
+        "bajty_pamieciowe",
+        "agse_elements"
+      ],
+      "singular": true
+    },
+    {
+      "variant": "v3",
+      "features": [
+        "agse_elements",
+        "agse_reads",
+        "eval_tokens"
+      ],
+      "singular": true
+    },
+    {
+      "variant": "v4",
+      "features": [
+        "agse_elements",
+        "agse_reads",
+        "eval_tokens",
+        "bajty_trwale"
+      ],
+      "singular": true
+    }
+  ],
+  "graded_variant": "v2",
+  "passed": false,
+  "verdict": "UKLAD OSOBLIWY dla wariantu ocenianego -- brak werdyktu"
+}
