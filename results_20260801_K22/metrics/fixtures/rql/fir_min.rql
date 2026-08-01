@@ -1,0 +1,9 @@
+# Fixture metryk K22 — RQL, minimalny FIR z oknem i redukcja.
+# Odpowiedz znana wyliczona recznie w metrics/test_metrics.py.
+# CORE_BEGIN
+DECLARE data INTEGER STREAM source, 1/1000 FILE 'src.txt'
+DECLARE coef INTEGER[25] STREAM filter, 1 FILE 'coef.txt'
+SELECT * STREAM win FROM source@(1,25) VOLATILE
+SELECT win[_]*filter[_] STREAM acc FROM win+filter VOLATILE
+SELECT acc[0]/25 STREAM out FROM acc.sumc VOLATILE
+# CORE_END

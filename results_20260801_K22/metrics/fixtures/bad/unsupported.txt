@@ -1,0 +1,3 @@
+# CORE_BEGIN
+nieistotna tresc
+# CORE_END
