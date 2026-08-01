@@ -1,0 +1,6 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F2_ecg/python/core.py
+@@ -18,0 +19 @@
++monitors = []
+@@ -45,0 +47 @@
++monitors.append((n + 3, [mwi + j for j in range(8)]))

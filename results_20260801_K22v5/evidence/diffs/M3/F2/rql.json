@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 19,
+      "base_to": 19,
+      "variant_from": 19,
+      "variant_to": 19,
+      "base": [
+        "DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'"
+      ],
+      "variant": [
+        "DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/250 FILE 'rec205'"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F2_ecg/rql/core.rql\n",
+    "@@ -1 +1 @@\n",
+    "-DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'\n",
+    "+DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/250 FILE 'rec205'\n"
+  ]
+}

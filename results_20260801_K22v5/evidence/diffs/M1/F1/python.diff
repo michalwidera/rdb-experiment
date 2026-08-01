@@ -1,0 +1,8 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/python/core.py
+@@ -1 +1 @@
+-def run(samples, coef, slots):
++def run(samples, samples2, coef, slots):
+@@ -21 +21 @@
+-out.append((n + 1, y))
++out.append((n + 1, [y, samples2[n + 1]]))

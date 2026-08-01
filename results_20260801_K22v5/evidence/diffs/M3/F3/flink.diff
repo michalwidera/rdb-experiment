@@ -1,0 +1,22 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/flink/F3Multirate.java
+@@ -2,4 +2,4 @@
+-private static final long INTERVAL_NS = 66_666_667L;
+-private static final int UNIT_A = 3;
+-private static final int UNIT_B = 6;
+-private static final int TAIL = 5;
++private static final long INTERVAL_NS = 58_823_529L;
++private static final int HASH_NUM = 12;
++private static final int HASH_DEN = 17;
++private static final int TAIL = 21;
+@@ -17,2 +16,0 @@
+-long ua = 0;
+-long ub = 0;
+@@ -30 +28,2 @@
+-if (ub <= ua) {
++boolean takeB = (HASH_NUM * r) / HASH_DEN == (HASH_NUM * (r + 1)) / HASH_DEN;
++if (takeB) {
+@@ -33 +31,0 @@
+-ub = ub + UNIT_B;
+@@ -37 +34,0 @@
+-ua = ua + UNIT_A;

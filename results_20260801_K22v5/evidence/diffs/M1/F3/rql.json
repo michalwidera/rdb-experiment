@@ -1,0 +1,48 @@
+{
+  "D1": 5,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 16,
+      "base_to": 16,
+      "variant_from": 16,
+      "variant_to": 18,
+      "base": [
+        "DECLARE value INTEGER STREAM B, 1/5 FILE 'f3_b.txt'"
+      ],
+      "variant": [
+        "DECLARE value INTEGER, aux INTEGER STREAM B, 1/5 FILE 'f3_b2.txt'",
+        "SELECT B.value STREAM B_value FROM B",
+        "SELECT B.aux STREAM B_aux FROM B"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 19,
+      "base_to": 19,
+      "variant_from": 21,
+      "variant_to": 22,
+      "base": [
+        "SELECT f3_win[0] STREAM f3_out FROM f3_win.avg"
+      ],
+      "variant": [
+        "SELECT f3_win[0] STREAM f3_base FROM f3_win.avg",
+        "SELECT f3_base[0], B_aux[0] STREAM f3_out FROM f3_base+B_aux"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F3_multirate/rql/core.rql\n",
+    "@@ -2 +2,3 @@\n",
+    "-DECLARE value INTEGER STREAM B, 1/5 FILE 'f3_b.txt'\n",
+    "+DECLARE value INTEGER, aux INTEGER STREAM B, 1/5 FILE 'f3_b2.txt'\n",
+    "+SELECT B.value STREAM B_value FROM B\n",
+    "+SELECT B.aux STREAM B_aux FROM B\n",
+    "@@ -5 +7,2 @@\n",
+    "-SELECT f3_win[0] STREAM f3_out FROM f3_win.avg\n",
+    "+SELECT f3_win[0] STREAM f3_base FROM f3_win.avg\n",
+    "+SELECT f3_base[0], B_aux[0] STREAM f3_out FROM f3_base+B_aux\n"
+  ]
+}

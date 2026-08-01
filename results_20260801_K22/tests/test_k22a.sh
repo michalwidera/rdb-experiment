@@ -34,6 +34,7 @@ run_suite() {
 run_suite "semantyka referencyjna (arytmetyka silnika)" "$CAMPAIGN/oracle" "test_refsem.py"
 run_suite "komparator strumieni kanonicznych" "$CAMPAIGN/oracle" "test_compare.py"
 run_suite "skrypt metryk konstrukcji" "$CAMPAIGN/metrics" "test_metrics.py"
+run_suite "pomiar zakresu zmiany D1/D2" "$CAMPAIGN/metrics" "test_diffunits.py"
 
 echo "==== $((checks - failures))/$checks zestawow OK"
 exit $((failures > 0 ? 1 : 0))

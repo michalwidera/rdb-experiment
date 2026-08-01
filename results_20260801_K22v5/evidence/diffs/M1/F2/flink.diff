@@ -1,0 +1,18 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/flink/F2Ecg.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/flink/F2Ecg.java
+@@ -162 +162,5 @@
+-Tuple4<Long, Integer, Integer, Integer>> {
++Tuple5<Long, Integer, Integer, Integer, Integer>> {
++private final int[] v1;
++Assemble(int[] v1) {
++this.v1 = v1;
++}
+@@ -174 +178 @@
+-Collector<Tuple4<Long, Integer, Integer, Integer>> out) {
++Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+@@ -185 +189 @@
+-out.collect(Tuple4.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5));
++out.collect(Tuple5.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5, v1[(int) n] - 900));
+@@ -197 +201 @@
+-.flatMap(new Assemble())
++.flatMap(new Assemble(v1))

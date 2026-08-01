@@ -1,0 +1,30 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/flink/F1Fir.java
+@@ -1 +1 @@
+-static class PacedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
++static class PacedSource extends RichSourceFunction<Tuple3<Long, Integer, Integer>> {
+@@ -3,0 +4 @@
++private final int[] samples2;
+@@ -6 +7 @@
+-PacedSource(int[] samples, long slots) {
++PacedSource(int[] samples, int[] samples2, long slots) {
+@@ -7,0 +9 @@
++this.samples2 = samples2;
+@@ -11 +13 @@
+-public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
++public void run(SourceContext<Tuple3<Long, Integer, Integer>> ctx) throws Exception {
+@@ -20 +22 @@
+-ctx.collect(Tuple2.of(n, samples[(int) n]));
++ctx.collect(Tuple3.of(n, samples[(int) n], samples2[(int) n + 1]));
+@@ -28 +30 @@
+-static class Fir extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
++static class Fir extends RichFlatMapFunction<Tuple3<Long, Integer, Integer>, Tuple3<Long, Integer, Integer>> {
+@@ -40 +42 @@
+-public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
++public void flatMap(Tuple3<Long, Integer, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {
+@@ -56 +58 @@
+-out.collect(Tuple2.of(in.f0 + 1, y));
++out.collect(Tuple3.of(in.f0 + 1, y, in.f2));
+@@ -59 +61 @@
+-DataStream<Tuple2<Long, Integer>> src = env.addSource(new PacedSource(samples, slots));
++DataStream<Tuple3<Long, Integer, Integer>> src = env.addSource(new PacedSource(samples, samples2, slots));

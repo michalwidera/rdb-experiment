@@ -1,0 +1,21 @@
+# F1 — FIR z oknem i redukcją. Rdzeń RQL kampanii K22.
+#
+# Zadanie: regularne źródło liczb całkowitych, okno o zamrożonej szerokości,
+# mnożenie przez zamrożone współczynniki, redukcja, nazwany wynik.
+# Rodzina izoluje podstawowy obowiązek utrzymania okna i stanu — bez ECG.
+#
+# Wejście: f1_source.txt (4096 wierszy, x[i] = (i*37 mod 1000) - 500),
+#          f1_coef.txt (26 odczepów, kopia filterremez.txt).
+# Wyjście: strumień f1_out, jedno pole.
+#
+# STORAGE jest dyrektywą harnessu (gdzie zapisać artefakty do odczytu przez
+# oracle), nie częścią specyfikacji monitora — dlatego POZA rdzeniem.
+STORAGE 'temp'
+
+# CORE_BEGIN
+DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'
+DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'
+SELECT * STREAM win FROM src@(1,26)
+SELECT win[_]*coef[_] STREAM acc FROM win+coef
+SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc
+# CORE_END

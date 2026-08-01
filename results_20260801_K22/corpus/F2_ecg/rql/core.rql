@@ -1,0 +1,42 @@
+# F2 — niekliniczny potok cech EKG. Rdzeń RQL kampanii K22.
+#
+# Baza: examples/ecg/rec205/rec205-qrs.rql z retractordb@dd733e3
+# (SHA-256 8f55a162…, PREDECLARATION.md §1). Różnice wobec bazy są wyłącznie
+# harnessowe i wypisane w ../CLEANUP.md — semantyka etapów nietknięta.
+#
+# TO NIE JEST DETEKTOR KLINICZNY. Potok cech, bez twierdzeń diagnostycznych,
+# bez Se/PPV/F1 i bez anotacji uderzeń (205.atr nie jest używany).
+#
+# Pięć etapów: band-pass 25-tap -> różniczka 5-tap -> kwadrat/1000
+#              -> MWI @(1,30).avg -> próg @(1,180).avg
+#
+# UWAGA: różniczka [-1,-2,0,2,1] jest ASYMETRYCZNA, więc to pierwszy etap
+# korpusu faktycznie wrażliwy na orientację okna (PREDECLARATION.md §11.1 E3).
+# Band-pass jest symetryczny i tego błędu by nie ujawnił.
+STORAGE 'temp'
+
+# CORE_BEGIN
+DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'
+DECLARE bp_coef INTEGER[25] STREAM bpf, 1 FILE 'bp_coef.txt'
+DECLARE d_coef INTEGER[5] STREAM df, 1 FILE 'd_coef.txt'
+
+SELECT ecg.MLII STREAM mlii FROM ecg
+
+SELECT * STREAM mlii_win FROM mlii@(1,25)
+SELECT mlii_win[_]*bpf[_] STREAM bp_acc FROM mlii_win+bpf
+SELECT bp_acc[0]/1000 STREAM bp_out FROM bp_acc.sumc
+
+SELECT * STREAM bp_win FROM bp_out@(1,5)
+SELECT bp_win[_]*df[_] STREAM d_acc FROM bp_win+df
+SELECT d_acc[0] STREAM d_out FROM d_acc.sumc
+
+SELECT d_out[0]*d_out[0]/1000 STREAM sq_out FROM d_out
+
+SELECT * STREAM mwi_win FROM sq_out@(1,30)
+SELECT mwi_win[0] STREAM mwi FROM mwi_win.avg
+
+SELECT * STREAM mwi_long FROM mwi@(1,180)
+SELECT mwi_long[0] STREAM mwi_thr FROM mwi_long.avg
+
+SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr
+# CORE_END

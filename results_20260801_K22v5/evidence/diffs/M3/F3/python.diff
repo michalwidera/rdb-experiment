@@ -1,0 +1,22 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/python/core.py
+@@ -3,4 +3,4 @@
+-UNIT_A = 3
+-UNIT_B = 6
+-INTERVAL_NS = 66_666_667
+-SHIFT = 5
++HASH_NUM = 12
++HASH_DEN = 17
++INTERVAL_NS = 58_823_529
++SHIFT = 21
+@@ -8,2 +7,0 @@
+-ua = 0
+-ub = 0
+@@ -21 +19,2 @@
+-if ub <= ua:
++take_b = (HASH_NUM * r) // HASH_DEN == (HASH_NUM * (r + 1)) // HASH_DEN
++if take_b:
+@@ -24 +22,0 @@
+-ub = ub + UNIT_B
+@@ -28 +25,0 @@
+-ua = ua + UNIT_A

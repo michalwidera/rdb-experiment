@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F1_fir/python/core.py
+@@ -4 +4 @@
+-INTERVAL_NS = 1_000_000
++INTERVAL_NS = 1_333_333

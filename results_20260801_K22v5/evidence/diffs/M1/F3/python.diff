@@ -1,0 +1,9 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F3_multirate/python/core.py
+@@ -1 +1 @@
+-def run(a_values, b_values, slots):
++def run(a_values, b_values, b_aux, slots):
+@@ -35 +35,2 @@
+-out.append((SHIFT + r + 1, avg(win)))
++logical_index = SHIFT + r + 1
++out.append((logical_index, [avg(win), b_aux[(logical_index - 2) // 3]]))

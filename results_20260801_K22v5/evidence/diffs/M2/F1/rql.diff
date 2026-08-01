@@ -1,0 +1,10 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/rql/core.rql
+@@ -2,2 +2,2 @@
+-DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'
+-SELECT * STREAM win FROM src@(1,26)
++DECLARE c INTEGER[45] STREAM coef, 1 FILE 'f1_coef.txt'
++SELECT * STREAM win FROM src@(1,45)
+@@ -5 +5 @@
+-SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc
++SELECT acc[0]/45/1000 STREAM f1_out FROM acc.sumc

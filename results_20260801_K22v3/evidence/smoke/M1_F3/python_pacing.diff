@@ -1,0 +1,11 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22v3/tasks/M1/F3_multirate/python/core.py
++++ execution-copy
+@@ -60,7 +60,7 @@
+     for r in range(slots):
+         deadline = t0 + r * INTERVAL_NS
+         now = time.monotonic_ns()
+-        if now < deadline:
++        if False and now < deadline:
+             time.sleep((deadline - now) / 1e9)
+         if ub <= ua:
+             value = b_values[ib]

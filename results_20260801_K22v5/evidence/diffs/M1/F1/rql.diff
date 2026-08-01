@@ -1,0 +1,8 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/rql/core.rql
+@@ -1,0 +2 @@
++DECLARE x2 INTEGER STREAM channel2, 1/1000 FILE 'f1_source2.txt'
+@@ -5 +6,2 @@
+-SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc
++SELECT acc[0]/26/1000 STREAM fir FROM acc.sumc
++SELECT fir[0], channel2[0] STREAM f1_out FROM fir+channel2

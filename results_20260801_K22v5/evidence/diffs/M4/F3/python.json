@@ -1,0 +1,36 @@
+{
+  "D1": 2,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 59,
+      "base_to": "-",
+      "variant_from": 59,
+      "variant_to": 59,
+      "base": [],
+      "variant": [
+        "monitors = []"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 73,
+      "base_to": "-",
+      "variant_from": 74,
+      "variant_to": 74,
+      "base": [],
+      "variant": [
+        "monitors.append((SHIFT + r, [value + j for j in range(8)]))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F3_multirate/python/core.py\n",
+    "@@ -14,0 +15 @@\n",
+    "+monitors = []\n",
+    "@@ -28,0 +30 @@\n",
+    "+monitors.append((SHIFT + r, [value + j for j in range(8)]))\n"
+  ]
+}

@@ -1,0 +1,11 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java
++++ execution-copy
+@@ -48,7 +48,7 @@
+       for (long n = 0; n < slots && running; n++) {
+         long deadline = t0 + n * INTERVAL_NS;
+         long now = System.nanoTime();
+-        if (now < deadline) {
++        if (false && now < deadline) {
+           long sleepNs = deadline - now;
+           Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+         }

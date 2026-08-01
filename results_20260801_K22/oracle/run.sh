@@ -41,5 +41,30 @@ echo "== 3. Ogony odczytane z silnika"
    (PREDECLARATION.md §5.2 — wniosek metodologiczny z K6c)."
 echo "   OK"
 
-echo "== 4. Porownanie"
-fail "porownanie korpusu jest zadaniem etapu K22b; w K22a nie ma czego porownywac"
+echo "== 4. Porownanie per rodzina"
+families=(F1_fir F2_ecg F3_multirate)
+missing=()
+ran=0
+for fam in "${families[@]}"; do
+  runner="$CAMPAIGN/corpus/$fam/run.sh"
+  if [[ ! -x "$runner" ]]; then
+    missing+=("$fam")
+    continue
+  fi
+  echo "-- $fam"
+  "$runner" || fail "$fam: oracle nie przeszedl"
+  ran=$((ran + 1))
+done
+
+if [[ $ran -eq 0 ]]; then
+  fail "zadna rodzina nie ma runnera — zero porownanych rodzin jest BLEDEM, nie wynikiem"
+fi
+if [[ ${#missing[@]} -gt 0 ]]; then
+  echo
+  echo "NIEKOMPLETNE: $ran/3 rodzin porownanych; brakuje: ${missing[*]}"
+  echo "Bramka K22b wymaga wszystkich trzech rodzin albo jawnego wylaczenia"
+  echo "z tabeli rownowaznosci wartosci (PREDECLARATION.md §11)."
+  exit 1
+fi
+echo
+echo "OK: wszystkie 3 rodziny przeszly wspolny oracle"

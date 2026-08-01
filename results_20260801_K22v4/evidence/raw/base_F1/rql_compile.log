@@ -1,0 +1,177 @@
+:STORAGE	temp/
+src(1/1000)	f1_source.txt
+	x: INTEGER
+win(1/1000)	tail=26
+	:- PUSH_STREAM(src)
+	:- STREAM_AGSE(1,26)
+	src_0: INTEGER
+		PUSH_ID(win[0])
+	src_1: INTEGER
+		PUSH_ID(win[1])
+	src_2: INTEGER
+		PUSH_ID(win[2])
+	src_3: INTEGER
+		PUSH_ID(win[3])
+	src_4: INTEGER
+		PUSH_ID(win[4])
+	src_5: INTEGER
+		PUSH_ID(win[5])
+	src_6: INTEGER
+		PUSH_ID(win[6])
+	src_7: INTEGER
+		PUSH_ID(win[7])
+	src_8: INTEGER
+		PUSH_ID(win[8])
+	src_9: INTEGER
+		PUSH_ID(win[9])
+	src_10: INTEGER
+		PUSH_ID(win[10])
+	src_11: INTEGER
+		PUSH_ID(win[11])
+	src_12: INTEGER
+		PUSH_ID(win[12])
+	src_13: INTEGER
+		PUSH_ID(win[13])
+	src_14: INTEGER
+		PUSH_ID(win[14])
+	src_15: INTEGER
+		PUSH_ID(win[15])
+	src_16: INTEGER
+		PUSH_ID(win[16])
+	src_17: INTEGER
+		PUSH_ID(win[17])
+	src_18: INTEGER
+		PUSH_ID(win[18])
+	src_19: INTEGER
+		PUSH_ID(win[19])
+	src_20: INTEGER
+		PUSH_ID(win[20])
+	src_21: INTEGER
+		PUSH_ID(win[21])
+	src_22: INTEGER
+		PUSH_ID(win[22])
+	src_23: INTEGER
+		PUSH_ID(win[23])
+	src_24: INTEGER
+		PUSH_ID(win[24])
+	src_25: INTEGER
+		PUSH_ID(win[25])
+coef(1/1)	f1_coef.txt
+	c: INTEGER
+acc(1/1000)	tail=26
+	:- PUSH_STREAM(win)
+	:- PUSH_STREAM(coef)
+	:- STREAM_ADD
+	acc_0: INTEGER
+		PUSH_ID(acc[0])
+		PUSH_ID(acc[26])
+		MULTIPLY
+	acc_1: INTEGER
+		PUSH_ID(acc[1])
+		PUSH_ID(acc[27])
+		MULTIPLY
+	acc_2: INTEGER
+		PUSH_ID(acc[2])
+		PUSH_ID(acc[28])
+		MULTIPLY
+	acc_3: INTEGER
+		PUSH_ID(acc[3])
+		PUSH_ID(acc[29])
+		MULTIPLY
+	acc_4: INTEGER
+		PUSH_ID(acc[4])
+		PUSH_ID(acc[30])
+		MULTIPLY
+	acc_5: INTEGER
+		PUSH_ID(acc[5])
+		PUSH_ID(acc[31])
+		MULTIPLY
+	acc_6: INTEGER
+		PUSH_ID(acc[6])
+		PUSH_ID(acc[32])
+		MULTIPLY
+	acc_7: INTEGER
+		PUSH_ID(acc[7])
+		PUSH_ID(acc[33])
+		MULTIPLY
+	acc_8: INTEGER
+		PUSH_ID(acc[8])
+		PUSH_ID(acc[34])
+		MULTIPLY
+	acc_9: INTEGER
+		PUSH_ID(acc[9])
+		PUSH_ID(acc[35])
+		MULTIPLY
+	acc_10: INTEGER
+		PUSH_ID(acc[10])
+		PUSH_ID(acc[36])
+		MULTIPLY
+	acc_11: INTEGER
+		PUSH_ID(acc[11])
+		PUSH_ID(acc[37])
+		MULTIPLY
+	acc_12: INTEGER
+		PUSH_ID(acc[12])
+		PUSH_ID(acc[38])
+		MULTIPLY
+	acc_13: INTEGER
+		PUSH_ID(acc[13])
+		PUSH_ID(acc[39])
+		MULTIPLY
+	acc_14: INTEGER
+		PUSH_ID(acc[14])
+		PUSH_ID(acc[40])
+		MULTIPLY
+	acc_15: INTEGER
+		PUSH_ID(acc[15])
+		PUSH_ID(acc[41])
+		MULTIPLY
+	acc_16: INTEGER
+		PUSH_ID(acc[16])
+		PUSH_ID(acc[42])
+		MULTIPLY
+	acc_17: INTEGER
+		PUSH_ID(acc[17])
+		PUSH_ID(acc[43])
+		MULTIPLY
+	acc_18: INTEGER
+		PUSH_ID(acc[18])
+		PUSH_ID(acc[44])
+		MULTIPLY
+	acc_19: INTEGER
+		PUSH_ID(acc[19])
+		PUSH_ID(acc[45])
+		MULTIPLY
+	acc_20: INTEGER
+		PUSH_ID(acc[20])
+		PUSH_ID(acc[46])
+		MULTIPLY
+	acc_21: INTEGER
+		PUSH_ID(acc[21])
+		PUSH_ID(acc[47])
+		MULTIPLY
+	acc_22: INTEGER
+		PUSH_ID(acc[22])
+		PUSH_ID(acc[48])
+		MULTIPLY
+	acc_23: INTEGER
+		PUSH_ID(acc[23])
+		PUSH_ID(acc[49])
+		MULTIPLY
+	acc_24: INTEGER
+		PUSH_ID(acc[24])
+		PUSH_ID(acc[50])
+		MULTIPLY
+	acc_25: INTEGER
+		PUSH_ID(acc[25])
+		PUSH_ID(acc[51])
+		MULTIPLY
+f1_out(1/1000)	tail=26
+	:- PUSH_STREAM(acc)
+	:- STREAM_SUM
+	f1_out_0: INTEGER
+		PUSH_ID(f1_out[0])
+		PUSH_VAL(26)
+		DIVIDE
+		PUSH_VAL(1000)
+		DIVIDE

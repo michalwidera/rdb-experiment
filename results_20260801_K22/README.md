@@ -1,6 +1,13 @@
 # K22 — deklaratywny koszt specyfikacji i modyfikacji monitora
 
-**Stan: etap K22a (audyt i predeklaracja). Wynik NIE istnieje.**
+**Stan: PILOT ZATRZYMANY 2026-08-01. Nie jest kampanią rozstrzygającą H8.**
+
+K22c zatrzymano po audycie aparatury. Po pierwszej komórce modyfikacyjnej
+M1/F2 zmieniono granicę rdzenia Pythona, a skrypt metryk okazał się błędnie
+scalać jednakowo nazwane pola z różnych klas Javy oraz klasyfikować zwykłe
+kontenery wyjściowe jako bufory okienne. Narusza to własną regułę zamrożenia
+definicji po danych. Ten katalog pozostaje nieprzepisywanym zapisem pilota;
+poprawiona kampania żyje w `../results_20260801_K22v2/` na tym samym branchu.
 
 Kampania bada, czy dla semantycznie równoważnych statycznych potoków
 regularnych RQL zawiera mniej jawnych konstrukcji sterowania i stanu oraz
@@ -11,7 +18,7 @@ K22 **nie** mierzy szybkości. To był P0/K6, zamknięty werdyktem A=0/B=12/C=1.
 K22 **nie** jest badaniem ludzi: nie odpowiada na pytanie o zrozumiałość ani
 produktywność. Potok ECG jest niekliniczny — bez twierdzeń diagnostycznych.
 
-## Co jest w tym katalogu na etapie K22a
+## Co pozostało po zatrzymanym pilocie
 
 | Ścieżka | Zawartość | Stan |
 |---|---|---|

@@ -1,0 +1,53 @@
+{
+  "D1": 9,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 188,
+      "base_to": "-",
+      "variant_from": 123,
+      "variant_to": 130,
+      "base": [],
+      "variant": [
+        "static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,",
+        "Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {",
+        "@Override",
+        "public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {",
+        "int v = in.f1;",
+        "return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);",
+        "}",
+        "}"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 189,
+      "base_to": 189,
+      "variant_from": 203,
+      "variant_to": 203,
+      "base": [
+        "src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));"
+      ],
+      "variant": [
+        "src.map(new Monitor()).addSink(new CanonicalSink(out, family, variant));"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F3_multirate/flink/F3Multirate.java\n",
+    "@@ -76,0 +77,8 @@\n",
+    "+static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,\n",
+    "+Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {\n",
+    "+@Override\n",
+    "+public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {\n",
+    "+int v = in.f1;\n",
+    "+return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);\n",
+    "+}\n",
+    "+}\n",
+    "@@ -78 +86 @@\n",
+    "-src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));\n",
+    "+src.map(new Monitor()).addSink(new CanonicalSink(out, family, variant));\n"
+  ]
+}

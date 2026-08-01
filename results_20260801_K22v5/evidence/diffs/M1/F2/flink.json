@@ -1,0 +1,82 @@
+{
+  "D1": 8,
+  "D2": 4,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 231,
+      "base_to": 231,
+      "variant_from": 231,
+      "variant_to": 236,
+      "base": [
+        "Tuple4<Long, Integer, Integer, Integer>> {"
+      ],
+      "variant": [
+        "Tuple5<Long, Integer, Integer, Integer, Integer>> {",
+        "private final int[] v1;",
+        "Assemble(int[] v1) {",
+        "this.v1 = v1;",
+        "}"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 245,
+      "base_to": 245,
+      "variant_from": 251,
+      "variant_to": 251,
+      "base": [
+        "Collector<Tuple4<Long, Integer, Integer, Integer>> out) {"
+      ],
+      "variant": [
+        "Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 256,
+      "base_to": 256,
+      "variant_from": 262,
+      "variant_to": 262,
+      "base": [
+        "out.collect(Tuple4.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5));"
+      ],
+      "variant": [
+        "out.collect(Tuple5.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5, v1[(int) n] - 900));"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 358,
+      "base_to": 358,
+      "variant_from": 367,
+      "variant_to": 367,
+      "base": [
+        ".flatMap(new Assemble())"
+      ],
+      "variant": [
+        ".flatMap(new Assemble(v1))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/flink/F2Ecg.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/flink/F2Ecg.java\n",
+    "@@ -162 +162,5 @@\n",
+    "-Tuple4<Long, Integer, Integer, Integer>> {\n",
+    "+Tuple5<Long, Integer, Integer, Integer, Integer>> {\n",
+    "+private final int[] v1;\n",
+    "+Assemble(int[] v1) {\n",
+    "+this.v1 = v1;\n",
+    "+}\n",
+    "@@ -174 +178 @@\n",
+    "-Collector<Tuple4<Long, Integer, Integer, Integer>> out) {\n",
+    "+Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {\n",
+    "@@ -185 +189 @@\n",
+    "-out.collect(Tuple4.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5));\n",
+    "+out.collect(Tuple5.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5, v1[(int) n] - 900));\n",
+    "@@ -197 +201 @@\n",
+    "-.flatMap(new Assemble())\n",
+    "+.flatMap(new Assemble(v1))\n"
+  ]
+}

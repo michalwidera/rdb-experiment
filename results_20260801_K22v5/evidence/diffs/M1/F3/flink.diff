@@ -1,0 +1,21 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F3_multirate/flink/F3Multirate.java
+@@ -51 +51 @@
+-static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
++static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple3<Long, Integer, Integer>> {
+@@ -52,0 +53 @@
++private final int[] bAux;
+@@ -54,0 +56,3 @@
++Aggregate(int[] bAux) {
++this.bAux = bAux;
++}
+@@ -61 +65 @@
+-public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
++public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {
+@@ -74 +78,2 @@
+-out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));
++long logicalIndex = in.f0 + 1;
++out.collect(Tuple3.of(logicalIndex, (int) (sum / WIN), bAux[((int) logicalIndex - 2) / 3]));
+@@ -78 +83 @@
+-src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));
++src.flatMap(new Aggregate(bAux)).addSink(new CanonicalSink(out, family, variant));

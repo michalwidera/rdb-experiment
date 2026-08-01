@@ -1,0 +1,84 @@
+# M1/F3/python
+# BASE (znormalizowane)
+B0045 def run(a_values, b_values, slots):
+B0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+B0047 UNIT_A = 3
+B0048 UNIT_B = 6
+B0049 INTERVAL_NS = 66_666_667
+B0050 SHIFT = 5
+B0051 WIN = 30
+B0052 ua = 0
+B0053 ub = 0
+B0054 ia = 0
+B0055 ib = 0
+B0056 win = [0] * WIN
+B0057 filled = 0
+B0058 out = []
+B0059 t0 = time.monotonic_ns()
+B0060 for r in range(slots):
+B0061 deadline = t0 + r * INTERVAL_NS
+B0062 now = time.monotonic_ns()
+B0063 if now < deadline:
+B0064 time.sleep((deadline - now) / 1e9)
+B0065 if ub <= ua:
+B0066 value = b_values[ib]
+B0067 ib = ib + 1
+B0068 ub = ub + UNIT_B
+B0069 else:
+B0070 value = a_values[ia]
+B0071 ia = ia + 1
+B0072 ua = ua + UNIT_A
+B0073 for k in range(WIN - 1, 0, -1):
+B0074 win[k] = win[k - 1]
+B0075 win[0] = value
+B0076 filled = filled + 1
+B0077 if filled < WIN:
+B0078 continue
+B0079 out.append((SHIFT + r + 1, avg(win)))
+# VARIANT (znormalizowane)
+V0045 def run(a_values, b_values, b_aux, slots):
+V0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+V0047 UNIT_A = 3
+V0048 UNIT_B = 6
+V0049 INTERVAL_NS = 66_666_667
+V0050 SHIFT = 5
+V0051 WIN = 30
+V0052 ua = 0
+V0053 ub = 0
+V0054 ia = 0
+V0055 ib = 0
+V0056 win = [0] * WIN
+V0057 filled = 0
+V0058 out = []
+V0059 t0 = time.monotonic_ns()
+V0060 for r in range(slots):
+V0061 deadline = t0 + r * INTERVAL_NS
+V0062 now = time.monotonic_ns()
+V0063 if now < deadline:
+V0064 time.sleep((deadline - now) / 1e9)
+V0065 if ub <= ua:
+V0066 value = b_values[ib]
+V0067 ib = ib + 1
+V0068 ub = ub + UNIT_B
+V0069 else:
+V0070 value = a_values[ia]
+V0071 ia = ia + 1
+V0072 ua = ua + UNIT_A
+V0073 for k in range(WIN - 1, 0, -1):
+V0074 win[k] = win[k - 1]
+V0075 win[0] = value
+V0076 filled = filled + 1
+V0077 if filled < WIN:
+V0078 continue
+V0079 logical_index = SHIFT + r + 1
+V0080 out.append((logical_index, [avg(win), b_aux[(logical_index - 2) // 3]]))
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -1 +1 @@
+-def run(a_values, b_values, slots):
++def run(a_values, b_values, b_aux, slots):
+@@ -35 +35,2 @@
+-out.append((SHIFT + r + 1, avg(win)))
++logical_index = SHIFT + r + 1
++out.append((logical_index, [avg(win), b_aux[(logical_index - 2) // 3]]))

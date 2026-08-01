@@ -50,6 +50,32 @@ i mogą pokrywać się z `C7`. To jest zamierzone (`PREDECLARATION.md` §7.1.1).
 
 ---
 
+### 0.2. Sygnatura punktu wejścia rdzenia należy do rdzenia
+
+Rozstrzygnięte przy zamykaniu długu z K22c. W Pythonie znacznik `CORE_BEGIN`
+stoi **nad** `def run(...)`, więc lista parametrów jest liczona.
+
+Powód jest symetrią, nie wygodą: w RQL instrukcja
+`DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'` leży wewnątrz
+rdzenia i jest liczona — razem z typem, interwałem **i nazwą pliku**. Lista
+parametrów rdzenia Pythona deklaruje dokładnie to samo, tylko uboższe (bez
+interwału i bez wiązania z plikiem). Gdyby została poza granicą, RQL płaciłby
+za deklarację źródeł, a Python nie.
+
+Wczytanie plików (`load_rec`, `load_ints`) pozostaje **poza** rdzeniem: to
+dostarczenie danych, nie specyfikacja monitora. Analogicznie we Flinku liczony
+jest konstruktor operatora i blok składania topologii, a nie `loadInts`.
+
+**Skutek liczbowy do ujawnienia:** poprawka podnosi `C7` i `D2` Pythona.
+W jedynej zmierzonej wcześniej komórce (M1/F2) przesuwa `D2` Pythona z 1 na 2,
+czyli **z porażki RQL na remis** — kierunek sprzyjający tezie H8. Dlatego
+uzasadnieniem jest wyłącznie symetria wobec `DECLARE`, a decyzja zapadła przed
+zmierzeniem pozostałych jedenastu komórek. Recenzent może ją zakwestionować:
+odwrócenie zmienia `D2` Pythona o 1 w każdej komórce, w której zmienia się
+sygnatura rdzenia.
+
+---
+
 ## 1. Metryki — definicja operacyjna
 
 ### C1 — jawne pętle sterujące przetwarzaniem próbek

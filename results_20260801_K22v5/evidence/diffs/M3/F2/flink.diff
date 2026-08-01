@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/flink/F2Ecg.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F2_ecg/flink/F2Ecg.java
+@@ -2 +2 @@
+-private static final long INTERVAL_NS = 2_777_778L;
++private static final long INTERVAL_NS = 4_000_000L;

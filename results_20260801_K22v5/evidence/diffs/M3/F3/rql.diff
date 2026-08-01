@@ -1,0 +1,8 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/rql/core.rql
+@@ -1 +1 @@
+-DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'
++DECLARE value INTEGER STREAM A, 1/12 FILE 'f3_a.txt'
+@@ -3 +3 @@
+-SELECT * STREAM f3_mix FROM (A>2)
++SELECT * STREAM f3_mix FROM (A>12)

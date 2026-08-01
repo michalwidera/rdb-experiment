@@ -1,0 +1,6 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F3_multirate/python/core.py
+@@ -14,0 +15 @@
++monitors = []
+@@ -28,0 +30 @@
++monitors.append((SHIFT + r, [value + j for j in range(8)]))

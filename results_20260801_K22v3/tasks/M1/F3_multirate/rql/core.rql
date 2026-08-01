@@ -1,0 +1,23 @@
+# F3 — monitor wieloczęstotliwościowy. Rdzeń RQL kampanii K22.
+#
+# Rodzina używa RZECZYWIŚCIE wymiernych interwałów, przesunięcia `>N`
+# i przeplotu `#` — osiem kopii niezależnego filtra nie spełniałoby warunku
+# (PREDECLARATION.md §3, F3).
+#
+# Prowenienecja: rodzina W2 z results_20260730_K6c/generate.py, gdzie warunek
+# reguły i*delta_A = k*delta_B zachodzi dla (i,k) = (2,1).
+#
+# Interwały: A = 1/10 s, B = 1/5 s. Przeplot sumuje częstotliwości,
+# więc interwał wyjścia to 1/(10+5) = 1/15 s.
+STORAGE 'temp'
+
+# CORE_BEGIN
+DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'
+DECLARE value INTEGER, aux INTEGER STREAM B, 1/5 FILE 'f3_b2.txt'
+SELECT B.value STREAM B_value FROM B
+SELECT B.aux STREAM B_aux FROM B
+SELECT * STREAM f3_mix FROM (A>2)#(B_value>1)
+SELECT * STREAM f3_win FROM f3_mix@(1,30)
+SELECT f3_win[0] STREAM f3_base FROM f3_win.avg
+SELECT f3_base[0], B_aux[0] STREAM f3_out FROM f3_base+B_aux
+# CORE_END

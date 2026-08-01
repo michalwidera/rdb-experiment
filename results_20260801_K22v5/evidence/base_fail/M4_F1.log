@@ -1,0 +1,2 @@
+verdict=FAIL range=[26,46) rows_compared=0
+first_mismatch: indeks 26: rozna liczba pol — base=1, variant=8

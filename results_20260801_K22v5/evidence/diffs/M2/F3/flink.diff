@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F3_multirate/flink/F3Multirate.java
+@@ -52 +52 @@
+-private static final int WIN = 30;
++private static final int WIN = 45;

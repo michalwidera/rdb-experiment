@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 35,
+      "base_to": 35,
+      "variant_from": 35,
+      "variant_to": 35,
+      "base": [
+        "private static final long INTERVAL_NS = 1_000_000L;"
+      ],
+      "variant": [
+        "private static final long INTERVAL_NS = 1_333_333L;"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F1_fir/flink/F1Fir.java\n",
+    "@@ -2 +2 @@\n",
+    "-private static final long INTERVAL_NS = 1_000_000L;\n",
+    "+private static final long INTERVAL_NS = 1_333_333L;\n"
+  ]
+}

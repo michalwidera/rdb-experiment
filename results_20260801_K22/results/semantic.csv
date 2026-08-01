@@ -1,0 +1,10 @@
+family,variant,model,tail,range_from,range_to,rows_compared,verdict,first_mismatch
+F1,base,rql,26,26,2026,2000,PASS,
+F1,base,python,26,26,2026,2000,PASS,
+F1,base,flink,26,26,2026,2000,PASS,
+F2,base,rql,240,240,2240,2000,PASS,
+F2,base,python,240,240,2240,2000,PASS,
+F2,base,flink,240,240,2240,2000,PASS,
+F3,base,rql,35,35,2035,2000,PASS,
+F3,base,python,35,35,2035,2000,PASS,
+F3,base,flink,35,35,2035,2000,PASS,

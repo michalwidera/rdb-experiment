@@ -1,0 +1,48 @@
+{
+  "D1": 4,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 39,
+      "base_to": 40,
+      "variant_from": 41,
+      "variant_to": 42,
+      "base": [
+        "def run(mlii, bp_coef, d_coef, slots):",
+        "\"\"\"Zwraca listę (logical_index, [pole0, pole1, pole2]).\"\"\""
+      ],
+      "variant": [
+        "def run(mlii, v1, bp_coef, d_coef, slots):",
+        "\"\"\"Zwraca listę (logical_index, [pole0, pole1, pole2, pole3]).\"\"\""
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 95,
+      "base_to": 95,
+      "variant_from": 97,
+      "variant_to": 98,
+      "base": [
+        "out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))"
+      ],
+      "variant": [
+        "out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),",
+        "isub(v1[n], 900)]))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/python/core.py\n",
+    "@@ -1,2 +1,2 @@\n",
+    "-def run(mlii, bp_coef, d_coef, slots):\n",
+    "-\"\"\"Zwraca listę (logical_index, [pole0, pole1, pole2]).\"\"\"\n",
+    "+def run(mlii, v1, bp_coef, d_coef, slots):\n",
+    "+\"\"\"Zwraca listę (logical_index, [pole0, pole1, pole2, pole3]).\"\"\"\n",
+    "@@ -55 +55,2 @@\n",
+    "-out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))\n",
+    "+out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),\n",
+    "+isub(v1[n], 900)]))\n"
+  ]
+}

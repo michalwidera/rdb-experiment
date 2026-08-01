@@ -1,0 +1,54 @@
+# M1/F1/python
+# BASE (znormalizowane)
+B0035 def run(samples, coef, slots):
+B0036 """Zwraca listę (logical_index, wartość) dla `slots` slotów."""
+B0037 WIN = 26
+B0038 INTERVAL_NS = 1_000_000
+B0039 win = [0] * WIN
+B0040 out = []
+B0041 t0 = time.monotonic_ns()
+B0042 for n in range(slots):
+B0043 deadline = t0 + n * INTERVAL_NS
+B0044 now = time.monotonic_ns()
+B0045 if now < deadline:
+B0046 time.sleep((deadline - now) / 1e9)
+B0047 x = samples[n]
+B0048 for k in range(WIN - 1, 0, -1):
+B0049 win[k] = win[k - 1]
+B0050 win[0] = x
+B0051 if n < WIN - 1:
+B0052 continue
+B0053 acc = sumc([imul(win[k], coef[k]) for k in range(WIN)])
+B0054 y = idiv(idiv(acc, WIN), 1000)
+B0055 out.append((n + 1, y))
+# VARIANT (znormalizowane)
+V0035 def run(samples, samples2, coef, slots):
+V0036 """Zwraca listę (logical_index, wartość) dla `slots` slotów."""
+V0037 WIN = 26
+V0038 INTERVAL_NS = 1_000_000
+V0039 win = [0] * WIN
+V0040 out = []
+V0041 t0 = time.monotonic_ns()
+V0042 for n in range(slots):
+V0043 deadline = t0 + n * INTERVAL_NS
+V0044 now = time.monotonic_ns()
+V0045 if now < deadline:
+V0046 time.sleep((deadline - now) / 1e9)
+V0047 x = samples[n]
+V0048 for k in range(WIN - 1, 0, -1):
+V0049 win[k] = win[k - 1]
+V0050 win[0] = x
+V0051 if n < WIN - 1:
+V0052 continue
+V0053 acc = sumc([imul(win[k], coef[k]) for k in range(WIN)])
+V0054 y = idiv(idiv(acc, WIN), 1000)
+V0055 out.append((n + 1, [y, samples2[n + 1]]))
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -1 +1 @@
+-def run(samples, coef, slots):
++def run(samples, samples2, coef, slots):
+@@ -21 +21 @@
+-out.append((n + 1, y))
++out.append((n + 1, [y, samples2[n + 1]]))

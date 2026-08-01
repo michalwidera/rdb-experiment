@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 66,
+      "base_to": 66,
+      "variant_from": 66,
+      "variant_to": 66,
+      "base": [
+        "private static final int WIN = 26;"
+      ],
+      "variant": [
+        "private static final int WIN = 45;"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/flink/F1Fir.java\n",
+    "@@ -29 +29 @@\n",
+    "-private static final int WIN = 26;\n",
+    "+private static final int WIN = 45;\n"
+  ]
+}

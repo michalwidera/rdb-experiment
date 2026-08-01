@@ -1,0 +1,15 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/flink/F2Ecg.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F2_ecg/flink/F2Ecg.java
+@@ -190,0 +191,8 @@
++static class Monitor extends RichMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
++Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {
++@Override
++public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple5<Long, Integer, Integer, Integer, Integer> in) {
++int v = in.f3;
++return Tuple9.of(in.f0 + 3, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);
++}
++}
+@@ -196,2 +204 @@
+-.flatMap(new Threshold())
+-.flatMap(new Assemble())
++.map(new Monitor())

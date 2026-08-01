@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/flink/F1Fir.java
+@@ -29 +29 @@
+-private static final int WIN = 26;
++private static final int WIN = 45;

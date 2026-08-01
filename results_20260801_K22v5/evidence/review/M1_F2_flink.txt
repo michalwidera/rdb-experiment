@@ -1,0 +1,422 @@
+# M1/F2/flink
+# BASE (znormalizowane)
+B0052 static class PacedSource extends RichSourceFunction<Tuple5<Long, Integer, Integer, Integer, Integer>> {
+B0053 private static final long INTERVAL_NS = 2_777_778L;
+B0054 private final int[] mlii;
+B0055 private final long slots;
+B0056 private volatile boolean running = true;
+B0058 PacedSource(int[] mlii, long slots) {
+B0059 this.mlii = mlii;
+B0060 this.slots = slots;
+B0061 }
+B0063 @Override
+B0064 public void run(SourceContext<Tuple5<Long, Integer, Integer, Integer, Integer>> ctx) throws Exception {
+B0065 long t0 = System.nanoTime();
+B0066 for (long n = 0; n < slots && running; n++) {
+B0067 long deadline = t0 + n * INTERVAL_NS;
+B0068 long now = System.nanoTime();
+B0069 if (now < deadline) {
+B0070 long sleepNs = deadline - now;
+B0071 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+B0072 }
+B0073 int x = mlii[(int) n];
+B0074 ctx.collect(Tuple5.of(n, x, x, 0, 0));
+B0075 }
+B0076 }
+B0078 @Override
+B0079 public void cancel() {
+B0080 running = false;
+B0081 }
+B0082 }
+B0084 /** Band-pass 25: okno na mliiRaw, splot, /1000. */
+B0085 static class BandPass extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+B0086 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+B0087 private static final int WIN = 25;
+B0088 private final int[] coef;
+B0089 private int[] win;
+B0090 private int filled;
+B0092 BandPass(int[] coef) {
+B0093 this.coef = coef;
+B0094 }
+B0096 @Override
+B0097 public void open(OpenContext ctx) {
+B0098 win = new int[WIN];
+B0099 filled = 0;
+B0100 }
+B0102 @Override
+B0103 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+B0104 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+B0105 for (int k = WIN - 1; k > 0; k--) {
+B0106 win[k] = win[k - 1];
+B0107 }
+B0108 win[0] = in.f1;
+B0109 filled = filled + 1;
+B0110 if (filled < WIN) {
+B0111 return;
+B0112 }
+B0113 long acc = 0;
+B0114 for (int k = 0; k < WIN; k++) {
+B0115 acc += (long) win[k] * coef[k];
+B0116 }
+B0117 out.collect(Tuple5.of(in.f0, in.f1, truncDiv(acc, 1000), 0, 0));
+B0118 }
+B0119 }
+B0121 /** Roznica 5: okno na wyjsciu band-passu, splot bez dzielenia. */
+B0122 static class Derivative extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+B0123 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+B0124 private static final int WIN = 5;
+B0125 private final int[] coef;
+B0126 private int[] win;
+B0127 private int filled;
+B0129 Derivative(int[] coef) {
+B0130 this.coef = coef;
+B0131 }
+B0133 @Override
+B0134 public void open(OpenContext ctx) {
+B0135 win = new int[WIN];
+B0136 filled = 0;
+B0137 }
+B0139 @Override
+B0140 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+B0141 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+B0142 for (int k = WIN - 1; k > 0; k--) {
+B0143 win[k] = win[k - 1];
+B0144 }
+B0145 win[0] = in.f2;
+B0146 filled = filled + 1;
+B0147 if (filled < WIN) {
+B0148 return;
+B0149 }
+B0150 long acc = 0;
+B0151 for (int k = 0; k < WIN; k++) {
+B0152 acc += (long) win[k] * coef[k];
+B0153 }
+B0154 out.collect(Tuple5.of(in.f0, in.f1, truncDiv(acc, 1), 0, 0));
+B0155 }
+B0156 }
+B0158 /** Kwadrat/1000 + MWI 30 (srednia po oknie). */
+B0159 static class SquareMwi extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+B0160 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+B0161 private static final int WIN = 30;
+B0162 private int[] win;
+B0163 private int filled;
+B0165 @Override
+B0166 public void open(OpenContext ctx) {
+B0167 win = new int[WIN];
+B0168 filled = 0;
+B0169 }
+B0171 @Override
+B0172 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+B0173 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+B0174 long d = in.f2;
+B0175 int sq = truncDiv(d * d, 1000);
+B0176 for (int k = WIN - 1; k > 0; k--) {
+B0177 win[k] = win[k - 1];
+B0178 }
+B0179 win[0] = sq;
+B0180 filled = filled + 1;
+B0181 if (filled < WIN) {
+B0182 return;
+B0183 }
+B0184 long sum = 0;
+B0185 for (int k = 0; k < WIN; k++) {
+B0186 sum += win[k];
+B0187 }
+B0188 out.collect(Tuple5.of(in.f0, in.f1, sq, truncDiv(sum, WIN), 0));
+B0189 }
+B0190 }
+B0192 /** Prog 180: srednia ruchoma po MWI. */
+B0193 static class Threshold extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+B0194 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+B0195 private static final int WIN = 180;
+B0196 private int[] win;
+B0197 private int filled;
+B0199 @Override
+B0200 public void open(OpenContext ctx) {
+B0201 win = new int[WIN];
+B0202 filled = 0;
+B0203 }
+B0205 @Override
+B0206 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+B0207 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+B0208 for (int k = WIN - 1; k > 0; k--) {
+B0209 win[k] = win[k - 1];
+B0210 }
+B0211 win[0] = in.f3;
+B0212 filled = filled + 1;
+B0213 if (filled < WIN) {
+B0214 return;
+B0215 }
+B0216 long sum = 0;
+B0217 for (int k = 0; k < WIN; k++) {
+B0218 sum += win[k];
+B0219 }
+B0220 out.collect(Tuple5.of(in.f0, in.f1, in.f2, in.f3, truncDiv(sum, WIN)));
+B0221 }
+B0222 }
+B0224 /**
+B0225 * Zlozenie trzech strumieni o ROZNYCH opoznieniach. `mlii[L]` przychodzi
+B0226 * w slocie L, `mwi[L]` powstal w slocie L-3, `mwi_thr[L]` w slocie L-4,
+B0227 * wiec trzeba je zapamietac po indeksie. To jest obowiazek, ktory w RQL
+B0228 * znika w `FROM mlii+mwi+mwi_thr`.
+B0229 */
+B0230 static class Assemble extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+B0231 Tuple4<Long, Integer, Integer, Integer>> {
+B0232 private Map<Long, Integer> mliiAt;
+B0233 private Map<Long, Integer> mwiAt;
+B0234 private Map<Long, Integer> thrAt;
+B0236 @Override
+B0237 public void open(OpenContext ctx) {
+B0238 mliiAt = new HashMap<>();
+B0239 mwiAt = new HashMap<>();
+B0240 thrAt = new HashMap<>();
+B0241 }
+B0243 @Override
+B0244 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+B0245 Collector<Tuple4<Long, Integer, Integer, Integer>> out) {
+B0246 long n = in.f0;
+B0247 mliiAt.put(n, in.f1);
+B0248 mwiAt.put(n + 3, in.f3);
+B0249 thrAt.put(n + 4, in.f4);
+B0250 Integer raw = mliiAt.get(n);
+B0251 Integer mwi = mwiAt.get(n);
+B0252 Integer thr = thrAt.get(n);
+B0253 if (raw == null || mwi == null || thr == null) {
+B0254 return;
+B0255 }
+B0256 out.collect(Tuple4.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5));
+B0257 mliiAt.remove(n);
+B0258 mwiAt.remove(n);
+B0259 thrAt.remove(n);
+B0260 }
+B0261 }
+B0352 DataStream<Tuple5<Long, Integer, Integer, Integer, Integer>> src =
+B0353 env.addSource(new PacedSource(mlii, slots));
+B0354 src.flatMap(new BandPass(bpCoef))
+B0355 .flatMap(new Derivative(dCoef))
+B0356 .flatMap(new SquareMwi())
+B0357 .flatMap(new Threshold())
+B0358 .flatMap(new Assemble())
+B0359 .addSink(new CanonicalSink(out, family, variant));
+# VARIANT (znormalizowane)
+V0052 static class PacedSource extends RichSourceFunction<Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0053 private static final long INTERVAL_NS = 2_777_778L;
+V0054 private final int[] mlii;
+V0055 private final long slots;
+V0056 private volatile boolean running = true;
+V0058 PacedSource(int[] mlii, long slots) {
+V0059 this.mlii = mlii;
+V0060 this.slots = slots;
+V0061 }
+V0063 @Override
+V0064 public void run(SourceContext<Tuple5<Long, Integer, Integer, Integer, Integer>> ctx) throws Exception {
+V0065 long t0 = System.nanoTime();
+V0066 for (long n = 0; n < slots && running; n++) {
+V0067 long deadline = t0 + n * INTERVAL_NS;
+V0068 long now = System.nanoTime();
+V0069 if (now < deadline) {
+V0070 long sleepNs = deadline - now;
+V0071 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+V0072 }
+V0073 int x = mlii[(int) n];
+V0074 ctx.collect(Tuple5.of(n, x, x, 0, 0));
+V0075 }
+V0076 }
+V0078 @Override
+V0079 public void cancel() {
+V0080 running = false;
+V0081 }
+V0082 }
+V0084 /** Band-pass 25: okno na mliiRaw, splot, /1000. */
+V0085 static class BandPass extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+V0086 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0087 private static final int WIN = 25;
+V0088 private final int[] coef;
+V0089 private int[] win;
+V0090 private int filled;
+V0092 BandPass(int[] coef) {
+V0093 this.coef = coef;
+V0094 }
+V0096 @Override
+V0097 public void open(OpenContext ctx) {
+V0098 win = new int[WIN];
+V0099 filled = 0;
+V0100 }
+V0102 @Override
+V0103 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+V0104 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+V0105 for (int k = WIN - 1; k > 0; k--) {
+V0106 win[k] = win[k - 1];
+V0107 }
+V0108 win[0] = in.f1;
+V0109 filled = filled + 1;
+V0110 if (filled < WIN) {
+V0111 return;
+V0112 }
+V0113 long acc = 0;
+V0114 for (int k = 0; k < WIN; k++) {
+V0115 acc += (long) win[k] * coef[k];
+V0116 }
+V0117 out.collect(Tuple5.of(in.f0, in.f1, truncDiv(acc, 1000), 0, 0));
+V0118 }
+V0119 }
+V0121 /** Roznica 5: okno na wyjsciu band-passu, splot bez dzielenia. */
+V0122 static class Derivative extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+V0123 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0124 private static final int WIN = 5;
+V0125 private final int[] coef;
+V0126 private int[] win;
+V0127 private int filled;
+V0129 Derivative(int[] coef) {
+V0130 this.coef = coef;
+V0131 }
+V0133 @Override
+V0134 public void open(OpenContext ctx) {
+V0135 win = new int[WIN];
+V0136 filled = 0;
+V0137 }
+V0139 @Override
+V0140 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+V0141 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+V0142 for (int k = WIN - 1; k > 0; k--) {
+V0143 win[k] = win[k - 1];
+V0144 }
+V0145 win[0] = in.f2;
+V0146 filled = filled + 1;
+V0147 if (filled < WIN) {
+V0148 return;
+V0149 }
+V0150 long acc = 0;
+V0151 for (int k = 0; k < WIN; k++) {
+V0152 acc += (long) win[k] * coef[k];
+V0153 }
+V0154 out.collect(Tuple5.of(in.f0, in.f1, truncDiv(acc, 1), 0, 0));
+V0155 }
+V0156 }
+V0158 /** Kwadrat/1000 + MWI 30 (srednia po oknie). */
+V0159 static class SquareMwi extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+V0160 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0161 private static final int WIN = 30;
+V0162 private int[] win;
+V0163 private int filled;
+V0165 @Override
+V0166 public void open(OpenContext ctx) {
+V0167 win = new int[WIN];
+V0168 filled = 0;
+V0169 }
+V0171 @Override
+V0172 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+V0173 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+V0174 long d = in.f2;
+V0175 int sq = truncDiv(d * d, 1000);
+V0176 for (int k = WIN - 1; k > 0; k--) {
+V0177 win[k] = win[k - 1];
+V0178 }
+V0179 win[0] = sq;
+V0180 filled = filled + 1;
+V0181 if (filled < WIN) {
+V0182 return;
+V0183 }
+V0184 long sum = 0;
+V0185 for (int k = 0; k < WIN; k++) {
+V0186 sum += win[k];
+V0187 }
+V0188 out.collect(Tuple5.of(in.f0, in.f1, sq, truncDiv(sum, WIN), 0));
+V0189 }
+V0190 }
+V0192 /** Prog 180: srednia ruchoma po MWI. */
+V0193 static class Threshold extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+V0194 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0195 private static final int WIN = 180;
+V0196 private int[] win;
+V0197 private int filled;
+V0199 @Override
+V0200 public void open(OpenContext ctx) {
+V0201 win = new int[WIN];
+V0202 filled = 0;
+V0203 }
+V0205 @Override
+V0206 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+V0207 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+V0208 for (int k = WIN - 1; k > 0; k--) {
+V0209 win[k] = win[k - 1];
+V0210 }
+V0211 win[0] = in.f3;
+V0212 filled = filled + 1;
+V0213 if (filled < WIN) {
+V0214 return;
+V0215 }
+V0216 long sum = 0;
+V0217 for (int k = 0; k < WIN; k++) {
+V0218 sum += win[k];
+V0219 }
+V0220 out.collect(Tuple5.of(in.f0, in.f1, in.f2, in.f3, truncDiv(sum, WIN)));
+V0221 }
+V0222 }
+V0224 /**
+V0225 * Zlozenie trzech strumieni o ROZNYCH opoznieniach. `mlii[L]` przychodzi
+V0226 * w slocie L, `mwi[L]` powstal w slocie L-3, `mwi_thr[L]` w slocie L-4,
+V0227 * wiec trzeba je zapamietac po indeksie. To jest obowiazek, ktory w RQL
+V0228 * znika w `FROM mlii+mwi+mwi_thr`.
+V0229 */
+V0230 static class Assemble extends RichFlatMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,
+V0231 Tuple5<Long, Integer, Integer, Integer, Integer>> {
+V0232 private final int[] v1;
+V0234 Assemble(int[] v1) {
+V0235 this.v1 = v1;
+V0236 }
+V0238 private Map<Long, Integer> mliiAt;
+V0239 private Map<Long, Integer> mwiAt;
+V0240 private Map<Long, Integer> thrAt;
+V0242 @Override
+V0243 public void open(OpenContext ctx) {
+V0244 mliiAt = new HashMap<>();
+V0245 mwiAt = new HashMap<>();
+V0246 thrAt = new HashMap<>();
+V0247 }
+V0249 @Override
+V0250 public void flatMap(Tuple5<Long, Integer, Integer, Integer, Integer> in,
+V0251 Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+V0252 long n = in.f0;
+V0253 mliiAt.put(n, in.f1);
+V0254 mwiAt.put(n + 3, in.f3);
+V0255 thrAt.put(n + 4, in.f4);
+V0256 Integer raw = mliiAt.get(n);
+V0257 Integer mwi = mwiAt.get(n);
+V0258 Integer thr = thrAt.get(n);
+V0259 if (raw == null || mwi == null || thr == null) {
+V0260 return;
+V0261 }
+V0262 out.collect(Tuple5.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5, v1[(int) n] - 900));
+V0263 mliiAt.remove(n);
+V0264 mwiAt.remove(n);
+V0265 thrAt.remove(n);
+V0266 }
+V0267 }
+V0361 DataStream<Tuple5<Long, Integer, Integer, Integer, Integer>> src =
+V0362 env.addSource(new PacedSource(mlii, slots));
+V0363 src.flatMap(new BandPass(bpCoef))
+V0364 .flatMap(new Derivative(dCoef))
+V0365 .flatMap(new SquareMwi())
+V0366 .flatMap(new Threshold())
+V0367 .flatMap(new Assemble(v1))
+V0368 .addSink(new CanonicalSink(out, family, variant));
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -162 +162,5 @@
+-Tuple4<Long, Integer, Integer, Integer>> {
++Tuple5<Long, Integer, Integer, Integer, Integer>> {
++private final int[] v1;
++Assemble(int[] v1) {
++this.v1 = v1;
++}
+@@ -174 +178 @@
+-Collector<Tuple4<Long, Integer, Integer, Integer>> out) {
++Collector<Tuple5<Long, Integer, Integer, Integer, Integer>> out) {
+@@ -185 +189 @@
+-out.collect(Tuple4.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5));
++out.collect(Tuple5.of(n, raw - 900, mwi * 5, (mwi - thr * 2) * 5, v1[(int) n] - 900));
+@@ -197 +201 @@
+-.flatMap(new Assemble())
++.flatMap(new Assemble(v1))

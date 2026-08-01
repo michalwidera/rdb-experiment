@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 45,
+      "base_to": 45,
+      "variant_from": 45,
+      "variant_to": 45,
+      "base": [
+        "INTERVAL_NS = 2_777_778"
+      ],
+      "variant": [
+        "INTERVAL_NS = 4_000_000"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F2_ecg/python/core.py\n",
+    "@@ -7 +7 @@\n",
+    "-INTERVAL_NS = 2_777_778\n",
+    "+INTERVAL_NS = 4_000_000\n"
+  ]
+}

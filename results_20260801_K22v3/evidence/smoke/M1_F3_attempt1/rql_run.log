@@ -1,0 +1,13 @@
+ 0# std::vector<rdb::metaShadow::ShadowOverride, std::allocator<rdb::metaShadow::ShadowOverride> >::_M_check_len(unsigned long, char const*) const at /usr/include/c++/15/bits/stl_vector.h:2204 (discriminator 2)
+ 1# rdb::payload::setItem(int, std::optional<std::any>) at /home/michal/github/retractordb/src/rdb/lib/payload.cc:213
+ 2# expressionEvaluator::eval(std::__cxx11::list<token, std::allocator<token> > const&, rdb::payload*) at /home/michal/github/retractordb/src/retractor/lib/expressionEvaluator.cpp:531
+ 3# streamInstance::reduceFieldsToPayload(command_id, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) const at /home/michal/github/retractordb/src/retractor/lib/streamInstance.cpp:243 (discriminator 4)
+ 4# dataModel::dataModel(qTree&) at /home/michal/github/retractordb/src/retractor/lib/dataModel.cpp:44
+ 5# executorsm::boradcast(std::set<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::less<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) at /home/michal/github/retractordb/src/retractor/lib/executorsm.cpp:548
+ 6# main at /home/michal/github/retractordb/src/retractor/launcher.cpp:362 (discriminator 9)
+ 7# 0x000000000002A601 in /usr/lib/x86_64-linux-gnu/libc.so.6
+ 8# __libc_start_main in /usr/lib/x86_64-linux-gnu/libc.so.6
+ 9# _ZNSt15basic_streambufIcSt11char_traitsIcEE8in_availEv$plt in xretractor
+
+
+FATAL: payload: flat position out of range

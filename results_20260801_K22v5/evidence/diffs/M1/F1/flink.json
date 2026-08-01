@@ -1,0 +1,164 @@
+{
+  "D1": 10,
+  "D2": 10,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 34,
+      "base_to": 34,
+      "variant_from": 34,
+      "variant_to": 34,
+      "base": [
+        "static class PacedSource extends RichSourceFunction<Tuple2<Long, Integer>> {"
+      ],
+      "variant": [
+        "static class PacedSource extends RichSourceFunction<Tuple3<Long, Integer, Integer>> {"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 37,
+      "base_to": "-",
+      "variant_from": 37,
+      "variant_to": 37,
+      "base": [],
+      "variant": [
+        "private final int[] samples2;"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 40,
+      "base_to": 40,
+      "variant_from": 41,
+      "variant_to": 41,
+      "base": [
+        "PacedSource(int[] samples, long slots) {"
+      ],
+      "variant": [
+        "PacedSource(int[] samples, int[] samples2, long slots) {"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 42,
+      "base_to": "-",
+      "variant_from": 43,
+      "variant_to": 43,
+      "base": [],
+      "variant": [
+        "this.samples2 = samples2;"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 46,
+      "base_to": 46,
+      "variant_from": 48,
+      "variant_to": 48,
+      "base": [
+        "public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {"
+      ],
+      "variant": [
+        "public void run(SourceContext<Tuple3<Long, Integer, Integer>> ctx) throws Exception {"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 55,
+      "base_to": 55,
+      "variant_from": 57,
+      "variant_to": 57,
+      "base": [
+        "ctx.collect(Tuple2.of(n, samples[(int) n]));"
+      ],
+      "variant": [
+        "ctx.collect(Tuple3.of(n, samples[(int) n], samples2[(int) n + 1]));"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 65,
+      "base_to": 65,
+      "variant_from": 67,
+      "variant_to": 67,
+      "base": [
+        "static class Fir extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {"
+      ],
+      "variant": [
+        "static class Fir extends RichFlatMapFunction<Tuple3<Long, Integer, Integer>, Tuple3<Long, Integer, Integer>> {"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 80,
+      "base_to": 80,
+      "variant_from": 82,
+      "variant_to": 82,
+      "base": [
+        "public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {"
+      ],
+      "variant": [
+        "public void flatMap(Tuple3<Long, Integer, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 96,
+      "base_to": 96,
+      "variant_from": 98,
+      "variant_to": 98,
+      "base": [
+        "out.collect(Tuple2.of(in.f0 + 1, y));"
+      ],
+      "variant": [
+        "out.collect(Tuple3.of(in.f0 + 1, y, in.f2));"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 170,
+      "base_to": 170,
+      "variant_from": 176,
+      "variant_to": 176,
+      "base": [
+        "DataStream<Tuple2<Long, Integer>> src = env.addSource(new PacedSource(samples, slots));"
+      ],
+      "variant": [
+        "DataStream<Tuple3<Long, Integer, Integer>> src = env.addSource(new PacedSource(samples, samples2, slots));"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/flink/F1Fir.java\n",
+    "@@ -1 +1 @@\n",
+    "-static class PacedSource extends RichSourceFunction<Tuple2<Long, Integer>> {\n",
+    "+static class PacedSource extends RichSourceFunction<Tuple3<Long, Integer, Integer>> {\n",
+    "@@ -3,0 +4 @@\n",
+    "+private final int[] samples2;\n",
+    "@@ -6 +7 @@\n",
+    "-PacedSource(int[] samples, long slots) {\n",
+    "+PacedSource(int[] samples, int[] samples2, long slots) {\n",
+    "@@ -7,0 +9 @@\n",
+    "+this.samples2 = samples2;\n",
+    "@@ -11 +13 @@\n",
+    "-public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {\n",
+    "+public void run(SourceContext<Tuple3<Long, Integer, Integer>> ctx) throws Exception {\n",
+    "@@ -20 +22 @@\n",
+    "-ctx.collect(Tuple2.of(n, samples[(int) n]));\n",
+    "+ctx.collect(Tuple3.of(n, samples[(int) n], samples2[(int) n + 1]));\n",
+    "@@ -28 +30 @@\n",
+    "-static class Fir extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {\n",
+    "+static class Fir extends RichFlatMapFunction<Tuple3<Long, Integer, Integer>, Tuple3<Long, Integer, Integer>> {\n",
+    "@@ -40 +42 @@\n",
+    "-public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {\n",
+    "+public void flatMap(Tuple3<Long, Integer, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {\n",
+    "@@ -56 +58 @@\n",
+    "-out.collect(Tuple2.of(in.f0 + 1, y));\n",
+    "+out.collect(Tuple3.of(in.f0 + 1, y, in.f2));\n",
+    "@@ -59 +61 @@\n",
+    "-DataStream<Tuple2<Long, Integer>> src = env.addSource(new PacedSource(samples, slots));\n",
+    "+DataStream<Tuple3<Long, Integer, Integer>> src = env.addSource(new PacedSource(samples, samples2, slots));\n"
+  ]
+}
