@@ -565,11 +565,21 @@ w listingu planu: `xretractor <plan>.rql -c`, kolumna `tail=` przy nazwie
 strumienia. Zasada się nie zmienia — ogon nadal pochodzi z silnika, nie
 z rachunku. Zmieniła się nazwa polecenia, którym się go pobiera.
 
-**E2. Relacja cykli do rekordów.** `-m N` daje `N - 1 - tail` rekordów, nie
-`N - tail`: jeden slot zużywa krok zerowy (`dataModel::processZeroStep()`).
-Ustalone pomiarem dla `N ∈ {5, 10, 20, 40}` przy `tail = 3` — różnica stała
-i równa 4. Harness K22b musi zamawiać `N = tail + 1 + żądana_liczba_rekordów`,
-inaczej zakres porównania będzie krótszy od zadeklarowanego.
+**E2. Relacja cykli do rekordów — ZALEŻNA OD PLANU.** Pierwotny zapis brzmiał
+„`-m N` daje `N - 1 - tail` rekordów" i był prawdziwy tylko dla planów, których
+strumień wyjściowy biegnie w globalnej siatce. Zmierzone:
+
+| Rodzina | interwał wyjścia | relacja | pomiar |
+|---|---|---|---|
+| F1 | 1/1000 | `N − 1 − tail` | `N ∈ {5,10,20,40}`, różnica stała 4 przy `tail=3` |
+| F3 | 1/15 | `⌊3N/4⌋ − tail` | `N ∈ {1006,2006,3006}` → 749/1499/2249 |
+
+Uogólnienie „jeden slot zużywa krok zerowy" pozostaje prawdziwe, ale **nie
+wystarcza**: gdy strumień wyjściowy jest wolniejszy od globalnej siatki, liczba
+rekordów maleje proporcjonalnie. Wniosek dla aparatury: **nie wyliczać liczby
+cykli wzorem**, tylko zamawiać z zapasem i pozwolić emiterowi zatrzymać się,
+gdy rekordów zabraknie (`emit_rql.py` robi to kodem ≠ 0). To ten sam wniosek,
+co w K6c: rachunek obok silnika rozjeżdża się z silnikiem.
 
 **E3. Orientacja okna `@(1,N)` — nieudokumentowana pułapka.** Rekord `r`
 obejmuje próbki `r .. r+N-1`, ale jest zapisany **od najnowszej**:
