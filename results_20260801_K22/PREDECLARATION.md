@@ -38,7 +38,7 @@ Zamrożone punkty odniesienia (zweryfikowane 2026-08-01, drzewa czyste):
 
 | Repozytorium | Commit | Rola |
 |---|---|---|
-| `retractordb` | `abe075e` | silnik; źródło semantyki i programów RQL |
+| `retractordb` | `dd733e3` | silnik; źródło semantyki i programów RQL |
 | `rdb-experiment` | `91352d3` | to repozytorium; baseline'y i rodziny W |
 | `paper-arXiv` | `6375de5` | plan badawczy i artykuł |
 
@@ -184,7 +184,7 @@ oferuje deklaratywnie), to sharing zostaje i jest liczony jako 0 w C6.
 
 ## 4. Semantyka arytmetyczna — odczytana z silnika, nie założona
 
-Wszystkie reguły niżej pochodzą z kodu `retractordb@abe075e`. Odniesienia są
+Wszystkie reguły niżej pochodzą z kodu `retractordb@dd733e3`. Odniesienia są
 częścią predeklaracji: recenzent ma móc je sprawdzić bez uruchamiania.
 
 | Reguła | Zachowanie | Źródło |
@@ -246,7 +246,7 @@ Silnik **wycisza emisję** przez pierwsze `startupLatency` slotów:
 Wartość jest wyliczana w `compiler::computeStartupLatency()` i publikowana jako
 `tail=` przez `xretractor -t` (`presenter.cpp:345`).
 
-> **Uwaga do zapisania w raporcie.** Komentarz w `compiler.cpp:958-959`
+> **Uwaga do zapisania w raporcie.** Komentarz w `compiler.cpp:958-960`
 > twierdził, że przebieg „wyłącznie WYLICZA ogon", a doprowadzenie emisji do
 > zgodności jest „osobnym krokiem" — było to nieaktualne wobec
 > `dataModel.cpp:167`. Rozbieżność wykryto podczas audytu K22a i **poprawiono

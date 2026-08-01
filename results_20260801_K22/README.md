@@ -18,7 +18,7 @@ produktywność. Potok ECG jest niekliniczny — bez twierdzeń diagnostycznych.
 | `PREDECLARATION.md` | zamrożone rodziny, zadania, metryki, oracle, GO/NO-GO | **projekt do przeglądu** |
 | `coding_manual.md` | mechaniczne reguły zliczania i `rule_id` każdego trafienia | **projekt do przeglądu** |
 | `manifest.md` | rewizje, provenance, odtwarzalność (`REQUIREMENTS.md` R12) | wypełniony częściowo |
-| `oracle/refsem.py` | semantyka referencyjna — arytmetyka silnika `abe075e` | gotowe, przetestowane |
+| `oracle/refsem.py` | semantyka referencyjna — arytmetyka silnika `dd733e3` | gotowe, przetestowane |
 | `oracle/compare.py` | komparator strumieni kanonicznych | gotowe, przetestowane |
 | `oracle/run.sh` | bramka etapowa; zatrzymuje się, bo korpus nie istnieje | gotowe |
 | `metrics/measure.py` | statyczne metryki konstrukcji + surowa tabela trafień | gotowe, przetestowane |

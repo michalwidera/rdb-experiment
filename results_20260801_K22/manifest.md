@@ -5,10 +5,10 @@
 | Identyfikator eksperymentu | `results_20260801_K22` |
 | Etap na dzień spisania | K22a — audyt i predeklaracja |
 | Data | 2026-08-01 |
-| Commit kodu (`retractordb`) | `abe075e` (`master`, drzewo czyste) |
+| Commit kodu (`retractordb`) | `dd733e3` (`master`, drzewo czyste) |
 | Branch kodu | `master` |
 | Bazowy commit wyników (`rdb-experiment`) | `91352d3` (`main`, drzewo czyste) |
-| Branch wyników | *(do utworzenia przy commicie: `experiment/20260801_K22`)* |
+| Branch wyników | `main`, commit K22a `3a46171` — **odstępstwo od R4**, patrz niżej |
 | Commit planu (`paper-arXiv`) | `6375de5` (`main`, potomek `3d3e95a`) |
 | Worker pomiarowy | **nieużywany** — K22 nie mierzy czasu |
 | Adres workera | nie dotyczy |
@@ -44,13 +44,13 @@ b7627f132146f0fc94f32319df921eeaf02e6b1b02937b3f2a9d6b31b3794b04  rdb-experiment
 
 ## Semantyka odczytana z kodu silnika
 
-Predeklaracja opiera arytmetykę na `retractordb@abe075e`, z odniesieniami
+Predeklaracja opiera arytmetykę na `retractordb@dd733e3`, z odniesieniami
 plik:linia (`PREDECLARATION.md` §4). Odniesienia są częścią manifestu, bo
 stanowią podstawę tabeli równoważności — recenzent musi móc je sprawdzić
 bez uruchamiania kampanii.
 
 Odnotowana i **naprawiona** rozbieżność dokumentacyjna w silniku: komentarz
-`src/retractor/lib/compiler.cpp:958-959` twierdził, że wyciszenie emisji
+`src/retractor/lib/compiler.cpp:958-960` twierdził, że wyciszenie emisji
 w slotach ogona jest „osobnym krokiem", podczas gdy
 `src/retractor/lib/dataModel.cpp:167` już je realizuje. Audyt K22a poprawił
 **sam komentarz**; zmiana jest wyłącznie dokumentacyjna (bez wpływu na
@@ -58,10 +58,30 @@ zachowanie, `ut_compiler` i `ut_presenter` przechodzą) i nie narusza zakazu
 zmiany silnika dla ułatwienia GO. Fakt o ogonie i tak ustala pomiar
 (`xretractor -t`), nie komentarz.
 
-**Skutek dla manifestu:** commit kodu przestaje być `abe075e`, jeżeli poprawka
-zostanie scommitowana. Przy utrwalaniu predeklaracji wpisać tu rzeczywisty SHA
-i zaktualizować `PREDECLARATION.md` §1 — rewizja wejściowa musi wskazywać kod,
-na którym kampania faktycznie się opiera.
+**Skutek dla manifestu — rozliczony.** Poprawka jest w `retractordb` jako
+`dd733e3` („fix comment", wypchnięte na `origin/master`), więc rewizja wejściowa
+kampanii to `dd733e3`, nie `abe075e`. Wszystkie odwołania w tym katalogu zostały
+przestawione na nowy SHA.
+
+Sprawdzone przy przestawianiu: poprawka dodała jedną linię wewnątrz cytowanego
+bloku komentarza, więc **żadne z pozostałych cytowań `plik:linia` nie uległo
+przesunięciu**. Zweryfikowano wszystkie 17 odwołań (`expressionEvaluator.cpp`,
+`streamInstance.cpp`, `dataModel.cpp`, `presenter.cpp`, `fldType.hpp`) — każde
+nadal wskazuje tę samą konstrukcję. Zmienił się wyłącznie zakres samego
+komentarza: był `compiler.cpp:958-959`, jest `compiler.cpp:958-960`.
+
+## Odstępstwo od R4 (branch wyników)
+
+`REQUIREMENTS.md` R4 przewiduje branch `experiment/YYYYMMDD_typ` i jeden commit
+wyników scalany do `main` po przeglądzie — tak powstały wszystkie poprzednie
+kampanie (ostatnia: `experiment/20260731_instrument`, PR #9). K22a został
+scommitowany bezpośrednio na `main` jako `3a46171`.
+
+Odnotowane, nie ukryte. Skutek jest ograniczony: K22a nie zawiera **żadnych
+danych pomiarowych** — wyłącznie predeklarację, podręcznik i aparaturę — więc
+reguła „jeden commit z kompletem wyników" nie ma tu czego chronić. Dla etapów
+K22b–K22d, które wytworzą strumienie kanoniczne i tabele, R4 obowiązuje bez
+zmian: osobny branch, jeden commit wyników, merge po przeglądzie.
 
 ## Artefakty surowe (`REQUIREMENTS.md` R14)
 

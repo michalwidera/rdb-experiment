@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Semantyka referencyjna K22 — arytmetyka silnika retractordb@abe075e.
+"""Semantyka referencyjna K22 — arytmetyka silnika retractordb@dd733e3.
 
 Ten moduł jest JEDYNYM źródłem prawdy o arytmetyce dla portów Python i Flink
 w kampanii K22. Rdzenie Pythona importują go wprost; rdzeń Javy odwzorowuje
