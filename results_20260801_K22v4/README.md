@@ -4,8 +4,10 @@ K22v4 jest operacyjną kontynuacją zatrzymanego K22v3. Pracuje na tym samym bra
 `experiment/20260801_K22`, ale ma osobny katalog, predeklarację, aparaturę i
 pakiet dowodowy.
 
-**Stan: przygotowany do zamrożenia.** Jedyna zmiana runnera względem K22v3 to
-2850 cykli dla zwykłych F3 i 4200 wyłącznie dla M3/F3.
+**Stan: zatrzymany przed D1/D2.** Bazy F1--F3 przeszły, ale M1/F1 ujawniło
+niezgodność samej etykiety drugiego pola: RQL emituje `f1_out_1`, a Python i
+Flink emitowały `channel_2`. Wartości były zgodne. Naprawa etykiety aparatury
+jest wykonywana w K22v5, nie w zamrożonym K22v4.
 
 Kolejność obowiązkowa:
 

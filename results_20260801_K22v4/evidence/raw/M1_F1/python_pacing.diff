@@ -1,0 +1,11 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22v4/tasks/M1/F1_fir/python/core.py
++++ execution-copy
+@@ -42,7 +42,7 @@
+     for n in range(slots):
+         deadline = t0 + n * INTERVAL_NS
+         now = time.monotonic_ns()
+-        if now < deadline:
++        if False and now < deadline:
+             time.sleep((deadline - now) / 1e9)
+         x = samples[n]
+         for k in range(WIN - 1, 0, -1):

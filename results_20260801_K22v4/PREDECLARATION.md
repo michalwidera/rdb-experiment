@@ -1,6 +1,15 @@
 # K22v4 — protokół wykonawczy po zatrzymanym K22v3
 
-**Status: ZAMROŻONA PRZED PIERWSZYM POMIAREM D1/D2.**
+**Status: ZATRZYMANA — BŁĄD NAZWY POLA M1/F1 PRZED D1/D2.**
+
+Pełna kampania przeszła bazy F1--F3, po czym oracle zatrzymał M1/F1 na
+pierwszym indeksie: wartości były zgodne, lecz RQL wyprowadza drugie pole
+projekcji jako `f1_out_1`, podczas gdy porty proceduralne serializowały je
+pod predeklarowaną nazwą `channel_2`. RQL nie udostępnia aliasu pola wyniku,
+więc wspólna nazwa była niewykonalnym wymaganiem aparatury. K22v4 nie wydaje
+werdyktu; następca zmienia wyłącznie etykietę serializacji proceduralnej na
+kanoniczne `f1_out_1`. Rdzenie mierzone, wartości, korpus, metryki i progi
+pozostają bez zmian. D1/D2 nie zostały otwarte ani obliczone.
 
 K22v3 przeszło `base/F1` i `base/F2`, po czym zatrzymało się na `base/F3`:
 wspólne 4200 cykli F3, potrzebne dla M3/F3, wytworzyło już 2966 rekordów, ale

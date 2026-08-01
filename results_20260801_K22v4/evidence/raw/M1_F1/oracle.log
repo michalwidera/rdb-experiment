@@ -1,0 +1,2 @@
+verdict=FAIL range=[26,2026) rows_compared=0
+first_mismatch: indeks 26, pozycja pola 1: rql=('f1_out_1', '1974', '0', '0') vs python=('channel_2', '1974', '0', '0')
