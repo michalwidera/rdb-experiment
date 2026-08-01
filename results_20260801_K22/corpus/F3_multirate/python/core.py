@@ -32,7 +32,12 @@ import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "oracle"))
+_p = Path(__file__).resolve()
+while not (_p / "oracle" / "refsem.py").is_file():
+    if _p == _p.parent:
+        raise RuntimeError("nie znaleziono oracle/refsem.py w zadnym katalogu nadrzednym")
+    _p = _p.parent
+sys.path.insert(0, str(_p / "oracle"))
 from refsem import avg  # noqa: E402
 
 

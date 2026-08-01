@@ -3,6 +3,8 @@
 
 TO NIE JEST DETEKTOR KLINICZNY. Potok cech, bez twierdzeń diagnostycznych.
 
+Wariant M1: drugi kanał (V1) dołączony do nazwanego wyniku jako czwarte pole.
+
 Pięć etapów: band-pass 25 -> różniczka 5 -> kwadrat/1000 -> MWI 30 -> próg 180.
 
 Trzy obowiązki, których autor RQL nie ma i które widać niżej wprost:
@@ -35,8 +37,8 @@ sys.path.insert(0, str(_p / "oracle"))
 from refsem import avg, idiv, imul, isub, sumc  # noqa: E402
 
 
-def run(mlii, bp_coef, d_coef, slots):
-    """Zwraca listę (logical_index, [pole0, pole1, pole2])."""
+def run(mlii, v1, bp_coef, d_coef, slots):
+    """Zwraca listę (logical_index, [pole0, pole1, pole2, pole3])."""
     # CORE_BEGIN
     WIN_BP = 25
     WIN_D = 5
@@ -92,6 +94,7 @@ def run(mlii, bp_coef, d_coef, slots):
         if n in mwi_at and n in thr_at:
             m = mwi_at[n]
             t = thr_at[n]
-            out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))
+            out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),
+                            isub(v1[n], 900)]))
     # CORE_END
     return out
