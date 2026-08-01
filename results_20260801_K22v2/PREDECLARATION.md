@@ -1,6 +1,6 @@
 # K22v2 — zamrożony protokół po zatrzymanym pilocie K22
 
-**Status: DO ZAMROŻENIA PRZED WYTWORZENIEM NOWYCH WARIANTÓW.**
+**Status: ZAMROŻONA PRZED WYTWORZENIEM NOWYCH WARIANTÓW.**
 
 K22v2 jest prospektywną kontynuacją po jawnym pilocie
 `results_20260801_K22/`. Nie jest przedstawiana jako nietknięta pierwotna
@@ -154,5 +154,5 @@ z realnym pacingiem pozostaje kontrolą baz, a nie obserwacją wydajnościową.
 |---|---|
 | Decyzja o resecie | potwierdzona 2026-08-01 przed zmianami K22v2 |
 | Plan | `paper-ArXiv@ef166c5` |
-| Commit zamrażający aparaturę | *(wypełniany lokalnym commitem przed wariantami)* |
+| Commit zamrażający aparaturę | `f8ecdb8a5115ff6d04682317b1f8c2f6aae666c2` |
 | Pierwszy wariant K22v2 | nie istnieje w chwili zamrożenia |

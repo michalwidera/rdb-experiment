@@ -7,6 +7,7 @@
 | Pilot | `rdb-experiment@8ca125806a6f302eb3cc51636110d784f4a24390` |
 | Silnik | `retractordb@dd733e3792fbcd5727db244b802610a6d710b8dc` |
 | Plan | `paper-arXiv@ef166c5` |
+| Zamrożenie aparatury | `rdb-experiment@f8ecdb8a5115ff6d04682317b1f8c2f6aae666c2` |
 | Worker RT | nieużywany |
 | Python | zapisywany przez `freeze_check.sh` |
 | Java/Flink | zapisywane przez `freeze_check.sh` |
