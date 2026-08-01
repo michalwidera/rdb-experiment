@@ -1,0 +1,6 @@
+exit_code=37
+stage=rql_run
+artifact_rows=0
+engine_log=lockManager.cpp:88 [E] Failed to open lock file: /home/michal/.local/bin/xretractor_service.lock ,errno: Read-only file system
+engine_log=executorsm.cpp:588 [E] Cannot acquire service lock, another instance might be running.
+cause=absolute argv[0] used as service name; joining it with temp_directory_path discarded the temp prefix

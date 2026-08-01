@@ -1,6 +1,12 @@
 # K22v2 — zamrożony protokół po zatrzymanym pilocie K22
 
-**Status: ZAMROŻONA PRZED WYTWORZENIEM NOWYCH WARIANTÓW.**
+**Status: ZATRZYMANA — BŁĄD HARNESSU PRZED PIERWSZYM WYNIKIEM.**
+
+Po wygenerowaniu wariantów pierwszy przebieg `base/F1` zakończył się przed
+utworzeniem artefaktów: harness wywołał `xretractor` pełną ścieżką, więc
+`argv[0]` spowodował próbę utworzenia blokady w katalogu binarki tylko do
+odczytu. Naprawa wywołania zmieniałaby zamrożoną aparaturę po pierwszym
+wariancie, dlatego K22v2 nie wydaje werdyktu. Następca: `../results_20260801_K22v3/`.
 
 K22v2 jest prospektywną kontynuacją po jawnym pilocie
 `results_20260801_K22/`. Nie jest przedstawiana jako nietknięta pierwotna
