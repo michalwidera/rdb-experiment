@@ -1,6 +1,11 @@
 # K22 — predeklaracja: deklaratywny koszt specyfikacji i modyfikacji monitora
 
-**Status: PROJEKT DO PRZEGLĄDU CZŁOWIEKA. Nie utrwalona.**
+**Status: UNIEWAŻNIONA JAKO PREDEKLARACJA; zachowana jako zapis pilota.**
+
+K22c zatrzymano 2026-08-01. Po uzyskaniu M1/F2 zmieniono granicę rdzenia
+Pythona, a dalszy audyt wykazał błędy zliczania `C2`, `C3` i nakładających się
+jednostek `D2`. Zgodnie z regułą poniżej kampania nie może wydać werdyktu H8.
+Następca: `results_20260801_K22v2/` na tym samym branchu.
 
 Ten dokument powstaje **przed** utworzeniem brakujących programów korpusu,
 przed uruchomieniem oracle'a i przed obliczeniem jakiejkolwiek metryki
