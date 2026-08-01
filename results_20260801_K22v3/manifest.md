@@ -8,7 +8,7 @@
 | Korpus wariantów | 31 rdzeni bez zmian z `rdb-experiment@fcaa0ed9e3d1ea7f2129f9f06ef70498d8fa2b88`; M1/F3 i M3/F3 naprawione przed D1/D2 |
 | Silnik | `retractordb@dd733e3792fbcd5727db244b802610a6d710b8dc` |
 | Plan | `paper-arXiv@5f7fdbc` |
-| Zamrożenie aparatury | do wypełnienia |
+| Zamrożenie aparatury | `rdb-experiment@3ba765e9556033a73f25b45501fc34048e9dc383` |
 | Worker RT | nieużywany |
 | Python | zapisywany przez `freeze_check.sh` |
 | Java/Flink | zapisywane przez `freeze_check.sh` |

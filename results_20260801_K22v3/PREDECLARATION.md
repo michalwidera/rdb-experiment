@@ -1,6 +1,6 @@
 # K22v3 — protokół wykonawczy po zatrzymanych K22 i K22v2
 
-**Status: DO ZAMROŻENIA PRZED PIERWSZYM POMIAREM D1/D2.**
+**Status: ZAMROŻONA PRZED PIERWSZYM POMIAREM D1/D2.**
 
 K22v3 dziedziczy definicje i korpus wariantów wytworzony po
 zamrożeniu K22v2. K22v2 nie wydało żadnego wyniku: pierwszy przebieg zakończył
@@ -172,6 +172,6 @@ z realnym pacingiem pozostaje kontrolą baz, a nie obserwacją wydajnościową.
 |---|---|
 | Decyzja o resecie | operacyjna kontynuacja po K22v2 bez wyników |
 | Plan | `paper-ArXiv@5f7fdbc` |
-| Commit zamrażający aparaturę | *(wypełniany przed kampanią)* |
+| Commit zamrażający aparaturę | `3ba765e9556033a73f25b45501fc34048e9dc383` |
 | Korpus wariantów | `rdb-experiment@fcaa0ed9e3d1ea7f2129f9f06ef70498d8fa2b88` |
 | Pierwszy pomiar D1/D2 | nie istnieje w chwili zamrożenia |
