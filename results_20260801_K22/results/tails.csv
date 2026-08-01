@@ -1,0 +1,4 @@
+family,variant,model,stream,tail_slots,source
+F1,base,rql,f1_out,26,xretractor q.rql -c
+F1,base,python,f1_out,26,xretractor q.rql -c
+F1,base,flink,f1_out,26,xretractor q.rql -c

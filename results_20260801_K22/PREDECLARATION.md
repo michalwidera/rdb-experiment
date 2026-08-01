@@ -586,6 +586,24 @@ przeszedłby przez F2 i wyszedł dopiero na niesymetrycznej różniczce
 `[-1,-2,0,2,1]`. Reguła jest teraz w `refsem.window_at()` z testem
 o znanej odpowiedzi na niesymetrycznych współczynnikach `[1,2,3]`.
 
+**E4. F1 — współczynniki nie zgadzały się z deklaracją.** §3 mówi
+„`f1_coef.txt`, 25 wartości, kopia `filterremez.txt`", a plik ma **26** wartości
+(SHA-256 `0375887c…`); `dsp-simple-fir.rql` deklarował `INTEGER[25]`, więc
+milcząco ucinał ostatni odczep. Specyfikacja była wewnętrznie sprzeczna, zanim
+powstał jakikolwiek program.
+
+Rozstrzygnięcie: F1 bierze plik **dosłownie — 26 odczepów, okno `@(1,26)`,
+redukcja `.sumc` i `/26/1000`**. Usuwa to niejednoznaczność „które 25 z 26"
+bez wymyślania danych; prowenienecja pozostaje nietknięta. Przepełnienie
+wykluczone zakresem: `500 · Σ|c| = 500 · 42038 = 21 019 000 < 2^31−1`.
+
+Uwaga metodologiczna do raportu: `filterremez.txt` jest **palindromiczny**,
+a band-pass Hamminga z F2 też jest symetryczny. Symetryczny filtr **nie ujawnia
+błędu orientacji okna** (E3), więc ani F1, ani pierwszy etap F2 nie są kontrolą
+orientacji. Kontrolą jest test `refsem` na niesymetrycznych `[1,2,3]` oraz
+asymetryczna różniczka `[-1,-2,0,2,1]` w F2. Gdyby nie E3, błąd przeszedłby
+przez F1 i połowę F2.
+
 **Walidacja §4 na żywym silniku.** Po uwzględnieniu E3 `refsem` odtworzył
 wyjście silnika **co do bajtu na wszystkich 16 rekordach** przebiegu
 kontrolnego (`sumc`, arytmetyka całkowita, ujemne wartości). Reguły z §4
