@@ -139,6 +139,41 @@ def avg(fields):
     return _finalize_int(acc / valid)
 
 
+def window_at(samples, r, width):
+    """Okno `@(1,width)` silnika dla rekordu `r`, w KOLEJNOŚCI SILNIKA.
+
+    Rekord `r` obejmuje próbki `r .. r+width-1`, ale jest zapisany
+    **od najnowszej**: `win[0]` to próbka `r+width-1`, `win[width-1]` to `r`.
+
+        window_at([10, 20, 30, 40], 0, 3) == [30, 20, 10]
+
+    Ustalone POMIAREM na artefakcie `win` (nie z dokumentacji): dla źródła
+    `src[i] = (i*37 % 1000) - 500` silnik zapisał rekord 0 jako
+    `(-426, -463, -500)`, czyli `(src[2], src[1], src[0])`.
+
+    Dlaczego to jest pułapka: splot `Σ win[k]*coef[k]` ze współczynnikami
+    w kolejności pliku daje przy tej orientacji KORELACJĘ z odwróconymi
+    współczynnikami. Port, który zbuduje okno „od najstarszej", policzy
+    poprawnie wyglądającą, ale INNĄ funkcję — i rozjedzie się z silnikiem
+    dopiero na niesymetrycznych współczynnikach. Filtr symetryczny (np.
+    okno Hamminga) tego błędu NIE ujawni.
+
+    `samples` musi mieć co najmniej `r+width` elementów; brak danych jest
+    błędem doboru zakresu, nie wartością NULL.
+    """
+    if width <= 0:
+        raise ValueError(f"width musi byc dodatnie, jest {width}")
+    if r < 0 or r + width > len(samples):
+        raise IndexError(f"okno r={r} width={width} wychodzi poza {len(samples)} probek")
+    return [samples[r + width - 1 - k] for k in range(width)]
+
+
+def fir(samples, coef, r):
+    """Splot FIR silnika: `Σ win[k] * coef[k]` z oknem wg `window_at`, redukcja `.sumc`."""
+    win = window_at(samples, r, len(coef))
+    return sumc([imul(win[k], coef[k]) for k in range(len(coef))])
+
+
 def worst_case_abs(max_abs_value, max_abs_coef, width):
     """Największa możliwa |suma| splotu — do wykluczenia przepełnienia."""
     return max_abs_value * max_abs_coef * width

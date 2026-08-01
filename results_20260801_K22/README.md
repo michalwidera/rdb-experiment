@@ -22,7 +22,7 @@ produktywność. Potok ECG jest niekliniczny — bez twierdzeń diagnostycznych.
 | `oracle/compare.py` | komparator strumieni kanonicznych | gotowe, przetestowane |
 | `oracle/run.sh` | bramka etapowa; zatrzymuje się, bo korpus nie istnieje | gotowe |
 | `metrics/measure.py` | statyczne metryki konstrukcji + surowa tabela trafień | gotowe, przetestowane |
-| `tests/test_k22a.sh` | testy o znanej odpowiedzi całej aparatury | **61 kontroli, przechodzą** |
+| `tests/test_k22a.sh` | testy o znanej odpowiedzi całej aparatury | **70 kontroli, przechodzą** |
 | `corpus/`, `tasks/` | układ katalogów, bez programów | puste (K22b/K22c) |
 | `results/` | tabele i werdykt | puste (K22d) |
 

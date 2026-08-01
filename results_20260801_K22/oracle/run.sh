@@ -37,7 +37,7 @@ echo "   znaleziono ${#cores[@]} plikow rdzenia"
 
 echo "== 3. Ogony odczytane z silnika"
 [[ -f "$CAMPAIGN/results/tails.csv" ]] || fail "brak results/tails.csv.
-   'tail' MUSI pochodzic z 'xretractor -t', nie z rachunku obok silnika
+   'tail' MUSI pochodzic z 'xretractor <plan>.rql -c', nie z rachunku obok silnika
    (PREDECLARATION.md §5.2 — wniosek metodologiczny z K6c)."
 echo "   OK"
 

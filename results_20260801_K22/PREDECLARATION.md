@@ -244,7 +244,7 @@ Reguły zapisu (zamrożone):
 Silnik **wycisza emisję** przez pierwsze `startupLatency` slotów:
 `dataModel.cpp:167` (`if (elapsedSlots++ < max(startupLatency,0)) continue;`).
 Wartość jest wyliczana w `compiler::computeStartupLatency()` i publikowana jako
-`tail=` przez `xretractor -t` (`presenter.cpp:345`).
+`tail=` przez `xretractor <plan>.rql -c` (`presenter.cpp:345`).
 
 > **Uwaga do zapisania w raporcie.** Komentarz w `compiler.cpp:958-960`
 > twierdził, że przebieg „wyłącznie WYLICZA ogon", a doprowadzenie emisji do
@@ -257,7 +257,7 @@ Wartość jest wyliczana w `compiler::computeStartupLatency()` i publikowana jak
 > pomiar, nie komentarz.
 
 **Reguła zamrożona:** `tail` **nie jest wyliczany w predeklaracji**. Jest
-odczytywany z `xretractor -t` dla każdego strumienia wyjściowego każdego
+odczytywany z `xretractor <plan>.rql -c` dla każdego strumienia wyjściowego każdego
 wariantu i zapisywany w `results/tails.csv` przed porównaniem. To jest wprost
 wniosek metodologiczny z K6c: *to, co system wie, należy z systemu odczytać, a
 nie odtwarzać rachunkiem obok niego.* Rachunek równoległy w predeklaracji był
@@ -547,6 +547,49 @@ w której RQL jest bardziej rozbudowany.
 
 Worker RT (`pi400`) jest **niepotrzebny** dla całego K22. Nie uruchamiać
 kampanii czasowej. K22 nie mierzy czasu.
+
+---
+
+## 11.1. Errata — poprawki faktyczne wykryte na starcie K22b
+
+Predeklaracja opisywała aparaturę, zanim aparatura dotknęła żywego silnika.
+Trzy zapisy okazały się nieprawdziwe. Poprawki dotyczą **faktów o narzędziu**,
+nie definicji metryk, granicy rdzenia, przypisania zadań ani progów — te
+pozostają nietknięte (§8.2). Żadna liczba wynikowa nie istniała w chwili
+poprawiania. Wpisane jawnie, bo cicha edycja zamrożonego dokumentu byłaby
+gorsza od błędu, który poprawia.
+
+**E1. Odczyt ogona — zła komenda.** Było: „`tail` odczytywany z `xretractor -t`".
+`-t` to `--realtime` (SCHED_FIFO), nie raport ogona. Ogon wypisuje presenter
+w listingu planu: `xretractor <plan>.rql -c`, kolumna `tail=` przy nazwie
+strumienia. Zasada się nie zmienia — ogon nadal pochodzi z silnika, nie
+z rachunku. Zmieniła się nazwa polecenia, którym się go pobiera.
+
+**E2. Relacja cykli do rekordów.** `-m N` daje `N - 1 - tail` rekordów, nie
+`N - tail`: jeden slot zużywa krok zerowy (`dataModel::processZeroStep()`).
+Ustalone pomiarem dla `N ∈ {5, 10, 20, 40}` przy `tail = 3` — różnica stała
+i równa 4. Harness K22b musi zamawiać `N = tail + 1 + żądana_liczba_rekordów`,
+inaczej zakres porównania będzie krótszy od zadeklarowanego.
+
+**E3. Orientacja okna `@(1,N)` — nieudokumentowana pułapka.** Rekord `r`
+obejmuje próbki `r .. r+N-1`, ale jest zapisany **od najnowszej**:
+`win[0] = próbka r+N-1`, `win[N-1] = próbka r`. Ustalone odczytem artefaktu
+`win` (nie z dokumentacji): dla `src[i] = (i·37 mod 1000) − 500` silnik zapisał
+rekord 0 jako `(−426, −463, −500)`, czyli `(src[2], src[1], src[0])`.
+
+Konsekwencja jest poważniejsza, niż wygląda: splot `Σ win[k]·coef[k]` ze
+współczynnikami w kolejności pliku jest przy tej orientacji **korelacją
+z odwróconymi współczynnikami**. Port budujący okno „od najstarszej" policzy
+poprawnie wyglądającą, ale **inną funkcję**. Co gorsza, filtr symetryczny tego
+nie ujawnia — a band-pass Hamminga z F2 jest symetryczny, więc błąd
+przeszedłby przez F2 i wyszedł dopiero na niesymetrycznej różniczce
+`[-1,-2,0,2,1]`. Reguła jest teraz w `refsem.window_at()` z testem
+o znanej odpowiedzi na niesymetrycznych współczynnikach `[1,2,3]`.
+
+**Walidacja §4 na żywym silniku.** Po uwzględnieniu E3 `refsem` odtworzył
+wyjście silnika **co do bajtu na wszystkich 16 rekordach** przebiegu
+kontrolnego (`sumc`, arytmetyka całkowita, ujemne wartości). Reguły z §4
+przestały być odczytem z kodu, a stały się potwierdzonym pomiarem.
 
 ---
 

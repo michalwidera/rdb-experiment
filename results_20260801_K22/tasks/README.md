@@ -44,7 +44,7 @@ niczego — jest błędem aparatury, nie wynikiem.
 ## Co zmienia się razem z zadaniem
 
 - **M2 zmienia ogon** (F1, F2). Nowy `tail` jest **odczytywany z silnika**
-  (`xretractor -t`), nie wyliczany. Zakres porównania przesuwa się razem z nim.
+  (`xretractor <plan>.rql -c`), nie wyliczany. Zakres porównania przesuwa się razem z nim.
 - **M3 zmienia gęstość slotów.** Zakres porównania pozostaje 2000 **slotów**,
   nie 2000 sekund.
 - **M4 nie wolno realizować ręcznym sharingiem** w wersji porównawczej ani

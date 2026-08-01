@@ -102,7 +102,7 @@ def compare(streams, tails, span):
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Komparator kanonicznych strumieni K22.")
     ap.add_argument("--tail", action="append", default=[], metavar="MODEL=N",
-                    help="ogon odczytany z silnika (xretractor -t); NIE wyliczany recznie")
+                    help="ogon odczytany z silnika (xretractor <plan>.rql -c); NIE wyliczany recznie")
     ap.add_argument("--span", type=int, default=2000, help="zamrozony zakres porownania w slotach")
     ap.add_argument("streams", nargs="+", metavar="MODEL=PLIK")
     args = ap.parse_args(argv)

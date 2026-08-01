@@ -13,8 +13,8 @@ Pythona — bo to na nich port po cichu się rozjedzie:
 """
 import sys
 
-from refsem import (INT_MAX, INT_MIN, NULL, avg, iadd, idiv, imul, isub,
-                    range_is_safe, sumc, worst_case_abs)
+from refsem import (INT_MAX, INT_MIN, NULL, avg, fir, iadd, idiv, imul, isub,
+                    range_is_safe, sumc, window_at, worst_case_abs)
 
 CASES = []
 
@@ -74,6 +74,26 @@ case("sumc ujemne", sumc([-5, 3]), -2)
 case("worst_case F1 (500 x 32767 x 25)", worst_case_abs(500, 32767, 25), 409587500)
 case("F1 miesci sie w int32", range_is_safe(500, 32767, 25), True)
 case("okno 200 juz sie nie miesci", range_is_safe(500, 32767, 200), False)
+
+
+# --- orientacja okna: OD NAJNOWSZEJ ----------------------------------------
+# Wartosci oczekiwane odczytane z artefaktu `win` silnika (nie z dokumentacji):
+# dla src[i] = (i*37 % 1000) - 500 rekord 0 to (-426, -463, -500) = (src2,src1,src0).
+case("window_at [10,20,30,40] r=0 w=3 -> od najnowszej", window_at([10, 20, 30, 40], 0, 3), [30, 20, 10])
+case("window_at r=1", window_at([10, 20, 30, 40], 1, 3), [40, 30, 20])
+case("window_at w=1 -> sama probka", window_at([10, 20, 30], 2, 1), [30])
+_SRC = [((i * 37) % 1000) - 500 for i in range(8)]
+case("window_at odtwarza rekord 0 artefaktu silnika", window_at(_SRC, 0, 3), [-426, -463, -500])
+case("window_at odtwarza rekord 1 artefaktu silnika", window_at(_SRC, 1, 3), [-389, -426, -463])
+
+# Splot FIR: wartosci potwierdzone na zywym silniku (xretractor -m 20, temp/f1_out).
+# Kontrola ROZSTRZYGAJACA: wspolczynniki [1,2,3] sa NIESYMETRYCZNE, wiec zla
+# orientacja okna dalaby tu inna liczbe (-2704 zamiast -2852).
+case("fir rekord 0 = wartosc silnika", fir(_SRC, [1, 2, 3], 0), -2852)
+case("fir rekord 1 = wartosc silnika", fir(_SRC, [1, 2, 3], 1), -2630)
+case("fir rekord 2 = wartosc silnika", fir(_SRC, [1, 2, 3], 2), -2408)
+case("fir z odwrotna orientacja NIE dalby wartosci silnika",
+     sumc([_SRC[0 + k] * [1, 2, 3][k] for k in range(3)]), -2704)
 
 
 def main():

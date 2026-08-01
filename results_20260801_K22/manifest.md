@@ -25,7 +25,7 @@ natomiast warunki czystości obu repozytoriów, sprawdzone i spełnione.
 
 Build pomiarowy (R6, `RDB_BENCH_PROBE=ON`) nie jest wymagany. Silnik będzie
 potrzebny w K22b wyłącznie do dwóch rzeczy: wygenerowania strumieni kanonicznych
-i odczytania `tail` przez `xretractor -t`.
+i odczytania `tail` przez `xretractor <plan>.rql -c`.
 
 ## Provenance programów wejściowych
 
@@ -56,7 +56,7 @@ w slotach ogona jest „osobnym krokiem", podczas gdy
 **sam komentarz**; zmiana jest wyłącznie dokumentacyjna (bez wpływu na
 zachowanie, `ut_compiler` i `ut_presenter` przechodzą) i nie narusza zakazu
 zmiany silnika dla ułatwienia GO. Fakt o ogonie i tak ustala pomiar
-(`xretractor -t`), nie komentarz.
+(`xretractor <plan>.rql -c`), nie komentarz.
 
 **Skutek dla manifestu — rozliczony.** Poprawka jest w `retractordb` jako
 `dd733e3` („fix comment", wypchnięte na `origin/master`), więc rewizja wejściowa
@@ -94,7 +94,7 @@ archiwum" zacznie obowiązywać od K22b, gdy powstaną strumienie kanoniczne.
 
 ```bash
 cd /home/michal/github/rdb-experiment/results_20260801_K22
-./tests/test_k22a.sh     # 3 zestawy, 61 kontroli
+./tests/test_k22a.sh     # 3 zestawy, 70 kontroli
 ./oracle/run.sh          # bramka etapowa — zatrzyma sie na pustym korpusie
 ```
 

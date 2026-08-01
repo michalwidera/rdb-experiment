@@ -35,6 +35,6 @@ zatrzymują się kodem ≠ 0 zamiast wypisać zera (`PREDECLARATION.md` §7.5 pk
    w dowolnej metryce zatrzymuje kampanię: poprawia się **podręcznik**, nie
    liczby, i liczy całość od nowa.
 
-5. **`source` w `tails.csv` musi brzmieć `xretractor -t`.** Ogon odczytany
+5. **`source` w `tails.csv` musi brzmieć `xretractor <plan>.rql -c`.** Ogon odczytany
    z silnika, nie wyliczony rachunkiem obok niego — to jest wniosek
    metodologiczny z K6c i najczęstsze źródło błędu w poprzedniej kampanii.
