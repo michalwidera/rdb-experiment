@@ -4,7 +4,7 @@ K22v5 jest operacyjną kontynuacją zatrzymanego K22v4. Pracuje na tym samym bra
 `experiment/20260801_K22`, ale ma osobny katalog, predeklarację, aparaturę i
 pakiet dowodowy.
 
-**Stan: przygotowany do pełnego smoke i zamrożenia.** Jedyna zmiana względem
+**Stan: zamrożony po pełnym smoke 15/15, przed D1/D2.** Jedyna zmiana względem
 K22v4 to etykieta drugiego pola serializowanego przez writery Pythona i
 Flinka w M1/F1: `channel_2` → kanoniczne `f1_out_1`. Zmiana leży poza
 mierzonymi rdzeniami; wszystkie 36 sekcji rdzeni jest identyczne z K22v4.

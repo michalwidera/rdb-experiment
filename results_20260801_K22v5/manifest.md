@@ -8,7 +8,7 @@
 | Korpus wariantów | 36 sekcji rdzeni identycznych z `rdb-experiment@73f2418`; jedyna zmiana poza rdzeniem: etykieta writerów M1/F1 |
 | Silnik | `retractordb@dd733e3792fbcd5727db244b802610a6d710b8dc` |
 | Plan | `paper-arXiv@6a4c5f794060fbe672d04db6aa072c0b9d2708f1` |
-| Zamrożenie aparatury | do wypełnienia |
+| Zamrożenie aparatury | `rdb-experiment@3366f1379803f1d46db25c515b9964621372d52f` |
 | Worker RT | nieużywany |
 | Python | zapisywany przez `freeze_check.sh` |
 | Java/Flink | zapisywane przez `freeze_check.sh` |

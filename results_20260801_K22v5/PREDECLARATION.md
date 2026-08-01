@@ -1,6 +1,6 @@
 # K22v5 — protokół wykonawczy po zatrzymanym K22v4
 
-**Status: DO ZAMROŻENIA PRZED PIERWSZYM POMIAREM D1/D2.**
+**Status: ZAMROŻONA PRZED PIERWSZYM POMIAREM D1/D2.**
 
 K22v4 przeszło wszystkie trzy bazy, po czym oracle zatrzymał M1/F1 na
 pierwszym indeksie. Wartości były zgodne, ale RQL nadało drugiemu polu
@@ -12,7 +12,7 @@ K22v5 zmienia wyłącznie etykietę serializacji poza mierzonymi rdzeniami
 Pythona i Flinka z `channel_2` na kanoniczne `f1_out_1`. Wszystkie 36 sekcji
 `CORE_BEGIN/CORE_END`, wartości, źródła, ogony, timeouty, zakres 2000,
 metryki i progi pozostają identyczne z K22v4. Przed zamrożeniem cała macierz
-15 komórek przechodzi wspólny oracle jako smoke. D1/D2 nie zostały dotąd
+15 komórek przeszła wspólny oracle jako smoke. D1/D2 nie zostały dotąd
 otwarte ani obliczone.
 
 K22v5 dziedziczy pozostałe naprawy jawnie zatrzymanych iteracji: wywołanie
@@ -178,6 +178,6 @@ z realnym pacingiem pozostaje kontrolą baz, a nie obserwacją wydajnościową.
 |---|---|
 | Decyzja o resecie | zmiana wyłącznie etykiety serializacji po zatrzymaniu K22v4 |
 | Plan | `paper-ArXiv@6a4c5f794060fbe672d04db6aa072c0b9d2708f1` |
-| Commit zamrażający aparaturę | *(wypełniany przed kampanią)* |
+| Commit zamrażający aparaturę | `3366f1379803f1d46db25c515b9964621372d52f` |
 | Korpus rdzeni | 36 sekcji identycznych z `rdb-experiment@73f2418` |
 | Pierwszy pomiar D1/D2 | nie istnieje w chwili zamrożenia |
