@@ -8,7 +8,7 @@
 | Korpus wariantów | 36 rdzeni identycznych z `rdb-experiment@2b31d90ffefc1110950d8d5d22a62fc9d58a8bf9` |
 | Silnik | `retractordb@dd733e3792fbcd5727db244b802610a6d710b8dc` |
 | Plan | `paper-arXiv@236ef97` |
-| Zamrożenie aparatury | do wypełnienia |
+| Zamrożenie aparatury | `rdb-experiment@3eada1230c638e755b5b178a19f333a23e2ecb0d` |
 | Worker RT | nieużywany |
 | Python | zapisywany przez `freeze_check.sh` |
 | Java/Flink | zapisywane przez `freeze_check.sh` |

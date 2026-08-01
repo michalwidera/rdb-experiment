@@ -1,6 +1,6 @@
 # K22v4 — protokół wykonawczy po zatrzymanym K22v3
 
-**Status: DO ZAMROŻENIA PRZED PIERWSZYM POMIAREM D1/D2.**
+**Status: ZAMROŻONA PRZED PIERWSZYM POMIAREM D1/D2.**
 
 K22v3 przeszło `base/F1` i `base/F2`, po czym zatrzymało się na `base/F3`:
 wspólne 4200 cykli F3, potrzebne dla M3/F3, wytworzyło już 2966 rekordów, ale
@@ -177,6 +177,6 @@ z realnym pacingiem pozostaje kontrolą baz, a nie obserwacją wydajnościową.
 |---|---|
 | Decyzja o resecie | operacyjna kontynuacja po timeoutcie K22v3 |
 | Plan | `paper-ArXiv@236ef97` |
-| Commit zamrażający aparaturę | *(wypełniany przed kampanią)* |
+| Commit zamrażający aparaturę | `3eada1230c638e755b5b178a19f333a23e2ecb0d` |
 | Korpus wariantów | `rdb-experiment@2b31d90ffefc1110950d8d5d22a62fc9d58a8bf9` |
 | Pierwszy pomiar D1/D2 | nie istnieje w chwili zamrożenia |
