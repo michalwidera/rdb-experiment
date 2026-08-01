@@ -1,6 +1,13 @@
 # K22v3 — protokół wykonawczy po zatrzymanych K22 i K22v2
 
-**Status: ZAMROŻONA PRZED PIERWSZYM POMIAREM D1/D2.**
+**Status: ZATRZYMANA — TIMEOUT BAZY F3 PRZED D1/D2.**
+
+Pełna kampania przeszła `base/F1` i `base/F2`, po czym zatrzymała się na
+`base/F3`: wspólne 4200 cykli F3, potrzebne dla M3/F3, wytworzyło już 2966
+rekordów, ale nie zakończyło procesu w 200 s. Zmiana liczby cykli po
+zamrożeniu byłaby zmianą aparatury. K22v3 nie wydaje werdyktu; następca K22v4
+używa 4200 wyłącznie dla M3/F3 i 2850 dla pozostałych F3. D1/D2 nie zostały
+otwarte ani obliczone.
 
 K22v3 dziedziczy definicje i korpus wariantów wytworzony po
 zamrożeniu K22v2. K22v2 nie wydało żadnego wyniku: pierwszy przebieg zakończył

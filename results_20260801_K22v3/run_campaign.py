@@ -178,7 +178,7 @@ def run_cell(task, family, evidence_group="raw"):
     (evidence / "rql_plan.txt").write_text(plan, encoding="utf-8")
     target = task_target(task, family)
     tail = parse_tail(plan, target)
-    cycles = 4200 if family == "F3" else SPAN + tail + 20
+    cycles = (4200 if task == "M3" else 2850) if family == "F3" else SPAN + tail + 20
     run([XRETRACTOR.name, "q.rql", "-m", str(cycles), "-k", "-r"], work,
         evidence / "rql_run.log", timeout=200 if family == "F3" else 90)
     rql_csv = evidence / "rql.csv"

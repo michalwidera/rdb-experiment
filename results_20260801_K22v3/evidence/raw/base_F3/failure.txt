@@ -1,0 +1,7 @@
+stage=rql_run
+timeout_seconds=200
+cycles=4200
+records_present_at_timeout=2966
+records_required=2000
+cause=4200-cycle reserve intended for M3/F3 was applied to every F3 cell
+decision=stop K22v3 before D1/D2; use 2850 cycles except M3/F3 in K22v4

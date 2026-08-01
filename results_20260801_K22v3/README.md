@@ -4,8 +4,9 @@ K22v3 jest operacyjną kontynuacją zatrzymanych K22 i K22v2. Pracuje na tym sam
 `experiment/20260801_K22`, ale ma osobny katalog, predeklarację, aparaturę i
 pakiet dowodowy.
 
-**Stan: przygotowany do zamrożenia.** Korpus wariantów pochodzi bez zmian z
-K22v2@`fcaa0ed`; K22v3 naprawia wyłącznie sposób wywołania przypiętej binarki.
+**Stan: zatrzymany przed D1/D2.** Bazy F1/F2 przeszły, ale baza F3 przekroczyła
+timeout, ponieważ otrzymała zapas 4200 cykli potrzebny tylko M3/F3. Naprawa
+wyboru cykli jest wykonywana w K22v4, nie w zamrożonym K22v3.
 
 Kolejność obowiązkowa:
 
