@@ -1,0 +1,17 @@
+key	value
+captured_utc	2026-08-01T14:35:21Z
+experiment_head	73f241808eccc6f3013ffc4970f97cd967b87b92
+retractordb_head	dd733e3792fbcd5727db244b802610a6d710b8dc
+paper_head	6a4c5f794060fbe672d04db6aa072c0b9d2708f1
+python	Python 3.14.4
+java	openjdk version "17.0.19" 2026-04-21
+javac	javac 17.0.19
+flink_jar	/home/michal/opt/flink-2.3.0/lib/flink-dist-2.3.0.jar
+flink_sha256	7c51cba8e3f2b35d62cc0f7212eb03b73e07c9541e0ce566579846af5ea9d493
+xretractor	/home/michal/.local/bin/xretractor
+xretractor_sha256	6fe7fd978a99ecb450d334407bbd63392fd69e803c3efd8a8e658deb259e17a6
+build_info	RDB_OPT_DEDUP_SUBSTRATES=ON
+build_info	RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+build_info	RDB_OPT_COMMUTATIVE_ADD=ON
+build_info	RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON
+build_info	RDB_BENCH_PROBE=OFF
