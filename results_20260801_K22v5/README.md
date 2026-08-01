@@ -9,6 +9,14 @@ kampania przeszły po 15/15 komórek, ręczne D1/D2 zgodziły się z automatem
 36/36, a przegląd objął 1764/1764 trafień konstrukcji. Szczegóły i granice
 wniosku zawiera `REPORT.md`.
 
+**Analiza po werdykcie: `POSTHOC.md`.** Dopisana 2026-08-01, poza zamrożonym
+pakietem dowodowym — `REPORT.md`, `PREDECLARATION.md`, `results/` i
+`evidence/` pozostają nietknięte, a indeks SHA-256 nadal ważny. Ustalenie
+najważniejsze: przy zamrożonym korpusie maksimum osiągalne wynosiło 1/4, 1/4
+i 2/4 przy progu 3/4, więc **żadna rodzina nie mogła przejść** i wynik `0/3`
+był przesądzony przed pomiarem. Werdykt jest poprawny, ale mało informatywny
+o samej H8; twierdzenie, które te dane rzeczywiście uzasadniają, jest węższe.
+
 Jedyna zmiana względem K22v4 to etykieta drugiego pola serializowanego przez
 writery Pythona i Flinka w M1/F1: `channel_2` → kanoniczne `f1_out_1`.
 Zmiana leży poza mierzonymi rdzeniami; wszystkie 36 sekcji rdzeni jest
