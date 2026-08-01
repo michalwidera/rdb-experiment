@@ -1,0 +1,93 @@
+# M3/F3/python
+# BASE (znormalizowane)
+B0045 def run(a_values, b_values, slots):
+B0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+B0047 UNIT_A = 3
+B0048 UNIT_B = 6
+B0049 INTERVAL_NS = 66_666_667
+B0050 SHIFT = 5
+B0051 WIN = 30
+B0052 ua = 0
+B0053 ub = 0
+B0054 ia = 0
+B0055 ib = 0
+B0056 win = [0] * WIN
+B0057 filled = 0
+B0058 out = []
+B0059 t0 = time.monotonic_ns()
+B0060 for r in range(slots):
+B0061 deadline = t0 + r * INTERVAL_NS
+B0062 now = time.monotonic_ns()
+B0063 if now < deadline:
+B0064 time.sleep((deadline - now) / 1e9)
+B0065 if ub <= ua:
+B0066 value = b_values[ib]
+B0067 ib = ib + 1
+B0068 ub = ub + UNIT_B
+B0069 else:
+B0070 value = a_values[ia]
+B0071 ia = ia + 1
+B0072 ua = ua + UNIT_A
+B0073 for k in range(WIN - 1, 0, -1):
+B0074 win[k] = win[k - 1]
+B0075 win[0] = value
+B0076 filled = filled + 1
+B0077 if filled < WIN:
+B0078 continue
+B0079 out.append((SHIFT + r + 1, avg(win)))
+# VARIANT (znormalizowane)
+V0045 def run(a_values, b_values, slots):
+V0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+V0047 HASH_NUM = 12
+V0048 HASH_DEN = 17
+V0049 INTERVAL_NS = 58_823_529
+V0050 SHIFT = 21
+V0051 WIN = 30
+V0052 ia = 0
+V0053 ib = 0
+V0054 win = [0] * WIN
+V0055 filled = 0
+V0056 out = []
+V0057 t0 = time.monotonic_ns()
+V0058 for r in range(slots):
+V0059 deadline = t0 + r * INTERVAL_NS
+V0060 now = time.monotonic_ns()
+V0061 if now < deadline:
+V0062 time.sleep((deadline - now) / 1e9)
+V0063 take_b = (HASH_NUM * r) // HASH_DEN == (HASH_NUM * (r + 1)) // HASH_DEN
+V0064 if take_b:
+V0065 value = b_values[ib]
+V0066 ib = ib + 1
+V0067 else:
+V0068 value = a_values[ia]
+V0069 ia = ia + 1
+V0070 for k in range(WIN - 1, 0, -1):
+V0071 win[k] = win[k - 1]
+V0072 win[0] = value
+V0073 filled = filled + 1
+V0074 if filled < WIN:
+V0075 continue
+V0076 out.append((SHIFT + r + 1, avg(win)))
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -3,4 +3,4 @@
+-UNIT_A = 3
+-UNIT_B = 6
+-INTERVAL_NS = 66_666_667
+-SHIFT = 5
++HASH_NUM = 12
++HASH_DEN = 17
++INTERVAL_NS = 58_823_529
++SHIFT = 21
+@@ -8,2 +7,0 @@
+-ua = 0
+-ub = 0
+@@ -21 +19,2 @@
+-if ub <= ua:
++take_b = (HASH_NUM * r) // HASH_DEN == (HASH_NUM * (r + 1)) // HASH_DEN
++if take_b:
+@@ -24 +22,0 @@
+-ub = ub + UNIT_B
+@@ -28 +25,0 @@
+-ua = ua + UNIT_A

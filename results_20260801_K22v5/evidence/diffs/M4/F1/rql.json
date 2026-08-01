@@ -1,0 +1,23 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": "EOF",
+      "base_to": "-",
+      "variant_from": 21,
+      "variant_to": 21,
+      "base": [],
+      "variant": [
+        "SELECT f1_out[0]+0, f1_out[0]+1, f1_out[0]+2, f1_out[0]+3, f1_out[0]+4, f1_out[0]+5, f1_out[0]+6, f1_out[0]+7 STREAM f1_q FROM f1_out"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F1_fir/rql/core.rql\n",
+    "@@ -5,0 +6 @@\n",
+    "+SELECT f1_out[0]+0, f1_out[0]+1, f1_out[0]+2, f1_out[0]+3, f1_out[0]+4, f1_out[0]+5, f1_out[0]+6, f1_out[0]+7 STREAM f1_q FROM f1_out\n"
+  ]
+}

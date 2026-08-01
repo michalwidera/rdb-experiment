@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 16,
+      "base_to": 16,
+      "variant_from": 16,
+      "variant_to": 16,
+      "base": [
+        "DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'"
+      ],
+      "variant": [
+        "DECLARE x INTEGER STREAM src, 1/750 FILE 'f1_source.txt'"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F1_fir/rql/core.rql\n",
+    "@@ -1 +1 @@\n",
+    "-DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'\n",
+    "+DECLARE x INTEGER STREAM src, 1/750 FILE 'f1_source.txt'\n"
+  ]
+}

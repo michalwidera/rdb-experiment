@@ -1,0 +1,19 @@
+# M2/F3/rql
+# BASE (znormalizowane)
+B0015 DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'
+B0016 DECLARE value INTEGER STREAM B, 1/5 FILE 'f3_b.txt'
+B0017 SELECT * STREAM f3_mix FROM (A>2)
+B0018 SELECT * STREAM f3_win FROM f3_mix@(1,30)
+B0019 SELECT f3_win[0] STREAM f3_out FROM f3_win.avg
+# VARIANT (znormalizowane)
+V0015 DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'
+V0016 DECLARE value INTEGER STREAM B, 1/5 FILE 'f3_b.txt'
+V0017 SELECT * STREAM f3_mix FROM (A>2)
+V0018 SELECT * STREAM f3_win FROM f3_mix@(1,45)
+V0019 SELECT f3_win[0] STREAM f3_out FROM f3_win.avg
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -4 +4 @@
+-SELECT * STREAM f3_win FROM f3_mix@(1,30)
++SELECT * STREAM f3_win FROM f3_mix@(1,45)

@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F2_ecg/rql/core.rql
+@@ -1 +1 @@
+-DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'
++DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/250 FILE 'rec205'

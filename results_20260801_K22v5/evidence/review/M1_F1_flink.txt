@@ -1,0 +1,156 @@
+# M1/F1/flink
+# BASE (znormalizowane)
+B0034 static class PacedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
+B0035 private static final long INTERVAL_NS = 1_000_000L;
+B0036 private final int[] samples;
+B0037 private final long slots;
+B0038 private volatile boolean running = true;
+B0040 PacedSource(int[] samples, long slots) {
+B0041 this.samples = samples;
+B0042 this.slots = slots;
+B0043 }
+B0045 @Override
+B0046 public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
+B0047 long t0 = System.nanoTime();
+B0048 for (long n = 0; n < slots && running; n++) {
+B0049 long deadline = t0 + n * INTERVAL_NS;
+B0050 long now = System.nanoTime();
+B0051 if (now < deadline) {
+B0052 long sleepNs = deadline - now;
+B0053 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+B0054 }
+B0055 ctx.collect(Tuple2.of(n, samples[(int) n]));
+B0056 }
+B0057 }
+B0059 @Override
+B0060 public void cancel() {
+B0061 running = false;
+B0062 }
+B0063 }
+B0065 static class Fir extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
+B0066 private static final int WIN = 26;
+B0067 private final int[] coef;
+B0068 private int[] win;
+B0070 Fir(int[] coef) {
+B0071 this.coef = coef;
+B0072 }
+B0074 @Override
+B0075 public void open(OpenContext ctx) {
+B0076 win = new int[WIN];
+B0077 }
+B0079 @Override
+B0080 public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
+B0081 for (int k = WIN - 1; k > 0; k--) {
+B0082 win[k] = win[k - 1];
+B0083 }
+B0084 win[0] = in.f1;
+B0085 if (in.f0 < WIN - 1) {
+B0086 return;
+B0087 }
+B0088 long acc = 0;
+B0089 for (int k = 0; k < WIN; k++) {
+B0090 acc += (long) win[k] * coef[k];
+B0091 }
+B0092 if (acc > Integer.MAX_VALUE || acc < Integer.MIN_VALUE) {
+B0093 throw new ArithmeticException("suma " + acc + " poza int32 -- zakres danych nie wyklucza przepelnienia");
+B0094 }
+B0095 int y = (int) acc / WIN / 1000;
+B0096 out.collect(Tuple2.of(in.f0 + 1, y));
+B0097 }
+B0098 }
+B0170 DataStream<Tuple2<Long, Integer>> src = env.addSource(new PacedSource(samples, slots));
+B0171 src.flatMap(new Fir(coef)).addSink(new CanonicalSink(out, family, variant));
+# VARIANT (znormalizowane)
+V0034 static class PacedSource extends RichSourceFunction<Tuple3<Long, Integer, Integer>> {
+V0035 private static final long INTERVAL_NS = 1_000_000L;
+V0036 private final int[] samples;
+V0037 private final int[] samples2;
+V0038 private final long slots;
+V0039 private volatile boolean running = true;
+V0041 PacedSource(int[] samples, int[] samples2, long slots) {
+V0042 this.samples = samples;
+V0043 this.samples2 = samples2;
+V0044 this.slots = slots;
+V0045 }
+V0047 @Override
+V0048 public void run(SourceContext<Tuple3<Long, Integer, Integer>> ctx) throws Exception {
+V0049 long t0 = System.nanoTime();
+V0050 for (long n = 0; n < slots && running; n++) {
+V0051 long deadline = t0 + n * INTERVAL_NS;
+V0052 long now = System.nanoTime();
+V0053 if (now < deadline) {
+V0054 long sleepNs = deadline - now;
+V0055 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+V0056 }
+V0057 ctx.collect(Tuple3.of(n, samples[(int) n], samples2[(int) n + 1]));
+V0058 }
+V0059 }
+V0061 @Override
+V0062 public void cancel() {
+V0063 running = false;
+V0064 }
+V0065 }
+V0067 static class Fir extends RichFlatMapFunction<Tuple3<Long, Integer, Integer>, Tuple3<Long, Integer, Integer>> {
+V0068 private static final int WIN = 26;
+V0069 private final int[] coef;
+V0070 private int[] win;
+V0072 Fir(int[] coef) {
+V0073 this.coef = coef;
+V0074 }
+V0076 @Override
+V0077 public void open(OpenContext ctx) {
+V0078 win = new int[WIN];
+V0079 }
+V0081 @Override
+V0082 public void flatMap(Tuple3<Long, Integer, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {
+V0083 for (int k = WIN - 1; k > 0; k--) {
+V0084 win[k] = win[k - 1];
+V0085 }
+V0086 win[0] = in.f1;
+V0087 if (in.f0 < WIN - 1) {
+V0088 return;
+V0089 }
+V0090 long acc = 0;
+V0091 for (int k = 0; k < WIN; k++) {
+V0092 acc += (long) win[k] * coef[k];
+V0093 }
+V0094 if (acc > Integer.MAX_VALUE || acc < Integer.MIN_VALUE) {
+V0095 throw new ArithmeticException("suma " + acc + " poza int32 -- zakres danych nie wyklucza przepelnienia");
+V0096 }
+V0097 int y = (int) acc / WIN / 1000;
+V0098 out.collect(Tuple3.of(in.f0 + 1, y, in.f2));
+V0099 }
+V0100 }
+V0176 DataStream<Tuple3<Long, Integer, Integer>> src = env.addSource(new PacedSource(samples, samples2, slots));
+V0177 src.flatMap(new Fir(coef)).addSink(new CanonicalSink(out, family, variant));
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -1 +1 @@
+-static class PacedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
++static class PacedSource extends RichSourceFunction<Tuple3<Long, Integer, Integer>> {
+@@ -3,0 +4 @@
++private final int[] samples2;
+@@ -6 +7 @@
+-PacedSource(int[] samples, long slots) {
++PacedSource(int[] samples, int[] samples2, long slots) {
+@@ -7,0 +9 @@
++this.samples2 = samples2;
+@@ -11 +13 @@
+-public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
++public void run(SourceContext<Tuple3<Long, Integer, Integer>> ctx) throws Exception {
+@@ -20 +22 @@
+-ctx.collect(Tuple2.of(n, samples[(int) n]));
++ctx.collect(Tuple3.of(n, samples[(int) n], samples2[(int) n + 1]));
+@@ -28 +30 @@
+-static class Fir extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
++static class Fir extends RichFlatMapFunction<Tuple3<Long, Integer, Integer>, Tuple3<Long, Integer, Integer>> {
+@@ -40 +42 @@
+-public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
++public void flatMap(Tuple3<Long, Integer, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {
+@@ -56 +58 @@
+-out.collect(Tuple2.of(in.f0 + 1, y));
++out.collect(Tuple3.of(in.f0 + 1, y, in.f2));
+@@ -59 +61 @@
+-DataStream<Tuple2<Long, Integer>> src = env.addSource(new PacedSource(samples, slots));
++DataStream<Tuple3<Long, Integer, Integer>> src = env.addSource(new PacedSource(samples, samples2, slots));

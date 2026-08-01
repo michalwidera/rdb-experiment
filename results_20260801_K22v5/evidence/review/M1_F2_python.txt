@@ -1,0 +1,126 @@
+# M1/F2/python
+# BASE (znormalizowane)
+B0039 def run(mlii, bp_coef, d_coef, slots):
+B0040 """Zwraca listę (logical_index, [pole0, pole1, pole2])."""
+B0041 WIN_BP = 25
+B0042 WIN_D = 5
+B0043 WIN_MWI = 30
+B0044 WIN_THR = 180
+B0045 INTERVAL_NS = 2_777_778
+B0046 win_bp = [0] * WIN_BP
+B0047 win_d = [0] * WIN_D
+B0048 win_mwi = [0] * WIN_MWI
+B0049 win_thr = [0] * WIN_THR
+B0050 cnt_bp = 0
+B0051 cnt_d = 0
+B0052 cnt_mwi = 0
+B0053 cnt_thr = 0
+B0054 mwi_at = {}
+B0055 thr_at = {}
+B0056 out = []
+B0057 t0 = time.monotonic_ns()
+B0058 for n in range(slots):
+B0059 deadline = t0 + n * INTERVAL_NS
+B0060 now = time.monotonic_ns()
+B0061 if now < deadline:
+B0062 time.sleep((deadline - now) / 1e9)
+B0063 x = mlii[n]
+B0065 for k in range(WIN_BP - 1, 0, -1):
+B0066 win_bp[k] = win_bp[k - 1]
+B0067 win_bp[0] = x
+B0068 cnt_bp = cnt_bp + 1
+B0069 if cnt_bp >= WIN_BP:
+B0070 bp = idiv(sumc([imul(win_bp[k], bp_coef[k]) for k in range(WIN_BP)]), 1000)
+B0071 for k in range(WIN_D - 1, 0, -1):
+B0072 win_d[k] = win_d[k - 1]
+B0073 win_d[0] = bp
+B0074 cnt_d = cnt_d + 1
+B0075 if cnt_d >= WIN_D:
+B0076 d = sumc([imul(win_d[k], d_coef[k]) for k in range(WIN_D)])
+B0077 sq = idiv(imul(d, d), 1000)
+B0078 for k in range(WIN_MWI - 1, 0, -1):
+B0079 win_mwi[k] = win_mwi[k - 1]
+B0080 win_mwi[0] = sq
+B0081 cnt_mwi = cnt_mwi + 1
+B0082 if cnt_mwi >= WIN_MWI:
+B0083 mwi = avg(win_mwi)
+B0084 mwi_at[n + 3] = mwi
+B0085 for k in range(WIN_THR - 1, 0, -1):
+B0086 win_thr[k] = win_thr[k - 1]
+B0087 win_thr[0] = mwi
+B0088 cnt_thr = cnt_thr + 1
+B0089 if cnt_thr >= WIN_THR:
+B0090 thr_at[n + 4] = avg(win_thr)
+B0092 if n in mwi_at and n in thr_at:
+B0093 m = mwi_at[n]
+B0094 t = thr_at[n]
+B0095 out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))
+# VARIANT (znormalizowane)
+V0041 def run(mlii, v1, bp_coef, d_coef, slots):
+V0042 """Zwraca listę (logical_index, [pole0, pole1, pole2, pole3])."""
+V0043 WIN_BP = 25
+V0044 WIN_D = 5
+V0045 WIN_MWI = 30
+V0046 WIN_THR = 180
+V0047 INTERVAL_NS = 2_777_778
+V0048 win_bp = [0] * WIN_BP
+V0049 win_d = [0] * WIN_D
+V0050 win_mwi = [0] * WIN_MWI
+V0051 win_thr = [0] * WIN_THR
+V0052 cnt_bp = 0
+V0053 cnt_d = 0
+V0054 cnt_mwi = 0
+V0055 cnt_thr = 0
+V0056 mwi_at = {}
+V0057 thr_at = {}
+V0058 out = []
+V0059 t0 = time.monotonic_ns()
+V0060 for n in range(slots):
+V0061 deadline = t0 + n * INTERVAL_NS
+V0062 now = time.monotonic_ns()
+V0063 if now < deadline:
+V0064 time.sleep((deadline - now) / 1e9)
+V0065 x = mlii[n]
+V0067 for k in range(WIN_BP - 1, 0, -1):
+V0068 win_bp[k] = win_bp[k - 1]
+V0069 win_bp[0] = x
+V0070 cnt_bp = cnt_bp + 1
+V0071 if cnt_bp >= WIN_BP:
+V0072 bp = idiv(sumc([imul(win_bp[k], bp_coef[k]) for k in range(WIN_BP)]), 1000)
+V0073 for k in range(WIN_D - 1, 0, -1):
+V0074 win_d[k] = win_d[k - 1]
+V0075 win_d[0] = bp
+V0076 cnt_d = cnt_d + 1
+V0077 if cnt_d >= WIN_D:
+V0078 d = sumc([imul(win_d[k], d_coef[k]) for k in range(WIN_D)])
+V0079 sq = idiv(imul(d, d), 1000)
+V0080 for k in range(WIN_MWI - 1, 0, -1):
+V0081 win_mwi[k] = win_mwi[k - 1]
+V0082 win_mwi[0] = sq
+V0083 cnt_mwi = cnt_mwi + 1
+V0084 if cnt_mwi >= WIN_MWI:
+V0085 mwi = avg(win_mwi)
+V0086 mwi_at[n + 3] = mwi
+V0087 for k in range(WIN_THR - 1, 0, -1):
+V0088 win_thr[k] = win_thr[k - 1]
+V0089 win_thr[0] = mwi
+V0090 cnt_thr = cnt_thr + 1
+V0091 if cnt_thr >= WIN_THR:
+V0092 thr_at[n + 4] = avg(win_thr)
+V0094 if n in mwi_at and n in thr_at:
+V0095 m = mwi_at[n]
+V0096 t = thr_at[n]
+V0097 out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),
+V0098 isub(v1[n], 900)]))
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -1,2 +1,2 @@
+-def run(mlii, bp_coef, d_coef, slots):
+-"""Zwraca listę (logical_index, [pole0, pole1, pole2])."""
++def run(mlii, v1, bp_coef, d_coef, slots):
++"""Zwraca listę (logical_index, [pole0, pole1, pole2, pole3])."""
+@@ -55 +55,2 @@
+-out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))
++out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),
++isub(v1[n], 900)]))

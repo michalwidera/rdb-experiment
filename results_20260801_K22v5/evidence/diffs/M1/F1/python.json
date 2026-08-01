@@ -1,0 +1,42 @@
+{
+  "D1": 2,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 35,
+      "base_to": 35,
+      "variant_from": 35,
+      "variant_to": 35,
+      "base": [
+        "def run(samples, coef, slots):"
+      ],
+      "variant": [
+        "def run(samples, samples2, coef, slots):"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 55,
+      "base_to": 55,
+      "variant_from": 55,
+      "variant_to": 55,
+      "base": [
+        "out.append((n + 1, y))"
+      ],
+      "variant": [
+        "out.append((n + 1, [y, samples2[n + 1]]))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/python/core.py\n",
+    "@@ -1 +1 @@\n",
+    "-def run(samples, coef, slots):\n",
+    "+def run(samples, samples2, coef, slots):\n",
+    "@@ -21 +21 @@\n",
+    "-out.append((n + 1, y))\n",
+    "+out.append((n + 1, [y, samples2[n + 1]]))\n"
+  ]
+}

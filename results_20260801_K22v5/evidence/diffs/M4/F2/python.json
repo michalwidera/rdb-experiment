@@ -1,0 +1,36 @@
+{
+  "D1": 2,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 57,
+      "base_to": "-",
+      "variant_from": 57,
+      "variant_to": 57,
+      "base": [],
+      "variant": [
+        "monitors = []"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 85,
+      "base_to": "-",
+      "variant_from": 86,
+      "variant_to": 86,
+      "base": [],
+      "variant": [
+        "monitors.append((n + 3, [mwi + j for j in range(8)]))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F2_ecg/python/core.py\n",
+    "@@ -18,0 +19 @@\n",
+    "+monitors = []\n",
+    "@@ -45,0 +47 @@\n",
+    "+monitors.append((n + 3, [mwi + j for j in range(8)]))\n"
+  ]
+}

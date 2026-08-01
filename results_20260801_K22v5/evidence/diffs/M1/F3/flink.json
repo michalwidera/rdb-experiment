@@ -1,0 +1,106 @@
+{
+  "D1": 9,
+  "D2": 6,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 92,
+      "base_to": 92,
+      "variant_from": 93,
+      "variant_to": 93,
+      "base": [
+        "static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {"
+      ],
+      "variant": [
+        "static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple3<Long, Integer, Integer>> {"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 94,
+      "base_to": "-",
+      "variant_from": 95,
+      "variant_to": 95,
+      "base": [],
+      "variant": [
+        "private final int[] bAux;"
+      ]
+    },
+    {
+      "tag": "insert",
+      "base_from": 97,
+      "base_to": "-",
+      "variant_from": 99,
+      "variant_to": 101,
+      "base": [],
+      "variant": [
+        "Aggregate(int[] bAux) {",
+        "this.bAux = bAux;",
+        "}"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 104,
+      "base_to": 104,
+      "variant_from": 110,
+      "variant_to": 110,
+      "base": [
+        "public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {"
+      ],
+      "variant": [
+        "public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 117,
+      "base_to": 117,
+      "variant_from": 123,
+      "variant_to": 124,
+      "base": [
+        "out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));"
+      ],
+      "variant": [
+        "long logicalIndex = in.f0 + 1;",
+        "out.collect(Tuple3.of(logicalIndex, (int) (sum / WIN), bAux[((int) logicalIndex - 2) / 3]));"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 189,
+      "base_to": 189,
+      "variant_from": 202,
+      "variant_to": 202,
+      "base": [
+        "src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));"
+      ],
+      "variant": [
+        "src.flatMap(new Aggregate(bAux)).addSink(new CanonicalSink(out, family, variant));"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F3_multirate/flink/F3Multirate.java\n",
+    "@@ -51 +51 @@\n",
+    "-static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {\n",
+    "+static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple3<Long, Integer, Integer>> {\n",
+    "@@ -52,0 +53 @@\n",
+    "+private final int[] bAux;\n",
+    "@@ -54,0 +56,3 @@\n",
+    "+Aggregate(int[] bAux) {\n",
+    "+this.bAux = bAux;\n",
+    "+}\n",
+    "@@ -61 +65 @@\n",
+    "-public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {\n",
+    "+public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple3<Long, Integer, Integer>> out) {\n",
+    "@@ -74 +78,2 @@\n",
+    "-out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));\n",
+    "+long logicalIndex = in.f0 + 1;\n",
+    "+out.collect(Tuple3.of(logicalIndex, (int) (sum / WIN), bAux[((int) logicalIndex - 2) / 3]));\n",
+    "@@ -78 +83 @@\n",
+    "-src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));\n",
+    "+src.flatMap(new Aggregate(bAux)).addSink(new CanonicalSink(out, family, variant));\n"
+  ]
+}

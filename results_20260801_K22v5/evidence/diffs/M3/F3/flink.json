@@ -1,0 +1,97 @@
+{
+  "D1": 10,
+  "D2": 5,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 39,
+      "base_to": 42,
+      "variant_from": 39,
+      "variant_to": 42,
+      "base": [
+        "private static final long INTERVAL_NS = 66_666_667L;",
+        "private static final int UNIT_A = 3;",
+        "private static final int UNIT_B = 6;",
+        "private static final int TAIL = 5;"
+      ],
+      "variant": [
+        "private static final long INTERVAL_NS = 58_823_529L;",
+        "private static final int HASH_NUM = 12;",
+        "private static final int HASH_DEN = 17;",
+        "private static final int TAIL = 21;"
+      ]
+    },
+    {
+      "tag": "delete",
+      "base_from": 56,
+      "base_to": 57,
+      "variant_from": 56,
+      "variant_to": "-",
+      "base": [
+        "long ua = 0;",
+        "long ub = 0;"
+      ],
+      "variant": []
+    },
+    {
+      "tag": "replace",
+      "base_from": 69,
+      "base_to": 69,
+      "variant_from": 67,
+      "variant_to": 68,
+      "base": [
+        "if (ub <= ua) {"
+      ],
+      "variant": [
+        "boolean takeB = (HASH_NUM * r) / HASH_DEN == (HASH_NUM * (r + 1)) / HASH_DEN;",
+        "if (takeB) {"
+      ]
+    },
+    {
+      "tag": "delete",
+      "base_from": 72,
+      "base_to": 72,
+      "variant_from": 71,
+      "variant_to": "-",
+      "base": [
+        "ub = ub + UNIT_B;"
+      ],
+      "variant": []
+    },
+    {
+      "tag": "delete",
+      "base_from": 76,
+      "base_to": 76,
+      "variant_from": 74,
+      "variant_to": "-",
+      "base": [
+        "ua = ua + UNIT_A;"
+      ],
+      "variant": []
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/flink/F3Multirate.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/flink/F3Multirate.java\n",
+    "@@ -2,4 +2,4 @@\n",
+    "-private static final long INTERVAL_NS = 66_666_667L;\n",
+    "-private static final int UNIT_A = 3;\n",
+    "-private static final int UNIT_B = 6;\n",
+    "-private static final int TAIL = 5;\n",
+    "+private static final long INTERVAL_NS = 58_823_529L;\n",
+    "+private static final int HASH_NUM = 12;\n",
+    "+private static final int HASH_DEN = 17;\n",
+    "+private static final int TAIL = 21;\n",
+    "@@ -17,2 +16,0 @@\n",
+    "-long ua = 0;\n",
+    "-long ub = 0;\n",
+    "@@ -30 +28,2 @@\n",
+    "-if (ub <= ua) {\n",
+    "+boolean takeB = (HASH_NUM * r) / HASH_DEN == (HASH_NUM * (r + 1)) / HASH_DEN;\n",
+    "+if (takeB) {\n",
+    "@@ -33 +31,0 @@\n",
+    "-ub = ub + UNIT_B;\n",
+    "@@ -37 +34,0 @@\n",
+    "-ua = ua + UNIT_A;\n"
+  ]
+}

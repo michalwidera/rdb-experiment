@@ -1,0 +1,2 @@
+verdict=FAIL range=[255,275) rows_compared=0
+first_mismatch: indeks 255, pozycja pola 1: base=('qrs_out_1', '10', '0', '0') vs variant=('qrs_out_1', '5', '0', '0')

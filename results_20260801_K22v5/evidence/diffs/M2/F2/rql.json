@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 35,
+      "base_to": 35,
+      "variant_from": 35,
+      "variant_to": 35,
+      "base": [
+        "SELECT * STREAM mwi_win FROM sq_out@(1,30)"
+      ],
+      "variant": [
+        "SELECT * STREAM mwi_win FROM sq_out@(1,45)"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F2_ecg/rql/core.rql\n",
+    "@@ -12 +12 @@\n",
+    "-SELECT * STREAM mwi_win FROM sq_out@(1,30)\n",
+    "+SELECT * STREAM mwi_win FROM sq_out@(1,45)\n"
+  ]
+}

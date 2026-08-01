@@ -1,0 +1,182 @@
+# M4/F3/flink
+# BASE (znormalizowane)
+B0038 static class MergedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
+B0039 private static final long INTERVAL_NS = 66_666_667L;
+B0040 private static final int UNIT_A = 3;
+B0041 private static final int UNIT_B = 6;
+B0042 private static final int TAIL = 5;
+B0043 private final int[] a;
+B0044 private final int[] b;
+B0045 private final long slots;
+B0046 private volatile boolean running = true;
+B0048 MergedSource(int[] a, int[] b, long slots) {
+B0049 this.a = a;
+B0050 this.b = b;
+B0051 this.slots = slots;
+B0052 }
+B0054 @Override
+B0055 public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
+B0056 long ua = 0;
+B0057 long ub = 0;
+B0058 int ia = 0;
+B0059 int ib = 0;
+B0060 long t0 = System.nanoTime();
+B0061 for (long r = 0; r < slots && running; r++) {
+B0062 long deadline = t0 + r * INTERVAL_NS;
+B0063 long now = System.nanoTime();
+B0064 if (now < deadline) {
+B0065 long sleepNs = deadline - now;
+B0066 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+B0067 }
+B0068 int value;
+B0069 if (ub <= ua) {
+B0070 value = b[ib];
+B0071 ib = ib + 1;
+B0072 ub = ub + UNIT_B;
+B0073 } else {
+B0074 value = a[ia];
+B0075 ia = ia + 1;
+B0076 ua = ua + UNIT_A;
+B0077 }
+B0078 ctx.collect(Tuple2.of(TAIL + r, value));
+B0079 }
+B0080 }
+B0082 @Override
+B0083 public void cancel() {
+B0084 running = false;
+B0085 }
+B0086 }
+B0088 /**
+B0089 * Okno agregujace 30 nad przeplotem. Ogon wyjscia to 35 = 5 (przesuniecie)
+B0090 * + 30 (okno) -- autor musi zlozyc go recznie z dwoch skladnikow.
+B0091 */
+B0092 static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
+B0093 private static final int WIN = 30;
+B0094 private int[] win;
+B0095 private int filled;
+B0097 @Override
+B0098 public void open(OpenContext ctx) {
+B0099 win = new int[WIN];
+B0100 filled = 0;
+B0101 }
+B0103 @Override
+B0104 public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
+B0105 for (int k = WIN - 1; k > 0; k--) {
+B0106 win[k] = win[k - 1];
+B0107 }
+B0108 win[0] = in.f1;
+B0109 filled = filled + 1;
+B0110 if (filled < WIN) {
+B0111 return;
+B0112 }
+B0113 long sum = 0;
+B0114 for (int k = 0; k < WIN; k++) {
+B0115 sum += win[k];
+B0116 }
+B0117 out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));
+B0118 }
+B0119 }
+B0188 DataStream<Tuple2<Long, Integer>> src = env.addSource(new MergedSource(a, b, slots));
+B0189 src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));
+# VARIANT (znormalizowane)
+V0040 static class MergedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
+V0041 private static final long INTERVAL_NS = 66_666_667L;
+V0042 private static final int UNIT_A = 3;
+V0043 private static final int UNIT_B = 6;
+V0044 private static final int TAIL = 5;
+V0045 private final int[] a;
+V0046 private final int[] b;
+V0047 private final long slots;
+V0048 private volatile boolean running = true;
+V0050 MergedSource(int[] a, int[] b, long slots) {
+V0051 this.a = a;
+V0052 this.b = b;
+V0053 this.slots = slots;
+V0054 }
+V0056 @Override
+V0057 public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
+V0058 long ua = 0;
+V0059 long ub = 0;
+V0060 int ia = 0;
+V0061 int ib = 0;
+V0062 long t0 = System.nanoTime();
+V0063 for (long r = 0; r < slots && running; r++) {
+V0064 long deadline = t0 + r * INTERVAL_NS;
+V0065 long now = System.nanoTime();
+V0066 if (now < deadline) {
+V0067 long sleepNs = deadline - now;
+V0068 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+V0069 }
+V0070 int value;
+V0071 if (ub <= ua) {
+V0072 value = b[ib];
+V0073 ib = ib + 1;
+V0074 ub = ub + UNIT_B;
+V0075 } else {
+V0076 value = a[ia];
+V0077 ia = ia + 1;
+V0078 ua = ua + UNIT_A;
+V0079 }
+V0080 ctx.collect(Tuple2.of(TAIL + r, value));
+V0081 }
+V0082 }
+V0084 @Override
+V0085 public void cancel() {
+V0086 running = false;
+V0087 }
+V0088 }
+V0090 /**
+V0091 * Okno agregujace 30 nad przeplotem. Ogon wyjscia to 35 = 5 (przesuniecie)
+V0092 * + 30 (okno) -- autor musi zlozyc go recznie z dwoch skladnikow.
+V0093 */
+V0094 static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
+V0095 private static final int WIN = 30;
+V0096 private int[] win;
+V0097 private int filled;
+V0099 @Override
+V0100 public void open(OpenContext ctx) {
+V0101 win = new int[WIN];
+V0102 filled = 0;
+V0103 }
+V0105 @Override
+V0106 public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
+V0107 for (int k = WIN - 1; k > 0; k--) {
+V0108 win[k] = win[k - 1];
+V0109 }
+V0110 win[0] = in.f1;
+V0111 filled = filled + 1;
+V0112 if (filled < WIN) {
+V0113 return;
+V0114 }
+V0115 long sum = 0;
+V0116 for (int k = 0; k < WIN; k++) {
+V0117 sum += win[k];
+V0118 }
+V0119 out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));
+V0120 }
+V0121 }
+V0123 static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,
+V0124 Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {
+V0125 @Override
+V0126 public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {
+V0127 int v = in.f1;
+V0128 return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);
+V0129 }
+V0130 }
+V0202 DataStream<Tuple2<Long, Integer>> src = env.addSource(new MergedSource(a, b, slots));
+V0203 src.map(new Monitor()).addSink(new CanonicalSink(out, family, variant));
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -76,0 +77,8 @@
++static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,
++Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {
++@Override
++public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {
++int v = in.f1;
++return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);
++}
++}
+@@ -78 +86 @@
+-src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));
++src.map(new Monitor()).addSink(new CanonicalSink(out, family, variant));

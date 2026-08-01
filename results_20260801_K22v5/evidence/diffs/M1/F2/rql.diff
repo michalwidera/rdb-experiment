@@ -1,0 +1,7 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/rql/core.rql
+@@ -4,0 +5 @@
++SELECT ecg.V1 STREAM v1 FROM ecg
+@@ -16 +17 @@
+-SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr
++SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5, v1[0]-900 STREAM qrs_out FROM mlii+mwi+mwi_thr+v1

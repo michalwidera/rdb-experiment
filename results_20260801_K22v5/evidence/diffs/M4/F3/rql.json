@@ -1,0 +1,23 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": "EOF",
+      "base_to": "-",
+      "variant_from": 20,
+      "variant_to": 20,
+      "base": [],
+      "variant": [
+        "SELECT f3_mix[0]+0, f3_mix[0]+1, f3_mix[0]+2, f3_mix[0]+3, f3_mix[0]+4, f3_mix[0]+5, f3_mix[0]+6, f3_mix[0]+7 STREAM f3_q FROM f3_mix"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F3_multirate/rql/core.rql\n",
+    "@@ -5,0 +6 @@\n",
+    "+SELECT f3_mix[0]+0, f3_mix[0]+1, f3_mix[0]+2, f3_mix[0]+3, f3_mix[0]+4, f3_mix[0]+5, f3_mix[0]+6, f3_mix[0]+7 STREAM f3_q FROM f3_mix\n"
+  ]
+}

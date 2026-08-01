@@ -1,0 +1,39 @@
+{
+  "D1": 2,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 25,
+      "base_to": "-",
+      "variant_from": 24,
+      "variant_to": 24,
+      "base": [],
+      "variant": [
+        "SELECT ecg.V1 STREAM v1 FROM ecg"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 41,
+      "base_to": 41,
+      "variant_from": 42,
+      "variant_to": 42,
+      "base": [
+        "SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr"
+      ],
+      "variant": [
+        "SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5, v1[0]-900 STREAM qrs_out FROM mlii+mwi+mwi_thr+v1"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/rql/core.rql\n",
+    "@@ -4,0 +5 @@\n",
+    "+SELECT ecg.V1 STREAM v1 FROM ecg\n",
+    "@@ -16 +17 @@\n",
+    "-SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr\n",
+    "+SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5, v1[0]-900 STREAM qrs_out FROM mlii+mwi+mwi_thr+v1\n"
+  ]
+}

@@ -1,0 +1,82 @@
+# M4/F3/python
+# BASE (znormalizowane)
+B0045 def run(a_values, b_values, slots):
+B0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+B0047 UNIT_A = 3
+B0048 UNIT_B = 6
+B0049 INTERVAL_NS = 66_666_667
+B0050 SHIFT = 5
+B0051 WIN = 30
+B0052 ua = 0
+B0053 ub = 0
+B0054 ia = 0
+B0055 ib = 0
+B0056 win = [0] * WIN
+B0057 filled = 0
+B0058 out = []
+B0059 t0 = time.monotonic_ns()
+B0060 for r in range(slots):
+B0061 deadline = t0 + r * INTERVAL_NS
+B0062 now = time.monotonic_ns()
+B0063 if now < deadline:
+B0064 time.sleep((deadline - now) / 1e9)
+B0065 if ub <= ua:
+B0066 value = b_values[ib]
+B0067 ib = ib + 1
+B0068 ub = ub + UNIT_B
+B0069 else:
+B0070 value = a_values[ia]
+B0071 ia = ia + 1
+B0072 ua = ua + UNIT_A
+B0073 for k in range(WIN - 1, 0, -1):
+B0074 win[k] = win[k - 1]
+B0075 win[0] = value
+B0076 filled = filled + 1
+B0077 if filled < WIN:
+B0078 continue
+B0079 out.append((SHIFT + r + 1, avg(win)))
+# VARIANT (znormalizowane)
+V0045 def run(a_values, b_values, slots):
+V0046 """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
+V0047 UNIT_A = 3
+V0048 UNIT_B = 6
+V0049 INTERVAL_NS = 66_666_667
+V0050 SHIFT = 5
+V0051 WIN = 30
+V0052 ua = 0
+V0053 ub = 0
+V0054 ia = 0
+V0055 ib = 0
+V0056 win = [0] * WIN
+V0057 filled = 0
+V0058 out = []
+V0059 monitors = []
+V0060 t0 = time.monotonic_ns()
+V0061 for r in range(slots):
+V0062 deadline = t0 + r * INTERVAL_NS
+V0063 now = time.monotonic_ns()
+V0064 if now < deadline:
+V0065 time.sleep((deadline - now) / 1e9)
+V0066 if ub <= ua:
+V0067 value = b_values[ib]
+V0068 ib = ib + 1
+V0069 ub = ub + UNIT_B
+V0070 else:
+V0071 value = a_values[ia]
+V0072 ia = ia + 1
+V0073 ua = ua + UNIT_A
+V0074 monitors.append((SHIFT + r, [value + j for j in range(8)]))
+V0075 for k in range(WIN - 1, 0, -1):
+V0076 win[k] = win[k - 1]
+V0077 win[0] = value
+V0078 filled = filled + 1
+V0079 if filled < WIN:
+V0080 continue
+V0081 out.append((SHIFT + r + 1, avg(win)))
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -14,0 +15 @@
++monitors = []
+@@ -28,0 +30 @@
++monitors.append((SHIFT + r, [value + j for j in range(8)]))

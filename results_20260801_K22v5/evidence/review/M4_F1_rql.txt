@@ -1,0 +1,19 @@
+# M4/F1/rql
+# BASE (znormalizowane)
+B0016 DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'
+B0017 DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'
+B0018 SELECT * STREAM win FROM src@(1,26)
+B0019 SELECT win[_]*coef[_] STREAM acc FROM win+coef
+B0020 SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc
+# VARIANT (znormalizowane)
+V0016 DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'
+V0017 DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'
+V0018 SELECT * STREAM win FROM src@(1,26)
+V0019 SELECT win[_]*coef[_] STREAM acc FROM win+coef
+V0020 SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc
+V0021 SELECT f1_out[0]+0, f1_out[0]+1, f1_out[0]+2, f1_out[0]+3, f1_out[0]+4, f1_out[0]+5, f1_out[0]+6, f1_out[0]+7 STREAM f1_q FROM f1_out
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -5,0 +6 @@
++SELECT f1_out[0]+0, f1_out[0]+1, f1_out[0]+2, f1_out[0]+3, f1_out[0]+4, f1_out[0]+5, f1_out[0]+6, f1_out[0]+7 STREAM f1_q FROM f1_out

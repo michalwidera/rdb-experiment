@@ -1,0 +1,23 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": "EOF",
+      "base_to": "-",
+      "variant_from": 42,
+      "variant_to": 42,
+      "base": [],
+      "variant": [
+        "SELECT mwi[0]+0, mwi[0]+1, mwi[0]+2, mwi[0]+3, mwi[0]+4, mwi[0]+5, mwi[0]+6, mwi[0]+7 STREAM mwi_q FROM mwi"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F2_ecg/rql/core.rql\n",
+    "@@ -16,0 +17 @@\n",
+    "+SELECT mwi[0]+0, mwi[0]+1, mwi[0]+2, mwi[0]+3, mwi[0]+4, mwi[0]+5, mwi[0]+6, mwi[0]+7 STREAM mwi_q FROM mwi\n"
+  ]
+}

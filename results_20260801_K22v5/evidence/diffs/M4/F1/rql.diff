@@ -1,0 +1,4 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F1_fir/rql/core.rql
+@@ -5,0 +6 @@
++SELECT f1_out[0]+0, f1_out[0]+1, f1_out[0]+2, f1_out[0]+3, f1_out[0]+4, f1_out[0]+5, f1_out[0]+6, f1_out[0]+7 STREAM f1_q FROM f1_out

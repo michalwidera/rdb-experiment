@@ -1,0 +1,46 @@
+{
+  "D1": 3,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 17,
+      "base_to": 18,
+      "variant_from": 17,
+      "variant_to": 18,
+      "base": [
+        "DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'",
+        "SELECT * STREAM win FROM src@(1,26)"
+      ],
+      "variant": [
+        "DECLARE c INTEGER[45] STREAM coef, 1 FILE 'f1_coef.txt'",
+        "SELECT * STREAM win FROM src@(1,45)"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 20,
+      "base_to": 20,
+      "variant_from": 20,
+      "variant_to": 20,
+      "base": [
+        "SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc"
+      ],
+      "variant": [
+        "SELECT acc[0]/45/1000 STREAM f1_out FROM acc.sumc"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/rql/core.rql\n",
+    "@@ -2,2 +2,2 @@\n",
+    "-DECLARE c INTEGER[26] STREAM coef, 1 FILE 'f1_coef.txt'\n",
+    "-SELECT * STREAM win FROM src@(1,26)\n",
+    "+DECLARE c INTEGER[45] STREAM coef, 1 FILE 'f1_coef.txt'\n",
+    "+SELECT * STREAM win FROM src@(1,45)\n",
+    "@@ -5 +5 @@\n",
+    "-SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc\n",
+    "+SELECT acc[0]/45/1000 STREAM f1_out FROM acc.sumc\n"
+  ]
+}

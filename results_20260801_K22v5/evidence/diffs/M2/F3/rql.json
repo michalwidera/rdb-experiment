@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 18,
+      "base_to": 18,
+      "variant_from": 18,
+      "variant_to": 18,
+      "base": [
+        "SELECT * STREAM f3_win FROM f3_mix@(1,30)"
+      ],
+      "variant": [
+        "SELECT * STREAM f3_win FROM f3_mix@(1,45)"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F3_multirate/rql/core.rql\n",
+    "@@ -4 +4 @@\n",
+    "-SELECT * STREAM f3_win FROM f3_mix@(1,30)\n",
+    "+SELECT * STREAM f3_win FROM f3_mix@(1,45)\n"
+  ]
+}

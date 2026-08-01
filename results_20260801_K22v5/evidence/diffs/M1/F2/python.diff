@@ -1,0 +1,11 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F2_ecg/python/core.py
+@@ -1,2 +1,2 @@
+-def run(mlii, bp_coef, d_coef, slots):
+-"""Zwraca listę (logical_index, [pole0, pole1, pole2])."""
++def run(mlii, v1, bp_coef, d_coef, slots):
++"""Zwraca listę (logical_index, [pole0, pole1, pole2, pole3])."""
+@@ -55 +55,2 @@
+-out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5)]))
++out.append((n, [isub(x, 900), imul(m, 5), imul(isub(m, imul(t, 2)), 5),
++isub(v1[n], 900)]))

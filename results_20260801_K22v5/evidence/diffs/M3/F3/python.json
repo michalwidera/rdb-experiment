@@ -1,0 +1,97 @@
+{
+  "D1": 10,
+  "D2": 5,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 47,
+      "base_to": 50,
+      "variant_from": 47,
+      "variant_to": 50,
+      "base": [
+        "UNIT_A = 3",
+        "UNIT_B = 6",
+        "INTERVAL_NS = 66_666_667",
+        "SHIFT = 5"
+      ],
+      "variant": [
+        "HASH_NUM = 12",
+        "HASH_DEN = 17",
+        "INTERVAL_NS = 58_823_529",
+        "SHIFT = 21"
+      ]
+    },
+    {
+      "tag": "delete",
+      "base_from": 52,
+      "base_to": 53,
+      "variant_from": 52,
+      "variant_to": "-",
+      "base": [
+        "ua = 0",
+        "ub = 0"
+      ],
+      "variant": []
+    },
+    {
+      "tag": "replace",
+      "base_from": 65,
+      "base_to": 65,
+      "variant_from": 63,
+      "variant_to": 64,
+      "base": [
+        "if ub <= ua:"
+      ],
+      "variant": [
+        "take_b = (HASH_NUM * r) // HASH_DEN == (HASH_NUM * (r + 1)) // HASH_DEN",
+        "if take_b:"
+      ]
+    },
+    {
+      "tag": "delete",
+      "base_from": 68,
+      "base_to": 68,
+      "variant_from": 67,
+      "variant_to": "-",
+      "base": [
+        "ub = ub + UNIT_B"
+      ],
+      "variant": []
+    },
+    {
+      "tag": "delete",
+      "base_from": 72,
+      "base_to": 72,
+      "variant_from": 70,
+      "variant_to": "-",
+      "base": [
+        "ua = ua + UNIT_A"
+      ],
+      "variant": []
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/python/core.py\n",
+    "@@ -3,4 +3,4 @@\n",
+    "-UNIT_A = 3\n",
+    "-UNIT_B = 6\n",
+    "-INTERVAL_NS = 66_666_667\n",
+    "-SHIFT = 5\n",
+    "+HASH_NUM = 12\n",
+    "+HASH_DEN = 17\n",
+    "+INTERVAL_NS = 58_823_529\n",
+    "+SHIFT = 21\n",
+    "@@ -8,2 +7,0 @@\n",
+    "-ua = 0\n",
+    "-ub = 0\n",
+    "@@ -21 +19,2 @@\n",
+    "-if ub <= ua:\n",
+    "+take_b = (HASH_NUM * r) // HASH_DEN == (HASH_NUM * (r + 1)) // HASH_DEN\n",
+    "+if take_b:\n",
+    "@@ -24 +22,0 @@\n",
+    "-ub = ub + UNIT_B\n",
+    "@@ -28 +25,0 @@\n",
+    "-ua = ua + UNIT_A\n"
+  ]
+}

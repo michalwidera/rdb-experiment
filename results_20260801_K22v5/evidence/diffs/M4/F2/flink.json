@@ -1,0 +1,55 @@
+{
+  "D1": 10,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 352,
+      "base_to": "-",
+      "variant_from": 265,
+      "variant_to": 272,
+      "base": [],
+      "variant": [
+        "static class Monitor extends RichMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,",
+        "Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {",
+        "@Override",
+        "public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple5<Long, Integer, Integer, Integer, Integer> in) {",
+        "int v = in.f3;",
+        "return Tuple9.of(in.f0 + 3, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);",
+        "}",
+        "}"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 357,
+      "base_to": 358,
+      "variant_from": 366,
+      "variant_to": 366,
+      "base": [
+        ".flatMap(new Threshold())",
+        ".flatMap(new Assemble())"
+      ],
+      "variant": [
+        ".map(new Monitor())"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/flink/F2Ecg.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F2_ecg/flink/F2Ecg.java\n",
+    "@@ -190,0 +191,8 @@\n",
+    "+static class Monitor extends RichMapFunction<Tuple5<Long, Integer, Integer, Integer, Integer>,\n",
+    "+Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {\n",
+    "+@Override\n",
+    "+public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple5<Long, Integer, Integer, Integer, Integer> in) {\n",
+    "+int v = in.f3;\n",
+    "+return Tuple9.of(in.f0 + 3, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);\n",
+    "+}\n",
+    "+}\n",
+    "@@ -196,2 +204 @@\n",
+    "-.flatMap(new Threshold())\n",
+    "-.flatMap(new Assemble())\n",
+    "+.map(new Monitor())\n"
+  ]
+}

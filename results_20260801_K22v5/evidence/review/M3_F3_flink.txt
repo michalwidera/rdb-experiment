@@ -1,0 +1,179 @@
+# M3/F3/flink
+# BASE (znormalizowane)
+B0038 static class MergedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
+B0039 private static final long INTERVAL_NS = 66_666_667L;
+B0040 private static final int UNIT_A = 3;
+B0041 private static final int UNIT_B = 6;
+B0042 private static final int TAIL = 5;
+B0043 private final int[] a;
+B0044 private final int[] b;
+B0045 private final long slots;
+B0046 private volatile boolean running = true;
+B0048 MergedSource(int[] a, int[] b, long slots) {
+B0049 this.a = a;
+B0050 this.b = b;
+B0051 this.slots = slots;
+B0052 }
+B0054 @Override
+B0055 public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
+B0056 long ua = 0;
+B0057 long ub = 0;
+B0058 int ia = 0;
+B0059 int ib = 0;
+B0060 long t0 = System.nanoTime();
+B0061 for (long r = 0; r < slots && running; r++) {
+B0062 long deadline = t0 + r * INTERVAL_NS;
+B0063 long now = System.nanoTime();
+B0064 if (now < deadline) {
+B0065 long sleepNs = deadline - now;
+B0066 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+B0067 }
+B0068 int value;
+B0069 if (ub <= ua) {
+B0070 value = b[ib];
+B0071 ib = ib + 1;
+B0072 ub = ub + UNIT_B;
+B0073 } else {
+B0074 value = a[ia];
+B0075 ia = ia + 1;
+B0076 ua = ua + UNIT_A;
+B0077 }
+B0078 ctx.collect(Tuple2.of(TAIL + r, value));
+B0079 }
+B0080 }
+B0082 @Override
+B0083 public void cancel() {
+B0084 running = false;
+B0085 }
+B0086 }
+B0088 /**
+B0089 * Okno agregujace 30 nad przeplotem. Ogon wyjscia to 35 = 5 (przesuniecie)
+B0090 * + 30 (okno) -- autor musi zlozyc go recznie z dwoch skladnikow.
+B0091 */
+B0092 static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
+B0093 private static final int WIN = 30;
+B0094 private int[] win;
+B0095 private int filled;
+B0097 @Override
+B0098 public void open(OpenContext ctx) {
+B0099 win = new int[WIN];
+B0100 filled = 0;
+B0101 }
+B0103 @Override
+B0104 public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
+B0105 for (int k = WIN - 1; k > 0; k--) {
+B0106 win[k] = win[k - 1];
+B0107 }
+B0108 win[0] = in.f1;
+B0109 filled = filled + 1;
+B0110 if (filled < WIN) {
+B0111 return;
+B0112 }
+B0113 long sum = 0;
+B0114 for (int k = 0; k < WIN; k++) {
+B0115 sum += win[k];
+B0116 }
+B0117 out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));
+B0118 }
+B0119 }
+B0188 DataStream<Tuple2<Long, Integer>> src = env.addSource(new MergedSource(a, b, slots));
+B0189 src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));
+# VARIANT (znormalizowane)
+V0038 static class MergedSource extends RichSourceFunction<Tuple2<Long, Integer>> {
+V0039 private static final long INTERVAL_NS = 58_823_529L;
+V0040 private static final int HASH_NUM = 12;
+V0041 private static final int HASH_DEN = 17;
+V0042 private static final int TAIL = 21;
+V0043 private final int[] a;
+V0044 private final int[] b;
+V0045 private final long slots;
+V0046 private volatile boolean running = true;
+V0048 MergedSource(int[] a, int[] b, long slots) {
+V0049 this.a = a;
+V0050 this.b = b;
+V0051 this.slots = slots;
+V0052 }
+V0054 @Override
+V0055 public void run(SourceContext<Tuple2<Long, Integer>> ctx) throws Exception {
+V0056 int ia = 0;
+V0057 int ib = 0;
+V0058 long t0 = System.nanoTime();
+V0059 for (long r = 0; r < slots && running; r++) {
+V0060 long deadline = t0 + r * INTERVAL_NS;
+V0061 long now = System.nanoTime();
+V0062 if (now < deadline) {
+V0063 long sleepNs = deadline - now;
+V0064 Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+V0065 }
+V0066 int value;
+V0067 boolean takeB = (HASH_NUM * r) / HASH_DEN == (HASH_NUM * (r + 1)) / HASH_DEN;
+V0068 if (takeB) {
+V0069 value = b[ib];
+V0070 ib = ib + 1;
+V0071 } else {
+V0072 value = a[ia];
+V0073 ia = ia + 1;
+V0074 }
+V0075 ctx.collect(Tuple2.of(TAIL + r, value));
+V0076 }
+V0077 }
+V0079 @Override
+V0080 public void cancel() {
+V0081 running = false;
+V0082 }
+V0083 }
+V0085 /**
+V0086 * Okno agregujace 30 nad przeplotem. Ogon wyjscia to 35 = 5 (przesuniecie)
+V0087 * + 30 (okno) -- autor musi zlozyc go recznie z dwoch skladnikow.
+V0088 */
+V0089 static class Aggregate extends RichFlatMapFunction<Tuple2<Long, Integer>, Tuple2<Long, Integer>> {
+V0090 private static final int WIN = 30;
+V0091 private int[] win;
+V0092 private int filled;
+V0094 @Override
+V0095 public void open(OpenContext ctx) {
+V0096 win = new int[WIN];
+V0097 filled = 0;
+V0098 }
+V0100 @Override
+V0101 public void flatMap(Tuple2<Long, Integer> in, Collector<Tuple2<Long, Integer>> out) {
+V0102 for (int k = WIN - 1; k > 0; k--) {
+V0103 win[k] = win[k - 1];
+V0104 }
+V0105 win[0] = in.f1;
+V0106 filled = filled + 1;
+V0107 if (filled < WIN) {
+V0108 return;
+V0109 }
+V0110 long sum = 0;
+V0111 for (int k = 0; k < WIN; k++) {
+V0112 sum += win[k];
+V0113 }
+V0114 out.collect(Tuple2.of(in.f0 + 1, (int) (sum / WIN)));
+V0115 }
+V0116 }
+V0185 DataStream<Tuple2<Long, Integer>> src = env.addSource(new MergedSource(a, b, slots));
+V0186 src.flatMap(new Aggregate()).addSink(new CanonicalSink(out, family, variant));
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -2,4 +2,4 @@
+-private static final long INTERVAL_NS = 66_666_667L;
+-private static final int UNIT_A = 3;
+-private static final int UNIT_B = 6;
+-private static final int TAIL = 5;
++private static final long INTERVAL_NS = 58_823_529L;
++private static final int HASH_NUM = 12;
++private static final int HASH_DEN = 17;
++private static final int TAIL = 21;
+@@ -17,2 +16,0 @@
+-long ua = 0;
+-long ub = 0;
+@@ -30 +28,2 @@
+-if (ub <= ua) {
++boolean takeB = (HASH_NUM * r) / HASH_DEN == (HASH_NUM * (r + 1)) / HASH_DEN;
++if (takeB) {
+@@ -33 +31,0 @@
+-ub = ub + UNIT_B;
+@@ -37 +34,0 @@
+-ua = ua + UNIT_A;

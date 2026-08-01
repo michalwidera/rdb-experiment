@@ -1,0 +1,2 @@
+verdict=FAIL range=[50,70) rows_compared=0
+first_mismatch: indeks 50, pozycja pola 0: base=('f3_out_0', '350', '0', '0') vs variant=('f3_out_0', '346', '0', '0')

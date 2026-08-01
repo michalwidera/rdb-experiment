@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F1_fir/flink/F1Fir.java
+@@ -2 +2 @@
+-private static final long INTERVAL_NS = 1_000_000L;
++private static final long INTERVAL_NS = 1_333_333L;

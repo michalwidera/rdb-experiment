@@ -1,0 +1,53 @@
+{
+  "D1": 9,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 170,
+      "base_to": "-",
+      "variant_from": 102,
+      "variant_to": 109,
+      "base": [],
+      "variant": [
+        "static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,",
+        "Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {",
+        "@Override",
+        "public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {",
+        "int v = in.f1;",
+        "return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);",
+        "}",
+        "}"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 171,
+      "base_to": 171,
+      "variant_from": 185,
+      "variant_to": 185,
+      "base": [
+        "src.flatMap(new Fir(coef)).addSink(new CanonicalSink(out, family, variant));"
+      ],
+      "variant": [
+        "src.flatMap(new Fir(coef)).map(new Monitor()).addSink(new CanonicalSink(out, family, variant));"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/flink/F1Fir.java\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M4/F1_fir/flink/F1Fir.java\n",
+    "@@ -58,0 +59,8 @@\n",
+    "+static class Monitor extends RichMapFunction<Tuple2<Long, Integer>,\n",
+    "+Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer>> {\n",
+    "+@Override\n",
+    "+public Tuple9<Long, Integer, Integer, Integer, Integer, Integer, Integer, Integer, Integer> map(Tuple2<Long, Integer> in) {\n",
+    "+int v = in.f1;\n",
+    "+return Tuple9.of(in.f0, v, v + 1, v + 2, v + 3, v + 4, v + 5, v + 6, v + 7);\n",
+    "+}\n",
+    "+}\n",
+    "@@ -60 +68 @@\n",
+    "-src.flatMap(new Fir(coef)).addSink(new CanonicalSink(out, family, variant));\n",
+    "+src.flatMap(new Fir(coef)).map(new Monitor()).addSink(new CanonicalSink(out, family, variant));\n"
+  ]
+}

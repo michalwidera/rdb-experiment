@@ -1,0 +1,44 @@
+# M1/F2/rql
+# BASE (znormalizowane)
+B0019 DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'
+B0020 DECLARE bp_coef INTEGER[25] STREAM bpf, 1 FILE 'bp_coef.txt'
+B0021 DECLARE d_coef INTEGER[5] STREAM df, 1 FILE 'd_coef.txt'
+B0023 SELECT ecg.MLII STREAM mlii FROM ecg
+B0025 SELECT * STREAM mlii_win FROM mlii@(1,25)
+B0026 SELECT mlii_win[_]*bpf[_] STREAM bp_acc FROM mlii_win+bpf
+B0027 SELECT bp_acc[0]/1000 STREAM bp_out FROM bp_acc.sumc
+B0029 SELECT * STREAM bp_win FROM bp_out@(1,5)
+B0030 SELECT bp_win[_]*df[_] STREAM d_acc FROM bp_win+df
+B0031 SELECT d_acc[0] STREAM d_out FROM d_acc.sumc
+B0033 SELECT d_out[0]*d_out[0]/1000 STREAM sq_out FROM d_out
+B0035 SELECT * STREAM mwi_win FROM sq_out@(1,30)
+B0036 SELECT mwi_win[0] STREAM mwi FROM mwi_win.avg
+B0038 SELECT * STREAM mwi_long FROM mwi@(1,180)
+B0039 SELECT mwi_long[0] STREAM mwi_thr FROM mwi_long.avg
+B0041 SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr
+# VARIANT (znormalizowane)
+V0019 DECLARE MLII INTEGER, V1 INTEGER STREAM ecg, 1/360 FILE 'rec205'
+V0020 DECLARE bp_coef INTEGER[25] STREAM bpf, 1 FILE 'bp_coef.txt'
+V0021 DECLARE d_coef INTEGER[5] STREAM df, 1 FILE 'd_coef.txt'
+V0023 SELECT ecg.MLII STREAM mlii FROM ecg
+V0024 SELECT ecg.V1 STREAM v1 FROM ecg
+V0026 SELECT * STREAM mlii_win FROM mlii@(1,25)
+V0027 SELECT mlii_win[_]*bpf[_] STREAM bp_acc FROM mlii_win+bpf
+V0028 SELECT bp_acc[0]/1000 STREAM bp_out FROM bp_acc.sumc
+V0030 SELECT * STREAM bp_win FROM bp_out@(1,5)
+V0031 SELECT bp_win[_]*df[_] STREAM d_acc FROM bp_win+df
+V0032 SELECT d_acc[0] STREAM d_out FROM d_acc.sumc
+V0034 SELECT d_out[0]*d_out[0]/1000 STREAM sq_out FROM d_out
+V0036 SELECT * STREAM mwi_win FROM sq_out@(1,30)
+V0037 SELECT mwi_win[0] STREAM mwi FROM mwi_win.avg
+V0039 SELECT * STREAM mwi_long FROM mwi@(1,180)
+V0040 SELECT mwi_long[0] STREAM mwi_thr FROM mwi_long.avg
+V0042 SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5, v1[0]-900 STREAM qrs_out FROM mlii+mwi+mwi_thr+v1
+# DIFF -U0 (bez automatycznych liczników)
+--- 
++++ 
+@@ -4,0 +5 @@
++SELECT ecg.V1 STREAM v1 FROM ecg
+@@ -16 +17 @@
+-SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5 STREAM qrs_out FROM mlii+mwi+mwi_thr
++SELECT mlii[0]-900, mwi[0]*5, (mwi[0]-mwi_thr[0]*2)*5, v1[0]-900 STREAM qrs_out FROM mlii+mwi+mwi_thr+v1

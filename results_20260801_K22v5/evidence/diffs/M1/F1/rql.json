@@ -1,0 +1,41 @@
+{
+  "D1": 3,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "insert",
+      "base_from": 17,
+      "base_to": "-",
+      "variant_from": 17,
+      "variant_to": 17,
+      "base": [],
+      "variant": [
+        "DECLARE x2 INTEGER STREAM channel2, 1/1000 FILE 'f1_source2.txt'"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 20,
+      "base_to": 20,
+      "variant_from": 21,
+      "variant_to": 22,
+      "base": [
+        "SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc"
+      ],
+      "variant": [
+        "SELECT acc[0]/26/1000 STREAM fir FROM acc.sumc",
+        "SELECT fir[0], channel2[0] STREAM f1_out FROM fir+channel2"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F1_fir/rql/core.rql\n",
+    "@@ -1,0 +2 @@\n",
+    "+DECLARE x2 INTEGER STREAM channel2, 1/1000 FILE 'f1_source2.txt'\n",
+    "@@ -5 +6,2 @@\n",
+    "-SELECT acc[0]/26/1000 STREAM f1_out FROM acc.sumc\n",
+    "+SELECT acc[0]/26/1000 STREAM fir FROM acc.sumc\n",
+    "+SELECT fir[0], channel2[0] STREAM f1_out FROM fir+channel2\n"
+  ]
+}

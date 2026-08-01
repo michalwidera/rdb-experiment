@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F3_multirate/python/core.py
+@@ -7 +7 @@
+-WIN = 30
++WIN = 45

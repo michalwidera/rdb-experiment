@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/rql/core.rql
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F1_fir/rql/core.rql
+@@ -1 +1 @@
+-DECLARE x INTEGER STREAM src, 1/1000 FILE 'f1_source.txt'
++DECLARE x INTEGER STREAM src, 1/750 FILE 'f1_source.txt'

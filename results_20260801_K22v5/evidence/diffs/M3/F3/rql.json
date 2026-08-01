@@ -1,0 +1,42 @@
+{
+  "D1": 2,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 15,
+      "base_to": 15,
+      "variant_from": 15,
+      "variant_to": 15,
+      "base": [
+        "DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'"
+      ],
+      "variant": [
+        "DECLARE value INTEGER STREAM A, 1/12 FILE 'f3_a.txt'"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 17,
+      "base_to": 17,
+      "variant_from": 17,
+      "variant_to": 17,
+      "base": [
+        "SELECT * STREAM f3_mix FROM (A>2)"
+      ],
+      "variant": [
+        "SELECT * STREAM f3_mix FROM (A>12)"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/rql/core.rql\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M3/F3_multirate/rql/core.rql\n",
+    "@@ -1 +1 @@\n",
+    "-DECLARE value INTEGER STREAM A, 1/10 FILE 'f3_a.txt'\n",
+    "+DECLARE value INTEGER STREAM A, 1/12 FILE 'f3_a.txt'\n",
+    "@@ -3 +3 @@\n",
+    "-SELECT * STREAM f3_mix FROM (A>2)\n",
+    "+SELECT * STREAM f3_mix FROM (A>12)\n"
+  ]
+}

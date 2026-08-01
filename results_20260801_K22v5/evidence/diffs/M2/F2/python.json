@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 43,
+      "base_to": 43,
+      "variant_from": 43,
+      "variant_to": 43,
+      "base": [
+        "WIN_MWI = 30"
+      ],
+      "variant": [
+        "WIN_MWI = 45"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F2_ecg/python/core.py\n",
+    "@@ -5 +5 @@\n",
+    "-WIN_MWI = 30\n",
+    "+WIN_MWI = 45\n"
+  ]
+}

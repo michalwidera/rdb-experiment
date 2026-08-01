@@ -1,0 +1,26 @@
+{
+  "D1": 1,
+  "D2": 1,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 37,
+      "base_to": 37,
+      "variant_from": 37,
+      "variant_to": 37,
+      "base": [
+        "WIN = 26"
+      ],
+      "variant": [
+        "WIN = 45"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/python/core.py\n",
+    "@@ -3 +3 @@\n",
+    "-WIN = 26\n",
+    "+WIN = 45\n"
+  ]
+}

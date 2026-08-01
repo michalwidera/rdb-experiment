@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F2_ecg/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F2_ecg/python/core.py
+@@ -5 +5 @@
+-WIN_MWI = 30
++WIN_MWI = 45

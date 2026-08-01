@@ -1,0 +1,5 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F1_fir/python/core.py
++++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M2/F1_fir/python/core.py
+@@ -3 +3 @@
+-WIN = 26
++WIN = 45

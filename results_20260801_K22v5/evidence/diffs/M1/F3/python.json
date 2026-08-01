@@ -1,0 +1,44 @@
+{
+  "D1": 3,
+  "D2": 2,
+  "sites": [
+    {
+      "tag": "replace",
+      "base_from": 45,
+      "base_to": 45,
+      "variant_from": 45,
+      "variant_to": 45,
+      "base": [
+        "def run(a_values, b_values, slots):"
+      ],
+      "variant": [
+        "def run(a_values, b_values, b_aux, slots):"
+      ]
+    },
+    {
+      "tag": "replace",
+      "base_from": 79,
+      "base_to": 79,
+      "variant_from": 79,
+      "variant_to": 80,
+      "base": [
+        "out.append((SHIFT + r + 1, avg(win)))"
+      ],
+      "variant": [
+        "logical_index = SHIFT + r + 1",
+        "out.append((logical_index, [avg(win), b_aux[(logical_index - 2) // 3]]))"
+      ]
+    }
+  ],
+  "diff": [
+    "--- /home/michal/github/rdb-experiment/results_20260801_K22/corpus/F3_multirate/python/core.py\n",
+    "+++ /home/michal/github/rdb-experiment/results_20260801_K22v5/tasks/M1/F3_multirate/python/core.py\n",
+    "@@ -1 +1 @@\n",
+    "-def run(a_values, b_values, slots):\n",
+    "+def run(a_values, b_values, b_aux, slots):\n",
+    "@@ -35 +35,2 @@\n",
+    "-out.append((SHIFT + r + 1, avg(win)))\n",
+    "+logical_index = SHIFT + r + 1\n",
+    "+out.append((logical_index, [avg(win), b_aux[(logical_index - 2) // 3]]))\n"
+  ]
+}
