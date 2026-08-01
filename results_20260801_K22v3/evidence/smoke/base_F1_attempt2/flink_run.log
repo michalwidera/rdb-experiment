@@ -1,0 +1,2 @@
+
+TIMEOUT po 90s: /usr/lib/jvm/java-17-openjdk-amd64/bin/java -cp /home/michal/.tmp/k22v2_base_F1_v2jqeqng/classes:/home/michal/opt/flink-2.3.0/lib/* F1Fir --source f1_source.txt --coef f1_coef.txt --slots 2056 --family F1 --variant base --out /home/michal/github/rdb-experiment/results_20260801_K22v3/evidence/smoke/base_F1/flink.csv

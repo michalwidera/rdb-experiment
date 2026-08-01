@@ -1,0 +1,101 @@
+:STORAGE	temp/
+A(1/10)	f3_a.txt
+	value: INTEGER
+B(1/5)	f3_b2.txt
+	value: INTEGER
+	aux: INTEGER
+B_value(1/5)
+	:- PUSH_STREAM(B)
+	B_value_0: INTEGER
+		PUSH_ID(B_value[0])
+STREAM_HASH_A_B_value(1/15)	tail=2
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B_value)
+	:- STREAM_HASH
+	value: INTEGER
+		PUSH_ID(STREAM_HASH_A_B_value[0])
+f3_mix(1/15)	tail=5
+	:- PUSH_STREAM(STREAM_HASH_A_B_value)
+	:- STREAM_TIMEMOVE(3)
+	value: INTEGER
+		PUSH_ID(f3_mix[0])
+f3_win(1/15)	tail=35
+	:- PUSH_STREAM(f3_mix)
+	:- STREAM_AGSE(1,30)
+	f3_mix_0: INTEGER
+		PUSH_ID(f3_win[0])
+	f3_mix_1: INTEGER
+		PUSH_ID(f3_win[1])
+	f3_mix_2: INTEGER
+		PUSH_ID(f3_win[2])
+	f3_mix_3: INTEGER
+		PUSH_ID(f3_win[3])
+	f3_mix_4: INTEGER
+		PUSH_ID(f3_win[4])
+	f3_mix_5: INTEGER
+		PUSH_ID(f3_win[5])
+	f3_mix_6: INTEGER
+		PUSH_ID(f3_win[6])
+	f3_mix_7: INTEGER
+		PUSH_ID(f3_win[7])
+	f3_mix_8: INTEGER
+		PUSH_ID(f3_win[8])
+	f3_mix_9: INTEGER
+		PUSH_ID(f3_win[9])
+	f3_mix_10: INTEGER
+		PUSH_ID(f3_win[10])
+	f3_mix_11: INTEGER
+		PUSH_ID(f3_win[11])
+	f3_mix_12: INTEGER
+		PUSH_ID(f3_win[12])
+	f3_mix_13: INTEGER
+		PUSH_ID(f3_win[13])
+	f3_mix_14: INTEGER
+		PUSH_ID(f3_win[14])
+	f3_mix_15: INTEGER
+		PUSH_ID(f3_win[15])
+	f3_mix_16: INTEGER
+		PUSH_ID(f3_win[16])
+	f3_mix_17: INTEGER
+		PUSH_ID(f3_win[17])
+	f3_mix_18: INTEGER
+		PUSH_ID(f3_win[18])
+	f3_mix_19: INTEGER
+		PUSH_ID(f3_win[19])
+	f3_mix_20: INTEGER
+		PUSH_ID(f3_win[20])
+	f3_mix_21: INTEGER
+		PUSH_ID(f3_win[21])
+	f3_mix_22: INTEGER
+		PUSH_ID(f3_win[22])
+	f3_mix_23: INTEGER
+		PUSH_ID(f3_win[23])
+	f3_mix_24: INTEGER
+		PUSH_ID(f3_win[24])
+	f3_mix_25: INTEGER
+		PUSH_ID(f3_win[25])
+	f3_mix_26: INTEGER
+		PUSH_ID(f3_win[26])
+	f3_mix_27: INTEGER
+		PUSH_ID(f3_win[27])
+	f3_mix_28: INTEGER
+		PUSH_ID(f3_win[28])
+	f3_mix_29: INTEGER
+		PUSH_ID(f3_win[29])
+f3_base(1/15)	tail=35
+	:- PUSH_STREAM(f3_win)
+	:- STREAM_AVG
+	f3_base_0: INTEGER
+		PUSH_ID(f3_base[0])
+B_aux(1/5)
+	:- PUSH_STREAM(B)
+	B_aux_0: INTEGER
+		PUSH_ID(B_aux[1])
+f3_out(1/15)	tail=35
+	:- PUSH_STREAM(f3_base)
+	:- PUSH_STREAM(B_aux)
+	:- STREAM_ADD
+	f3_out_0: INTEGER
+		PUSH_ID(f3_out[0])
+	f3_out_1: INTEGER
+		PUSH_ID(f3_out[1])

@@ -1,0 +1,11 @@
+--- /home/michal/github/rdb-experiment/results_20260801_K22v3/tasks/M3/F3_multirate/flink/F3Multirate.java
++++ execution-copy
+@@ -61,7 +61,7 @@
+       for (long r = 0; r < slots && running; r++) {
+         long deadline = t0 + r * INTERVAL_NS;
+         long now = System.nanoTime();
+-        if (now < deadline) {
++        if (false && now < deadline) {
+           long sleepNs = deadline - now;
+           Thread.sleep(sleepNs / 1_000_000L, (int) (sleepNs % 1_000_000L));
+         }
