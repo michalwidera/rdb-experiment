@@ -31,9 +31,9 @@ sys.path.insert(0, str(_p / "oracle"))
 from refsem import idiv, imul, sumc  # noqa: E402
 
 
+# CORE_BEGIN
 def run(samples, coef, slots):
     """Zwraca listę (logical_index, wartość) dla `slots` slotów."""
-    # CORE_BEGIN
     WIN = 26
     INTERVAL_NS = 1_000_000
     win = [0] * WIN

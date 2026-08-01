@@ -37,9 +37,9 @@ sys.path.insert(0, str(_p / "oracle"))
 from refsem import avg, idiv, imul, isub, sumc  # noqa: E402
 
 
+# CORE_BEGIN
 def run(mlii, v1, bp_coef, d_coef, slots):
     """Zwraca listę (logical_index, [pole0, pole1, pole2, pole3])."""
-    # CORE_BEGIN
     WIN_BP = 25
     WIN_D = 5
     WIN_MWI = 30

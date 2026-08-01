@@ -41,9 +41,9 @@ sys.path.insert(0, str(_p / "oracle"))
 from refsem import avg  # noqa: E402
 
 
+# CORE_BEGIN
 def run(a_values, b_values, slots):
     """Zwraca listę (logical_index, wartość) dla `slots` zdarzeń scalonych."""
-    # CORE_BEGIN
     UNIT_A = 3
     UNIT_B = 6
     INTERVAL_NS = 66_666_667

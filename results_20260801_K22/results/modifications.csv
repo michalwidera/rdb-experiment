@@ -1,4 +1,4 @@
 family,task,model,D1,D2,units_total,units_changed,test_fail_before,test_pass_after
 F2,M1,rql,2,2,16,qrs_out+v1,FAIL,PASS
-F2,M1,python,2,1,5,loop:1,FAIL,PASS
+F2,M1,python,4,2,6,def:run+loop:1,FAIL,PASS
 F2,M1,flink,8,2,18,Assemble.flatMap+topology,FAIL,PASS

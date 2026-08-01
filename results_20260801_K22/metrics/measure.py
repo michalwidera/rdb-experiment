@@ -377,7 +377,14 @@ def analyze_java(path, lines, ranges):
             hits.append(Hit("C4", f"JAVA-{rule}", path, i, raw))
         elif _tail_rule(text):
             hits.append(Hit("C5", f"JAVA-{_tail_rule(text)}", path, i, raw))
-        elif re.search(r"\bif\s*\(.*<\s*\w+\.length", text):
+        # Warunek rozgrzewki porownuje licznik ze STALA szerokoscia okna albo
+        # z dlugoscia bufora. Pierwsza wersja lapala wylacznie `< x.length`,
+        # wiec `if (filled < WIN)` i `if (in.f0 < WIN - 1)` nie byly liczone —
+        # Flink miał przez to C5=0 mimo jawnych licznikow rozgrzewki.
+        # `[A-Z][A-Z_0-9]+` celuje w stala pisana wielkimi literami i NIE lapie
+        # `< Integer.MIN_VALUE` (druga litera mala), ktore jest kontrola zakresu,
+        # a nie ogonem.
+        elif re.search(r"\bif\s*\(.*<\s*(?:[A-Z][A-Z_0-9]+\b|\w+\.length)", text):
             hits.append(Hit("C5", "JAVA-C5-01", path, i, raw))
         elif re.search(r"\b(for|while)\s*\(", text):
             rid = "JAVA-C1-02" if loop_depth_stack else "JAVA-C1-01"

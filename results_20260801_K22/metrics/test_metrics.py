@@ -106,6 +106,17 @@ expect_counts("Python: reczny ogon i faza (C5 > 0)", "python/tail_min.py",
 expect_counts("Java: minimalny operator stanowy", "flink/BandPassMin.java",
               {"C1": 1, "C2": 1, "C3": 1, "C7": 11})
 
+# Kontrola pozytywna JAVA-C5-01 (regresja po poprawce dlugu z K22c).
+# C5=2: `if (filled < WIN)` oraz `if (n < WIN - 1)`. Pierwsza wersja wzorca
+# lapala wylacznie `< x.length` i gubila oba, zanizajac C5 Flinka.
+# Trzeci `if` porownuje z `Integer.MIN_VALUE` — to kontrola ZAKRESU, nie ogon,
+# i NIE moze byc policzona; dlatego C5 wynosi 2, a nie 3.
+# C2=1: pole `filled` (stala `WIN` nigdy nie jest przypisywana ponownie).
+# C7=8: klasa, dwa pola, naglowek metody, `filled = filled + 1;`, dwa `return;`
+#       oraz `throw ...;`.
+expect_counts("Java: jawne warunki rozgrzewki (C5 > 0)", "flink/WarmupMin.java",
+              {"C2": 1, "C5": 2, "C7": 8})
+
 # --- aparatura musi zawodzic glosno ----------------------------------------
 expect_error("brak znacznikow CORE_BEGIN/CORE_END",
              lambda: measure_file(os.path.join(FIX, "bad/no_markers.py")))
