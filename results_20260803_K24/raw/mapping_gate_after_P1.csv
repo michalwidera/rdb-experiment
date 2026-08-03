@@ -80,3 +80,11 @@ plan,stratum,status,kinds,detail
 78,REDUCE,zgodne,,
 79,HC_NONINT,poza budżetem,,"rozpiętość 206/5, pętli 848"
 80,HC_SHIFT_UNDER_HASH,zgodne,,
+81,HC_INT,zgodne,,
+82,HC_SINGLE,zgodne,,
+83,HC_DEEP,poza budżetem,,"rozpiętość 225/2, pętli 2274"
+84,PASS,zgodne,,
+85,SHIFT,zgodne,,
+86,HASH,zgodne,,
+87,ADD,rozbieżność treści,ADD,"[{""node"": ""n0"", ""kind"": ""ADD"", ""issue"": ""inna treść"", ""index"": 3, ""expected"": [3000000, 3000001, 1000030, 1000031], ""got"": [3000010, 3000011, 1000030, 1000031]}, {""node"": ""n1"", ""kind"": ""ADD"", ""issue"": ""inna treść"", ""index"": 3, ""expected"": [3000000, 3000001, 1000030, 1000031], ""got"": [3000010, 3000011, 1000030, 1000031]}, {""node"": ""n2"", ""kind"": ""ADD"", ""issue"": ""inna treść"", ""index"": 3, ""expected"": [3000000, 3000001, 1000030, 1000031, 1000030, 1000031], ""got"": [3000010, 3000011, 1000030, 1000031, 1000030, 1000031]}]"
+88,SUB,zgodne,,
