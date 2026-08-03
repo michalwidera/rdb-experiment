@@ -11,3 +11,9 @@ __pycache__/
 # tak jak wywodzi ja lib/artifacts.py. Polityka kampanio-niezalezna. Decyzja 2026-07-31.
 # Wzorzec lapie i bezimienny 'raw.tar.gz' (worker), i nazwany '..._raw.tar.gz' (host).
 *raw.tar.gz
+
+# Katalogi robocze przebiegow K24: kampania i bramka odwzorowania zapisuja tam
+# query.rql, dane zrodlowe i artefakty binarne kazdego planu. To jest scratch
+# odtwarzalny z ziarna, nie artefakt badania — indeks SHA-256 obejmuje wylacznie
+# aparature i wyniki. Pierwszy commit wciagnal ~3900 takich plikow.
+results_*/work/
