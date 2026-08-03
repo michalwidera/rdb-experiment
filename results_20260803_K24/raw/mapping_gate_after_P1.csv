@@ -102,3 +102,12 @@ plan,stratum,status,kinds,detail
 100,HASH,zgodne,,
 101,ADD,zgodne,,
 102,SUB,poza budżetem,,"rozpiętość 320, pętli 6424"
+103,THETA,poza budżetem,,"rozpiętość 175/4, pętli 899"
+104,NTHETA,zgodne,,
+105,AGSE,poza budżetem,,"rozpiętość 50, pętli 1024"
+106,REDUCE,rozbieżność treści,REDUCE,"[{""node"": ""n0"", ""kind"": ""REDUCE"", ""issue"": ""inna treść"", ""index"": 0, ""expected"": [2000001, 2], ""got"": [1000000, 1]}, {""node"": ""n2"", ""kind"": ""REDUCE"", ""issue"": ""inna treść"", ""index"": 0, ""expected"": [2000001, 2], ""got"": [1000000, 1]}]"
+107,HC_NONINT,zgodne,,
+108,HC_SHIFT_UNDER_HASH,zgodne,,
+109,HC_INT,zgodne,,
+110,HC_SINGLE,zgodne,,
+111,HC_DEEP,poza budżetem,,"rozpiętość 379/4, pętli 1919"
