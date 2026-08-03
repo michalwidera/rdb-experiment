@@ -79,3 +79,4 @@ plan,stratum,status,kinds,detail
 77,AGSE,zgodne,,
 78,REDUCE,zgodne,,
 79,HC_NONINT,poza budżetem,,"rozpiętość 206/5, pętli 848"
+80,HC_SHIFT_UNDER_HASH,zgodne,,
