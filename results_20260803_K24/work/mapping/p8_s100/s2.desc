@@ -1,0 +1,5 @@
+{	INTEGER s2_f0
+	INTEGER s2_f1
+	REF "s2.txt"
+	TYPE TEXTSOURCE
+}
