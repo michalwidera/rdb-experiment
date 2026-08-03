@@ -283,3 +283,31 @@ Zgodnie z regułą §16.1 („każdy transfer wyniku do artykułu domykać
 synchronizacją wersji polskiej w tej samej sesji”) **nie naniesiono niczego na
 `main-debs.tex` ani `main-debs-pl.tex`** — transfer wymaga najpierw decyzji
 z punktów 1 i 2.
+
+## 9. Dopisek 2026-08-03 — naprawy silnika po tym raporcie
+
+Raport powyżej opisuje stan `5e3eb42` i **nie jest zmieniany**. Ta sekcja
+odnotowuje wyłącznie, co się z jego znaleziskami stało; pełny zapis jest
+w `paper-arXiv/debs/plan-naprawy-defektow.md` i w `research_plan.md` §K24
+(„KOREKTA H10a”).
+
+| Znalezisko z tego raportu | Stan |
+|---|---|
+| §6.1 ciche `NULL` w `-` (D1) | zamknięte |
+| §6.2 twarda awaria `revRead` (D2) | zamknięte |
+| §6.3 odwzorowanie `Σ` (D3) | zamknięte — wariant A, kod dostosowany do definicji |
+| §6.4 `avg` w polu `RATIONAL` (D4) | zamknięte |
+| §6.5 przepełnienie `rational<int>` (D5) | zamknięte |
+| §4.3 zaniżony ogon `@` i `+` | zamknięte — nowe postacie zamknięte, 100% zgodności z oracle'em w C1 |
+
+Skutek dla punktu 1 powyżej: **`@` i `+` przestały być klasami zaniżającymi
+i przeszły na „dokładna”**. Twierdzenie węższe z punktu 1 obejmuje teraz
+`PASS`, `>N`, redukcje, `@` i `+` jako dokładne, a `#`, `-`, `Θ` i `~Θ` jako
+oszacowanie z góry. Bramka odwzorowania na naprawionym silniku: **99 zgodnych,
+zero rozbieżności**, 13 planów poza budżetem aparatury.
+
+Materiał: `VERDICT_after_tails.md` (obok nietkniętego `VERDICT.md`),
+`raw/campaign_after_tails.csv`, `raw/mapping_gate_after_tails.csv`.
+Ostrzeżenie metodologiczne: nowe postacie wyprowadzono **znając oracle'a**
+i sprawdzono na tym samym korpusie — potwierdzenie poza próbą należy do K24r
+(dwa przebiegi, w tym nowe ziarno).

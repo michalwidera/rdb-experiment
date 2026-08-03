@@ -58,12 +58,25 @@ def subtract_tail(delta_source, delta_target, source_tail, source_declared):
     return _ceil((Fraction(source_tail) + phase) / ratio)
 
 
-def agse_tail(source_width, step, length, source_tail, own_slot=1):
+def agse_tail(source_width, step, length, source_tail):
+    """Postać po korekcie H10a: ceil((P + (1+W_src)*F)/step) - 1.
+
+    Poprzednia postać floor((W_src*F + P)/step) + 1 zgadzała się z granicą
+    zdarzeniową dla 31,8% węzłów `@` korpusu; ta zgadza się dla 100%.
+    """
     length_abs = abs(length)
     unit = gcd(source_width, step)
     phase_bound = ((length_abs - 1) // unit) * unit
-    numerator = source_tail * source_width + phase_bound
-    return _floor(Fraction(numerator, step)) + own_slot
+    numerator = phase_bound + (1 + source_tail) * source_width
+    return _ceil(Fraction(numerator, step)) - 1
+
+
+def add_tail(delta_source, delta_target, source_tail):
+    """Postać po korekcie H10a: ceil((1+W_src)*D_src/D_out) - 1 per składowa.
+
+    Poprzednia postać ceil(W_src*D_src/D_out) zgadzała się dla 42,3% węzłów `+`.
+    """
+    return _ceil(Fraction(1 + source_tail) * delta_source / delta_target) - 1
 
 
 def evaluate(plan, mutation=None, given_tails=None):
@@ -102,8 +115,8 @@ def evaluate(plan, mutation=None, given_tails=None):
                          to_slots(source_tails[second.name], second.delta, node.delta) + own)
         elif node.kind == ADD:
             second = children[1]
-            result = max(to_slots(w1, first.delta, node.delta),
-                         to_slots(source_tails[second.name], second.delta, node.delta))
+            result = max(add_tail(first.delta, node.delta, w1),
+                         add_tail(second.delta, node.delta, source_tails[second.name]))
         elif node.kind == THETA:
             result += 0 if mutation.get("theta_zero_own", False) else 1
         elif node.kind == NTHETA:
