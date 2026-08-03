@@ -1,4 +1,0 @@
-{	INTEGER s1_f0
-	REF "s1.txt"
-	TYPE TEXTSOURCE
-}
