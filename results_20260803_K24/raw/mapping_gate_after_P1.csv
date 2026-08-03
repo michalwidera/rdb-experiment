@@ -95,3 +95,10 @@ plan,stratum,status,kinds,detail
 93,HC_NONINT,poza budżetem,,"rozpiętość 500/9, pętli 1135"
 94,HC_SHIFT_UNDER_HASH,zgodne,,
 95,HC_INT,zgodne,,
+96,HC_SINGLE,zgodne,,
+97,HC_DEEP,rozbieżność treści,ADD,"[{""node"": ""n3"", ""kind"": ""ADD"", ""issue"": ""inna treść"", ""index"": 0, ""expected"": [3000000, 1000000, 1000010, 1000020], ""got"": [3000100, 0, 0, 0]}]"
+98,PASS,zgodne,,
+99,SHIFT,zgodne,,
+100,HASH,zgodne,,
+101,ADD,zgodne,,
+102,SUB,poza budżetem,,"rozpiętość 320, pętli 6424"
