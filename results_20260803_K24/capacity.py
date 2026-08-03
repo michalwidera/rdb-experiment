@@ -63,15 +63,26 @@ PROBE_SLOTS = 96          # sondowanie slotów konsumenta
 # skraca. Dla `#`, `Θ` i `~Θ` pozostaje nierozstrzygnięte i jest raportowane
 # osobno jako przewidywanie bez potwierdzenia (patrz sekcja "nierozstrzygnięte"
 # w wyniku skryptu), a nie jako defekt.
+#
+# `+` dołączył do listy potwierdzonych w etapie 4: po zmianie odwzorowania
+# bramka odwzorowania nie pokazała ani jednego rekordu all-NULL pochodzącego
+# ze składowej DEKLAROWANEJ. Dwa rekordy z NULL, które w bramce zostały,
+# pochodzą ze składowych OBLICZANYCH (plany 55 i 97) i są skutkiem zaniżonego
+# ogona `+`, nie pojemności — dla strumieni obliczanych limit pojemności nie
+# wiąże (patrz komentarz przy `binding` w main()).
 DECLARATION_PREFETCH = 2
-PREFETCH_CONFIRMED = (SUB, AGSE)
+PREFETCH_CONFIRMED = (SUB, AGSE, ADD)
 
 # Operatory faktycznie sięgające do historii składowej: `>N` przez fetchBack,
-# `#`, `&`, `%`, `-` przez fetchForward, `@` przez constructAgsePayload.
-# `+`, projekcja i redukcje czytają wyłącznie bieżący payload składowej
-# (dataModel.cpp:206-214, :259-266, :280-295), więc nie stawiają wymagań
-# pojemnościowych i nie wchodzą do tej analizy.
-HISTORY_READERS = (SHIFT, HASH, THETA, NTHETA, SUB, AGSE)
+# `#`, `&`, `%`, `-`, `+` przez fetchForward, `@` przez constructAgsePayload.
+# Projekcja i redukcje czytają wyłącznie bieżący payload składowej
+# (dataModel.cpp:206-214, :259-266), więc nie stawiają wymagań pojemnościowych
+# i nie wchodzą do tej analizy.
+#
+# `+` dołączył tu w etapie 4 (K24/P2 wariant A): odwzorowanie z Definicji sumy
+# strumieni adresuje składowe po indeksie ⌊n·Δout/Δsrc⌋ przez fetchForward,
+# zamiast brać bieżący payload obu składowych.
+HISTORY_READERS = (SHIFT, HASH, THETA, NTHETA, SUB, AGSE, ADD)
 
 
 def _floor(value):
@@ -160,7 +171,16 @@ def engine_capacity(plan, tails):
             else:
                 required = _ceil(Fraction(tails[node.name]) * ratio - tails[first.name])
             bump(first.name, max(required, 1))
-        elif node.kind in (ADD, REDUCE):
+        elif node.kind == ADD:
+            # K24/P2 wariant A: max_n [floor((n+1+Wout)*ratio) - floor(n*ratio)]
+            # = ceil((1+Wout)*ratio) dla ratio = Delta_out/Delta_src <= 1.
+            for child in children:
+                ratio = node.delta / child.delta
+                required = _ceil(Fraction(1 + tails[node.name]) * ratio) - tails[child.name]
+                if child.kind == SOURCE:
+                    required += DECLARATION_PREFETCH
+                bump(child.name, max(required, 1))
+        elif node.kind == REDUCE:
             continue
     return cap
 
