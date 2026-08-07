@@ -152,6 +152,21 @@ Warto odnotować, że zgłoszenie dotyczy klasy `-`, której K24d **nie** dotyka
 i że pojawiło się identycznie przed naprawami. To jest argument, że bramka
 mierzy tu własną długość przebiegu, a nie skutek zmiany ogona `#`.
 
+**Zestawienie „przed/po" plan po planie** (`compare_gates.py`, wobec bramek
+K24p):
+
+| Ziarno | Planów o zmienionym statusie | Regresje |
+|---|---:|---|
+| `20260804` | **0** | brak |
+| `20260807` | **0** | brak |
+
+To jest mocniejsze stwierdzenie niż same sumy. Obniżenie ogona `#` w 7,9%
+węzłów i ogona `>N` w 6,6% przesunęło moment emisji w setkach węzłów korpusu,
+a mimo to **żaden plan nie zmienił statusu wykonania**: to, co było zgodne,
+pozostało zgodne, a to, co nie mieściło się w budżecie, nadal się nie mieści.
+Zmiana dotknęła opóźnienia, nie treści — czyli dokładnie tej części relacji
+`Obs`, która ma prawo się zmieniać.
+
 ## 8. Wnioski dla artykułu (krok 3a)
 
 1. **Tabela klas ma iść z K24d, nie z K24p.** Sześć klas wspartych, trzy

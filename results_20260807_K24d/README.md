@@ -91,5 +91,19 @@ verdict.py       werdykt automatyczny per klasa operatora, osobno ogon i origin
 capacity.py      kontrola modelu pojemności historii
 run_member_b.py  ramię członu (b) na ziarnie 20260805
 run_mapping_gate.py  bramka odwzorowania — silnik uruchamiany naprawdę
+compare_gates.py     zestawienie bramek odwzorowania „przed/po" plan po planie
 raw/             surowe wyniki, jeden wiersz na obserwację węzłową
 ```
+
+## Czego K24d nie powtarza
+
+Dwie kontrole są **odziedziczone z K24p, nie wykonane ponownie**, i trzeba to
+czytać jako ograniczenie, a nie przeoczenie:
+
+* `check_agse_capacity.py` — celowana kontrola przewidywanego niedomiaru
+  pojemności `@` (55 planów, zero objawów w K24p). Reguły ogona i origin dla
+  `@` są nietknięte przez obie naprawy, a `capacity.py` przewiduje w K24d ten
+  sam niedomiar co w K24p (69,0% i 68,6% par), więc kontrola mierzyłaby to samo
+  na tym samym kodzie. Dla klas faktycznie zmienionych — `#` i `>N` —
+  `capacity.py` pokazuje **zerowy** niedomiar, więc nie ma tu czego sondować;
+* predeklaracja — odziedziczona z K24p w całości (ziarna, kryteria, progi).
