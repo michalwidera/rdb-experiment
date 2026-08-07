@@ -1,0 +1,17 @@
+-- Reproducer §6.1 REPORT.md: różnica o całkowitym ilorazie >= 3 daje strumień
+-- złożony wyłącznie z rekordów NULL. Iloraz 1 i 2 działają poprawnie.
+--
+--   xretractor query.rql -r -k -m 40
+--   (strumienie ratio1, ratio2 mają wartości; ratio3, ratio4 są całe NULL)
+--
+-- s0.txt: po jednej liczbie całkowitej w wierszu, co najmniej 200 wierszy.
+
+STORAGE '.'
+SUBSTRAT 'default'
+
+DECLARE s0_f0 INTEGER STREAM s0, 1/100 FILE 's0.txt'
+
+SELECT * STREAM ratio1 FROM s0-1/100
+SELECT * STREAM ratio2 FROM s0-2/100
+SELECT * STREAM ratio3 FROM s0-3/100
+SELECT * STREAM ratio4 FROM s0-4/100

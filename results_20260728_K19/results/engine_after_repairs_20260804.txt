@@ -1,0 +1,27 @@
+Test project /home/michal/github/retractordb/build/Debug
+      Start  45: it_agse1
+ 1/11 Test  #45: it_agse1 .........................   Passed    1.50 sec
+      Start  46: it_agse2
+ 2/11 Test  #46: it_agse2 .........................   Passed    0.51 sec
+      Start  47: it_agse3
+ 3/11 Test  #47: it_agse3 .........................   Passed    1.44 sec
+      Start  52: it_deinterleave_roundtrip-run
+ 4/11 Test  #52: it_deinterleave_roundtrip-run ....   Passed    1.52 sec
+      Start  73: it_k19_boundaries
+ 5/11 Test  #73: it_k19_boundaries ................   Passed    0.16 sec
+      Start 103: ut_compiler-setup
+ 6/11 Test #103: ut_compiler-setup ................   Passed    0.00 sec
+      Start 104: ut_compiler
+ 7/11 Test #104: ut_compiler ......................   Passed    4.58 sec
+      Start 109: ut_dataModel-setup
+ 8/11 Test #109: ut_dataModel-setup ...............   Passed    0.00 sec
+      Start 110: ut_dataModel
+ 9/11 Test #110: ut_dataModel .....................   Passed    5.80 sec
+      Start 163: ut_soperations-setup
+10/11 Test #163: ut_soperations-setup .............   Passed    0.00 sec
+      Start 164: ut_soperations
+11/11 Test #164: ut_soperations ...................   Passed    0.78 sec
+
+100% tests passed, 0 tests failed out of 11
+
+Total Test time (real) =  16.33 sec
