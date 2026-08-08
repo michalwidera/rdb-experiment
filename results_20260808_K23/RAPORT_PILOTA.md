@@ -164,6 +164,34 @@ predeklaracją.
 
 ---
 
+## 6a. Diagnostyka poza macierzą — wariant z nazwanymi strumieniami pośrednimi
+
+`pilot/diag_X_named.rql`, kompilowany wyłącznie w `DEFAULT`, **nie należy do
+rodziny ani do macierzy**. Odpowiada na pytanie z `SZKIC_D3.md` §3.3: co
+naprawdę robi plan, w którym autorzy **nazywają** strumienie pośrednie zamiast
+pisać złożenie inline. Dwaj autorzy, te same dwie postacie R1 co w W1 i W4.
+
+Wynik: `r1=2`, `r2=1`, **`STREAM_SELECT_* = 0`**.
+
+Trzy obserwacje, wszystkie istotne dla predeklaracji:
+
+1. **Nazwanie pośrednich kasuje warstwę R2 w całości.** Odcisk równoważności widzi
+   strumień publiczny jako `SOURCE{nazwa}`, a dwaj niezależni autorzy nadają różne
+   nazwy — żaden `STREAM_SELECT_*` nie powstaje. Potwierdza to odczyt kodu
+   z `SZKIC_RODZIN.md` §2 (U-3), teraz na działającym planie.
+2. **Warstwa R1 przeżywa nazwanie.** Oba `front1` i `przod2` zostały przepisane
+   na wspólny `STREAM_HASH_A_B` (analogicznie `C_D`), więc sam podplan
+   wieloczęstotliwościowy jest dzielony niezależnie od stylu zapisu. Mechanizm
+   badany przez **F9-R1 jest więc odporny na styl nazewniczy**; zależność od
+   postaci inline dotyczy wyłącznie warstwy R2 w F9-X.
+3. **Nazwanie przenosi materializację z substratów do strumieni publicznych.**
+   `front1`, `rear1`, `przod2`, `tyl2` to cztery **publiczne** strumienie
+   materializujące sygnał złożony. W metryce K23 publiczne zapisy są
+   **mianownikiem**, nie licznikiem — więc populacja mieszana (część autorów
+   nazywa, część nie) nie osłabia efektu liniowo, tylko **przenosi bajty
+   z licznika do mianownika** i zmienia to, co metryka mierzy. Predeklaracja musi
+   zamrozić postać zapisu dla wszystkich `Q` monitorów i powiedzieć to wprost.
+
 ## 7. Werdykt i następny krok
 
 **GO.** Warunki z §5 Kroku 3 spełnione dla każdej rodziny: `REWRITE_APPLIED`,
