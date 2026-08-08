@@ -3,22 +3,28 @@
 Kampania eksperymentu K23 z `paper-arXiv/debs/research_plan.md` §10.
 Plan wykonania: `paper-arXiv/debs/plan-realizacji-K23.md`.
 
-**Faza: P4 wykonana — pilot compile-only, werdykt GO (`RAPORT_PILOTA.md`);
-strona Flinka zbudowana (`flink/PLANY_FLINKA.md`).
-Predeklaracja NIEZAMROŻONA.**
-Dopóki `freeze_check.sh` nie przechodzi, **żaden pomiar kosztowy nie jest
-dozwolony** (STOP-5, bramka nieprzekraczalna: pomiar wykonany wcześniej
-unieważnia kampanię).
+**Faza: P5 wykonana — predeklaracja ZAMROŻONA (`PREDEKLARACJA.md`).**
+Od tego commitu pomiar kosztowy jest dozwolony **dopiero po** bramkach P6.
+Żadna pozycja predeklaracji nie może się zmienić bez **nowej predeklaracji
+i nowego katalogu wyników**; danych między iteracjami nie wolno łączyć (§10).
+
+`freeze_check.sh predeklaracja` **przechodzi** — do tej sesji kończył się kodem 2
+na znaczniku `@@CODE_SHA@@`.
 
 | Pole | Wartość |
 |---|---|
 | Gałąź | `experiment/20260808_K23` (zgłoszona jako STOP-3) |
-| SHA silnika | **niezamrożone**; kampania przypnie `1cfccf9` albo późniejszy |
-| Ostatni zamknięty STOP | STOP-3 (nazwa gałęzi zgłoszona, bez weta) |
-| Najbliższy STOP | **STOP-4** — pilot wykonany, werdykt GO zgłoszony; czeka na decyzję człowieka o wejściu w P5 |
-| Worker | niepotrzebny w tej fazie; nie budzony |
+| SHA silnika | **`1cfccf97e954025d5fb055f1cfd4f1fa9aff05e8`** — przypięte przez predeklarację |
+| Ostatni zamknięty STOP | **STOP-5** (predeklaracja zamknięta commitem); wcześniej STOP-0…STOP-4 |
+| Najbliższy STOP | **STOP-6** — rozbieżność na bramkach P6 wymaga klasyfikacji przez człowieka |
+| Worker | w P5 **nietykany**; potrzebny dopiero w P6 (`freeze_check.sh worker`) |
 | Rozstrzygnięcia człowieka | wszystkie zamknięte 2026-08-08: cztery z `SZKIC_RODZIN.md` §9, oba z `SZKIC_D3.md` §5.4, **D-2 = Flink biegnie na hoście** (worker wyłącznie RetractorDB) |
-| Następny krok | **P5 — predeklaracja** → STOP-5; strona Flinka **wykonana** 2026-08-08 (`flink/`) |
+| Rozstrzygnięcia P5 | trzy, zapisane jawnie w `PREDEKLARACJA.md` §0: defekt klasyfikatora, rate wobec kalibracji, wielkość rozdzielająca pracy per rodzina |
+| Następny krok | **P6 — bramki przed odczytem kosztów** (oracle, mutanty, liczniki, kontrole negatywne); pierwsza faza wymagająca workera |
+
+**Predeklaracja zastępuje szkice.** `SZKIC_RODZIN.md` i `SZKIC_D3.md` zostają
+nietknięte jako zapis stanu wiedzy sprzed rozstrzygnięć — obowiązuje
+`PREDEKLARACJA.md`.
 
 **Kolejność pilota (rozstrzygnięta):** trzy rodziny w jednym przebiegu
 compile-only, **F9-X czytany pierwszy jako bramka**, F9-R2 i F9-R1 jako kontekst
@@ -29,23 +35,44 @@ szukania rodziny zastępczej.
 
 | Plik | Co to jest | Stan |
 |---|---|---|
+| `PREDEKLARACJA.md` | **produkt P5** — zamrożenie w jednym dokumencie | **zamrożone 2026-08-08** |
+| `verdict.py` | **skrypt werdyktu**; progi są w nim stałymi, nie parametrami | gotowe, bramka `--selftest` 18/18 |
+| `gen_corpus.py`, `data/`, `rql/` | dane główne i kalibracyjne, 21 planów RQL | gotowe, bramka `--check` |
+| `gen_blocks.py`, `blocks.tsv` | zamrożona kolejność 1440 przebiegów | gotowe, bramka `--check` |
+| `mechanism_table.py` | klasyfikator substratów **po źródle nazwy**, nie po konwencji | gotowe, bramka `--gate` |
+| `gen_manifest.sh`, `manifest.sha256` | sumy 82 zamrożonych artefaktów | gotowe |
 | `profiles.tsv` | cztery profile ablacyjne K23 | gotowe, zweryfikowane wobec §10 |
 | `build_profiles.sh` | budowa i weryfikacja profili | przeniesiony z K6c, dwie zmiany (niżej) |
-| `freeze_check.sh` | bramka zamrożenia i proweniencji | **szkielet** — celowo nie przechodzi |
-| `SZKIC_RODZIN.md` | trzy rodziny: RQL, granice podplanu, przewidywane liczby mechanizmu | szkic do przeglądu |
-| `SZKIC_D3.md` | uzasadnienie scenariusza (motivational validity) | szkic do przeglądu |
-| `RAPORT_PILOTA.md` | **produkt P4** — wynik pilota compile-only, werdykt GO | gotowe |
-| `pilot/` | sześć planów RQL, dane miniaturowe, `run_pilot.sh`, `mechanism_table.py`, surowe listingi w `out/` | gotowe |
+| `freeze_check.sh` | bramka zamrożenia i proweniencji, trzy zakresy | **wypełniona**, zakres `predeklaracja` przechodzi |
+| `SZKIC_RODZIN.md` | trzy rodziny: RQL, granice podplanu, przewidywane liczby | zapis sprzed rozstrzygnięć — **zastąpiony** przez predeklarację |
+| `SZKIC_D3.md` | uzasadnienie scenariusza (motivational validity) | jw. |
+| `RAPORT_PILOTA.md` | **produkt P4** — wynik pilota compile-only, werdykt GO | gotowe, **nietykane** |
+| `pilot/` | sześć planów RQL, dane miniaturowe, `run_pilot.sh`, `mechanism_table.py`, surowe listingi w `out/` | zamknięty zapis P4, **nietykany** |
 | `flink/` | **strona Flinka**: kanoniczny serializer z bramką wobec kodu silnika, sześć jobów (3 rodziny × `natural`/`manual`), plany logiczny i fizyczny, instancje operatorów, krzywa po siatce `Q`; raport `flink/PLANY_FLINKA.md` | gotowe |
 
-Czego jeszcze nie ma: oracle’a wartości, mutantów, skryptu werdyktu, `matrix.tsv`,
-`analyze.py`, generatorów danych głównych. Wchodzą przed P5 i w P6.
+Czego jeszcze nie ma: oracle’a wartości i mutantów (P6), odczytu liczników po obu
+stronach (P6), skalibrowanego rate’u (P7, `ANEKS-1`), środowiska i binariów
+workera (P6, `ANEKS-2`/`ANEKS-3`) oraz raportu końcowego (P9).
 
-Zamrożenie obejmie **dwa środowiska**: host (JDK 17.0.19, Flink 2.3.0,
+**Uwaga do `pilot/mechanism_table.py`:** ma znany defekt (klasyfikuje publiczny
+strumień nazwany konwencją kompilatora jako substrat). Zostaje nietknięty jako
+artefakt pod zamkniętym raportem; do aparatury werdyktu wchodzi poprawiony
+`mechanism_table.py` w tym katalogu. Uzasadnienie: `PREDEKLARACJA.md` §0.1.
+
+Zamrożenie obejmuje **dwa środowiska**: host (JDK 17.0.19, Flink 2.3.0,
 jar SHA-256 `7c51cba8…`) i worker (kernel, governor, przypięcie CPU, cztery
-binaria profili). `freeze_check.sh` musi sprawdzać oba komplety. Komplet hosta
-odczytany maszynowo w `flink/results/flink_environment.tsv`; **uwaga: domyślne
-`java` na tym hoście to 25.0.3, więc JDK 17 musi być przypięty ścieżką.**
+binaria profili). `freeze_check.sh` sprawdza oba komplety, w osobnych zakresach:
+
+```bash
+./freeze_check.sh predeklaracja   # STOP-5 — host; workera NIE budzi
+./freeze_check.sh worker          # przed P6 — środowisko i binaria workera
+./freeze_check.sh macierz         # przed P8 — wszystko + skalibrowany rate
+```
+
+Zakres jest **obowiązkowy**: skrypt bez argumentu kończy się kodem 2. Komplet
+hosta odczytany maszynowo w `flink/results/flink_environment.tsv`; **uwaga:
+domyślne `java` na tym hoście to 25.0.3, więc JDK 17 jest przypięty ścieżką.**
+Komplet workera wchodzi aneksem w P6 — P5 workera nie budzi.
 
 ## Profile — mapowanie i jego weryfikacja
 
@@ -85,15 +112,22 @@ Nazwy zmiennych środowiskowych zostają `K6_*`. Reszta — w tym
 
 ## Kolejność zamrożenia (§10, nie wolno jej zmieniać)
 
-pilot compile-only → predeklaracja → testy oracle’a/liczników/mutantów →
+pilot compile-only → **predeklaracja** → testy oracle’a/liczników/mutantów →
 kalibracja bez porównania efektu → pełna macierz → automatyczny werdykt → raport.
+
+Wykonane do `predeklaracja` włącznie. Następny krok: bramki P6.
 
 ## Zakazy obowiązujące w tej fazie
 
-* nie mierzyć kosztu, nie używać danych głównych, nie dobierać progu ani rate’u;
-* nie uruchamiać pilota bez decyzji o szkicu rodzin (STOP-4 jest bramką GO/NO-GO);
-* nie uruchamiać jobów Flinka poza `--plan-only` — uruchomienie na zamrożonej liczbie
-  rekordów należy do P6;
+* nie otwierać kosztów przed klasyfikacją bramek P6 (STOP-6) — rozbieżność
+  przypisana silnikowi/profilowi to brak wsparcia H9 w rodzinie, a defekt
+  aparatury to nowa iteracja **bez łączenia danych**;
+* nie dobierać rate’u „pod wynik”: kalibracja biegnie na osobnych danych
+  i **nie porównuje** `DEFAULT` z ablacją (`ANEKS-1` musi to potwierdzić);
+* nie zmieniać żadnej pozycji `PREDEKLARACJA.md` — zmiana wymaga **nowej
+  predeklaracji i nowego katalogu**;
+* nie podmieniać rodziny po otwarciu wyników;
 * w `retractordb` asystent nie commituje i nie pushuje;
 * przed serią na workerze: governor `performance`, praca odczepiona, wzorce
-  `[x]retractor` w `pgrep`/`pkill`.
+  `[x]retractor` w `pgrep`/`pkill` (jeden wyciekły proces wywrócił kiedyś
+  22 kolejne testy, a każdy przechodził w izolacji).
