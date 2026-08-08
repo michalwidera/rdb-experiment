@@ -50,6 +50,7 @@ public class F9XJob {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
     PlanDump.reset();
+    PlanDump.costlyProgram(K23Ops.TOKENS_SQRT_TWO_TERMS);
 
     // Lozysko przednie (A, B) i tylne (C, D); w kazdej parze ten sam uklad taktow co w F9-R1.
     DataStream<Tuple3<Long, Long, Integer>> srcA =
@@ -68,11 +69,12 @@ public class F9XJob {
       DataStream<Tuple3<Long, Long, Integer>> sharedCD = hashThenShift(srcC, srcD, "shared", "CD");
       DataStream<Tuple3<Long, Long, Integer>> select = PlanDump.sub(
           sharedAB.connect(sharedCD).process(new K23Ops.AddFeature(true, K23Ops.AddFeature.Program.TWO_PAIRS)),
-          "shared:select", PlanDump.UNIT_150);
+          "shared:select", PlanDump.UNIT_150, K23Ops.TOKENS_SQRT_TWO_TERMS, PlanDump.Kind.ADD);
       for (int i = 0; i < q; i++) {
         String monitor = "m" + (i + 1);
         SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stage = select.map(new K23Ops.MonitorOutput());
-        sink(PlanDump.pub(stage, monitor), monitor, sinkDir);
+        sink(PlanDump.pub(stage, monitor, PlanDump.UNIT_150, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP),
+            monitor, sinkDir);
       }
     } else {
       for (int i = 0; i < q; i++) {
@@ -94,7 +96,8 @@ public class F9XJob {
         // Szczytowy wezel `+` razem z programem Sqrt(A*C + B*D) — etap PUBLICZNY monitora.
         SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stage = left.connect(right)
             .process(new K23Ops.AddFeature(false, K23Ops.AddFeature.Program.TWO_PAIRS));
-        sink(PlanDump.pub(stage, monitor + "_" + form), monitor, sinkDir);
+        sink(PlanDump.pub(stage, monitor + "_" + form, PlanDump.UNIT_150, K23Ops.TOKENS_SQRT_TWO_TERMS,
+            PlanDump.Kind.ADD), monitor, sinkDir);
       }
     }
 
@@ -110,12 +113,14 @@ public class F9XJob {
       DataStream<Tuple3<Long, Long, Integer>> fast, DataStream<Tuple3<Long, Long, Integer>> slow, String owner,
       String pair) {
     DataStream<Tuple3<Long, Long, Integer>> shiftedFast = PlanDump.sub(
-        fast.map(new K23Ops.Shift(SHIFT_FAST, true, false)), owner + ":shift_" + pair.charAt(0), PlanDump.UNIT_100);
+        fast.map(new K23Ops.Shift(SHIFT_FAST, true, false)), owner + ":shift_" + pair.charAt(0),
+        PlanDump.UNIT_100, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP);
     DataStream<Tuple3<Long, Long, Integer>> shiftedSlow = PlanDump.sub(
-        slow.map(new K23Ops.Shift(SHIFT_SLOW, true, false)), owner + ":shift_" + pair.charAt(1), PlanDump.UNIT_50);
+        slow.map(new K23Ops.Shift(SHIFT_SLOW, true, false)), owner + ":shift_" + pair.charAt(1),
+        PlanDump.UNIT_50, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP);
     return PlanDump.sub(
         shiftedFast.connect(shiftedSlow).process(new K23Ops.Interleave(UNIT_STEP_FAST, UNIT_STEP_SLOW, true, false)),
-        owner + ":hash_" + pair, PlanDump.UNIT_150);
+        owner + ":hash_" + pair, PlanDump.UNIT_150, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.INTERLEAVE);
   }
 
   /** Postac "przeplataj, potem skompensuj wspolne opoznienie": ((X#Y)>3). Dwa wezly substratu. */
@@ -124,9 +129,10 @@ public class F9XJob {
       String pair) {
     DataStream<Tuple3<Long, Long, Integer>> hash = PlanDump.sub(
         fast.connect(slow).process(new K23Ops.Interleave(UNIT_STEP_FAST, UNIT_STEP_SLOW, true, false)),
-        owner + ":hash_" + pair, PlanDump.UNIT_150);
+        owner + ":hash_" + pair, PlanDump.UNIT_150, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.INTERLEAVE);
     return PlanDump.sub(
-        hash.map(new K23Ops.Shift(SHIFT_HASH, true, false)), owner + ":shift_" + pair, PlanDump.UNIT_150);
+        hash.map(new K23Ops.Shift(SHIFT_HASH, true, false)), owner + ":shift_" + pair, PlanDump.UNIT_150,
+        K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP);
   }
 
   private static void sink(DataStream<Tuple3<Long, Long, Integer>> stage, String monitor, String sinkDir) {

@@ -46,6 +46,26 @@ public final class K23Ops {
   /** Kanoniczna szerokosc rekordu, ta sama po obu stronach porownania. */
   public static final long W = Canon.recordBytes(RECORD);
 
+  //
+  // ─── Dlugosci programow pol — ODCZYTANE ze zrzutow planu pilota ──────────────────────────
+  //
+  // Zrodlo: `pilot/out/DEFAULT_F9_{R1,R2,X}_Q8.plan` i `NO_R1_NO_R2_F9_X_Q8.plan`, czyli
+  // `RDB_BENCH_PLAN=1 xretractor -c`. Liczby NIE sa oszacowane — sa zliczeniem tokenow
+  // wypisanych przez kompilator. Parytet dlugosci programu po obu stronach jest warunkiem
+  // porownywalnosci licznika `evalTokens`.
+
+  /** `PUSH_ID(x[0])` — monitor czytajacy gotowy substrat oraz programy substratow `>`/`#`. */
+  public static final int TOKENS_PASSTHROUGH = 1;
+
+  /** `PUSH_ID, PUSH_ID, MULTIPLY` — program pola monitora F9-R1 (`m[0]*m[0]`). */
+  public static final int TOKENS_SQUARE = 3;
+
+  /**
+   * `PUSH_ID, PUSH_ID, MULTIPLY, PUSH_ID, PUSH_ID, MULTIPLY, ADD, CALL(Sqrt)` — KOSZTOWNY
+   * program pol rodzin F9-R2 i F9-X, w planie widoczny jako program `STREAM_SELECT_*`.
+   */
+  public static final int TOKENS_SQRT_TWO_TERMS = 8;
+
   /**
    * Krotka transportowa: (slot, wartosc, tag).
    *
@@ -119,6 +139,7 @@ public final class K23Ops {
       if (substrate) {
         Canon.onSubstrateWrite(W);
       }
+      Canon.onEval(square ? TOKENS_SQUARE : TOKENS_PASSTHROUGH);
       long value = square ? in.f1 * in.f1 : in.f1;
       return rec(in.f0 + slots, value, in.f2);
     }
@@ -194,6 +215,8 @@ public final class K23Ops {
         if (substrate) {
           Canon.onSubstrateWrite(W);
         }
+        Canon.onHashPick();
+        Canon.onEval(square ? TOKENS_SQUARE : TOKENS_PASSTHROUGH);
         long value = square ? next.f1 * next.f1 : next.f1;
         out.collect(rec(outSlot++, value, next.f2));
       }
@@ -279,6 +302,8 @@ public final class K23Ops {
       if (substrate) {
         Canon.onSubstrateWrite(W);
       }
+      Canon.onAddMerge();
+      Canon.onEval(TOKENS_SQRT_TWO_TERMS);
       out.collect(rec(slot, value, TAG_A));
     }
   }
@@ -290,6 +315,7 @@ public final class K23Ops {
   public static class MonitorOutput extends RichMapFunction<Tuple3<Long, Long, Integer>, Tuple3<Long, Long, Integer>> {
     @Override
     public Tuple3<Long, Long, Integer> map(Tuple3<Long, Long, Integer> in) {
+      Canon.onEval(TOKENS_PASSTHROUGH);
       return in;
     }
   }

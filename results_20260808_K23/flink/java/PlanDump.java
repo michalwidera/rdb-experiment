@@ -49,26 +49,57 @@ public final class PlanDump {
   public static final double UNIT_100 = 2.0 / 3.0;
   public static final double UNIT_50 = 1.0 / 3.0;
 
-  private static final Map<String, Double> registry = new LinkedHashMap<>();
+  /** Rodzaj operatora — decyduje, ktory licznik pracy on obsluguje. */
+  public enum Kind {
+    /** Jedno wejscie, jeden rekord na rekord: przesuniecie albo przejscie monitora. */
+    MAP,
+    /** Przeplot `#`: jeden wybor skladowej na rekord wyjscia (`hashPicks`). */
+    INTERLEAVE,
+    /** Suma strumieni `+`: jedno scalenie payloadow na rekord wyjscia (`addMerges`). */
+    ADD
+  }
+
+  /** Wpis rejestru: rola w metryce, waga w jednostkach `n_h`, dlugosc programu, rodzaj. */
+  private record Node(boolean substrate, double unitWeight, int programTokens, Kind kind) {}
+
+  private static final Map<String, Node> registry = new LinkedHashMap<>();
+  private static int costlyProgramTokens = 0;
+
+  /**
+   * Deklaruje, ktory program rodziny jest KOSZTOWNY — jego liczba wykonan na slot jest
+   * wielkoscia odporna na ciecie obliczenia na operatory, wiec to ona niesie twierdzenie
+   * o zduplikowanej pracy (§10, metryki mechanizmu). Wartosc w tokenach, odczytana ze zrzutu
+   * planu pilota (`K23Ops.TOKENS_*`).
+   */
+  public static void costlyProgram(int tokens) {
+    costlyProgramTokens = tokens;
+  }
 
   /** Zglasza operator jako wezel badanego podplanu i nadaje mu nazwe wg konwencji. */
   public static DataStream<Tuple3<Long, Long, Integer>> sub(
-      SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stream, String name, double unitWeight) {
-    String full = "SUB:" + name;
-    if (registry.put(full, unitWeight) != null) {
-      throw new IllegalStateException("duplikat nazwy wezla podplanu: " + full);
+      SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stream, String name, double unitWeight,
+      int programTokens, Kind kind) {
+    return register("SUB:" + name, stream, new Node(true, unitWeight, programTokens, kind));
+  }
+
+  /** Etap publiczny monitora — mianownik metryki bajtowej, ale JEGO PRACA sie liczy. */
+  public static DataStream<Tuple3<Long, Long, Integer>> pub(
+      SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stream, String monitor, double unitWeight,
+      int programTokens, Kind kind) {
+    return register("PUB:" + monitor, stream, new Node(false, unitWeight, programTokens, kind));
+  }
+
+  private static DataStream<Tuple3<Long, Long, Integer>> register(
+      String full, SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stream, Node node) {
+    if (registry.put(full, node) != null) {
+      throw new IllegalStateException("duplikat nazwy operatora: " + full);
     }
     return stream.name(full).uid(full);
   }
 
-  /** Etap publiczny monitora — mianownik, poza licznikiem. */
-  public static DataStream<Tuple3<Long, Long, Integer>> pub(
-      SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stream, String monitor) {
-    return stream.name("PUB:" + monitor).uid("PUB:" + monitor);
-  }
-
   public static void reset() {
     registry.clear();
+    costlyProgramTokens = 0;
   }
 
   /**
@@ -120,20 +151,17 @@ public final class PlanDump {
     Files.writeString(plans.resolve(stem + "_physical.tsv"), physical.toString(), StandardCharsets.UTF_8);
 
     // 4. Zliczenie instancji badanego podplanu + kontrola rejestru wobec grafu.
-    Map<String, Double> fromGraph = new TreeMap<>();
+    Map<String, Node> fromGraph = new TreeMap<>();
     int sinks = 0;
-    int publicStages = 0;
     int sources = 0;
     for (StreamNode node : nodes) {
       String name = stripFlinkPrefix(node.getOperatorName());
-      if (name.startsWith("SUB:")) {
-        Double weight = registry.get(name);
-        if (weight == null) {
-          throw new IllegalStateException("wezel podplanu poza rejestrem wag: " + name);
+      if (name.startsWith("SUB:") || name.startsWith("PUB:")) {
+        Node entry = registry.get(name);
+        if (entry == null) {
+          throw new IllegalStateException("operator poza rejestrem: " + name);
         }
-        fromGraph.put(name, weight);
-      } else if (name.startsWith("PUB:")) {
-        publicStages++;
+        fromGraph.put(name, entry);
       } else if (name.startsWith("SINK:")) {
         sinks++;
       } else if (name.startsWith("SRC:")) {
@@ -143,23 +171,64 @@ public final class PlanDump {
       }
     }
     if (fromGraph.size() != registry.size()) {
-      throw new IllegalStateException(
-          "rejestr wag ma " + registry.size() + " wezlow, graf " + fromGraph.size());
+      throw new IllegalStateException("rejestr ma " + registry.size() + " operatorow, graf " + fromGraph.size());
+    }
+    if (costlyProgramTokens == 0) {
+      throw new IllegalStateException("job nie zadeklarowal kosztownego programu (PlanDump.costlyProgram)");
     }
 
+    // 5. Praca przewidziana z planu. Wielkosci wazone rate'em, w jednostkach `n_h`, tak samo
+    //    jak bajty: `evalCalls` na jednostke slotow przeplotu. To jest arytmetyka planu —
+    //    licznik runtime (Canon.workReport) czyta te same liczby w P6.
+    int subplanNodes = 0;
+    int publicStages = 0;
     double units = 0;
-    StringBuilder breakdown = new StringBuilder("family\tvariant\tq\tnode\tunit_weight\n");
-    for (Map.Entry<String, Double> e : fromGraph.entrySet()) {
-      units += e.getValue();
-      breakdown.append(family).append('\t').append(variant).append('\t').append(q).append('\t')
-          .append(e.getKey()).append('\t').append(String.format(java.util.Locale.ROOT, "%.4f", e.getValue())).append('\n');
+    double evalCalls = 0;
+    double evalTokens = 0;
+    double costlyEvals = 0;
+    double hashPicks = 0;
+    double addMerges = 0;
+    StringBuilder breakdown = new StringBuilder("family\tvariant\tq\tnode\trole\tunit_weight\tprogram_tokens\tkind\n");
+    for (Map.Entry<String, Node> e : fromGraph.entrySet()) {
+      Node n = e.getValue();
+      if (n.substrate()) {
+        subplanNodes++;
+        units += n.unitWeight();
+      } else {
+        publicStages++;
+      }
+      evalCalls += n.unitWeight();
+      evalTokens += n.unitWeight() * n.programTokens();
+      if (n.programTokens() == costlyProgramTokens) {
+        costlyEvals += n.unitWeight();
+      }
+      if (n.kind() == Kind.INTERLEAVE) {
+        hashPicks += n.unitWeight();
+      }
+      if (n.kind() == Kind.ADD) {
+        addMerges += n.unitWeight();
+      }
+      breakdown.append(family).append('\t').append(variant).append('\t').append(q).append('\t').append(e.getKey())
+          .append('\t').append(n.substrate() ? "badany_podplan" : "publiczny_monitor").append('\t')
+          .append(fmt(n.unitWeight())).append('\t').append(n.programTokens()).append('\t').append(n.kind()).append('\n');
     }
     Files.writeString(plans.resolve(stem + "_subplan_nodes.tsv"), breakdown.toString(), StandardCharsets.UTF_8);
 
-    String row = String.join("\t", family, variant, String.valueOf(q), String.valueOf(fromGraph.size()),
-        String.format(java.util.Locale.ROOT, "%.4f", units), String.valueOf(publicStages), String.valueOf(sinks),
-        String.valueOf(sources), String.valueOf(nodes.size()), String.valueOf(vertices),
-        String.valueOf(K23Ops.W)) + "\n";
+    Path work = results.resolve("flink_work.tsv");
+    if (!Files.exists(work)) {
+      Files.writeString(work,
+          "family\tvariant\tq\tcostly_program_tokens\tcostly_evals_nh\teval_calls_nh\teval_tokens_nh"
+              + "\thash_picks_nh\tadd_merges_nh\n",
+          StandardCharsets.UTF_8);
+    }
+    Files.writeString(work,
+        String.join("\t", family, variant, String.valueOf(q), String.valueOf(costlyProgramTokens), fmt(costlyEvals),
+            fmt(evalCalls), fmt(evalTokens), fmt(hashPicks), fmt(addMerges)) + "\n",
+        StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.APPEND);
+
+    String row = String.join("\t", family, variant, String.valueOf(q), String.valueOf(subplanNodes), fmt(units),
+        String.valueOf(publicStages), String.valueOf(sinks), String.valueOf(sources), String.valueOf(nodes.size()),
+        String.valueOf(vertices), String.valueOf(K23Ops.W)) + "\n";
     Path summary = results.resolve("flink_instances.tsv");
     if (!Files.exists(summary)) {
       Files.writeString(summary,
@@ -169,9 +238,14 @@ public final class PlanDump {
     }
     Files.writeString(summary, row, StandardCharsets.UTF_8, java.nio.file.StandardOpenOption.APPEND);
 
-    System.out.println(family + " " + variant + " Q=" + q + ": wezly podplanu=" + fromGraph.size() + " jednostki="
-        + String.format(java.util.Locale.ROOT, "%.4f", units) + " etapy publiczne=" + publicStages + " sinki=" + sinks + " zrodla=" + sources
-        + " wezly grafu=" + nodes.size() + " wierzcholki JobGraphu=" + vertices);
+    System.out.println(family + " " + variant + " Q=" + q + ": wezly podplanu=" + subplanNodes + " jednostki="
+        + fmt(units) + " kosztowny_program/slot=" + fmt(costlyEvals) + " eval_tokeny=" + fmt(evalTokens)
+        + " etapy publiczne=" + publicStages + " sinki=" + sinks + " zrodla=" + sources + " wezly grafu="
+        + nodes.size() + " wierzcholki JobGraphu=" + vertices);
+  }
+
+  private static String fmt(double value) {
+    return String.format(java.util.Locale.ROOT, "%.4f", value);
   }
 
   /**

@@ -136,6 +136,10 @@ public final class Canon {
   private static long substrateWrites = 0;
   private static long substrateBytes = 0;
   private static long publicAppends = 0;
+  private static long evalCalls = 0;
+  private static long evalTokens = 0;
+  private static long hashPicks = 0;
+  private static long addMerges = 0;
 
   /** Zapis rekordu przez operator NALEZACY do badanego podplanu (licznik metryki). */
   public static synchronized void onSubstrateWrite(long canonicalBytes) {
@@ -151,5 +155,44 @@ public final class Canon {
   public static synchronized String logicalReport() {
     return "LOGICAL substrat: zapisy=" + substrateWrites + " bajty=" + substrateBytes + "  publiczne: rekordy="
         + publicAppends;
+  }
+
+  //
+  // ─── Liczniki pracy (odpowiednik probe::workCounters) ──────────────────────────────────
+  //
+  // Powod, dla ktorego te liczniki istnieja OBOK bajtowych: metryka bajtowa mierzy
+  // MATERIALIZACJE, nie prace. Autor Flinka, ktory scali caly monitor w jeden operator,
+  // nie materializuje ani jednego rekordu posredniego — i licznik bajtow pokazalby zero,
+  // mimo Q-krotnie zduplikowanego obliczenia. Liczba WYKONAN programu pol na slot jest
+  // odporna na dowolne ciecie obliczenia na operatory, wiec to ona niesie twierdzenie
+  // o zduplikowanej pracy. §10 wymienia ja wsrod metryk mechanizmu
+  // („wykonan kosztownego programu na slot").
+  //
+  // Semantyka przeniesiona 1:1 z silnika (`expressionEvaluator::eval`, probe.cc):
+  //   * JEDNO wywolanie na wykonanie programu, nie na wezel planu — ten sam program
+  //     wykonuje sie raz na slot na KAZDY strumien, ktory go uzywa;
+  //   * `tokens` = dlugosc programu (`program.size()`), odczytana z zrzutu planu pilota,
+  //     nie oszacowana (patrz K23Ops.TOKENS_*).
+  // Licznikow okna agregatu (agse*) nie ma, bo zadna z trzech rodzin K23 nie ma agregatu.
+
+  /** Wykonanie programu pola: liczba WYKONANYCH tokenow, nie rozmiar programu w planie. */
+  public static synchronized void onEval(long tokens) {
+    evalCalls++;
+    evalTokens += tokens;
+  }
+
+  /** Wybor skladowej przeplotu w tym slocie (odpowiednik STREAM_HASH). */
+  public static synchronized void onHashPick() {
+    hashPicks++;
+  }
+
+  /** Scalenie payloadow sumy strumieni (odpowiednik STREAM_ADD). */
+  public static synchronized void onAddMerge() {
+    addMerges++;
+  }
+
+  public static synchronized String workReport() {
+    return "WORK eval: wywolania=" + evalCalls + " tokeny=" + evalTokens + "  hash: wybory=" + hashPicks
+        + "  add: scalenia=" + addMerges;
   }
 }

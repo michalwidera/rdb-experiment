@@ -40,6 +40,10 @@ public class F9R1Job {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
     PlanDump.reset();
+    // W F9-R1 kosztowny program pol to `m[0]*m[0]` (3 tokeny). Uwaga metodyczna: ta rodzina
+    // NIE rozdziela sie liczba wykonan programu — kazdy monitor liczy swoj kwadrat w kazdym
+    // profilu. Wielkoscia rozdzielajaca jest tu praca przeplotu (`hash_picks_nh`).
+    PlanDump.costlyProgram(K23Ops.TOKENS_SQUARE);
 
     // A = drgania 100 Hz, B = prad 50 Hz — na tym samym czasie logicznym B ma polowe rekordow.
     DataStream<Tuple3<Long, Long, Integer>> srcA =
@@ -51,7 +55,7 @@ public class F9R1Job {
       // Inzynier ZAUWAZA tozsamosc (A>2)#(B>1) = (A#B)>3 i wydziela jeden wspolny przeplot.
       DataStream<Tuple3<Long, Long, Integer>> hash = PlanDump.sub(
           srcA.connect(srcB).process(new K23Ops.Interleave(UNIT_STEP_A, UNIT_STEP_B, true, false)),
-          "shared:hash", PlanDump.UNIT_150);
+          "shared:hash", PlanDump.UNIT_150, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.INTERLEAVE);
       for (int i = 0; i < q; i++) {
         publicShiftSquare(hash, i, sinkDir);
       }
@@ -62,17 +66,20 @@ public class F9R1Job {
         if (form == 0) {
           // P1: wlasne substraty przesuniec, przeplot w etapie publicznym monitora.
           DataStream<Tuple3<Long, Long, Integer>> shiftedA = PlanDump.sub(
-              srcA.map(new K23Ops.Shift(SHIFT_A, true, false)), monitor + ":shift_A", PlanDump.UNIT_100);
+              srcA.map(new K23Ops.Shift(SHIFT_A, true, false)), monitor + ":shift_A", PlanDump.UNIT_100,
+              K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP);
           DataStream<Tuple3<Long, Long, Integer>> shiftedB = PlanDump.sub(
-              srcB.map(new K23Ops.Shift(SHIFT_B, true, false)), monitor + ":shift_B", PlanDump.UNIT_50);
+              srcB.map(new K23Ops.Shift(SHIFT_B, true, false)), monitor + ":shift_B", PlanDump.UNIT_50,
+              K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP);
           SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stage = shiftedA.connect(shiftedB)
               .process(new K23Ops.Interleave(UNIT_STEP_A, UNIT_STEP_B, false, true));
-          sink(PlanDump.pub(stage, monitor), monitor, sinkDir);
+          sink(PlanDump.pub(stage, monitor, PlanDump.UNIT_150, K23Ops.TOKENS_SQUARE,
+              PlanDump.Kind.INTERLEAVE), monitor, sinkDir);
         } else {
           // P2: wlasny substrat przeplotu, przesuniecie laczne w etapie publicznym.
           DataStream<Tuple3<Long, Long, Integer>> hash = PlanDump.sub(
               srcA.connect(srcB).process(new K23Ops.Interleave(UNIT_STEP_A, UNIT_STEP_B, true, false)),
-              monitor + ":hash", PlanDump.UNIT_150);
+              monitor + ":hash", PlanDump.UNIT_150, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.INTERLEAVE);
           publicShiftSquare(hash, i, sinkDir);
         }
       }
@@ -89,7 +96,8 @@ public class F9R1Job {
     String monitor = "m" + (i + 1);
     SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stage =
         hash.map(new K23Ops.Shift(SHIFT_HASH, false, true));
-    sink(PlanDump.pub(stage, monitor), monitor, sinkDir);
+    sink(PlanDump.pub(stage, monitor, PlanDump.UNIT_150, K23Ops.TOKENS_SQUARE, PlanDump.Kind.MAP), monitor,
+        sinkDir);
   }
 
   private static void sink(DataStream<Tuple3<Long, Long, Integer>> stage, String monitor, String sinkDir) {

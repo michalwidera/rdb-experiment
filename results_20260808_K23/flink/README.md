@@ -13,16 +13,16 @@ kosztowy jest zabroniony; joby budują się i zapisują plany, ale nie są uruch
 | `env_inventory.sh` | krok A — inwentarz środowiska hosta → `results/flink_environment.tsv` |
 | `canonical_vectors.tsv` | 18 wektorów o znanej odpowiedzi; wspólne wejście obu stron serializera |
 | `oracle/canonical_oracle.cc`, `oracle/build_oracle.sh` | oracle C++ — linkuje `rdb::probe::canonicalRecordBytes` z `librdb.a`, bez własnej implementacji i bez zmian w `retractordb` |
-| `java/Canon.java` | kanoniczny serializer po stronie Flinka + liczniki logicznych zapisów |
+| `java/Canon.java` | kanoniczny serializer po stronie Flinka + liczniki logicznych zapisów i **pracy** (port `probe::workCounters`) |
 | `java/CanonTest.java` | bramka kroku B: Java wobec kolumny oczekiwanej **i** wobec oracle'a |
 | `java/K23Ops.java` | operatory wspólne trzech rodzin; tu mieszka zamrożona granulacja podplanu |
 | `java/PlanDump.java` | krok D — plan logiczny, plan fizyczny, zliczenie instancji, kontrola konwencji nazw |
 | `java/F9R2Job.java`, `java/F9R1Job.java`, `java/F9XJob.java` | trzy rodziny, każda z wariantem `natural` i `manual` |
 | `build_flink.sh` | kompilacja przypiętym JDK 17 wobec przypiętego Flinka 2.3.0 (bez Mavena) |
 | `dump_plans.sh` | krok D dla komórki rozstrzygającej `Q = 8` → `plans/`, `results/flink_instances.tsv` |
-| `sweep_q.sh` | krzywa flinkowa po siatce `Q = {1,2,4,8,16,32}` → `results/flink_q_curve.tsv` |
+| `sweep_q.sh` | krzywe flinkowe po siatce `Q = {1,2,4,8,16,32}` → `results/flink_q_curve.tsv`, `results/flink_work_q_curve.tsv` |
 | `plans/` | plany logiczny (JSON i TSV) oraz fizyczny szesciu jobów przy `Q = 8`, plus rozbicie węzłów podplanu |
-| `results/` | `flink_environment.tsv`, `canonical_oracle_cpp.tsv`, `flink_instances.tsv`, `flink_q_curve.tsv` |
+| `results/` | `flink_environment.tsv`, `canonical_oracle_cpp.tsv`, `flink_instances.tsv`, `flink_work.tsv`, `flink_q_curve.tsv`, `flink_work_q_curve.tsv` |
 
 Czego tu nie ma: `build/` (produkt `javac`, poza gitem), plików per-`Q` z przemiatania
 (zachowany jest wyłącznie materiał planistyczny komórki `Q = 8`).
@@ -40,3 +40,9 @@ Czego tu nie ma: `build/` (produkt `javac`, poza gitem), plików per-`Q` z przem
   który pojedynczy monitor policzyłby w swoim etapie publicznym.
 * **Łańcuchowanie operatorów Flinka nie jest współdzieleniem podplanu.** Cztery identyczne
   operatory trafiają do jednego wierzchołka JobGraphu, ale zostają czterema instancjami.
+* **W F9-R1 program pola NIE jest wielkością rozdzielającą** — daje 0,0%, bo każdy monitor
+  liczy swój kwadrat w każdym wariancie. Rozdziela tam praca przeplotu (`hashPicks`).
+  Predeklaracja musi nazwać wielkość rozdzielającą **per rodzina**.
+* **Metryka bajtowa mierzy materializację, nie pracę.** Autor, który scali cały monitor
+  w jeden operator, nie materializuje nic — dlatego obok bajtów stoi licznik pracy, odporny
+  na dowolne cięcie obliczenia na operatory (§4.3 raportu).

@@ -30,4 +30,7 @@ done
 
 mkdir -p "$HERE/results"
 cp "$WORK/results/flink_instances.tsv" "$HERE/results/flink_q_curve.tsv"
+cp "$WORK/results/flink_work.tsv" "$HERE/results/flink_work_q_curve.tsv"
 column -t -s $'\t' "$HERE/results/flink_q_curve.tsv"
+echo "---"
+column -t -s $'\t' "$HERE/results/flink_work_q_curve.tsv"

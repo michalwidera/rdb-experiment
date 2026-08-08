@@ -229,6 +229,78 @@ prawa się scalić):
   przy `Q ≤ 2` i skrypt werdyktu nie może go tam tak czytać. Progu to nie dotyczy —
   `MANUAL` do progu nie wchodzi, a komórką rozstrzygającą jest `Q = 8`.
 
+### 4.3. Praca — wielkość odporna na cięcie obliczenia na operatory
+
+**Po co ta tabela istnieje.** Metryka bajtowa mierzy **materializację, nie pracę**, i ma jedną
+konkretną słabość: autor Flinka, który scali cały monitor w **jeden** operator, nie
+materializuje ani jednego rekordu pośredniego — licznik bajtów pokazałby wtedy zero, mimo
+`Q`-krotnie zduplikowanego obliczenia. Granulacja z §3.1 broni się przed tym zamrożeniem,
+ale zamrożenie jest **decyzją**, a recenzent może zaproponować własną. Liczba **wykonań
+programu na slot** takiej słabości nie ma: jest niezmienna wobec dowolnego cięcia obliczenia
+na operatory. §10 wymienia ją wśród metryk mechanizmu („wykonań kosztownego programu na
+slot").
+
+Liczniki są portem `probe::workCounters` (`evalCalls`, `evalTokens`, `hashPicks`, `addMerges`),
+z semantyką przeniesioną z `expressionEvaluator::eval` — **jedno wywołanie na wykonanie
+programu**, nie na węzeł planu. Długości programów są **odczytane ze zrzutów planu pilota**
+(`pilot/out/DEFAULT_F9_*.plan`), nie oszacowane:
+
+| Program | Tokeny | Gdzie w planie |
+|---|---|---|
+| `PUSH_ID, PUSH_ID, MULTIPLY, PUSH_ID, PUSH_ID, MULTIPLY, ADD, CALL(Sqrt)` | **8** | program `STREAM_SELECT_*` (F9-R2, F9-X) — **kosztowny** |
+| `PUSH_ID, PUSH_ID, MULTIPLY` | **3** | program pola monitora F9-R1 (`m[0]*m[0]`) |
+| `PUSH_ID(x[0])` | **1** | substraty `>`/`#` oraz monitor czytający gotowy substrat |
+
+Wynik przy `Q = 8` (`results/flink_work.tsv`, jednostki `n_h` — na jednostkę slotów przeplotu):
+
+| Rodzina | Wielkość | `FLINK_NATURAL` | `FLINK_MANUAL` | Redukcja |
+|---|---|---|---|---|
+| F9-R2 | wykonania kosztownego programu | 5,333 | 0,667 | **87,5%** |
+| F9-R2 | scalenia `+` (`addMerges`) | 5,333 | 0,667 | **87,5%** |
+| F9-R1 | wykonania programu pola (3 tokeny) | 8,000 | 8,000 | **0,0%** |
+| F9-R1 | wybory przeplotu (`hashPicks`) | 8,000 | 1,000 | **87,5%** |
+| F9-X | wykonania kosztownego programu | 8,000 | 1,000 | **87,5%** |
+| F9-X | wybory przeplotu | 16,000 | 2,000 | **87,5%** |
+| F9-X | scalenia `+` | 8,000 | 1,000 | **87,5%** |
+
+Trzy rzeczy z tej tabeli wchodzą do predeklaracji.
+
+**1. W F9-R1 program pola NIE jest wielkością rozdzielającą — daje 0,0%.** Każdy z ośmiu
+monitorów liczy swój kwadrat w każdym profilu i w każdym wariancie; współdzielenie dotyczy
+tam przeplotu, nie arytmetyki. Gdyby zdanie §10 „wykonań kosztownego programu na slot”
+czytać literalnie jako program **pola**, F9-R1 wyglądałaby na rodzinę bez efektu. Dlatego
+predeklaracja musi **nazwać per rodzinę**, która wielkość pracy jest rozdzielająca:
+`hashPicks` dla F9-R1, wykonania programu 8-tokenowego dla F9-R2 i F9-X. Bez tego zapisu
+skrypt werdyktu miałby jedną regułę na trzy różne mechanizmy.
+
+**2. Parytet z planem RetractorDB, sprawdzony na zrzutach pilota.** `FLINK_MANUAL` musi mieć
+tyle wykonań kosztownego programu, co `DEFAULT`, bo to ta sama liczba instancji:
+
+| Rodzina | `DEFAULT` (ze zrzutu planu) | `FLINK_MANUAL` (z tego kroku) |
+|---|---|---|
+| F9-R2 | 1 × program 8-tokenowy przy 1/100 = **0,667** | **0,667** ✅ |
+| F9-X | 1 × program 8-tokenowy przy 1/150 = **1,000** | **1,000** ✅ |
+
+W F9-X komórka kontrolna `NO_R1_NO_R2` ma cztery węzły `STREAM_SELECT_m{1,3,5,7}`, czyli
+**4,000** — zgodnie z liczbą postaci. Wielkości po stronie RetractorDB czyta się w P6
+licznikiem `RDB_BENCH_WORK`, który **już istnieje**; tutaj są wyprowadzone ze zrzutu planu
+i służą jako kontrola parytetu, nie jako wynik.
+
+**3. Kontrola `Q = 1` na pracy jest czysta we wszystkich trzech rodzinach** —
+`NATURAL` = `MANUAL` co do cyfry, także w F9-X (1,000 wobec 1,000). Metryka pracy **nie ma**
+inwersji, którą metryka bajtowa ma w F9-X przy `Q = 1` (§4.2). To jest argument za tym, żeby
+w raporcie i w artykule wielkość pracy stała **przy** liczbie bajtowej, a nie zamiast niej:
+obie mierzą ten sam mechanizm, ale mają różne słabości i różne miejsca, w których się psują.
+
+Krzywa pracy po całej siatce `Q`: `results/flink_work_q_curve.tsv` — liniowa w `Q` dla
+`NATURAL`, płaska dla `MANUAL` (poza F9-R1, gdzie program pola rośnie w obu, a płaskie są
+`hashPicks`).
+
+**Zastrzeżenie.** Liczby wyżej są **arytmetyką planu** — `PlanDump` sumuje wagi rate’u
+operatorów odczytanych ze zbudowanego grafu. Licznik runtime (`Canon.workReport()`) jest
+wpięty w te same operatory i czyta te same wielkości, ale jego odczyt należy do P6, po
+zamrożeniu liczby rekordów.
+
 ---
 
 ## 5. Zestawienie z tabelą `RAPORT_PILOTA.md` §2 (krok E)
@@ -295,7 +367,12 @@ Domknięte:
    badanego podplanu, przy tej samej granicy co po stronie RetractorDB.
 4. **Drugi członek progu** (redukcja wobec `FLINK_NATURAL`) ma przewidywane wartości dla
    wszystkich trzech rodzin — pilot miał tylko pierwszy.
-5. **Ryzyko osi kampanii sprawdzone i niezmaterializowane**: naturalny Flink nie scala nawet
+5. **Metryka pracy po stronie Flinka** (§4.3) — port `probe::workCounters` z długościami
+   programów odczytanymi ze zrzutów planu pilota. Domyka słabość metryki bajtowej: liczba
+   wykonań programu na slot jest niezmienna wobec cięcia obliczenia na operatory, więc
+   twierdzenie o zduplikowanej pracy **nie zależy** od granulacji z §3.1. Redukcja 87,5%
+   w każdej z trzech rodzin — pod warunkiem sięgnięcia po właściwą wielkość w F9-R1.
+6. **Ryzyko osi kampanii sprawdzone i niezmaterializowane**: naturalny Flink nie scala nawet
    podplanów identycznych składniowo.
 
 Otwarte, wchodzi do P5/P6:
@@ -303,9 +380,10 @@ Otwarte, wchodzi do P5/P6:
 1. **Zamrożona liczba rekordów** wspólna dla obu maszyn — parametr `--slots` istnieje,
    wartość zamraża predeklaracja (§10: „Flink wykonuje tę samą liczbę rekordów"). Do tego
    czasu jednostki bajtowe są arytmetyką, nie odczytem licznika.
-2. **Odczyt licznika `LOGICAL` po stronie Flinka** — `Canon.onSubstrateWrite` /
-   `onPublicAppend` są wpięte i raportują na końcu przebiegu, ale uruchomienie jobów należy
-   do P6, po zamrożeniu.
+2. **Odczyt liczników `LOGICAL` i `WORK` po stronie Flinka** — `Canon.onSubstrateWrite`,
+   `onPublicAppend`, `onEval`, `onHashPick`, `onAddMerge` są wpięte i raportują na końcu
+   przebiegu, ale uruchomienie jobów należy do P6, po zamrożeniu. Po stronie RetractorDB
+   odpowiednik (`RDB_BENCH_WORK`) już istnieje i nie wymaga dobudowy.
 3. **Wspólny oracle wartości** (≥2000 rekordów każdego nazwanego wyniku po ogonie) i mutanty.
 4. **`mechanism_table.py` nadal klasyfikuje publiczny strumień nazwany konwencją kompilatora
    jako substrat** (`RAPORT_PILOTA.md` §6 pkt 4). Dotyczy wyłącznie planów kontrolnych
@@ -325,6 +403,8 @@ Do zamrożenia w predeklaracji z tego kroku, punkt po punkcie:
 | dwa środowiska, oba komplety w `freeze_check.sh` | §1 |
 | poprawka wiersza „87,5% dla każdej rodziny" → 84,4% dla F9-X | §5.1 |
 | `FLINK_MANUAL` nie jest best case przy `Q ≤ 2` | §4.2 |
+| **która wielkość pracy jest rozdzielająca w danej rodzinie** — `hashPicks` dla F9-R1, program 8-tokenowy dla F9-R2 i F9-X | §4.3 |
+| długości programów (8 / 3 / 1 tokenów) odczytane ze zrzutów planu pilota | §4.3 |
 
 ---
 
@@ -339,7 +419,7 @@ bash build_flink.sh                  # kompilacja szesciu jobow przypietym JDK 1
 /usr/lib/jvm/java-17-openjdk-amd64/bin/java -cp build CanonTest \
     canonical_vectors.tsv results/canonical_oracle_cpp.tsv   # krok B, bramka 18/18
 bash dump_plans.sh                   # krok D, Q=8 -> plans/ + results/flink_instances.tsv
-bash sweep_q.sh                      # krzywa po siatce Q -> results/flink_q_curve.tsv
+bash sweep_q.sh                      # krzywe po siatce Q -> results/flink_{q_curve,work_q_curve}.tsv
 ```
 
 Żadne z tych poleceń nie uruchamia joba i nie mierzy kosztu.

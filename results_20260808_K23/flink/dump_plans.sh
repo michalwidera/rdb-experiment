@@ -14,7 +14,9 @@ Q="${Q:-8}"
 
 CP="$HERE/build:$(find "$FLINK_HOME/lib" -maxdepth 1 -name '*.jar' | sort | paste -sd:)"
 
-rm -f "$HERE/results/flink_instances.tsv"
+# Oba zestawienia sa dopisywane przez PlanDump, wiec oba musza zniknac przed przebiegiem —
+# inaczej kolejne uruchomienie skryptu dokleja wiersze do poprzednich.
+rm -f "$HERE/results/flink_instances.tsv" "$HERE/results/flink_work.tsv"
 rm -rf "$HERE/plans"
 mkdir -p "$HERE/plans"
 

@@ -37,6 +37,7 @@ public class F9R2Job {
     StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
     env.setParallelism(1);
     PlanDump.reset();
+    PlanDump.costlyProgram(K23Ops.TOKENS_SQRT_TWO_TERMS);
 
     // Oba zrodla 100 Hz — os X i os Y tego samego czujnika drgan (SZKIC_RODZIN.md §4.1).
     DataStream<Tuple3<Long, Long, Integer>> srcA =
@@ -48,7 +49,7 @@ public class F9R2Job {
       // Inzynier ZAUWAZA rownowaznosc A+B i B+A i wydziela wspolny wezel recznie.
       DataStream<Tuple3<Long, Long, Integer>> shared = PlanDump.sub(
           srcA.connect(srcB).process(new K23Ops.AddFeature(true, K23Ops.AddFeature.Program.TWO_AXIS)),
-          "shared:select", PlanDump.UNIT_100);
+          "shared:select", PlanDump.UNIT_100, K23Ops.TOKENS_SQRT_TWO_TERMS, PlanDump.Kind.ADD);
       for (int i = 0; i < q; i++) {
         monitorTail(shared, i, sinkDir);
       }
@@ -59,7 +60,8 @@ public class F9R2Job {
         DataStream<Tuple3<Long, Long, Integer>> right = (form == 0) ? srcB : srcA;
         DataStream<Tuple3<Long, Long, Integer>> own = PlanDump.sub(
             left.connect(right).process(new K23Ops.AddFeature(true, K23Ops.AddFeature.Program.TWO_AXIS)),
-            "m" + (i + 1) + ":select_P" + (form + 1), PlanDump.UNIT_100);
+            "m" + (i + 1) + ":select_P" + (form + 1), PlanDump.UNIT_100, K23Ops.TOKENS_SQRT_TWO_TERMS,
+            PlanDump.Kind.ADD);
         monitorTail(own, i, sinkDir);
       }
     }
@@ -75,7 +77,7 @@ public class F9R2Job {
   private static void monitorTail(DataStream<Tuple3<Long, Long, Integer>> upstream, int i, String sinkDir) {
     String monitor = "m" + (i + 1);
     SingleOutputStreamOperator<Tuple3<Long, Long, Integer>> stage = upstream.map(new K23Ops.MonitorOutput());
-    PlanDump.pub(stage, monitor)
+    PlanDump.pub(stage, monitor, PlanDump.UNIT_100, K23Ops.TOKENS_PASSTHROUGH, PlanDump.Kind.MAP)
         .addSink(new K23Ops.MonitorSink(sinkDir + "/f9r2_" + monitor + ".csv", monitor))
         .name("SINK:" + monitor).uid("SINK:" + monitor);
   }
