@@ -47,6 +47,23 @@ i sam deklaruje w komentarzu, że sprawdza **kompilację**. `ctest` przechodził
 przewracają się identycznie, więc nie jest to rozbieżność między `DEFAULT`
 a ablacją. Skutek wg §8.3: zatrzymanie iteracji, nowa wersja, bez łączenia danych.
 
+**Skąd wzięła się poprawka.** Defektu nie znalazł przegląd kodu ani żadna bramka
+silnika — ujawnił go **zestaw testowy zbudowany pod K23**, który zapisał wywołania
+funkcji w postaci nieobsługiwanej przez silnik, czyli w tej, którą dokumentuje
+gramatyka. Skoro RQL taki zapis przyjmuje, to nie korpus jest zły. Przepisanie
+korpusu pod to, co silnik akceptuje dziś, byłoby tańsze, ale zostawiłoby
+**kolejny utajony problem** w tym samym miejscu: następny autor napisze `Sqrt(x)`
+znowu, bo tak stoi w gramatyce, i znowu dowie się o tym dopiero w wykonaniu. Wybór
+autorski jest odwrotny — wyposażyć silnik w rozpoznawanie nazw funkcji niezależnie
+od wielkości liter i zamknąć **klasę** usterki, a nie pojedynczy przypadek.
+
+**Zakres skutku poprawki: semantyka zapytań, nie przetwarzanie danych.** Zmiana
+dotyka wyłącznie dopasowania nazwy w miejscu wywołania funkcji — nie rusza ścieżki
+danych, arytmetyki, rachunku ogonów ani żadnego przejścia optymalizatora. Rozszerza
+zbiór **zapisów zapytania**, które silnik wykonuje; nie zmienia wyniku żadnego
+zapytania, które działało wcześniej (`ctest` 186/186 w Debug i Release, 183 testy
+sprzed poprawki bez zmiany wyniku).
+
 Wybrane wyjście: **naprawa silnika**. Korpus, dane, siatka `Q`, profile, progi,
 ziarna, kolejność bloków, `verdict.py` i strona Flinka są **poprawne** i przechodzą
 do iteracji następnej bez zmian merytorycznych; zmienia się wyłącznie przypięcie
