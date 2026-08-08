@@ -3,7 +3,8 @@
 Kampania eksperymentu K23 z `paper-arXiv/debs/research_plan.md` §10.
 Plan wykonania: `paper-arXiv/debs/plan-realizacji-K23.md`.
 
-**Faza: P4 wykonana — pilot compile-only, werdykt GO (`RAPORT_PILOTA.md`).
+**Faza: P4 wykonana — pilot compile-only, werdykt GO (`RAPORT_PILOTA.md`);
+strona Flinka zbudowana (`flink/PLANY_FLINKA.md`).
 Predeklaracja NIEZAMROŻONA.**
 Dopóki `freeze_check.sh` nie przechodzi, **żaden pomiar kosztowy nie jest
 dozwolony** (STOP-5, bramka nieprzekraczalna: pomiar wykonany wcześniej
@@ -17,7 +18,7 @@ unieważnia kampanię).
 | Najbliższy STOP | **STOP-4** — pilot wykonany, werdykt GO zgłoszony; czeka na decyzję człowieka o wejściu w P5 |
 | Worker | niepotrzebny w tej fazie; nie budzony |
 | Rozstrzygnięcia człowieka | wszystkie zamknięte 2026-08-08: cztery z `SZKIC_RODZIN.md` §9, oba z `SZKIC_D3.md` §5.4, **D-2 = Flink biegnie na hoście** (worker wyłącznie RetractorDB) |
-| Następny krok | strona Flinka na hoście, potem **P5 — predeklaracja**; prompt startowy w planie realizacji §9.2b |
+| Następny krok | **P5 — predeklaracja** → STOP-5; strona Flinka **wykonana** 2026-08-08 (`flink/`) |
 
 **Kolejność pilota (rozstrzygnięta):** trzy rodziny w jednym przebiegu
 compile-only, **F9-X czytany pierwszy jako bramka**, F9-R2 i F9-R1 jako kontekst
@@ -35,14 +36,16 @@ szukania rodziny zastępczej.
 | `SZKIC_D3.md` | uzasadnienie scenariusza (motivational validity) | szkic do przeglądu |
 | `RAPORT_PILOTA.md` | **produkt P4** — wynik pilota compile-only, werdykt GO | gotowe |
 | `pilot/` | sześć planów RQL, dane miniaturowe, `run_pilot.sh`, `mechanism_table.py`, surowe listingi w `out/` | gotowe |
+| `flink/` | **strona Flinka**: kanoniczny serializer z bramką wobec kodu silnika, sześć jobów (3 rodziny × `natural`/`manual`), plany logiczny i fizyczny, instancje operatorów, krzywa po siatce `Q`; raport `flink/PLANY_FLINKA.md` | gotowe |
 
-Czego jeszcze nie ma: **strony Flinka** (D-2 rozstrzygnięte — biegnie na hoście,
-więc jest to następny krok), oracle’a, mutantów, skryptu werdyktu, `matrix.tsv`,
+Czego jeszcze nie ma: oracle’a wartości, mutantów, skryptu werdyktu, `matrix.tsv`,
 `analyze.py`, generatorów danych głównych. Wchodzą przed P5 i w P6.
 
 Zamrożenie obejmie **dwa środowiska**: host (JDK 17.0.19, Flink 2.3.0,
 jar SHA-256 `7c51cba8…`) i worker (kernel, governor, przypięcie CPU, cztery
-binaria profili). `freeze_check.sh` musi sprawdzać oba komplety.
+binaria profili). `freeze_check.sh` musi sprawdzać oba komplety. Komplet hosta
+odczytany maszynowo w `flink/results/flink_environment.tsv`; **uwaga: domyślne
+`java` na tym hoście to 25.0.3, więc JDK 17 musi być przypięty ścieżką.**
 
 ## Profile — mapowanie i jego weryfikacja
 
@@ -89,7 +92,8 @@ kalibracja bez porównania efektu → pełna macierz → automatyczny werdykt �
 
 * nie mierzyć kosztu, nie używać danych głównych, nie dobierać progu ani rate’u;
 * nie uruchamiać pilota bez decyzji o szkicu rodzin (STOP-4 jest bramką GO/NO-GO);
-* nie ruszać strony Flinka (**D-2**);
+* nie uruchamiać jobów Flinka poza `--plan-only` — uruchomienie na zamrożonej liczbie
+  rekordów należy do P6;
 * w `retractordb` asystent nie commituje i nie pushuje;
 * przed serią na workerze: governor `performance`, praca odczepiona, wzorce
   `[x]retractor` w `pgrep`/`pkill`.

@@ -17,3 +17,10 @@ __pycache__/
 # odtwarzalny z ziarna, nie artefakt badania — indeks SHA-256 obejmuje wylacznie
 # aparature i wyniki. Pierwszy commit wciagnal ~3900 takich plikow.
 results_*/work/
+
+# Produkty kompilacji strony Flinka K23: klasy javac i zlinkowany oracle C++.
+# Oba sa odtwarzalne jednym poleceniem (flink/build_flink.sh, flink/oracle/build_oracle.sh),
+# a oracle linkuje librdb.a z drzewa budowy retractordb, wiec jest binarium hosta,
+# nie artefaktem badania. Proweniencja: SHA-256 oracle'a w flink/results/flink_environment.tsv.
+results_*/flink/build/
+results_*/flink/oracle/canonical_oracle

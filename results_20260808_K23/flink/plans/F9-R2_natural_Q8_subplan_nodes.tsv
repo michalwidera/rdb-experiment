@@ -1,0 +1,9 @@
+family	variant	q	node	unit_weight
+F9-R2	natural	8	SUB:m1:select_P1	0.6667
+F9-R2	natural	8	SUB:m2:select_P1	0.6667
+F9-R2	natural	8	SUB:m3:select_P1	0.6667
+F9-R2	natural	8	SUB:m4:select_P1	0.6667
+F9-R2	natural	8	SUB:m5:select_P2	0.6667
+F9-R2	natural	8	SUB:m6:select_P2	0.6667
+F9-R2	natural	8	SUB:m7:select_P2	0.6667
+F9-R2	natural	8	SUB:m8:select_P2	0.6667

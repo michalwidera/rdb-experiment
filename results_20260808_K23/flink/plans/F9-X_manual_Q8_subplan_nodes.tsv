@@ -1,0 +1,6 @@
+family	variant	q	node	unit_weight
+F9-X	manual	8	SUB:shared:hash_AB	1.0000
+F9-X	manual	8	SUB:shared:hash_CD	1.0000
+F9-X	manual	8	SUB:shared:select	1.0000
+F9-X	manual	8	SUB:shared:shift_AB	1.0000
+F9-X	manual	8	SUB:shared:shift_CD	1.0000
