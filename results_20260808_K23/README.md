@@ -3,7 +3,8 @@
 Kampania eksperymentu K23 z `paper-arXiv/debs/research_plan.md` §10.
 Plan wykonania: `paper-arXiv/debs/plan-realizacji-K23.md`.
 
-**Faza: P3 (szkielet kampanii). Predeklaracja NIEZAMROŻONA.**
+**Faza: P4 wykonana — pilot compile-only, werdykt GO (`RAPORT_PILOTA.md`).
+Predeklaracja NIEZAMROŻONA.**
 Dopóki `freeze_check.sh` nie przechodzi, **żaden pomiar kosztowy nie jest
 dozwolony** (STOP-5, bramka nieprzekraczalna: pomiar wykonany wcześniej
 unieważnia kampanię).
@@ -13,7 +14,7 @@ unieważnia kampanię).
 | Gałąź | `experiment/20260808_K23` (zgłoszona jako STOP-3) |
 | SHA silnika | **niezamrożone**; kampania przypnie `1cfccf9` albo późniejszy |
 | Ostatni zamknięty STOP | STOP-3 (nazwa gałęzi zgłoszona, bez weta) |
-| Najbliższy STOP | STOP-4 — pilot compile-only, bramka GO/NO-GO |
+| Najbliższy STOP | **STOP-4** — pilot wykonany, werdykt GO zgłoszony; czeka na decyzję człowieka o wejściu w P5 |
 | Worker | niepotrzebny w tej fazie; nie budzony |
 | Rozstrzygnięcia człowieka | cztery z `SZKIC_RODZIN.md` §9 — **zamknięte 2026-08-08**; z `SZKIC_D3.md` §5.4 zamknięte §3.2, **otwarte §3.3** (zakres twierdzenia F9-X, może poczekać na pilota) |
 
@@ -31,10 +32,12 @@ szukania rodziny zastępczej.
 | `freeze_check.sh` | bramka zamrożenia i proweniencji | **szkielet** — celowo nie przechodzi |
 | `SZKIC_RODZIN.md` | trzy rodziny: RQL, granice podplanu, przewidywane liczby mechanizmu | szkic do przeglądu |
 | `SZKIC_D3.md` | uzasadnienie scenariusza (motivational validity) | szkic do przeglądu |
+| `RAPORT_PILOTA.md` | **produkt P4** — wynik pilota compile-only, werdykt GO | gotowe |
+| `pilot/` | sześć planów RQL, dane miniaturowe, `run_pilot.sh`, `mechanism_table.py`, surowe listingi w `out/` | gotowe |
 
-Czego jeszcze nie ma: generatorów danych, RQL jako plików, oracle’a, mutantów,
-skryptu werdyktu, całej strony Flinka (czeka na **D-2**), `matrix.tsv`,
-`analyze.py`. Wchodzą w P4–P6.
+Czego jeszcze nie ma: oracle’a, mutantów, skryptu werdyktu, całej strony Flinka
+(czeka na **D-2**), `matrix.tsv`, `analyze.py`, generatorów danych głównych.
+Wchodzą w P5–P6.
 
 ## Profile — mapowanie i jego weryfikacja
 

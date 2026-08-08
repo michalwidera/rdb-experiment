@@ -1,0 +1,28 @@
+# F9-R1 — rational-rate delayed fusion, Q=8 (4 monitory postaci P1, 4 postaci P2).
+# Pilot compile-only. Dane miniaturowe, bez pomiaru kosztu.
+#
+# Stałe: Delta_A=1/100, Delta_B=1/50, i=2, k=1 -> i*Delta_A = k*Delta_B = 1/50 (20 ms),
+# przesunięcie łączne i+k = 3 slotu strumienia przeplecionego (Delta_h = 1/150).
+#
+# Przewidywanie (SZKIC_RODZIN.md §5.4):
+#   DEFAULT      r1=4 r2=0  substraty=1  (jeden węzeł przeplotu A#B)
+#   NO_R1_FACTOR r1=0 r2=0  substraty=3  (A>2, B>1, A#B)
+#   NO_R2_CANON  jak DEFAULT (R2 nie ma czego dopasować — kontrola pusta)
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+DECLARE v INTEGER STREAM A, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM B, 1/50  FILE 'src_b.txt'
+
+# postać P1 — „skompensuj każdy tor, potem przeplataj”
+SELECT m1[0]*m1[0] STREAM m1 FROM (A>2)#(B>1)
+SELECT m2[0]*m2[0] STREAM m2 FROM (A>2)#(B>1)
+SELECT m3[0]*m3[0] STREAM m3 FROM (A>2)#(B>1)
+SELECT m4[0]*m4[0] STREAM m4 FROM (A>2)#(B>1)
+
+# postać P2 — „przeplataj, potem skompensuj wspólne 20 ms”
+SELECT m5[0]*m5[0] STREAM m5 FROM (A#B)>3
+SELECT m6[0]*m6[0] STREAM m6 FROM (A#B)>3
+SELECT m7[0]*m7[0] STREAM m7 FROM (A#B)>3
+SELECT m8[0]*m8[0] STREAM m8 FROM (A#B)>3

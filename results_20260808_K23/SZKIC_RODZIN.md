@@ -353,17 +353,29 @@ się w obu wymiarach naraz, więc przy `Q=4` rodzina nadal dotyka obu mechanizm�
 Jednostka bajtów: `n_h·w`, gdzie `n_h` = liczba zapisów jednego węzła przeplotu
 (`n_h = n_A + n_B = n_C + n_D`), `w = w_out = 9 B`.
 
-| Komórka | R1 | R2 | substraty złożenia | `STREAM_SELECT_*` | substraty ogółem | bajty |
+Kolumna „instancje” liczy węzły planu, kolumna „bajty” — jednostki `n_h·w`. To
+**nie jest ta sama wielkość**: dwa substraty przesunięć (100 Hz i 50 Hz) to dwie
+instancje, ale razem jedna jednostka bajtowa. Pierwsza wersja tej tabeli mieszała
+obie w kolumnie instancji; poniżej wartości poprawione i **potwierdzone pilotem**
+(`RAPORT_PILOTA.md` §2).
+
+| Komórka | R1 | R2 | substraty złożenia (instancje) | `STREAM_SELECT_*` | substraty ogółem | bajty |
 |---|---|---|---|---|---|---|
 | `DEFAULT` | ON | ON | 4 (`h_AB`, `sh_AB`, `h_CD`, `sh_CD`) | **1** | 5 | **5** |
 | `NO_R2_CANON` | ON | OFF | 4 | 2 | 6 | 6 |
-| `NO_R1_FACTOR` | OFF | ON | 8 | 2 | 10 | 10 |
-| `NO_R1_NO_R2` (kontrola progu) | OFF | OFF | 8 | 4 | 12 | 12 |
+| `NO_R1_FACTOR` | OFF | ON | 10 | 2 | 12 | 10 |
+| `NO_R1_NO_R2` (kontrola progu) | OFF | OFF | 10 | 4 | 14 | 12 |
 
-`REWRITE_APPLIED`: `DEFAULT` → `r1 = 8` (dwa węzły przeplotu × cztery monitory
-postaci W1/W2), `r2 = 4` (monitory o kolejności „para tylna pierwsza”);
-`NO_R2_CANON` → `r1 = 8`, `r2 = 0`; `NO_R1_FACTOR` → `r1 = 0`, `r2 = 4`;
-kontrola → `0/0`.
+`REWRITE_APPLIED`: `DEFAULT` → `r1 = 2`, `r2 = 4` (monitory o kolejności „para
+tylna pierwsza”); `NO_R2_CANON` → `r1 = 2`, `r2 = 0`; `NO_R1_FACTOR` → `r1 = 0`,
+`r2 = 4`; kontrola → `0/0`.
+
+`r1 = 2`, a nie `8`: identyczne podwyrażenia inline są unifikowane już przy
+**ekstrakcji**, po nazwie generowanej z operandów, więc cztery monitory postaci
+W1/W2 dzielą jeden substrat `(A>2)#(B>1)` i regule zostają dwa węzły — para
+przednia i tylna. Unifikacja ekstrakcyjna nie stoi za żadnym przełącznikiem
+`RDB_OPT_*`, jest identyczna we wszystkich czterech profilach i dlatego znosi się
+w ilorazach układu 2×2.
 
 **Redukcja `DEFAULT` wobec komórki kontrolnej = 1 − 5/12 = 58,3%.**
 
@@ -375,7 +387,14 @@ instancji, nie w interakcji: jedna instancja wspólnego podplanu powstaje
 **wyłącznie** w komórce, w której oba przejścia są włączone (1 / 2 / 2 / 4).
 Interakcja istotnie różna od 1,00 wymaga wyjaśnienia przed odczytem kosztów.
 
-### 6.4. Najkruchsze miejsce całej kampanii — **P-1**
+### 6.4. Najkruchsze miejsce całej kampanii — **P-1** (rozstrzygnięte pilotem: DZIAŁA)
+
+> **Wynik pilota 2026-08-08:** w profilu `DEFAULT` wszystkie osiem monitorów
+> F9-X — cztery różne postacie składniowe — czyta jeden `STREAM_SELECT_m1`.
+> Odwołania `A[0]`…`D[0]` rozwiązują się przez całe złożenie, a przepisanie R1
+> zostawia odciski postaci identyczne. Rodzina istnieje; kampania nie zatrzymuje
+> się przed predeklaracją. Szczegóły: `RAPORT_PILOTA.md` §4. Poniższy opis
+> ryzyka zostaje jako zapis tego, co było otwarte przed pilotem.
 
 Postacie W1–W4 mają `FROM` złożone **inline**, więc dzieci węzła `+` są
 substratami o nazwach generowanych przez kompilator. Autor nie może się do nich
@@ -408,7 +427,10 @@ z żadnym z W1–W4.
 
 ---
 
-## 7. Zbiorcza tabela przewidywań do potwierdzenia przez pilota (`Q = 8`)
+## 7. Zbiorcza tabela przewidywań — **potwierdzona pilotem 2026-08-08** (`Q = 8`)
+
+Wszystkie trzy redukcje wyszły co do cyfry tak, jak zapisano przed pilotem;
+poprawek wymagały wyłącznie `r1` dla F9-X i kolumna instancji w §6.3.
 
 | Rodzina | ablacja minimalna | instancje `DEFAULT` → ablacja | przewidywana redukcja | zapas nad progiem 40% |
 |---|---|---|---|---|
@@ -437,9 +459,9 @@ Ten szkic jej nie dotyczy.
    oglądania efektu.
 3. **Dokładne `n_h`, `n_A`, `n_B`** — wynikają z zamrożonej liczby rekordów.
 4. **Oracle, mutanty, skrypt werdyktu** — P5/P6.
-5. **Czy `+` nad dwoma strumieniami 150 Hz ma interwał 150 Hz** — przyjęte w §6.3,
-   do potwierdzenia pilotem.
-6. **P-1 z §6.4** — istnienie rodziny F9-X.
+5. ~~Czy `+` nad dwoma strumieniami 150 Hz ma interwał 150 Hz~~ — **potwierdzone
+   pilotem**: `STREAM_SELECT_m1(1/150)`, wszystkie monitory F9-X na `1/150`.
+6. ~~P-1 z §6.4 — istnienie rodziny F9-X~~ — **potwierdzone pilotem** (§6.4).
 
 ## 9. Rozstrzygnięcia człowieka — 2026-08-08
 
