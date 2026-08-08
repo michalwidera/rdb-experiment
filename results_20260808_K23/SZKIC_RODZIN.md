@@ -54,6 +54,10 @@ praktycznie nie istnieje**. To nie jest powód do zmiany progu 40%; jest powodem
 żeby zapisać w predeklaracji, że wiążącym porównaniem jest ablacja z zapasem
 10 pp, a nie Flink z zapasem 47 pp.
 
+**Rozstrzygnięte 2026-08-08:** odczyt przyjęty, a do `research_plan.md` §10
+dopisany przypis prostujący akapit „korekta akcentu” — wraz z zakazem
+przywracania 87,5% przez wyłączenie deduplikacji w ablacji. Patrz §9 pkt 1.
+
 ### U-2. Każda postać musi być użyta przez **co najmniej dwa** monitory
 
 `shareEquivalentSelectComputations()` tworzy substrat `STREAM_SELECT_*` tylko dla
@@ -121,7 +125,9 @@ zarówno metryki surowej, jak i znormalizowanej.
 
 ### 3.3. Alokacja monitorów na postacie przy zmiennym `Q`
 
-Siatka `Q = {1, 2, 4, 8, 16, 32}` (§10). Reguła (do zamrożenia):
+Siatka `Q = {1, 2, 4, 8, 16, 32}` (§10). Reguła **rozstrzygnięta przez człowieka
+2026-08-08**, do zamrożenia w predeklaracji wraz z obiema krzywymi z tabeli
+poniżej:
 
 > `F(Q) = min(F_max, floor(Q/2))`, monitory rozdzielone równo między pierwsze
 > `F(Q)` postaci w zamrożonej kolejności; przy `F(Q) <= 1` wszystkie monitory
@@ -435,14 +441,32 @@ Ten szkic jej nie dotyczy.
    do potwierdzenia pilotem.
 6. **P-1 z §6.4** — istnienie rodziny F9-X.
 
-## 9. Pytania do decyzji człowieka przed predeklaracją
+## 9. Rozstrzygnięcia człowieka — 2026-08-08
 
-1. **U-1**: czy przyjmujemy, że wiążącą wartością jest 50% wobec ablacji (zapas
-   10 pp), a 87,5% dotyczy wyłącznie porównania z Flinkiem — i czy §10 „korekta
-   akcentu” dostaje w predeklaracji odpowiedni przypis?
-2. **§3.3**: czy reguła alokacji `F(Q) = min(F_max, floor(Q/2))` zostaje
-   zamrożona wraz z przewidywaniem „0% przy `Q ≤ 2`, płasko od `Q = 4`”?
-3. **§6.4 / P-1**: czy pilot F9-X wchodzi jako pierwszy z trzech rodzin, skoro
-   jest jedyną bramką NO-GO całej kampanii?
-4. **§5.1**: czy stałe `Δ_A = 1/100`, `Δ_B = 1/50`, `i = 2`, `k = 1` są do
-   przyjęcia — z zastrzeżeniem z `SZKIC_D3.md` §3.2 o naturalności postaci P2?
+Cztery pytania otwarte w pierwszej wersji tego szkicu zostały rozstrzygnięte
+**przed pilotem i przed predeklaracją**. Zapis jest częścią materiału, który
+wchodzi do predeklaracji.
+
+1. **U-1 — odczyt progu.** Wiążącą wartością jest **50% wobec ablacji
+   minimalnej** (58,3% dla F9-X), zapas 10 pp; 87,5% dotyczy wyłącznie
+   porównania z `FLINK_NATURAL`. Przypis prostujący **dopisany do `research_plan.md`
+   §10**, do akapitu „Gdzie naprawdę siedzi treść H9 — korekta akcentu”, wraz
+   z zakazem przywracania 87,5% przez wyłączenie deduplikacji w ablacji (byłaby
+   nieminimalna). Próg 40% bez zmian.
+2. **Alokacja monitorów.** Reguła `F(Q) = min(F_max, floor(Q/2))` **zamrożona**
+   wraz z obiema krzywymi z §3.3: wewnętrzna `0% przy Q ≤ 2, płasko 50% / 58,3%
+   od Q = 4`, flinkowa `1 − 1/Q`. Skrypt werdyktu nie oczekuje trendu po stronie
+   ablacji.
+3. **Kolejność pilota.** Wszystkie trzy rodziny w **jednym przebiegu**
+   compile-only; **F9-X czytany pierwszy i traktowany jako bramka**, F9-R2
+   i F9-R1 jako kontekst diagnostyczny w tym samym raporcie. NO-GO na F9-X
+   kończy K23 niezależnie od wyniku dwóch pozostałych i **bez szukania rodziny
+   zastępczej** (§10).
+4. **Stałe F9-R1.** `Δ_A = 1/100`, `Δ_B = 1/50`, `i = 2`, `k = 1`, przesunięcie
+   łączne `3` — **przyjęte**. Zastrzeżenie D-3 o naturalności postaci P2 zawężone
+   do właściwej postaci (model myślowy autora, nie trudność rachunku) —
+   `SZKIC_D3.md` §3.2.
+
+Otwarte pozostają wyłącznie pozycje z §8: strona Flinka (**D-2**), rate i liczba
+rekordów (P7), oracle, mutanty i skrypt werdyktu (P5/P6) oraz **P-1** — czyli to,
+na co odpowiada pilot.

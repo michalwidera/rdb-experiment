@@ -12,9 +12,15 @@ unieważnia kampanię).
 |---|---|
 | Gałąź | `experiment/20260808_K23` (zgłoszona jako STOP-3) |
 | SHA silnika | **niezamrożone**; kampania przypnie `1cfccf9` albo późniejszy |
-| Ostatni zamknięty STOP | STOP-2 (instrument logicznych zapisów w `master`) |
+| Ostatni zamknięty STOP | STOP-3 (nazwa gałęzi zgłoszona, bez weta) |
 | Najbliższy STOP | STOP-4 — pilot compile-only, bramka GO/NO-GO |
 | Worker | niepotrzebny w tej fazie; nie budzony |
+| Rozstrzygnięcia człowieka | cztery z `SZKIC_RODZIN.md` §9 — **zamknięte 2026-08-08**; z `SZKIC_D3.md` §5.4 zamknięte §3.2, **otwarte §3.3** (zakres twierdzenia F9-X, może poczekać na pilota) |
+
+**Kolejność pilota (rozstrzygnięta):** trzy rodziny w jednym przebiegu
+compile-only, **F9-X czytany pierwszy jako bramka**, F9-R2 i F9-R1 jako kontekst
+diagnostyczny. NO-GO na F9-X kończy K23 niezależnie od wyniku pozostałych i bez
+szukania rodziny zastępczej.
 
 ## Zawartość
 

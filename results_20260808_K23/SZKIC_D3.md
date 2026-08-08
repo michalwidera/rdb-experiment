@@ -104,26 +104,29 @@ Obie postacie odpowiadają dwóm modelom myślowym o tym samym opóźnieniu akwi
   *oba tory mają to samo opóźnienie 20 ms; przeplataj je, a potem cofnij całość
   o 20 ms*. Postać jest bezpośrednim zapisem tego zdania.
 
-**Zastrzeżenie.** P2 wymaga, żeby autor wyraził 20 ms **w slotach strumienia
-przeplecionego** (`Δ_h = 1/150`, czyli `>3`), a nie w slotach któregokolwiek ze
-źródeł. To jest krok rachunkowy, którego P1 nie wymaga — tam obie liczby (`2` i
-`1`) czyta się wprost z opóźnień torów. Autor, który tego rachunku nie zrobi,
-napisze `>2` albo `>1` i **dostanie inny monitor**, nie inną postać tego samego.
+**Zastrzeżenie — w postaci zawężonej (korekta 2026-08-08).** Pierwsza wersja tego
+akapitu twierdziła, że P2 wymaga kroku rachunkowego, którego P1 nie wymaga. To
+było postawione za mocno. Skoro `i·Δ_A = k·Δ_B = τ`, to `i = τ·r_A`,
+`k = τ·r_B`, a zatem `i + k = τ·(r_A + r_B) = τ / Δ_h`. Liczba slotów w postaci
+P2 to zwykłe **„opóźnienie razy takt strumienia”** — ta sama reguła, której autor
+używa przy każdym innym przesunięciu, tyle że zastosowana do strumienia
+przeplecionego. Żadnej arytmetyki specjalnego przeznaczenia tu nie ma.
 
-Trzy sposoby domknięcia, do wyboru przez człowieka:
+Prawdziwe zastrzeżenie jest więc węższe: nie chodzi o **trudność rachunku**, lecz
+o to, czy autor w ogóle **myśli w slotach strumienia przeplecionego**, zamiast
+w opóźnieniach poszczególnych torów. To jest różnica modeli myślowych — autor
+sygnałowy (takt wyniku jest wielkością pierwotną) wobec autora czujnikowego
+(pierwotne są karty katalogowe torów). Obaj istnieją w scenariuszu z §2; drugi
+napisze P1, pierwszy P2.
 
-1. **Dobrać stałe tak, żeby przesunięcie łączne było liczbą oczywistą** w
-   jednostkach naturalnych dla autora (np. taką, w której `i + k` odpowiada
-   pełnemu okresowi wolniejszego toru).
-2. **Zapisać w predeklaracji, że P2 jest postacią autora myślącego sygnałowo**,
-   dla którego takt strumienia przeplecionego jest wielkością pierwotną — i przyjąć
-   ten model jawnie, zamiast go zakładać.
-3. **Uznać zastrzeżenie za dyskwalifikujące** i zatrzymać F9-R1 przed
-   predeklaracją. Wtedy H9 może wesprzeć co najwyżej 2/3 rodzin, czyli próg
-   pozostaje osiągalny, ale bez zapasu.
-
-Rekomendacja: (1) plus (2). Wariant (3) tylko wtedy, gdy (1) nie da się spełnić
-bez naciągania stałych pod tezę.
+**Rozstrzygnięcie człowieka 2026-08-08:** stałe przyjęte bez zmian
+(`Δ_A = 1/100`, `Δ_B = 1/50`, `i = 2`, `k = 1`, `>3`), a przypisanie postaci P2
+autorowi myślącemu sygnałowo wchodzi do predeklaracji **jawnie**, jako założenie,
+a nie jako rzecz przyjęta milcząco. Dobierania „okrąglejszych” stałych zaniechano
+świadomie: po powyższej korekcie nie kupuje nic (`20 ms × 150 Hz = 3` nie jest
+trudniejsze niż `20 ms × 200 Hz = 4`), a wyglądałoby na strojenie rodziny pod
+tezę. Wariantu „odrzucić F9-R1” nie wybrano — zostawiłby najwyżej 2/3 rodzin,
+czyli próg bez zapasu.
 
 ### 3.3. F9-X — złożenie inline
 
@@ -206,7 +209,7 @@ autorów i nie unieważnia mechanizmu.
 | F9-R2 | `FROM A+B` | tak, arbitralna kolejność symetrycznych osi | ✅ |
 | F9-R2 | `FROM B+A` | tak, ta sama arbitralność | ✅ |
 | F9-R1 | `(A>2)#(B>1)` | tak, zapis „kompensuj tor, potem zestawiaj” | ✅ |
-| F9-R1 | `(A#B)>3` | tak, ale wymaga rachunku w slotach przeplotu | ⚠️ §3.2 |
+| F9-R1 | `(A#B)>3` | tak, jeżeli autor myśli taktem strumienia wynikowego | ⚠️ §3.2, zawężone |
 | F9-X | inline `((A>2)#(B>1)) + ((C>2)#(D>1))` | **wątpliwe** — autor nazwałby pośrednie | ❌ §3.3 |
 | wszystkie | identyczny program pól co do tokenów | tak, przy przepisywaniu ze specyfikacji | ⚠️ §3.4 |
 
@@ -223,4 +226,12 @@ wynikach.
    wygładzonej.
 3. Kryterium dyskwalifikujące i tabela z §4 jako zapis, że szkic został tym
    kryterium sprawdzony, a nie tylko nim zadeklarowany.
-4. Rozstrzygnięcia człowieka: §3.2 (wariant 1/2/3) i §3.3 (wariant 1/2/3).
+4. Rozstrzygnięcia człowieka:
+   * **§3.2 — zamknięte 2026-08-08.** Stałe przyjęte, zastrzeżenie zawężone do
+     modelu myślowego autora i zapisywane jawnie.
+   * **§3.3 — otwarte.** Wybór między rozszerzeniem scenariusza o monitory
+     generowane (wariant 1), przyjęciem słabszej motivational validity F9-X
+     (wariant 2) a rezygnacją z rodziny (wariant 3). Rozstrzygnięcie **może
+     poczekać na pilota**: jeżeli złożenie F9-X nie działa (P-1), rodzina odpada
+     technicznie i pytanie staje się bezprzedmiotowe. Musi natomiast zapaść
+     **przed** predeklaracją, bo dotyczy zakresu twierdzenia, nie wykonania.
