@@ -130,21 +130,22 @@ czyli próg bez zapasu.
 
 ### 3.3. F9-X — złożenie inline
 
-**Werdykt: NIE przechodzi kryterium w obecnej postaci. Wymaga decyzji człowieka
-przed pilotem.**
+**Werdykt: przechodzi warunkowo. Postać inline jest idiomem tego języka dla
+podwyrażeń jednorazowego użytku; trzy ograniczenia zapisane niżej wprost.**
+(Rozstrzygnięcie człowieka 2026-08-08, po pilocie i po sprawdzeniu korpusu.)
 
 Cztery postacie W1–W4 powstają z dwóch niezależnych, arbitralnych decyzji (postać
 R1 każdej pary × kolejność par w sumie), i **ta część** argumentu jest tak mocna
 jak w §3.1 i §3.2: żadna z tych decyzji nie ma uzasadnienia merytorycznego.
 
-Problem leży gdzie indziej — w **składni, której rodzina wymaga**. Postać
+Pytanie dotyczy **składni, której rodzina wymaga**:
 
 ```
 FROM ((A>2)#(B>1)) + ((C>2)#(D>1))
 ```
 
-wkłada całe złożenie w jedno wyrażenie `FROM`, z trzema piętrami nawiasów. Autor
-piszący wyłącznie swój monitor prawdopodobnie **nazwałby strumienie pośrednie**:
+Alternatywą jest nazwanie strumieni pośrednich — czytelniejsze, dające się
+podejrzeć osobno i odpowiadające temu, jak autor myśli o maszynie (przód/tył):
 
 ```
 SELECT * STREAM front FROM (A>2)#(B>1)
@@ -152,35 +153,65 @@ SELECT * STREAM rear  FROM (C>2)#(D>1)
 SELECT Sqrt(…) STREAM m1 FROM front+rear
 ```
 
-— bo to jest czytelniejsze, daje się podejrzeć osobno i odpowiada temu, jak
-myśli o maszynie (przód/tył). Postać inline jest postacią kogoś, kto **wie**, że
-nazwanie pośrednich zablokuje współdzielenie. To jest dokładnie sytuacja, którą
-kryterium ma wykluczać.
+Nazwanie **zabija warstwę R2**: odcisk równoważności widzi strumień publiczny
+jako `SOURCE{nazwa}`, a dwaj niezależni autorzy nadadzą różne nazwy. Pierwsza
+wersja tego akapitu wyciągała stąd wniosek, że rodzina nie przechodzi kryterium,
+bo „autor prawdopodobnie nazwałby pośrednie”. **Ta teza została postawiona bez
+sprawdzenia korpusu i jest nietrafna.**
 
-Co gorsza, obejścia nie ma i trzeba to powiedzieć wprost: nazwane strumienie
-pośrednie są **publiczne**, a odcisk równoważności widzi je jako
-`SOURCE{nazwa}` — dwaj niezależni autorzy nadadzą im różne nazwy, więc R2 nie
-odpali. Rodzina naturalna składniowo byłaby rodziną, w której mechanizm nie
-działa; rodzina, w której mechanizm działa, jest składniowo nienaturalna.
+**Co mówi korpus tego projektu.** Złożenia inline nad podwyrażeniami
+jednorazowego użytku są w nim normą:
 
-Trzy możliwe wyjścia, **wszystkie wymagają decyzji człowieka**:
+| Kształt | Miejsce |
+|---|---|
+| `FROM s3+((s1+s2)>1)` | `test/IntegrationTest_serial/issue167_dedup_cascaded` — trzy piętra, ten sam miks operatorów |
+| `FROM (core0#core1)+core2` | `examples/rmpy/query4.rql` — materiał **przykładowy**, nie test |
+| `FROM (s1#s2)#s3` z polami `s1[0]+s2[0]+s3[0]` | `test/IntegrationTest_serial/issue167_triarg` — odwołania do źródeł pod złożonym `FROM` |
+| `FROM (core0+core1)>5`, `FROM (A>2)#(B>1)` | kilkanaście miejsc w testach i przykładach |
 
-1. **Uzasadnić postać inline osobno.** Da się bronić w wąskim kontekście:
-   monitor generowany z szablonu albo z konfiguracji (typowe przy `Q` najemcach
-   obsługiwanych przez jedno narzędzie), gdzie wyrażenie powstaje przez podstawienie,
-   a nie przez ręczne pisanie. Wtedy scenariusz z §2 trzeba **rozszerzyć o czwartą
-   drogę** — monitory generowane — i zapisać, że F9-X opiera się właśnie na niej.
-   Uczciwe, ale zawęża twierdzenie.
-2. **Uznać F9-X za rodzinę o słabszej motivational validity** i zapisać to jako
-   ograniczenie w raporcie i w artykule — przy zachowaniu pełnej internal validity
-   (mechanizm i tak jest badany poprawnie).
-3. **Nie robić F9-X.** §10 dopuszcza wsparcie H9 przy 2/3 rodzin, ale F9-X jest
-   jedyną rodziną badającą **współdziałanie** przejść, a jej brak zmienia
-   twierdzenie z „kompilator składa przejścia” na „każde przejście działa osobno”.
+Naprzeciw stoi `examples/ecg` (Pan-Tompkins), który nazywa wszystkie 13 etapów —
+ale **każdy z nich ma konsumenta w następnym kroku**, część ma kilku. Podział
+w tym języku jest więc czytelny: **podwyrażenie jednorazowego użytku pisze się
+inline, etap wielokonsumencki dostaje nazwę.** Para złożona w F9-X jest
+z punktu widzenia izolowanego autora jednorazowa — używa jej dokładnie jeden
+monitor, jego własny. Postać inline nie jest zatem obejściem znanym komuś, kto
+wie o mechanizmie; jest zwykłym zapisem tego przypadku.
 
-Rekomendacja: (1) — z jawnym rozszerzeniem scenariusza i z zapisem, że twierdzenie
-F9-X dotyczy monitorów generowanych. Ale to jest decyzja o zakresie contribution,
-nie decyzja techniczna, więc należy do człowieka.
+**Co zostało zmierzone, zamiast założone** (`RAPORT_PILOTA.md` §6a,
+`pilot/diag_X_named.rql`, wariant z nazwanymi pośrednimi, profil `DEFAULT`):
+
+1. `STREAM_SELECT_* = 0` — nazwanie kasuje warstwę R2 w całości. Premisa
+   potwierdzona na działającym planie, nie tylko z lektury kodu.
+2. **Warstwa R1 przeżywa nazwanie** — `front1` i `przod2` zostały przepisane na
+   wspólny `STREAM_HASH_A_B`. Zależność od postaci inline dotyczy więc wyłącznie
+   warstwy R2 w F9-X; rodzina F9-R1 jest odporna na styl nazewniczy.
+3. **Nazwanie przenosi materializację do strumieni publicznych**, czyli
+   w metryce K23 z licznika do **mianownika**. Populacja mieszana nie osłabia
+   efektu liniowo — zmienia to, co metryka mierzy.
+
+**Decyzja: rodzina zostaje, z postacią inline zamrożoną dla wszystkich `Q`
+monitorów.** Trzy ograniczenia, do zapisania w predeklaracji i w artykule bez
+wygładzania:
+
+* postać symetryczna, w której **oba** operandy `+` są złożone, jest o krok
+  głębsza niż cokolwiek w korpusie; krok polega na symetrii, nie na nowej
+  konstrukcji, ale nie jest wprost udokumentowany;
+* zaświadczone złożenia inline siedzą głównie w testach pisanych przez autora
+  silnika — materiałem przykładowym jest tylko `examples/rmpy`. Korpusu kodu
+  użytkowników nie ma, i to ograniczenie dotyczy **całego** scenariusza z §2, nie
+  samego F9-X;
+* postać zapisu jest **zamrożona** dla wszystkich `Q` monitorów; populacja
+  mieszana zmienia metrykę w sposób zmierzony w punkcie 3 powyżej.
+
+Monitory generowane z szablonu albo z konfiguracji (typowe przy `Q` najemcach
+obsługiwanych jednym narzędziem) zostają jako droga **wspierająca**, a nie jako
+podstawa uzasadnienia — oparcie rodziny wyłącznie na nich zawężałoby twierdzenie
+do niszy, w której nie musi ono siedzieć.
+
+Wariantu „nie robić F9-X” nie wybrano: jest to jedyna rodzina badająca
+**współdziałanie** przejść, pilot pokazał, że mechanizm działa, a układ 2×2
+wyszedł dokładnie jak predeklarowano. Rezygnacja zamieniłaby twierdzenie
+„kompilator składa przejścia” na „każde przejście działa osobno”.
 
 ### 3.4. Zastrzeżenie wspólne dla wszystkich trzech rodzin (D-3-C)
 
@@ -210,13 +241,14 @@ autorów i nie unieważnia mechanizmu.
 | F9-R2 | `FROM B+A` | tak, ta sama arbitralność | ✅ |
 | F9-R1 | `(A>2)#(B>1)` | tak, zapis „kompensuj tor, potem zestawiaj” | ✅ |
 | F9-R1 | `(A#B)>3` | tak, jeżeli autor myśli taktem strumienia wynikowego | ⚠️ §3.2, zawężone |
-| F9-X | inline `((A>2)#(B>1)) + ((C>2)#(D>1))` | **wątpliwe** — autor nazwałby pośrednie | ❌ §3.3 |
+| F9-X | inline `((A>2)#(B>1)) + ((C>2)#(D>1))` | tak dla podwyrażenia jednorazowego użytku — idiom potwierdzony korpusem | ⚠️ §3.3, trzy ograniczenia |
 | wszystkie | identyczny program pól co do tokenów | tak, przy przepisywaniu ze specyfikacji | ⚠️ §3.4 |
 
-Dwa ⚠️ i jedno ❌. Żadne z nich nie jest defektem aparatury ani mechanizmu — to
-są granice **twierdzenia**, które K23 będzie mogła postawić. Zapisuję je tutaj,
-przed pilotem i przed predeklaracją, dokładnie po to, żeby nie powstały po
-wynikach.
+Trzy ⚠️, zero ❌ (pierwsza wersja tabeli miała tu ❌ przy F9-X — zdjęte po
+sprawdzeniu korpusu i po pomiarze z `RAPORT_PILOTA.md` §6a). Żadne z zastrzeżeń
+nie jest defektem aparatury ani mechanizmu — to są granice **twierdzenia**, które
+K23 będzie mogła postawić. Zapisuję je tutaj, przed predeklaracją, dokładnie po
+to, żeby nie powstały po wynikach.
 
 ## 5. Co musi trafić do predeklaracji z tego pliku
 
@@ -229,9 +261,11 @@ wynikach.
 4. Rozstrzygnięcia człowieka:
    * **§3.2 — zamknięte 2026-08-08.** Stałe przyjęte, zastrzeżenie zawężone do
      modelu myślowego autora i zapisywane jawnie.
-   * **§3.3 — otwarte.** Wybór między rozszerzeniem scenariusza o monitory
-     generowane (wariant 1), przyjęciem słabszej motivational validity F9-X
-     (wariant 2) a rezygnacją z rodziny (wariant 3). Rozstrzygnięcie **może
-     poczekać na pilota**: jeżeli złożenie F9-X nie działa (P-1), rodzina odpada
-     technicznie i pytanie staje się bezprzedmiotowe. Musi natomiast zapaść
-     **przed** predeklaracją, bo dotyczy zakresu twierdzenia, nie wykonania.
+   * **§3.3 — zamknięte 2026-08-08.** Rodzina zostaje, postać inline zamrożona
+     dla wszystkich `Q` monitorów i uzasadniona idiomem języka dla podwyrażeń
+     jednorazowego użytku; trzy ograniczenia z §3.3 wchodzą do predeklaracji
+     i do artykułu w postaci niewygładzonej. Monitory generowane pozostają drogą
+     wspierającą, nie podstawą.
+
+**D-3 jest tym samym zamknięte w całości.** Przed P5 zostaje wyłącznie **D-2**
+(strona Flinka).

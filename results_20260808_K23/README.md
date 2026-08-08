@@ -16,7 +16,7 @@ unieważnia kampanię).
 | Ostatni zamknięty STOP | STOP-3 (nazwa gałęzi zgłoszona, bez weta) |
 | Najbliższy STOP | **STOP-4** — pilot wykonany, werdykt GO zgłoszony; czeka na decyzję człowieka o wejściu w P5 |
 | Worker | niepotrzebny w tej fazie; nie budzony |
-| Rozstrzygnięcia człowieka | cztery z `SZKIC_RODZIN.md` §9 — **zamknięte 2026-08-08**; z `SZKIC_D3.md` §5.4 zamknięte §3.2, **otwarte §3.3** (zakres twierdzenia F9-X, może poczekać na pilota) |
+| Rozstrzygnięcia człowieka | cztery z `SZKIC_RODZIN.md` §9 oraz oba z `SZKIC_D3.md` §5.4 — **zamknięte 2026-08-08**. **D-3 zamknięte w całości**; przed P5 zostaje wyłącznie **D-2** (strona Flinka) |
 
 **Kolejność pilota (rozstrzygnięta):** trzy rodziny w jednym przebiegu
 compile-only, **F9-X czytany pierwszy jako bramka**, F9-R2 i F9-R1 jako kontekst
