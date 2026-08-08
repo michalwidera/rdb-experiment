@@ -134,12 +134,13 @@ Przewidywane redukcje wobec ablacji minimalnej:
 | `Q` | 1 | 2 | 4 | 8 | 16 | 32 |
 |---|---|---|---|---|---|---|
 | F9-R2, F9-R1 (`F_max=2`) | 0% | 0% | 50% | **50%** | 50% | 50% |
-| F9-X (`F_max=4`) | 0% | 0% | 33,3%¹ | **58,3%** | 58,3% | 58,3% |
+| F9-X (`F_max=4`) | 0% | 0% | 50%¹ | **58,3%** | 58,3% | 58,3% |
 | dla porównania: wobec `FLINK_NATURAL` | 0% | 50% | 75% | **87,5%** | 93,75% | 96,875% |
 
-¹ przy `Q=4` rodzina X ma tylko dwie postacie (W1 i W4), więc 2×2 degeneruje się
-do jednej przekątnej; wartość podana dla kompletności, komórką rozstrzygającą
-pozostaje `Q=8`.
+¹ przy `Q=4` rodzina X ma tylko dwie postacie (W1 i W4), więc układ 2×2
+degeneruje się do jednej przekątnej i wynik zrównuje się z pozostałymi rodzinami
+(`DEFAULT` 5 jednostek wobec 10 w komórce kontrolnej). Pełne 58,3% wymaga
+czterech postaci, czyli `Q ≥ 8`. Komórką rozstrzygającą pozostaje `Q = 8`.
 
 **To jest predykcja o konsekwencjach dla narracji:** wewnątrz RetractorDB
 redukcja **nie rośnie** z `Q` powyżej `Q=4` — nasyca się na `1 − 1/F`. Rośnie
