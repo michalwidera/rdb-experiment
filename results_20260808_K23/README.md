@@ -16,7 +16,8 @@ unieważnia kampanię).
 | Ostatni zamknięty STOP | STOP-3 (nazwa gałęzi zgłoszona, bez weta) |
 | Najbliższy STOP | **STOP-4** — pilot wykonany, werdykt GO zgłoszony; czeka na decyzję człowieka o wejściu w P5 |
 | Worker | niepotrzebny w tej fazie; nie budzony |
-| Rozstrzygnięcia człowieka | cztery z `SZKIC_RODZIN.md` §9 oraz oba z `SZKIC_D3.md` §5.4 — **zamknięte 2026-08-08**. **D-3 zamknięte w całości**; przed P5 zostaje wyłącznie **D-2** (strona Flinka) |
+| Rozstrzygnięcia człowieka | wszystkie zamknięte 2026-08-08: cztery z `SZKIC_RODZIN.md` §9, oba z `SZKIC_D3.md` §5.4, **D-2 = Flink biegnie na hoście** (worker wyłącznie RetractorDB) |
+| Następny krok | strona Flinka na hoście, potem **P5 — predeklaracja**; prompt startowy w planie realizacji §9.2b |
 
 **Kolejność pilota (rozstrzygnięta):** trzy rodziny w jednym przebiegu
 compile-only, **F9-X czytany pierwszy jako bramka**, F9-R2 i F9-R1 jako kontekst
@@ -35,9 +36,13 @@ szukania rodziny zastępczej.
 | `RAPORT_PILOTA.md` | **produkt P4** — wynik pilota compile-only, werdykt GO | gotowe |
 | `pilot/` | sześć planów RQL, dane miniaturowe, `run_pilot.sh`, `mechanism_table.py`, surowe listingi w `out/` | gotowe |
 
-Czego jeszcze nie ma: oracle’a, mutantów, skryptu werdyktu, całej strony Flinka
-(czeka na **D-2**), `matrix.tsv`, `analyze.py`, generatorów danych głównych.
-Wchodzą w P5–P6.
+Czego jeszcze nie ma: **strony Flinka** (D-2 rozstrzygnięte — biegnie na hoście,
+więc jest to następny krok), oracle’a, mutantów, skryptu werdyktu, `matrix.tsv`,
+`analyze.py`, generatorów danych głównych. Wchodzą przed P5 i w P6.
+
+Zamrożenie obejmie **dwa środowiska**: host (JDK 17.0.19, Flink 2.3.0,
+jar SHA-256 `7c51cba8…`) i worker (kernel, governor, przypięcie CPU, cztery
+binaria profili). `freeze_check.sh` musi sprawdzać oba komplety.
 
 ## Profile — mapowanie i jego weryfikacja
 
