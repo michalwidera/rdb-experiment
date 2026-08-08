@@ -1,0 +1,25 @@
+# F9-R2 — przemienny multi-sensor feature, Q=8 (4 monitory postaci P1, 4 postaci P2).
+# Pilot compile-only. Dane miniaturowe, bez pomiaru kosztu.
+#
+# Przewidywanie (SZKIC_RODZIN.md §4.4):
+#   DEFAULT      r1=0 r2=4  STREAM_SELECT_*=1  substraty=1
+#   NO_R2_CANON  r1=0 r2=0  STREAM_SELECT_*=2  substraty=2
+#   NO_R1_FACTOR jak DEFAULT (R1 nie ma czego dopasować — kontrola pusta)
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+DECLARE v INTEGER STREAM A, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM B, 1/100 FILE 'src_b.txt'
+
+# postać P1 — FROM A+B
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m1 FROM A+B
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m2 FROM A+B
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m3 FROM A+B
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m4 FROM A+B
+
+# postać P2 — FROM B+A
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m5 FROM B+A
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m6 FROM B+A
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m7 FROM B+A
+SELECT Sqrt(A[0]*A[0]+B[0]*B[0]) STREAM m8 FROM B+A

@@ -1,0 +1,25 @@
+# F9-X — kontrole: Q=1 oraz near-miss „jedna para dopasowana, druga nie”.
+#
+# Kryteria:
+#   Q=1  — jeden monitor, więc żaden STREAM_SELECT_* nad tymi źródłami.
+#   near-miss — para tylna ma niedopasowane przesunięcie (2*(1/100) != 2*(1/50)),
+#               więc R1 nie kanonizuje jej podplanu; monitor h1 NIE MOŻE trafić
+#               do jednej klasy z h2 zapisanym postacią hash-first.
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+# --- Q=1 ---
+DECLARE v INTEGER STREAM QA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM QB, 1/50  FILE 'src_b.txt'
+DECLARE v INTEGER STREAM QC, 1/100 FILE 'src_c.txt'
+DECLARE v INTEGER STREAM QD, 1/50  FILE 'src_d.txt'
+SELECT Sqrt(QA[0]*QC[0]+QB[0]*QD[0]) STREAM q1 FROM ((QA>2)#(QB>1)) + ((QC>2)#(QD>1))
+
+# --- near-miss: druga para niedopasowana ---
+DECLARE v INTEGER STREAM HA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM HB, 1/50  FILE 'src_b.txt'
+DECLARE v INTEGER STREAM HC, 1/100 FILE 'src_c.txt'
+DECLARE v INTEGER STREAM HD, 1/50  FILE 'src_d.txt'
+SELECT Sqrt(HA[0]*HC[0]+HB[0]*HD[0]) STREAM h1 FROM ((HA>2)#(HB>1)) + ((HC>2)#(HD>2))
+SELECT Sqrt(HA[0]*HC[0]+HB[0]*HD[0]) STREAM h2 FROM ((HC#HD)>3) + ((HA#HB)>3)

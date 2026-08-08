@@ -1,0 +1,42 @@
+# F9-X — złożenie R1 -> R2, Q=8 (cztery postacie po dwa monitory).
+# Pilot compile-only. Dane miniaturowe, bez pomiaru kosztu.
+#
+# Postać = (postać R1 obu par) x (kolejność par w sumie):
+#   W1 = shift-first, para przednia pierwsza   (m1, m2)
+#   W2 = shift-first, para tylna pierwsza      (m3, m4)
+#   W3 = hash-first,  para przednia pierwsza   (m5, m6)
+#   W4 = hash-first,  para tylna pierwsza      (m7, m8)
+#
+# Przewidywanie (SZKIC_RODZIN.md §6.3), jednostka = n_h*w:
+#   DEFAULT      r1=8 r2=4  substraty złożenia=4  STREAM_SELECT_*=1  razem 5
+#   NO_R2_CANON  r1=8 r2=0  substraty złożenia=4  STREAM_SELECT_*=2  razem 6
+#   NO_R1_FACTOR r1=0 r2=4  substraty złożenia=8  STREAM_SELECT_*=2  razem 10
+#   NO_R1_NO_R2  r1=0 r2=0  substraty złożenia=8  STREAM_SELECT_*=4  razem 12
+#
+# P-1: rodzina stoi na tym, że program pól wolno odwołać do zadeklarowanych
+# źródeł leżących pod trzema piętrami operatorów (> , # , +). Jeżeli to nie
+# przechodzi albo odciski obu postaci się rozjadą — NO-GO całej kampanii (§10).
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+DECLARE v INTEGER STREAM A, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM B, 1/50  FILE 'src_b.txt'
+DECLARE v INTEGER STREAM C, 1/100 FILE 'src_c.txt'
+DECLARE v INTEGER STREAM D, 1/50  FILE 'src_d.txt'
+
+# W1
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m1 FROM ((A>2)#(B>1)) + ((C>2)#(D>1))
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m2 FROM ((A>2)#(B>1)) + ((C>2)#(D>1))
+
+# W2
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m3 FROM ((C>2)#(D>1)) + ((A>2)#(B>1))
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m4 FROM ((C>2)#(D>1)) + ((A>2)#(B>1))
+
+# W3
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m5 FROM ((A#B)>3) + ((C#D)>3)
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m6 FROM ((A#B)>3) + ((C#D)>3)
+
+# W4
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m7 FROM ((C#D)>3) + ((A#B)>3)
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m8 FROM ((C#D)>3) + ((A#B)>3)

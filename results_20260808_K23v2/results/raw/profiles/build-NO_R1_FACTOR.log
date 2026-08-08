@@ -1,0 +1,5 @@
+[0/2] Re-checking globbed directories...
+[1/5] Building CXX object src/retractor/CMakeFiles/xretractor.dir/launcher.cpp.o
+[2/5] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/expressionEvaluator.cpp.o
+[3/5] Linking CXX static library src/retractor/lib/libretractor.a
+[4/5] Linking CXX executable src/retractor/xretractor

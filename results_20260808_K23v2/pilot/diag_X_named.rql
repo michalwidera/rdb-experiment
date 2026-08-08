@@ -1,0 +1,20 @@
+# DIAGNOSTYKA (nie jest częścią rodziny F9-X ani macierzy).
+# Pytanie: co się dzieje, gdy autorzy NAZYWAJĄ strumienie pośrednie zamiast
+# pisać złożenie inline. Dwaj autorzy, te same dwie postacie R1 co w W1 i W4.
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+DECLARE v INTEGER STREAM A, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM B, 1/50  FILE 'src_b.txt'
+DECLARE v INTEGER STREAM C, 1/100 FILE 'src_c.txt'
+DECLARE v INTEGER STREAM D, 1/50  FILE 'src_d.txt'
+
+# autor 1 — nazywa po swojemu, postać shift-first
+SELECT * STREAM front1 FROM (A>2)#(B>1)
+SELECT * STREAM rear1  FROM (C>2)#(D>1)
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m1 FROM front1+rear1
+
+# autor 2 — nazywa po swojemu, postać hash-first, odwrotna kolejność
+SELECT * STREAM przod2 FROM (A#B)>3
+SELECT * STREAM tyl2   FROM (C#D)>3
+SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m2 FROM tyl2+przod2

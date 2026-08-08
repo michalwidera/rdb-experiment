@@ -1,0 +1,68 @@
+:SUBSTRAT	memory
+:STORAGE	temp/
+C(1/100)	src_c.txt
+	v: INTEGER
+D(1/50)	src_d.txt
+	v: INTEGER
+STREAM_HASH_C_D(1/150)	tail=2
+	:- PUSH_STREAM(C)
+	:- PUSH_STREAM(D)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(STREAM_HASH_C_D[0])
+tyl2(1/150)	origin=3
+	:- PUSH_STREAM(STREAM_HASH_C_D)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(tyl2[0])
+A(1/100)	src_a.txt
+	v: INTEGER
+B(1/50)	src_b.txt
+	v: INTEGER
+STREAM_HASH_A_B(1/150)	tail=2
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_HASH
+	v: INTEGER
+		PUSH_ID(STREAM_HASH_A_B[0])
+przod2(1/150)	origin=3
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(przod2[0])
+m2(1/150)	origin=3
+	:- PUSH_STREAM(tyl2)
+	:- PUSH_STREAM(przod2)
+	:- STREAM_ADD
+	m2_0: INTEGER
+		PUSH_ID(m2[0])
+		PUSH_ID(m2[0])
+		MULTIPLY
+		PUSH_ID(m2[0])
+		PUSH_ID(m2[0])
+		MULTIPLY
+		ADD
+		CALL(Sqrt)
+front1(1/150)	origin=3
+	:- PUSH_STREAM(STREAM_HASH_A_B)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(front1[0])
+rear1(1/150)	origin=3
+	:- PUSH_STREAM(STREAM_HASH_C_D)
+	:- STREAM_TIMEMOVE(3)
+	v: INTEGER
+		PUSH_ID(rear1[0])
+m1(1/150)	origin=3
+	:- PUSH_STREAM(front1)
+	:- PUSH_STREAM(rear1)
+	:- STREAM_ADD
+	m1_0: INTEGER
+		PUSH_ID(m1[0])
+		PUSH_ID(m1[0])
+		MULTIPLY
+		PUSH_ID(m1[0])
+		PUSH_ID(m1[0])
+		MULTIPLY
+		ADD
+		CALL(Sqrt)

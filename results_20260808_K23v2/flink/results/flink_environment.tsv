@@ -1,0 +1,43 @@
+key	value
+captured_utc	2026-08-08T13:48:30Z
+role	host (Flink) — worker mierzy wylacznie RetractorDB (D-2)
+hostname	B850MDESK
+kernel	Linux 6.18.33.2-microsoft-standard-WSL2 x86_64
+os	Ubuntu 26.04 LTS
+cpu_model	AMD Ryzen 9 9900X 12-Core Processor
+cpu_online	24
+jdk_pinned_home	/usr/lib/jvm/java-17-openjdk-amd64
+jdk_pinned_java_version	openjdk version "17.0.19" 2026-04-21
+jdk_pinned_runtime	OpenJDK Runtime Environment (build 17.0.19+10-1-26.04.2-Ubuntu)
+jdk_pinned_javac_version	javac 17.0.19
+jdk_pinned_java_sha256	a89ad12dc799a14a20d9e570ef788dbcfec70d037d8ede404c2c924354933237
+jdk_pinned_javac_sha256	9a4eedebe503abd0daf458063d99c9dbc2d8892bba03fd5efe48f33d7a65dc9d
+jdk_path_default_version	openjdk version "25.0.3" 2026-04-21
+jdk_path_default_binary	/usr/lib/jvm/java-25-openjdk-amd64/bin/java
+flink_home	/home/michal/opt/flink-2.3.0
+flink_dist_jar	/home/michal/opt/flink-2.3.0/lib/flink-dist-2.3.0.jar
+flink_dist_jar_sha256	7c51cba8e3f2b35d62cc0f7212eb03b73e07c9541e0ce566579846af5ea9d493
+flink_dist_jar_bytes	208986386
+flink_version_from_jar	2.3.0
+flink_dist_tarball_sha512_file	/home/michal/opt/flink-2.3.0-bin-scala_2.12.tgz
+flink_tarball_sha512_declared	e5863767caeaa7c72e45fc62d45f7df9f435a1c83aed813ea550db39e9221194d148ea4a6c3bfb5604335974729c579d48c6c4c3eb43502e37310a0bf982462a
+flink_lib_sha256	d4ac358faf978b8cb89f304cb6ef11a92100169bdabaf6271f7a0268239d8189  flink-cep-2.3.0.jar
+flink_lib_sha256	e50f8fbe09b7c4b5f64c876ae89b78e5ee28fe849cd62c51e1be38411affb655  flink-connector-files-2.3.0.jar
+flink_lib_sha256	1715903612735d0c8bec511bf9a10996fbae5c28238a77c94a008a50a2c0cc3f  flink-csv-2.3.0.jar
+flink_lib_sha256	7c51cba8e3f2b35d62cc0f7212eb03b73e07c9541e0ce566579846af5ea9d493  flink-dist-2.3.0.jar
+flink_lib_sha256	ca1f60fe2d83ae4166c262a4a92a793074bfdbd5cdb4b95a8415d0d8c14ba75a  flink-json-2.3.0.jar
+flink_lib_sha256	efefae67afa7dbb12371676b5efe724349bec2fb708a48e6ce14f8fd45218a3c  flink-scala_2.12-2.3.0.jar
+flink_lib_sha256	2a9134d55917e773d074e0036fec83d82cad0073a8527e9f3fdf767d5d8e94b6  flink-table-api-java-uber-2.3.0.jar
+flink_lib_sha256	3eb9e1f4d6041a44cc1572b41a9c6484e4693ae60bf6f7873ab93f22b68cda8d  flink-table-planner-loader-2.3.0.jar
+flink_lib_sha256	a4f6463963e763d0fb4f4e855b3bb57fd8ae7ccc8c10d980a717aa7fcce0dac4  flink-table-runtime-2.3.0.jar
+flink_lib_sha256	72aab8a06335962bfd441605cb4da94777798f699414e02931d29e63fd12ace4  log4j-1.2-api-2.25.3.jar
+flink_lib_sha256	e886682920fa0fb9d6eb6395dcb4de088443f8646c89c5e5846e168e327f406f  log4j-api-2.25.3.jar
+flink_lib_sha256	362b7fcb65b73aa46cc4bc53abf4eb216f444a83b5d1a037cb6fdfff0ae9f0f9  log4j-core-2.25.3.jar
+flink_lib_sha256	c4ac1b89e0f14d634aeb6f55f9b7adf542d9e16671b3806d3b98f31b27ef5fa1  log4j-layout-template-json-2.25.3.jar
+flink_lib_sha256	f835ac2bf1a895d5e687b4ebf238bff05316dd672e572dff235024b6e320bcc9  log4j-slf4j-impl-2.25.3.jar
+oracle_cpp_binary	/home/michal/github/rdb-experiment/results_20260808_K23/flink/oracle/canonical_oracle
+oracle_cpp_sha256	60f82d9e5c6273adf12beea7ef7c1283200727dbd1d5b96fa4469f02b9f2cca5
+canonical_vectors_sha256	e4600d0a7149b20d868d5c14e97364c5eb03608605054a39f083c435d749a811
+retractordb_head	1cfccf97e954025d5fb055f1cfd4f1fa9aff05e8
+experiment_head	0866c2599bdf25c1e460c931124808b6e6f0ad9c
+experiment_branch	experiment/20260808_K23

@@ -1,0 +1,33 @@
+# F9-R2 — kontrole: Q=1 oraz near-miss z §10. Każda grupa na własnym zestawie
+# źródeł, żeby klasy równoważności nie mieszały się między kontrolami.
+#
+# Kryterium: nad źródłami kontrolnymi NIE MOŻE powstać żaden STREAM_SELECT_*.
+# Grupa jednoelementowa nie dostaje substratu, więc pojawienie się choćby jednego
+# STREAM_SELECT_ oznacza scalenie postaci, które są nierównoważne.
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+# --- Q=1: brak klasy równoważności ---
+DECLARE v INTEGER STREAM QA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM QB, 1/100 FILE 'src_b.txt'
+SELECT Sqrt(QA[0]*QA[0]+QB[0]*QB[0]) STREAM q1 FROM QA+QB
+
+# --- near-miss 1: zmieniona kolejność pól wyniku ---
+DECLARE v INTEGER STREAM NA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM NB, 1/100 FILE 'src_b.txt'
+SELECT NA[0],NB[0] STREAM n1 FROM NA+NB
+SELECT NB[0],NA[0] STREAM n2 FROM NB+NA
+
+# --- near-miss 2: SELECT * ujawnia kolejność wejścia ---
+DECLARE v INTEGER STREAM SA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM SB, 1/100 FILE 'src_b.txt'
+SELECT * STREAM d1 FROM SA+SB
+SELECT * STREAM d2 FROM SB+SA
+
+# --- near-miss 3: inne grupowanie trzech źródeł (brak reasocjacji) ---
+DECLARE v INTEGER STREAM GA, 1/100 FILE 'src_a.txt'
+DECLARE v INTEGER STREAM GB, 1/100 FILE 'src_b.txt'
+DECLARE v INTEGER STREAM GC, 1/100 FILE 'src_c.txt'
+SELECT GA[0]*GB[0]+GC[0] STREAM x1 FROM (GA+GB)+GC
+SELECT GA[0]*GB[0]+GC[0] STREAM x3 FROM (GC+GB)+GA
