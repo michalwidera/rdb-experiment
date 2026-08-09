@@ -1,0 +1,8 @@
+# Indeks surowych danych kalibracji P7 (60 przebiegow, sonda slotu).
+# Archiwum jest POZA git (.gitignore: *raw.tar.gz); kopia na hoscie.
+# Odtworzenie analizy: tar xzf <archiwum> && ./analyze_calib.py --runs runs
+archiwum	K23v2_kalibracja_raw.tar.gz
+sha256	91a3a2233717a81327db074b6415dd30e57acfa7d54cc9749c02b2866eae9f27
+rozmiar_b	1333456
+plikow_slot_csv	60
+data	2026-08-09

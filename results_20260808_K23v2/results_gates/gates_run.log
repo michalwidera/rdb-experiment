@@ -1,0 +1,129 @@
+== 1. BRAMKA MUTANTOW — pokazana PRZED wariantem poprawnym ==
+-- mechanizm F9-R2: m1 (2999 rekordow)
+   ok  mutant faza_shift           odrzucony przez 'order_values' po zdanych ['descriptor', 'record_count_tail']
+   ok  mutant kolejnosc_pola       odrzucony przez 'descriptor' po zdanych []
+   ok  mutant mapa_null            odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant luka                 odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant brak_rekordu_ogona   odrzucony przez 'record_count_tail' po zdanych ['descriptor']
+-- mechanizm F9-R1: m1 (4496 rekordow)
+   ok  mutant faza_shift           odrzucony przez 'order_values' po zdanych ['descriptor', 'record_count_tail']
+   ok  mutant kolejnosc_pola       odrzucony przez 'descriptor' po zdanych []
+   ok  mutant mapa_null            odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant luka                 odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant brak_rekordu_ogona   odrzucony przez 'record_count_tail' po zdanych ['descriptor']
+-- mechanizm F9-X: m1 (4496 rekordow)
+   ok  mutant faza_shift           odrzucony przez 'order_values' po zdanych ['descriptor', 'record_count_tail']
+   ok  mutant kolejnosc_pola       odrzucony przez 'descriptor' po zdanych []
+   ok  mutant mapa_null            odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant luka                 odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant brak_rekordu_ogona   odrzucony przez 'record_count_tail' po zdanych ['descriptor']
+-- mechanizm F9-R2/wielopolowy: n1 (2999 rekordow)
+   ok  mutant faza_shift           odrzucony przez 'order_values' po zdanych ['descriptor', 'record_count_tail']
+   ok  mutant kolejnosc_pola       odrzucony przez 'descriptor' po zdanych []
+   ok  mutant mapa_null            odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant luka                 odrzucony przez 'null_gap_map' po zdanych ['descriptor', 'record_count_tail', 'order_values']
+   ok  mutant brak_rekordu_ogona   odrzucony przez 'record_count_tail' po zdanych ['descriptor']
+   OK: 20 mutantow odrzuconych przez warunki ZAMIERZONE
+
+== 2. Identycznosc publicznych artefaktow MIEDZY PROFILAMI ==
+   F9_R2: profile porownane dla 6 wartosci Q + kontrole
+   F9_R1: profile porownane dla 6 wartosci Q + kontrole
+   F9_X: profile porownane dla 6 wartosci Q + kontrole
+   porownan: 624, rozbieznosci: 134
+
+== 3. Oracle wartosci: RetractorDB wobec Flinka ==
+   F9_R2: 6 wartosci Q x 2 warianty Flinka porownane
+   F9_R1: 6 wartosci Q x 2 warianty Flinka porownane
+   F9_X: 6 wartosci Q x 2 warianty Flinka porownane
+   porownan: 378, rozbieznosci: 126
+
+== 4. Kontrole nierownowaznosci (near-miss) ==
+   F9_R2_Q1: bajty substratow per profil {'DEFAULT': 0, 'NO_R2_CANON': 0, 'NO_R1_FACTOR': 0, 'NO_R1_NO_R2': 0} (ablacja minimalna: NO_R2_CANON)
+   F9_R2_controls/DEFAULT: (n1,n2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/DEFAULT: (d1,d2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/DEFAULT: (x1,x3) substraty ['STREAM_ADD_GA_GB'] | ['STREAM_ADD_GC_GB']; wspolne []; wspolne select []
+   F9_R2_controls/NO_R2_CANON: (n1,n2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R2_CANON: (d1,d2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R2_CANON: (x1,x3) substraty ['STREAM_ADD_GA_GB'] | ['STREAM_ADD_GC_GB']; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_FACTOR: (n1,n2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_FACTOR: (d1,d2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_FACTOR: (x1,x3) substraty ['STREAM_ADD_GA_GB'] | ['STREAM_ADD_GC_GB']; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_NO_R2: (n1,n2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_NO_R2: (d1,d2) substraty [] | []; wspolne []; wspolne select []
+   F9_R2_controls/NO_R1_NO_R2: (x1,x3) substraty ['STREAM_ADD_GA_GB'] | ['STREAM_ADD_GC_GB']; wspolne []; wspolne select []
+   F9_R1_Q1: bajty substratow per profil {'DEFAULT': 40473, 'NO_R2_CANON': 40473, 'NO_R1_FACTOR': 40455, 'NO_R1_NO_R2': 40455} (ablacja minimalna: NO_R1_FACTOR)
+   F9_R1_controls/DEFAULT: (i1,i2) substraty ['STREAM_HASH_IA_IB'] | ['STREAM_HASH_IA2_IB2']; wspolne []; wspolne select []
+   F9_R1_controls/DEFAULT: (STREAM_HASH_CA_CB,collide_user) substraty [] | ['STREAM_TIMEMOVE_CA', 'STREAM_TIMEMOVE_CB']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R2_CANON: (i1,i2) substraty ['STREAM_HASH_IA_IB'] | ['STREAM_HASH_IA2_IB2']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R2_CANON: (STREAM_HASH_CA_CB,collide_user) substraty [] | ['STREAM_TIMEMOVE_CA', 'STREAM_TIMEMOVE_CB']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R1_FACTOR: (i1,i2) substraty ['STREAM_TIMEMOVE_IA', 'STREAM_TIMEMOVE_IB'] | ['STREAM_HASH_IA2_IB2']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R1_FACTOR: (STREAM_HASH_CA_CB,collide_user) substraty [] | ['STREAM_TIMEMOVE_CA', 'STREAM_TIMEMOVE_CB']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R1_NO_R2: (i1,i2) substraty ['STREAM_TIMEMOVE_IA', 'STREAM_TIMEMOVE_IB'] | ['STREAM_HASH_IA2_IB2']; wspolne []; wspolne select []
+   F9_R1_controls/NO_R1_NO_R2: (STREAM_HASH_CA_CB,collide_user) substraty [] | ['STREAM_TIMEMOVE_CA', 'STREAM_TIMEMOVE_CB']; wspolne []; wspolne select []
+   F9_X_Q1: bajty substratow per profil {'DEFAULT': 161874, 'NO_R2_CANON': 161874, 'NO_R1_FACTOR': 161802, 'NO_R1_NO_R2': 161802} (ablacja minimalna: NO_R1_NO_R2)
+   F9_X_controls/DEFAULT: (h1,h2) substraty ['STREAM_HASH_STREAM_TIMEMOVE_HC_STREAM_TIMEMOVE_HD', 'STREAM_TIMEMOVE_STREAM_HASH_HA_HB'] | ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB', 'STREAM_TIMEMOVE_STREAM_HASH_HC_HD']; wspolne ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB']; wspolne select []
+   F9_X_controls/NO_R2_CANON: (h1,h2) substraty ['STREAM_HASH_STREAM_TIMEMOVE_HC_STREAM_TIMEMOVE_HD', 'STREAM_TIMEMOVE_STREAM_HASH_HA_HB'] | ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB', 'STREAM_TIMEMOVE_STREAM_HASH_HC_HD']; wspolne ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB']; wspolne select []
+   F9_X_controls/NO_R1_FACTOR: (h1,h2) substraty ['STREAM_HASH_STREAM_TIMEMOVE_HA_STREAM_TIMEMOVE_HB', 'STREAM_HASH_STREAM_TIMEMOVE_HC_STREAM_TIMEMOVE_HD'] | ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB', 'STREAM_TIMEMOVE_STREAM_HASH_HC_HD']; wspolne []; wspolne select []
+   F9_X_controls/NO_R1_NO_R2: (h1,h2) substraty ['STREAM_HASH_STREAM_TIMEMOVE_HA_STREAM_TIMEMOVE_HB', 'STREAM_HASH_STREAM_TIMEMOVE_HC_STREAM_TIMEMOVE_HD'] | ['STREAM_TIMEMOVE_STREAM_HASH_HA_HB', 'STREAM_TIMEMOVE_STREAM_HASH_HC_HD']; wspolne []; wspolne select []
+   rozbieznosci: 0
+
+== 5. Program bez etapu materializowanego ==
+   F9_R2_controls: mianownik niezerowy w kazdym profilu
+   F9_R1_controls: mianownik niezerowy w kazdym profilu
+   F9_X_controls: mianownik niezerowy w kazdym profilu
+   F9_R2_controls/DEFAULT: substratow 2, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R2_controls/NO_R2_CANON: substratow 2, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R2_controls/NO_R1_FACTOR: substratow 2, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R2_controls/NO_R1_NO_R2: substratow 2, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R1_controls/DEFAULT: substratow 6, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R1_controls/NO_R2_CANON: substratow 6, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R1_controls/NO_R1_FACTOR: substratow 7, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_R1_controls/NO_R1_NO_R2: substratow 7, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_X_controls/DEFAULT: substratow 7, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_X_controls/NO_R2_CANON: substratow 7, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_X_controls/NO_R1_FACTOR: substratow 10, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   F9_X_controls/NO_R1_NO_R2: substratow 10, strumieni nad ZA ['z1', 'z2'], z tego substratow 0
+   rozbieznosci: 0
+
+== 6. Przypadki o znanej odpowiedzi na instrumencie ==
+   36 przypadkow, wymagane >= 30: OK
+
+gates.tsv zapisane: gates.tsv
+
+== Zestawienie ==
+rodzina oracle_values         oracle_mutants        counter_known_answer  public_identity       near_miss_controls    no_materialization    
+F9-R2   PASS                  PASS                  PASS                  PASS                  PASS                  PASS                  
+F9-R1   PASS                  PASS                  PASS                  FAIL                  PASS                  PASS                  
+F9-X    FAIL                  PASS                  PASS                  FAIL                  PASS                  PASS                  
+
+== STOP-6: bramki nieczyste. KLASYFIKACJA NALEZY DO CZLOWIEKA ==
+-- F9-R1 / public_identity: 68 rozbieznosci
+   F9_R1_Q1/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_R1_Q1/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q1/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_R1_Q1/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q2/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_R1_Q2/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q2/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_R1_Q2/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q2/m2 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_R1_Q2/m2 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q2/m2 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_R1_Q2/m2 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q4/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_R1_Q4/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_R1_Q4/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_R1_Q4/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+-- F9-X / oracle_values: 126 rozbieznosci
+   F9_X_Q1/m1 rdb~flink_natural: [order_values] F9_X_Q1/m1 rdb~flink_natural: rekord 0: (494,) wobec (349,)
+   F9_X_Q1/m1 rdb~flink_manual: [order_values] F9_X_Q1/m1 rdb~flink_manual: rekord 0: (494,) wobec (349,)
+   F9_X_Q2/m1 rdb~flink_natural: [order_values] F9_X_Q2/m1 rdb~flink_natural: rekord 0: (494,) wobec (349,)
+   F9_X_Q2/m2 rdb~flink_natural: [order_values] F9_X_Q2/m2 rdb~flink_natural: rekord 0: (494,) wobec (349,)
+   F9_X_Q2/m1 rdb~flink_manual: [order_values] F9_X_Q2/m1 rdb~flink_manual: rekord 0: (494,) wobec (349,)
+   F9_X_Q2/m2 rdb~flink_manual: [order_values] F9_X_Q2/m2 rdb~flink_manual: rekord 0: (494,) wobec (349,)
+   F9_X_Q4/m1 rdb~flink_natural: [order_values] F9_X_Q4/m1 rdb~flink_natural: rekord 0: (494,) wobec (349,)
+   F9_X_Q4/m2 rdb~flink_natural: [order_values] F9_X_Q4/m2 rdb~flink_natural: rekord 0: (494,) wobec (349,)
+-- F9-X / public_identity: 66 rozbieznosci
+   F9_X_Q1/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_X_Q1/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q1/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_X_Q1/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q2/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_X_Q2/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q2/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_X_Q2/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q2/m2 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_X_Q2/m2 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q2/m2 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_X_Q2/m2 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q4/m1 DEFAULT~NO_R1_FACTOR: [record_count_tail] F9_X_Q4/m1 DEFAULT~NO_R1_FACTOR: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+   F9_X_Q4/m1 DEFAULT~NO_R1_NO_R2: [record_count_tail] F9_X_Q4/m1 DEFAULT~NO_R1_NO_R2: 4496 wobec 4494 rekordow, roznica -2, zadeklarowany ogon 0
+
+Kolumna `classification` w gates.tsv jest przy FAIL PUSTA — `verdict.py`
+bez niej werdyktu nie wyda (kod 2). To jest zamierzone, nie usterka.

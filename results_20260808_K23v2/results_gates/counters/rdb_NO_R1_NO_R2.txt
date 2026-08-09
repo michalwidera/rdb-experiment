@@ -1,0 +1,63 @@
+# NO_R1_NO_R2/F9_R1_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=8989 tokeny=17977  hash: wybory=4494  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=80912 tokeny=224752  hash: wybory=40449  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=13483 tokeny=31459  hash: wybory=8988  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=152832 tokeny=440512  hash: wybory=76401  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=26972 tokeny=62932  hash: wybory=13485  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=44952 tokeny=116872  hash: wybory=22473  add: scalenia=0
+# NO_R1_NO_R2/F9_R1_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=17981 nadpisania=0 bajty=197789  publiczne: dopisania=28472 nadpisania=0 bajty=328176
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=59939 tokeny=98901  hash: wybory=22475  add: scalenia=0
+# NO_R1_NO_R2/F9_R2_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=2999 tokeny=23992  hash: wybory=0  add: scalenia=2999
+# NO_R1_NO_R2/F9_R2_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=53982 tokeny=95968  hash: wybory=0  add: scalenia=5998
+# NO_R1_NO_R2/F9_R2_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=8997 tokeny=29990  hash: wybory=0  add: scalenia=2999
+# NO_R1_NO_R2/F9_R2_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=101966 tokeny=143952  hash: wybory=0  add: scalenia=5998
+# NO_R1_NO_R2/F9_R2_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=17994 tokeny=59980  hash: wybory=0  add: scalenia=5998
+# NO_R1_NO_R2/F9_R2_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=29990 tokeny=71976  hash: wybory=0  add: scalenia=5998
+# NO_R1_NO_R2/F9_R2_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=47984 tokeny=89970  hash: wybory=0  add: scalenia=23992
+# NO_R1_NO_R2/F9_X_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=17978 nadpisania=0 bajty=161802  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=22472 tokeny=53930  hash: wybory=8988  add: scalenia=4494
+# NO_R1_NO_R2/F9_X_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=125864 tokeny=251724  hash: wybory=17982  add: scalenia=17980
+# NO_R1_NO_R2/F9_X_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=22472 nadpisania=0 bajty=202248  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=31460 tokeny=62918  hash: wybory=8988  add: scalenia=4494
+# NO_R1_NO_R2/F9_X_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=197784 tokeny=323644  hash: wybory=17982  add: scalenia=17980
+# NO_R1_NO_R2/F9_X_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=62934 tokeny=125864  hash: wybory=17982  add: scalenia=8990
+# NO_R1_NO_R2/F9_X_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=89904 tokeny=215764  hash: wybory=17982  add: scalenia=17980
+# NO_R1_NO_R2/F9_X_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=35962 nadpisania=0 bajty=323658  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=50949 tokeny=131866  hash: wybory=17981  add: scalenia=8989

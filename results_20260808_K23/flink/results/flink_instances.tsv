@@ -1,0 +1,7 @@
+family	variant	q	subplan_nodes	subplan_units_nh	public_stages	sinks	sources	stream_nodes	job_vertices	canonical_record_bytes
+F9-R2	natural	8	8	5.3333	8	8	2	26	10	9
+F9-R2	manual	8	1	0.6667	8	8	2	19	3	9
+F9-R1	natural	8	12	8.0000	8	8	2	30	10	9
+F9-R1	manual	8	1	1.0000	8	8	2	19	3	9
+F9-X	natural	8	40	32.0000	8	8	4	60	28	9
+F9-X	manual	8	5	5.0000	8	8	4	25	7	9
