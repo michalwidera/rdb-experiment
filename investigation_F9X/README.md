@@ -60,3 +60,9 @@ cd reference && ./model_semantyk.py
   sprawdzone, że wynik `m1` jest wtedy **identyczny** (4496 wartości co do
   jednej), więc zmiana jest diagnostycznie neutralna.
 * Domyślne `java` na hoście to **25.0.3**, nie 17. JDK 17 przypinać ścieżką.
+* **`freeze_check.sh` kampanii nie przechodzi już po merge'u** — sprawdza nazwę
+  gałęzi (`experiment/20260808_K23`), a jesteśmy na `main`. To **nie jest
+  defekt**: bramka pilnowała żywej kampanii. Sam skrypt jest artefaktem
+  zamrożonym (jest w `manifest.sha256`), więc **nie wolno go poprawiać**.
+  Substancję zamrożenia sprawdza się teraz wprost:
+  `sha256sum -c manifest.sha256` — 2026-08-09 dawało **188/188 OK**.
