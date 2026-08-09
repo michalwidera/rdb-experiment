@@ -61,39 +61,72 @@ weszłaby do silnika. **Korpus jest tu bramką, nie ozdobą.**
 
 ---
 
-## 4. Pytanie, które to otworzyło — do rozstrzygnięcia przez człowieka
+## 4. Rozstrzygnięcie — M3 i M1 **obalone**, zostaje **M2**
 
 Oracle mierzy granicę zdarzeniową **strumienia matematycznego**: kiedy dane
-fizycznie istnieją. Silnik pracuje w modelu **emisji slotowej**: strumień wydaje
-rekord `n` w slocie `n+W`, więc konsument nie zobaczy go wcześniej niż na końcu
-tego slotu — **nawet jeśli dane istniały wcześniej**.
+fizycznie istnieją. Silnik pracuje w modelu **emisji slotowej**. Pytanie brzmiało,
+czy substrat jest przezroczysty (wariant M3) — sprawdzone 2026-08-09 w kodzie
+wykonawczym.
 
-Dla `(A>2)#(B>1)` te dwa modele dają różne odpowiedzi:
+### M3 obalone: substrat NIE jest przezroczysty
 
-* granica zdarzeniowa (oracle): **0** — `b₀` istnieje w 0,02 s, a slot 3 kończy
-  się w 0,0267 s;
-* model emisji slotowej: **2** — substrat `τ₂(A)` wydaje rekord `j` dopiero
-  w slocie `j`, więc przeplot nie ma czego wziąć wcześniej.
+`dataModel::fetchForward()` (`dataModel.cpp:120`) czyta **zmaterializowane
+rekordy źródła**, nie surowe dane:
 
-**Oba są wewnętrznie spójne.** To nie jest więc pytanie „który wzór jest zły",
-tylko **który model brzegu obowiązuje w RetractorDB** — i dopiero z niego wynika,
-która strona ustępuje.
+```cpp
+const auto count = static_cast<int>(out.getRecordsCount());   // ile zrodlo NAPRAWDE zapisalo
+const int physical = forwardIndex - *logicalBase;
+const int rev      = count - 1 - physical;
+if (physical < 0 || rev < 0 || ...) {
+    SPDLOG_ERROR("fetchForward {}: record {} not available ...");
+    nullRecord.setNullBitset(... true);      // rekord ALL-NULL
+    return nullRecord;
+}
+```
 
-Niezależnie od odpowiedzi **defekt zostaje**, bo dotyczy czegoś innego:
-`(A>2)#(B>1)` i `(A#B)>3` to **ten sam strumień**, a silnik wydaje dla nich
-różną liczbę rekordów. Reguła R1 nie jest więc obserwacyjnie neutralna w modelu
-emisji slotowej — a artykuł opisuje ją jako przepisanie zachowujące semantykę.
+Gdy żądany rekord nie został jeszcze wydany, konsument **nie czeka** — dostaje
+rekord all-NULL i wpis błędu. Gate emisji (`dataModel.cpp:215`,
+`if (runtime.elapsedSlots++ < silentSlots) continue;`) jest bezwarunkowy:
+w slotach ciszy strumień nie liczy i nie zapisuje niczego.
 
-Trzy możliwe rozstrzygnięcia, każde o innym zasięgu:
+### M1 obalone tym samym
 
-| Wariant | Treść | Skutek |
+Ustawienie ogona nieczynnikowego przeplotu na 0 „bo dane fizycznie istnieją"
+sprawiłoby, że `τ₁(B)` nie ma jeszcze zapisanego rekordu 1, a przeplot dostaje
+**all-NULL**. To jest reżim zaniżający — realne zepsucie, nie poprawka.
+Wartość 0 z oracle'a opisuje dane surowe, których runtime **nie wykorzystuje**.
+
+### Mechanizm: R1 przenosi materializację na siatkę drobniejszą
+
+| kształt | gdzie materializuje się pośrednik | `b₀` widoczne dla konsumenta |
 |---|---|---|
-| **M1** | obowiązuje granica zdarzeniowa | ogon liczyć jak oracle; zmiana dotyka 107/196 kształtów, w tym `+` w konfiguracji domyślnej |
-| **M2** | obowiązuje emisja slotowa | ogony są poprawne, a defektem jest **R1**: przepisanie skraca ciszę o 2 sloty, więc nie jest neutralne |
-| **M3** | emisja slotowa, ale substraty przezroczyste | rozjazd znika, jeżeli substrat nie narzuca własnego slotu emisji — do sprawdzenia w `dataModel` |
+| `(A>2)#(B>1)` | `τ₁(B)` na siatce **1/50** | koniec slotu 1 = **0,0400 s** |
+| `(A#B)>3` | `A#B` na siatce **1/150** | koniec slotu 2 = **0,0200 s** |
 
-**M3 jest warta sprawdzenia przed wyborem M1/M2**, bo mogłaby usunąć rozjazd
-bez zmiany żadnej postaci zamkniętej.
+Slot 3 przeplotu kończy się w 0,0267 s: postać czynnikowa zdąża, nieczynnikowa
+nie — stąd jej dodatkowe dwa sloty ogona. **Oba wyniki są poprawne w modelu
+silnika.** Różnica nie bierze się z błędnego wzoru, tylko z tego, że R1 zmienia
+**rozdzielczość czasową pośrednika**.
+
+### Werdykt M2, w postaci ostrzejszej niż w planie
+
+> **Tożsamość shift-matching zachowuje wartości i indeksy logiczne, ale NIE
+> zachowuje opóźnienia przy materializacji wyrównanej do slotów.**
+
+Obie postacie emitują te same rekordy o tych samych indeksach; nieczynnikowa
+zaczyna dwa sloty później, więc na przebiegu o ustalonej długości oddaje dwa
+rekordy mniej. Dokładnie to zmierzyła K23.
+
+### Co zostaje do decyzji człowieka
+
+Nie „który wzór poprawić", tylko **czy R1 wolno tak działać**:
+
+| Droga | Treść | Koszt |
+|---|---|---|
+| **D1** | uznać różnicę opóźnienia za dopuszczalną i doprecyzować twierdzenie o R1 w artykule („zachowuje wartości i indeksy, może skrócić brzeg") | tanie, bez zmian w silniku |
+| **D2** | wymagać neutralności — R1 musi zachowywać łączną ciszę | koliduje z regułą `>N` z 2026-08-07, zmierzoną przez K24p jako usunięcie realnego zawyżenia |
+
+To jest decyzja o treści artykułu, nie o kodzie.
 
 ---
 
