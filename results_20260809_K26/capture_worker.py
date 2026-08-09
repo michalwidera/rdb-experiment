@@ -79,7 +79,7 @@ set -euo pipefail
 test -z "$(git -C '{code_repo}' status --short)"
 printf 'engine_sha\\t%s\\n' "$(git -C '{code_repo}' rev-parse HEAD)"
 printf 'kernel\\t%s\\n' "$(uname -r)"
-printf 'cpu_online\\t%s\\n' "$(nproc)"
+printf 'cpu_online\\t%s\\n' "$(cat /sys/devices/system/cpu/online)"
 printf 'cpu_pinning\\t%s\\n' "$(tr ' ' '\\n' </proc/cmdline | grep -E '^(isolcpus|nohz_full|rcu_nocbs)=' | paste -sd' ' -)"
 printf 'cpu_isolated\\t%s\\n' "$(cat /sys/devices/system/cpu/isolated)"
 printf 'governor\\t%s\\n' "$(cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor | sort -u | paste -sd, -)"

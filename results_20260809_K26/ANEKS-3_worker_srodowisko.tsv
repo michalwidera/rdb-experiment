@@ -1,0 +1,13 @@
+key	value
+engine_sha	856ee54b0f4ab450a6b61e3c08e045f404a79488
+kernel	6.8.0-2049-raspi-realtime
+cpu_online	0-3
+cpu_pinning	isolcpus=3 nohz_full=3 rcu_nocbs=3
+cpu_isolated	3
+governor	performance
+arch	aarch64
+model	Raspberry Pi 400 Rev 1.0
+os	Ubuntu 24.04.4 LTS
+gcc	gcc (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0
+temp_c_at_freeze	44.790
+mem_total_mb	3784
