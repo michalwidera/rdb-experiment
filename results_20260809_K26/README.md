@@ -4,14 +4,12 @@ Ten katalog jest nową, prospektywną iteracją testu H9. Nie jest korektą
 `results_20260808_K23v2/` i nie dziedziczy jego danych ani wyników. K23 pozostaje
 zamrożone; łączenie obserwacji między iteracjami jest zabronione.
 
-Stan: **P3–P4 wykonane, predeklaracja poprawiana przed rozpoczęciem
-eksperymentu; STOP-5 otwarty**. Nie wykonano P6 ani pomiaru kosztowego.
-Wcześniejsze commity są wersjami przeglądowymi. Bezpośrednio przed pierwszym
-P6, po zatwierdzeniu, końcowym commicie/pushu i zielonym
-`freeze_check.sh predeklaracja`, `bind_campaign.py` zapisuje aktualne SHA do
-ignorowanego `results/ANEKS-0_start.tsv`. Dopiero ten zapis rozpoczyna kampanię
-i wiąże rewizje; wcześniej HEAD silnika może się zmieniać, pod warunkiem
-przebudowy profili i ponowienia dowodu korpusu.
+Stan: **P3–P5 wykonane; STOP-5 zamknięty, P6 nie rozpoczęte**. Nie wykonano
+pomiaru kosztowego. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
+aktualne SHA do ignorowanego `results/ANEKS-0_start.tsv`. Dopiero ten zapis
+rozpoczyna kampanię i wiąże rewizje; wcześniej HEAD silnika może się zmieniać,
+pod warunkiem przebudowy profili, ponowienia dowodu korpusu oraz końcowego
+commitu, pushu i zielonego `freeze_check.sh predeklaracja`.
 
 Najważniejsze różnice wobec K23:
 

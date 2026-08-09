@@ -1,8 +1,8 @@
 # PREDEKLARACJA K26 / H9 — nowa iteracja po K23
 
-**Status: poprawiana przed rozpoczęciem eksperymentu 2026-08-09; STOP-5
-pozostaje otwarty do zatwierdzenia, końcowego commitu i pushu. Żaden przebieg
-P6 ani pomiar kosztowy K26 nie został wykonany.**
+**Status 2026-08-10: STOP-5 zamknięty po zatwierdzeniu, końcowym commicie,
+pushu i zielonym `freeze_check.sh predeklaracja`; P6 nie rozpoczęto i nie
+wykonano pomiaru kosztowego K26.**
 
 Wcześniejsze commity katalogu są wersjami przeglądowymi, nie momentem
 zamrożenia. **Zamrożenie zaczyna obowiązywać w chwili rozpoczęcia eksperymentu**,
