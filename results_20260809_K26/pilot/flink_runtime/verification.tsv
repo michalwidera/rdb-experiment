@@ -1,0 +1,17 @@
+variant	monitor	records	oracle_match	continuous_slots
+natural	m1	150	true	true
+natural	m2	150	true	true
+natural	m3	150	true	true
+natural	m4	150	true	true
+natural	m5	150	true	true
+natural	m6	150	true	true
+natural	m7	150	true	true
+natural	m8	150	true	true
+manual	m1	150	true	true
+manual	m2	150	true	true
+manual	m3	150	true	true
+manual	m4	150	true	true
+manual	m5	150	true	true
+manual	m6	150	true	true
+manual	m7	150	true	true
+manual	m8	150	true	true
