@@ -1,0 +1,25 @@
+ksztalt        | oracle O/W  | silnik O/W  | werdykt
+----------------------------------------------------------
+A#B            | 0/2         | 0/2         | zgodne
+A+B            | 0/1         | 0/1         | zgodne
+(A>2)#(B>1)    | 3/0         | 3/2         | SILNIK ZAWYZA
+(A#B)>3        | 3/0         | 3/0         | zgodne
+(A>4)#(B>2)    | 6/0         | 6/2         | SILNIK ZAWYZA
+(A#B)>6        | 6/0         | 6/0         | zgodne
+(A>2)+(B>1)    | 2/0         | 2/1         | SILNIK ZAWYZA
+(A+B)>2        | 2/0         | 2/0         | zgodne
+
+=== bramka mutantow: ogon musi byc MINIMALNY i WYSTARCZAJACY ===
+A#B            W=2 wystarcza=True  W-1=1 wystarcza=False  -> OK
+A+B            W=1 wystarcza=True  W-1=0 wystarcza=False  -> OK
+(A>2)#(B>1)    W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+(A#B)>3        W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+(A>4)#(B>2)    W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+(A#B)>6        W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+(A>2)+(B>1)    W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+(A+B)>2        W=0 wystarcza=True  W-1=-1 wystarcza=False  -> OK
+
+=== niezmiennik tozsamosci: ksztalty rownowazne ===
+(A>2)#(B>1)    (3, 0)  ~  (A#B)>3     (3, 0)   -> ZGODNE
+(A>4)#(B>2)    (6, 0)  ~  (A#B)>6     (6, 0)   -> ZGODNE
+(A>2)+(B>1)    (2, 0)  ~  (A+B)>2     (2, 0)   -> ZGODNE

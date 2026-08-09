@@ -1,0 +1,22 @@
+(A>4)#(B>2)    (6, 0)  ~  (A#B)>6     (6, 0)   -> ZGODNE
+(A>2)+(B>1)    (2, 0)  ~  (A+B)>2     (2, 0)   -> ZGODNE
+korpus: 196 ksztaltow, pominietych (plan odrzucony/niemodelowany): 70
+  silnik zgodny z oracle : 89
+  silnik ZAWYZA          : 107
+  silnik ZANIZA          : 0   <-- kierunek niebezpieczny
+
+kandydacka regula W' = max(0, W - O):  odtwarza oracle 159/196, chybia 37
+
+CHYBIENIA REGULY / ORIGINU (do 12):
+    ('REGULA', 'A#(B>1)', '1/100,1/50', (1, 0), (1, 2), 1)
+    ('REGULA', '(A>1)+B', '1/100,1/50', (1, 1), (1, 1), 0)
+    ('REGULA', '(A>2)+B', '1/100,1/50', (2, 1), (2, 1), 0)
+    ('REGULA', '(A>3)+B', '1/100,1/50', (3, 1), (3, 1), 0)
+    ('REGULA', '(A#B)>1', '1/100,1/50', (1, 1), (1, 1), 0)
+    ('REGULA', 'A#(B>1)', '1/60,1/30', (1, 0), (1, 2), 1)
+    ('REGULA', '(A>1)+B', '1/60,1/30', (1, 1), (1, 1), 0)
+    ('REGULA', '(A>2)+B', '1/60,1/30', (2, 1), (2, 1), 0)
+    ('REGULA', '(A>3)+B', '1/60,1/30', (3, 1), (3, 1), 0)
+    ('REGULA', '(A#B)>1', '1/60,1/30', (1, 1), (1, 1), 0)
+    ('REGULA', 'A#(B>1)', '1/3,1/7', (1, 0), (1, 2), 1)
+    ('REGULA', 'A+(B>1)', '1/3,1/7', (1, 2), (1, 2), 1)
