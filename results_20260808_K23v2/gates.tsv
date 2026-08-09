@@ -8,12 +8,12 @@ F9-R2	no_materialization	PASS	clean
 F9-R1	oracle_values	PASS	clean
 F9-R1	oracle_mutants	PASS	clean
 F9-R1	counter_known_answer	PASS	clean
-F9-R1	public_identity	FAIL	
+F9-R1	public_identity	FAIL	engine_or_profile
 F9-R1	near_miss_controls	PASS	clean
 F9-R1	no_materialization	PASS	clean
-F9-X	oracle_values	FAIL	
+F9-X	oracle_values	FAIL	engine_or_profile
 F9-X	oracle_mutants	PASS	clean
 F9-X	counter_known_answer	PASS	clean
-F9-X	public_identity	FAIL	
+F9-X	public_identity	FAIL	engine_or_profile
 F9-X	near_miss_controls	PASS	clean
 F9-X	no_materialization	PASS	clean
