@@ -81,6 +81,41 @@ W1, W4, W2, W3 zachowują układ R1 × kolejność R2. Przy `Q=8` liczba
 Historyczna postać `Sqrt(A[0]*C[0]+B[0]*D[0])` jest mutantem negatywnym i musi
 zostać odrzucona przez każdy profil.
 
+### 3.4. Dlaczego F9-X pozostaje ważną rodziną metodologiczną
+
+F9-X jest rodziną **mechanizmową**, a nie próbą reprezentatywnego benchmarku
+całych zastosowań. Jej rolą jest sprawdzenie przypadku, którego nie obejmują
+F9-R1 ani F9-R2 osobno: czy wspólna materializacja zostaje rozpoznana dopiero po
+złożeniu dwóch niezależnych równoważności, R1 na każdym przeplocie i R2 na ich
+sumie. Układ czterech profili jest dzięki temu kontrolą 2×2: `NO_R2_CANON`
+usuwa tylko R2, `NO_R1_FACTOR` tylko R1, a `NO_R1_NO_R2` oba przejścia. Rodzina
+pozostaje w badaniu tylko wtedy, gdy obserwowana struktura planu ma postać
+`1/2/2/4`; inny układ nie jest słabszym efektem H9, lecz nieudaną izolacją
+mechanizmu.
+
+Scenariusz ma legalne znaczenie domenowe. `front` i `rear` są dwiema pozycjami
+pomiaru, a szybkie tory A/C i wolne B/D są parami tej samej modalności i fazy.
+Przeplot wybiera modalność, nie zachowuje tożsamości źródła; w każdym slocie
+monitor liczy więc normę dwóch jednoczesnych wartości tej samej modalności.
+Nazwa pola wynikowego jest dokładnie informacją dostępną po `#`. Historyczne
+zatrzaski A–D oraz wariant z rozplotem `&`/`%` są wykluczone, bo pierwszy nie
+jest programem RQL, a drugi zmienia takt, graf operatorów i badany mechanizm.
+
+Postać inline jest częścią badanej populacji, a nie sztucznym sposobem
+wymuszenia wyniku. Każdy przesunięty przeplot jest używany raz w pojedynczym
+monitorze, więc wydzielenie go przez autora jako nazwany wynik nie usuwa
+powtórzenia między `Q` monitorami; przenosi natomiast materializację przez
+granicę publiczne/substrat i zmienia mianownik metryki. Badane pytanie brzmi
+właśnie, czy kompilator rozpozna wspólną postać powtarzaną przez monitory bez
+ręcznego przepisania programu do wariantu `manual`.
+
+Decyzja o zachowaniu rodziny, jej znaczenie i układ ablacji zostały zapisane
+przed otwarciem kosztów K26. Liczby `5/6/10/12`, pilot runtime i oracle są
+bramkami poprawności konstrukcji, nie obserwacją wspierającą H9. Nawet wynik
+pozytywny wolno uogólnić wyłącznie na tę klasę legalnych, jednorazowych
+podwyrażeń inline o zgodnych schematach i fazach; nie dowodzi on częstości tej
+postaci w programach użytkowników ani ogólnej przewagi wydajnościowej.
+
 ## 4. Korpus i dane
 
 | Pozycja | Wartość |
