@@ -1,0 +1,103 @@
+  ok  DEFAULT          F9_R2_controls
+  ok  DEFAULT          F9_R1_controls
+  ok  DEFAULT          F9_X_controls
+  ok  NO_R2_CANON      F9_R2_controls
+  ok  NO_R2_CANON      F9_R1_controls
+  ok  NO_R2_CANON      F9_X_controls
+  ok  NO_R1_FACTOR     F9_R2_controls
+  ok  NO_R1_FACTOR     F9_R1_controls
+  ok  NO_R1_FACTOR     F9_X_controls
+  ok  NO_R1_NO_R2      F9_R2_controls
+  ok  NO_R1_NO_R2      F9_R1_controls
+  ok  NO_R1_NO_R2      F9_X_controls
+OK: zrzuty planow kontrolnych w /home/michal/k23v2_gates_plans
+== profil DEFAULT ==
+  ok  F9_R2_Q1           LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+  ok  F9_R2_Q2           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+  ok  F9_R2_Q4           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+  ok  F9_R2_Q8           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+  ok  F9_R2_Q16          LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+  ok  F9_R2_Q32          LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+  ok  F9_R1_Q1           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+  ok  F9_R1_Q2           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+  ok  F9_R1_Q4           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+  ok  F9_R1_Q8           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+  ok  F9_R1_Q16          LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+  ok  F9_R1_Q32          LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+  ok  F9_X_Q1            LOGICAL substrat: dopisania=17986 nadpisania=0 bajty=161874  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+  ok  F9_X_Q2            LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+  ok  F9_X_Q4            LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+  ok  F9_X_Q8            LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+  ok  F9_X_Q16           LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+  ok  F9_X_Q32           LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+  ok  F9_R2_controls     LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+  ok  F9_R1_controls     LOGICAL substrat: dopisania=17983 nadpisania=0 bajty=197807  publiczne: dopisania=28474 nadpisania=0 bajty=328194
+  ok  F9_X_controls      LOGICAL substrat: dopisania=26973 nadpisania=0 bajty=242757  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+== profil NO_R2_CANON ==
+  ok  F9_R2_Q1           LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+  ok  F9_R2_Q2           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+  ok  F9_R2_Q4           LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+  ok  F9_R2_Q8           LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+  ok  F9_R2_Q16          LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+  ok  F9_R2_Q32          LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+  ok  F9_R1_Q1           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+  ok  F9_R1_Q2           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+  ok  F9_R1_Q4           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+  ok  F9_R1_Q8           LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+  ok  F9_R1_Q16          LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+  ok  F9_R1_Q32          LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+  ok  F9_X_Q1            LOGICAL substrat: dopisania=17986 nadpisania=0 bajty=161874  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+  ok  F9_X_Q2            LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+  ok  F9_X_Q4            LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+  ok  F9_X_Q8            LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+  ok  F9_X_Q16           LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+  ok  F9_X_Q32           LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+  ok  F9_R2_controls     LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+  ok  F9_R1_controls     LOGICAL substrat: dopisania=17983 nadpisania=0 bajty=197807  publiczne: dopisania=28474 nadpisania=0 bajty=328194
+  ok  F9_X_controls      LOGICAL substrat: dopisania=26973 nadpisania=0 bajty=242757  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+== profil NO_R1_FACTOR ==
+  ok  F9_R2_Q1           LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+  ok  F9_R2_Q2           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+  ok  F9_R2_Q4           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+  ok  F9_R2_Q8           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+  ok  F9_R2_Q16          LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+  ok  F9_R2_Q32          LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+  ok  F9_R1_Q1           LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+  ok  F9_R1_Q2           LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+  ok  F9_R1_Q4           LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+  ok  F9_R1_Q8           LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+  ok  F9_R1_Q16          LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+  ok  F9_R1_Q32          LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+  ok  F9_X_Q1            LOGICAL substrat: dopisania=17978 nadpisania=0 bajty=161802  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+  ok  F9_X_Q2            LOGICAL substrat: dopisania=22472 nadpisania=0 bajty=202248  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+  ok  F9_X_Q4            LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+  ok  F9_X_Q8            LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+  ok  F9_X_Q16           LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+  ok  F9_X_Q32           LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+  ok  F9_R2_controls     LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+  ok  F9_R1_controls     LOGICAL substrat: dopisania=17981 nadpisania=0 bajty=197789  publiczne: dopisania=28472 nadpisania=0 bajty=328176
+  ok  F9_X_controls      LOGICAL substrat: dopisania=35962 nadpisania=0 bajty=323658  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+== profil NO_R1_NO_R2 ==
+  ok  F9_R2_Q1           LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+  ok  F9_R2_Q2           LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+  ok  F9_R2_Q4           LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+  ok  F9_R2_Q8           LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+  ok  F9_R2_Q16          LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+  ok  F9_R2_Q32          LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+  ok  F9_R1_Q1           LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+  ok  F9_R1_Q2           LOGICAL substrat: dopisania=4495 nadpisania=0 bajty=40455  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+  ok  F9_R1_Q4           LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+  ok  F9_R1_Q8           LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+  ok  F9_R1_Q16          LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+  ok  F9_R1_Q32          LOGICAL substrat: dopisania=8992 nadpisania=0 bajty=80928  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+  ok  F9_X_Q1            LOGICAL substrat: dopisania=17978 nadpisania=0 bajty=161802  publiczne: dopisania=4494 nadpisania=0 bajty=40446
+  ok  F9_X_Q2            LOGICAL substrat: dopisania=22472 nadpisania=0 bajty=202248  publiczne: dopisania=8988 nadpisania=0 bajty=80892
+  ok  F9_X_Q4            LOGICAL substrat: dopisania=44954 nadpisania=0 bajty=404586  publiczne: dopisania=17980 nadpisania=0 bajty=161820
+  ok  F9_X_Q8            LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=35960 nadpisania=0 bajty=323640
+  ok  F9_X_Q16           LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=71920 nadpisania=0 bajty=647280
+  ok  F9_X_Q32           LOGICAL substrat: dopisania=53944 nadpisania=0 bajty=485496  publiczne: dopisania=143840 nadpisania=0 bajty=1294560
+  ok  F9_R2_controls     LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+  ok  F9_R1_controls     LOGICAL substrat: dopisania=17981 nadpisania=0 bajty=197789  publiczne: dopisania=28472 nadpisania=0 bajty=328176
+  ok  F9_X_controls      LOGICAL substrat: dopisania=35962 nadpisania=0 bajty=323658  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+
+OK: 84 komorek na danych glownych, kazda z licznikami LOGICAL i WORK

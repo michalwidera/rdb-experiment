@@ -1,0 +1,108 @@
+# F9_R1_manual_q1
+F9-R1 manual Q=1: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=1.0000 eval_tokeny=4.0000 etapy publiczne=1 sinki=1 zrodla=2 wezly grafu=5 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=4500
+# F9_R1_manual_q16
+F9-R1 manual Q=16: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=16.0000 eval_tokeny=49.0000 etapy publiczne=16 sinki=16 zrodla=2 wezly grafu=35 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=72000
+# F9_R1_manual_q2
+F9-R1 manual Q=2: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=2.0000 eval_tokeny=7.0000 etapy publiczne=2 sinki=2 zrodla=2 wezly grafu=7 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=9000
+# F9_R1_manual_q32
+F9-R1 manual Q=32: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=32.0000 eval_tokeny=97.0000 etapy publiczne=32 sinki=32 zrodla=2 wezly grafu=67 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=144000
+# F9_R1_manual_q4
+F9-R1 manual Q=4: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=4.0000 eval_tokeny=13.0000 etapy publiczne=4 sinki=4 zrodla=2 wezly grafu=11 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=18000
+# F9_R1_manual_q8
+F9-R1 manual Q=8: wezly podplanu=1 jednostki=1.0000 kosztowny_program/slot=8.0000 eval_tokeny=25.0000 etapy publiczne=8 sinki=8 zrodla=2 wezly grafu=19 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=36000
+# F9_R1_natural_q1
+F9-R1 natural Q=1: wezly podplanu=2 jednostki=1.0000 kosztowny_program/slot=1.0000 eval_tokeny=4.0000 etapy publiczne=1 sinki=1 zrodla=2 wezly grafu=6 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=4500 bajty=40500  publiczne: rekordy=4500
+# F9_R1_natural_q16
+F9-R1 natural Q=16: wezly podplanu=24 jednostki=16.0000 kosztowny_program/slot=16.0000 eval_tokeny=64.0000 etapy publiczne=16 sinki=16 zrodla=2 wezly grafu=58 wierzcholki JobGraphu=18
+LOGICAL substrat: zapisy=72000 bajty=648000  publiczne: rekordy=72000
+# F9_R1_natural_q2
+F9-R1 natural Q=2: wezly podplanu=4 jednostki=2.0000 kosztowny_program/slot=2.0000 eval_tokeny=8.0000 etapy publiczne=2 sinki=2 zrodla=2 wezly grafu=10 wierzcholki JobGraphu=4
+LOGICAL substrat: zapisy=9000 bajty=81000  publiczne: rekordy=9000
+# F9_R1_natural_q32
+F9-R1 natural Q=32: wezly podplanu=48 jednostki=32.0000 kosztowny_program/slot=32.0000 eval_tokeny=128.0000 etapy publiczne=32 sinki=32 zrodla=2 wezly grafu=114 wierzcholki JobGraphu=34
+LOGICAL substrat: zapisy=144000 bajty=1296000  publiczne: rekordy=144000
+# F9_R1_natural_q4
+F9-R1 natural Q=4: wezly podplanu=6 jednostki=4.0000 kosztowny_program/slot=4.0000 eval_tokeny=16.0000 etapy publiczne=4 sinki=4 zrodla=2 wezly grafu=16 wierzcholki JobGraphu=6
+LOGICAL substrat: zapisy=18000 bajty=162000  publiczne: rekordy=18000
+# F9_R1_natural_q8
+F9-R1 natural Q=8: wezly podplanu=12 jednostki=8.0000 kosztowny_program/slot=8.0000 eval_tokeny=32.0000 etapy publiczne=8 sinki=8 zrodla=2 wezly grafu=30 wierzcholki JobGraphu=10
+LOGICAL substrat: zapisy=36000 bajty=324000  publiczne: rekordy=36000
+# F9_R2_manual_q1
+F9-R2 manual Q=1: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=6.0000 etapy publiczne=1 sinki=1 zrodla=2 wezly grafu=5 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=3000
+# F9_R2_manual_q16
+F9-R2 manual Q=16: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=16.0000 etapy publiczne=16 sinki=16 zrodla=2 wezly grafu=35 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=48000
+# F9_R2_manual_q2
+F9-R2 manual Q=2: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=6.6667 etapy publiczne=2 sinki=2 zrodla=2 wezly grafu=7 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=6000
+# F9_R2_manual_q32
+F9-R2 manual Q=32: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=26.6667 etapy publiczne=32 sinki=32 zrodla=2 wezly grafu=67 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=96000
+# F9_R2_manual_q4
+F9-R2 manual Q=4: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=8.0000 etapy publiczne=4 sinki=4 zrodla=2 wezly grafu=11 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=12000
+# F9_R2_manual_q8
+F9-R2 manual Q=8: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=10.6667 etapy publiczne=8 sinki=8 zrodla=2 wezly grafu=19 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=24000
+# F9_R2_natural_q1
+F9-R2 natural Q=1: wezly podplanu=1 jednostki=0.6667 kosztowny_program/slot=0.6667 eval_tokeny=6.0000 etapy publiczne=1 sinki=1 zrodla=2 wezly grafu=5 wierzcholki JobGraphu=3
+LOGICAL substrat: zapisy=3000 bajty=27000  publiczne: rekordy=3000
+# F9_R2_natural_q16
+F9-R2 natural Q=16: wezly podplanu=16 jednostki=10.6667 kosztowny_program/slot=10.6667 eval_tokeny=96.0000 etapy publiczne=16 sinki=16 zrodla=2 wezly grafu=50 wierzcholki JobGraphu=18
+LOGICAL substrat: zapisy=48000 bajty=432000  publiczne: rekordy=48000
+# F9_R2_natural_q2
+F9-R2 natural Q=2: wezly podplanu=2 jednostki=1.3333 kosztowny_program/slot=1.3333 eval_tokeny=12.0000 etapy publiczne=2 sinki=2 zrodla=2 wezly grafu=8 wierzcholki JobGraphu=4
+LOGICAL substrat: zapisy=6000 bajty=54000  publiczne: rekordy=6000
+# F9_R2_natural_q32
+F9-R2 natural Q=32: wezly podplanu=32 jednostki=21.3333 kosztowny_program/slot=21.3333 eval_tokeny=192.0000 etapy publiczne=32 sinki=32 zrodla=2 wezly grafu=98 wierzcholki JobGraphu=34
+LOGICAL substrat: zapisy=96000 bajty=864000  publiczne: rekordy=96000
+# F9_R2_natural_q4
+F9-R2 natural Q=4: wezly podplanu=4 jednostki=2.6667 kosztowny_program/slot=2.6667 eval_tokeny=24.0000 etapy publiczne=4 sinki=4 zrodla=2 wezly grafu=14 wierzcholki JobGraphu=6
+LOGICAL substrat: zapisy=12000 bajty=108000  publiczne: rekordy=12000
+# F9_R2_natural_q8
+F9-R2 natural Q=8: wezly podplanu=8 jednostki=5.3333 kosztowny_program/slot=5.3333 eval_tokeny=48.0000 etapy publiczne=8 sinki=8 zrodla=2 wezly grafu=26 wierzcholki JobGraphu=10
+LOGICAL substrat: zapisy=24000 bajty=216000  publiczne: rekordy=24000
+# F9_X_manual_q1
+F9-X manual Q=1: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=13.0000 etapy publiczne=1 sinki=1 zrodla=4 wezly grafu=11 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=4500
+# F9_X_manual_q16
+F9-X manual Q=16: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=28.0000 etapy publiczne=16 sinki=16 zrodla=4 wezly grafu=41 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=72000
+# F9_X_manual_q2
+F9-X manual Q=2: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=14.0000 etapy publiczne=2 sinki=2 zrodla=4 wezly grafu=13 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=9000
+# F9_X_manual_q32
+F9-X manual Q=32: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=44.0000 etapy publiczne=32 sinki=32 zrodla=4 wezly grafu=73 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=144000
+# F9_X_manual_q4
+F9-X manual Q=4: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=16.0000 etapy publiczne=4 sinki=4 zrodla=4 wezly grafu=17 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=18000
+# F9_X_manual_q8
+F9-X manual Q=8: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=20.0000 etapy publiczne=8 sinki=8 zrodla=4 wezly grafu=25 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=22500 bajty=202500  publiczne: rekordy=36000
+# F9_X_natural_q1
+F9-X natural Q=1: wezly podplanu=6 jednostki=4.0000 kosztowny_program/slot=1.0000 eval_tokeny=12.0000 etapy publiczne=1 sinki=1 zrodla=4 wezly grafu=12 wierzcholki JobGraphu=7
+LOGICAL substrat: zapisy=18000 bajty=162000  publiczne: rekordy=4500
+# F9_X_natural_q16
+F9-X natural Q=16: wezly podplanu=80 jednostki=64.0000 kosztowny_program/slot=16.0000 eval_tokeny=192.0000 etapy publiczne=16 sinki=16 zrodla=4 wezly grafu=116 wierzcholki JobGraphu=52
+LOGICAL substrat: zapisy=288000 bajty=2592000  publiczne: rekordy=72000
+# F9_X_natural_q2
+F9-X natural Q=2: wezly podplanu=12 jednostki=8.0000 kosztowny_program/slot=2.0000 eval_tokeny=24.0000 etapy publiczne=2 sinki=2 zrodla=4 wezly grafu=20 wierzcholki JobGraphu=10
+LOGICAL substrat: zapisy=36000 bajty=324000  publiczne: rekordy=9000
+# F9_X_natural_q32
+F9-X natural Q=32: wezly podplanu=160 jednostki=128.0000 kosztowny_program/slot=32.0000 eval_tokeny=384.0000 etapy publiczne=32 sinki=32 zrodla=4 wezly grafu=228 wierzcholki JobGraphu=100
+LOGICAL substrat: zapisy=576000 bajty=5184000  publiczne: rekordy=144000
+# F9_X_natural_q4
+F9-X natural Q=4: wezly podplanu=20 jednostki=16.0000 kosztowny_program/slot=4.0000 eval_tokeny=48.0000 etapy publiczne=4 sinki=4 zrodla=4 wezly grafu=32 wierzcholki JobGraphu=16
+LOGICAL substrat: zapisy=72000 bajty=648000  publiczne: rekordy=18000
+# F9_X_natural_q8
+F9-X natural Q=8: wezly podplanu=40 jednostki=32.0000 kosztowny_program/slot=8.0000 eval_tokeny=96.0000 etapy publiczne=8 sinki=8 zrodla=4 wezly grafu=60 wierzcholki JobGraphu=28
+LOGICAL substrat: zapisy=144000 bajty=1296000  publiczne: rekordy=36000

@@ -1,0 +1,28 @@
+Zrodla (pierwsze 8):
+  A=front_vib 1/100: [686, 889, 307, 574, 284, 396, 193, 85]
+  B=front_cur 1/50 : [333, 364, 216, 824, 432, 998, 729, 996]
+  C=rear_vib  1/100: [774, 918, 3, 336, 993, 402, 308, 825]
+  D=rear_cur  1/50 : [367, 266, 666, 838, 516, 695, 292, 98]
+
+Monitor: SELECT Sqrt(A[0]*C[0]+B[0]*D[0]) STREAM m1 FROM ((A>2)#(B>1)) + ((C>2)#(D>1))
+
+slot | RetractorDB DEFAULT | Flink natural | zgodne
+   0 |                 494 |           349 | nie
+   1 |                1030 |           808 | nie
+   2 |                1277 |           968 | nie
+   3 |                 440 |           955 | nie
+   4 |                  42 |           312 | nie
+   5 |                 621 |           538 | nie
+   6 |                 536 |           580 | nie
+   7 |                 751 |           652 | nie
+   8 |                 564 |           550 | nie
+   9 |                1175 |           921 | nie
+  10 |                 344 |           866 | nie
+  11 |                 374 |           872 | nie
+
+Na wspolnym oknie 4496 rekordow zgodnych: 5 (0.11%)
+Liczby rekordow: RetractorDB 4496, Flink 4500
+
+Dla porownania te same wielkosci w pozostalych rodzinach:
+  F9-R2: okno 2999, zgodnych 2999 (100.00%), rekordow 2999 wobec 3000
+  F9-R1: okno 4496, zgodnych 4496 (100.00%), rekordow 4496 wobec 4500

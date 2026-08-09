@@ -1,0 +1,63 @@
+# NO_R2_CANON/F9_R1_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=8993 tokeny=17985  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=76433 tokeny=220305  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=13489 tokeny=31473  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=148369 tokeny=436113  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=22481 tokeny=58449  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=4497 nadpisania=0 bajty=40473  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=40465 tokeny=112401  hash: wybory=4497  add: scalenia=0
+# NO_R2_CANON/F9_R1_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=17983 nadpisania=0 bajty=197807  publiczne: dopisania=28474 nadpisania=0 bajty=328194
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=59943 tokeny=98909  hash: wybory=22478  add: scalenia=0
+# NO_R2_CANON/F9_R2_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=2999 tokeny=23992  hash: wybory=0  add: scalenia=2999
+# NO_R2_CANON/F9_R2_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=47984 nadpisania=0 bajty=431856
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=53982 tokeny=95968  hash: wybory=0  add: scalenia=5998
+# NO_R2_CANON/F9_R2_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=2999 nadpisania=0 bajty=26991  publiczne: dopisania=5998 nadpisania=0 bajty=53982
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=8997 tokeny=29990  hash: wybory=0  add: scalenia=2999
+# NO_R2_CANON/F9_R2_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=95968 nadpisania=0 bajty=863712
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=101966 tokeny=143952  hash: wybory=0  add: scalenia=5998
+# NO_R2_CANON/F9_R2_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=11996 nadpisania=0 bajty=107964
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=17994 tokeny=59980  hash: wybory=0  add: scalenia=5998
+# NO_R2_CANON/F9_R2_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=53982  publiczne: dopisania=23992 nadpisania=0 bajty=215928
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=29990 tokeny=71976  hash: wybory=0  add: scalenia=5998
+# NO_R2_CANON/F9_R2_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=5998 nadpisania=0 bajty=101966  publiczne: dopisania=23992 nadpisania=0 bajty=311896
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=47984 tokeny=89970  hash: wybory=0  add: scalenia=23992
+# NO_R2_CANON/F9_X_Q1  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=17986 nadpisania=0 bajty=161874  publiczne: dopisania=4496 nadpisania=0 bajty=40464
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=22482 tokeny=53954  hash: wybory=8994  add: scalenia=4496
+# NO_R2_CANON/F9_X_Q16  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=71936 nadpisania=0 bajty=647424
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=98914 tokeny=161858  hash: wybory=8994  add: scalenia=8992
+# NO_R2_CANON/F9_X_Q2  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=22482 nadpisania=0 bajty=202338  publiczne: dopisania=8992 nadpisania=0 bajty=80928
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=31474 tokeny=62946  hash: wybory=8994  add: scalenia=4496
+# NO_R2_CANON/F9_X_Q32  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=143872 nadpisania=0 bajty=1294848
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=170850 tokeny=233794  hash: wybory=8994  add: scalenia=8992
+# NO_R2_CANON/F9_X_Q4  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=17984 nadpisania=0 bajty=161856
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=44962 tokeny=107906  hash: wybory=8994  add: scalenia=8992
+# NO_R2_CANON/F9_X_Q8  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=26978 nadpisania=0 bajty=242802  publiczne: dopisania=35968 nadpisania=0 bajty=323712
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=62946 tokeny=125890  hash: wybory=8994  add: scalenia=8992
+# NO_R2_CANON/F9_X_controls  (worker aarch64, dane glowne)
+LOGICAL substrat: dopisania=26973 nadpisania=0 bajty=242757  publiczne: dopisania=14987 nadpisania=0 bajty=134883
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=41960 tokeny=122877  hash: wybory=13487  add: scalenia=8989

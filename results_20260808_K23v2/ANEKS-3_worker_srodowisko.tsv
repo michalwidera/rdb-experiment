@@ -1,0 +1,23 @@
+#	ANEKS-3 — srodowisko workera K23 iteracja 2. Wchodzi w P6 (2026-08-09), bo P5
+#	workera nie budzi (D-2: Flink na hoscie, RetractorDB na workerze).
+#	Predeklaracja §9 zamrozila WYMAGANIA (governor 'performance', przypiecie CPU,
+#	stalosc kernela); ten plik jest maszynowym ODCZYTEM wartosci i od tej chwili
+#	jest niezmienny — `freeze_check.sh worker` porownuje z nim stan zywy.
+#
+#	Odczyt: 2026-08-09, po starcie zasilania przez czlowieka i po ustawieniu
+#	governora. UWAGA ODNOTOWANA: po wylaczeniu zasilania governor wraca do
+#	'ondemand' i wymaga ponownego ustawienia przed kazda seria — sam kernel
+#	tego nie utrwala. Bramka `freeze_check.sh worker` to wylapie.
+key	value
+kernel	6.8.0-2049-raspi-realtime
+cpu_online	4
+cpu_pinning	isolcpus=3 nohz_full=3 rcu_nocbs=3
+cpu_isolated	3
+governor	performance
+arch	aarch64
+model	Raspberry Pi 400 Rev 1.0
+os	Ubuntu 24.04.4 LTS
+gcc	gcc (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0
+temp_c_at_freeze	40.9
+mem_total_mb	3784
+odczyt_data	2026-08-09
