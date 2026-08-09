@@ -1,0 +1,127 @@
+{
+  "nodes" : [ {
+    "id" : 1,
+    "type" : "Source: SRC:A",
+    "pact" : "Data Source",
+    "contents" : "Source: SRC:A",
+    "parallelism" : 1
+  }, {
+    "id" : 2,
+    "type" : "Source: SRC:B",
+    "pact" : "Data Source",
+    "contents" : "Source: SRC:B",
+    "parallelism" : 1
+  }, {
+    "id" : 3,
+    "type" : "Source: SRC:C",
+    "pact" : "Data Source",
+    "contents" : "Source: SRC:C",
+    "parallelism" : 1
+  }, {
+    "id" : 4,
+    "type" : "Source: SRC:D",
+    "pact" : "Data Source",
+    "contents" : "Source: SRC:D",
+    "parallelism" : 1
+  }, {
+    "id" : 5,
+    "type" : "SUB:m1:shift_A",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:shift_A",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 1,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 6,
+    "type" : "SUB:m1:shift_B",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:shift_B",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 2,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 7,
+    "type" : "SUB:m1:hash_AB",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:hash_AB",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 5,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    }, {
+      "id" : 6,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 8,
+    "type" : "SUB:m1:shift_C",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:shift_C",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 3,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 9,
+    "type" : "SUB:m1:shift_D",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:shift_D",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 4,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 10,
+    "type" : "SUB:m1:hash_CD",
+    "pact" : "Operator",
+    "contents" : "SUB:m1:hash_CD",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 8,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    }, {
+      "id" : 9,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 11,
+    "type" : "PUB:m1_W1",
+    "pact" : "Operator",
+    "contents" : "PUB:m1_W1",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 7,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    }, {
+      "id" : 10,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  }, {
+    "id" : 12,
+    "type" : "Sink: SINK:m1",
+    "pact" : "Data Sink",
+    "contents" : "Sink: SINK:m1",
+    "parallelism" : 1,
+    "predecessors" : [ {
+      "id" : 11,
+      "ship_strategy" : "FORWARD",
+      "side" : "second"
+    } ]
+  } ]
+}

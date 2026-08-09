@@ -1,0 +1,8 @@
+family	variant	q	node	role	unit_weight	program_tokens	kind
+F9-X	natural	1	PUB:m1_W1	publiczny_monitor	1.0000	8	ADD
+F9-X	natural	1	SUB:m1:hash_AB	badany_podplan	1.0000	1	INTERLEAVE
+F9-X	natural	1	SUB:m1:hash_CD	badany_podplan	1.0000	1	INTERLEAVE
+F9-X	natural	1	SUB:m1:shift_A	badany_podplan	0.6667	1	MAP
+F9-X	natural	1	SUB:m1:shift_B	badany_podplan	0.3333	1	MAP
+F9-X	natural	1	SUB:m1:shift_C	badany_podplan	0.6667	1	MAP
+F9-X	natural	1	SUB:m1:shift_D	badany_podplan	0.3333	1	MAP

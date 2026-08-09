@@ -1,0 +1,10 @@
+STORAGE 'temp'
+
+DECLARE v INTEGER STREAM A, 1/100 FILE 'A.txt'
+DECLARE v INTEGER STREAM B, 1/50  FILE 'B.txt'
+
+# Jesli po przeplocie tozsamosc skladnikow ZANIKA, to A[0]-B[0] jest
+# tozsamosciowo zerem, mimo ze A i B to rozne strumienie o roznych wartosciach.
+SELECT A[0]-B[0] STREAM roznica FROM A#B
+SELECT A[0]      STREAM tylko_a FROM A#B
+SELECT B[0]      STREAM tylko_b FROM A#B
