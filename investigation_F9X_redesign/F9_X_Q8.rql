@@ -1,0 +1,29 @@
+# Kandydat legalnej rodziny F9-X dla przyszlej iteracji po K23.
+#
+# Kazda para przeplotu ma jeden wspolny schemat: front dla A#B i rear dla C#D.
+# Program monitora czyta pola WYNIKOW przeplotu, nie nieistniejace po #
+# tozsamosci jego skladowych. Cztery postacie zachowuja uklad R1 x R2.
+
+STORAGE 'temp'
+SUBSTRAT 'memory'
+
+DECLARE front INTEGER STREAM A, 1/100 FILE 'front_vib.txt'
+DECLARE front INTEGER STREAM B, 1/50  FILE 'front_cur.txt'
+DECLARE rear  INTEGER STREAM C, 1/100 FILE 'rear_vib.txt'
+DECLARE rear  INTEGER STREAM D, 1/50  FILE 'rear_cur.txt'
+
+# W1: przesun tory, potem przeplataj; przod przed tylem.
+SELECT Sqrt(front*front+rear*rear) STREAM m1 FROM ((A>2)#(B>1))+((C>2)#(D>1))
+SELECT Sqrt(front*front+rear*rear) STREAM m2 FROM ((A>2)#(B>1))+((C>2)#(D>1))
+
+# W4: przeplataj, potem przesun; tyl przed przodem.
+SELECT Sqrt(front*front+rear*rear) STREAM m3 FROM ((C#D)>3)+((A#B)>3)
+SELECT Sqrt(front*front+rear*rear) STREAM m4 FROM ((C#D)>3)+((A#B)>3)
+
+# W2: przesun tory, potem przeplataj; tyl przed przodem.
+SELECT Sqrt(front*front+rear*rear) STREAM m5 FROM ((C>2)#(D>1))+((A>2)#(B>1))
+SELECT Sqrt(front*front+rear*rear) STREAM m6 FROM ((C>2)#(D>1))+((A>2)#(B>1))
+
+# W3: przeplataj, potem przesun; przod przed tylem.
+SELECT Sqrt(front*front+rear*rear) STREAM m7 FROM ((A#B)>3)+((C#D)>3)
+SELECT Sqrt(front*front+rear*rear) STREAM m8 FROM ((A#B)>3)+((C#D)>3)
