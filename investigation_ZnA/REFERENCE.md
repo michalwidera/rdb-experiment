@@ -61,14 +61,9 @@ weszłaby do silnika. **Korpus jest tu bramką, nie ozdobą.**
 
 ---
 
-## 4. Rozstrzygnięcie — M3 i M1 **obalone**, zostaje **M2**
+## 4. Rozstrzygnięcie — **to nie jest defekt silnika, tylko bramki K23**
 
-Oracle mierzy granicę zdarzeniową **strumienia matematycznego**: kiedy dane
-fizycznie istnieją. Silnik pracuje w modelu **emisji slotowej**. Pytanie brzmiało,
-czy substrat jest przezroczysty (wariant M3) — sprawdzone 2026-08-09 w kodzie
-wykonawczym.
-
-### M3 obalone: substrat NIE jest przezroczysty
+### 4.1. M3 i M1 obalone w kodzie wykonawczym
 
 `dataModel::fetchForward()` (`dataModel.cpp:120`) czyta **zmaterializowane
 rekordy źródła**, nie surowe dane:
@@ -85,50 +80,70 @@ if (physical < 0 || rev < 0 || ...) {
 ```
 
 Gdy żądany rekord nie został jeszcze wydany, konsument **nie czeka** — dostaje
-rekord all-NULL i wpis błędu. Gate emisji (`dataModel.cpp:215`,
-`if (runtime.elapsedSlots++ < silentSlots) continue;`) jest bezwarunkowy:
-w slotach ciszy strumień nie liczy i nie zapisuje niczego.
+rekord all-NULL i wpis błędu. Gate emisji (`dataModel.cpp:215`) jest
+bezwarunkowy: w slotach ciszy strumień nie liczy i nie zapisuje.
 
-### M1 obalone tym samym
+* **M3 (substrat przezroczysty) — obalone.** Przezroczysty nie jest.
+* **M1 (obowiązuje granica zdarzeniowa) — obalone tym samym.** Ogon 0 dla
+  kształtu nieczynnikowego dałby odczyt rekordu jeszcze niezapisanego, czyli
+  realny reżim zaniżający. Wartość 0 z oracle'a opisuje **dane surowe**, których
+  runtime nie wykorzystuje.
 
-Ustawienie ogona nieczynnikowego przeplotu na 0 „bo dane fizycznie istnieją"
-sprawiłoby, że `τ₁(B)` nie ma jeszcze zapisanego rekordu 1, a przeplot dostaje
-**all-NULL**. To jest reżim zaniżający — realne zepsucie, nie poprawka.
-Wartość 0 z oracle'a opisuje dane surowe, których runtime **nie wykorzystuje**.
+Mechanizm właściwy: **R1 przenosi materializację pośrednika na siatkę
+drobniejszą** — `τ₁(B)` na 1/50 udostępnia `b₀` w 0,0400 s, a `A#B` na 1/150
+w 0,0200 s, przy slocie 3 przeplotu kończącym się w 0,0267 s.
 
-### Mechanizm: R1 przenosi materializację na siatkę drobniejszą
+### 4.2. Werdykt: artykuł już to twierdzi i **dowodzi**
 
-| kształt | gdzie materializuje się pośrednik | `b₀` widoczne dla konsumenta |
-|---|---|---|
-| `(A>2)#(B>1)` | `τ₁(B)` na siatce **1/50** | koniec slotu 1 = **0,0400 s** |
-| `(A#B)>3` | `A#B` na siatce **1/150** | koniec slotu 2 = **0,0200 s** |
+Decyzja człowieka **D1** (2026-08-09) brzmiała: uznać różnicę opóźnienia za
+dopuszczalną i doprecyzować twierdzenie o R1 w artykule. Sprawdzenie artykułu
+**przed** wprowadzeniem poprawki wykazało, że **poprawki nie ma czego
+wprowadzać**.
 
-Slot 3 przeplotu kończy się w 0,0267 s: postać czynnikowa zdąża, nieczynnikowa
-nie — stąd jej dodatkowe dwa sloty ogona. **Oba wyniki są poprawne w modelu
-silnika.** Różnica nie bierze się z błędnego wzoru, tylko z tego, że R1 zmienia
-**rozdzielczość czasową pośrednika**.
+`def:observable` dzieli obserwację na część wartościową i opóźnieniową i żąda
+`Val(P) = Val(Q)` **dokładnie**, ale tylko `Lat(Q) <= Lat(P)` — przepisaniu
+**wolno skrócić** oczekiwanie, nigdy wydłużyć. Uzasadnienie stoi w artykule
+wprost:
 
-### Werdykt M2, w postaci ostrzejszej niż w planie
+> *„The asymmetry is deliberate and was forced on us by measurement, not chosen
+> for convenience… Demanding equality of $W_U$ would declare that rewrite
+> unsound, although no observer can distinguish its output except by receiving
+> it sooner."*
 
-> **Tożsamość shift-matching zachowuje wartości i indeksy logiczne, ale NIE
-> zachowuje opóźnienia przy materializacji wyrównanej do slotów.**
+`thm:shift-match` orzeka dla tożsamości R1:
 
-Obie postacie emitują te same rekordy o tych samych indeksach; nieczynnikowa
-zaczyna dwa sloty później, więc na przebiegu o ustalonej długości oddaje dwa
-rekordy mniej. Dokładnie to zmierzyła K23.
+> *„the two plans agree on the entire value part — interval, logical origin, and
+> record sequence — while the right-hand side has a tail **no larger** than the
+> left, and **strictly smaller for some rates**. The identity is thus an equality
+> of results and an inequality of latencies."*
 
-### Co zostaje do decyzji człowieka
+Zmierzone: lewa `(A>2)#(B>1)` ma ogon **2**, prawa `(A#B)>3` ma **0**. To jest
+dokładnie przypadek przewidziany przez twierdzenie, **po właściwej stronie
+nierówności**. Profil `DEFAULT` ma R1 włączone, więc jest tą krótszą stroną.
 
-Nie „który wzór poprawić", tylko **czy R1 wolno tak działać**:
+> **Znalezisko A nie jest defektem silnika. Jest defektem bramki
+> `public_identity` kampanii K23**, która żądała identyczności publicznych
+> artefaktów **między profilami**, podczas gdy profile różnią się dokładnie tym,
+> czy R1 jest stosowane — a R1 **wolno** skrócić ogon. Bramka była zatem
+> **ostrzejsza niż `def:observable`**, czyli niż relacja równoważności, którą
+> sama kampania deklarowała jako obowiązującą.
 
-| Droga | Treść | Koszt |
-|---|---|---|
-| **D1** | uznać różnicę opóźnienia za dopuszczalną i doprecyzować twierdzenie o R1 w artykule („zachowuje wartości i indeksy, może skrócić brzeg") | tanie, bez zmian w silniku |
-| **D2** | wymagać neutralności — R1 musi zachowywać łączną ciszę | koliduje z regułą `>N` z 2026-08-07, zmierzoną przez K24p jako usunięcie realnego zawyżenia |
+Silnik przez cały czas zachowywał się zgodnie z własną, dowiedzioną teorią.
 
-To jest decyzja o treści artykułu, nie o kodzie.
+### 4.3. Co z tego wynika
 
----
+* **Dla artykułu: nic.** Zapis jest poprawny i pokrywa ten przypadek z dowodem;
+  `main-debs.tex` i `main-debs-pl.tex` pozostają nietknięte.
+* **Dla przyszłej predeklaracji:** bramka porównująca artefakty **między
+  profilami** musi respektować asymetrię `Lat`, inaczej odrzuca przepisania,
+  które sama teoria dopuszcza. Dołącza to do pozycji `[F9-kat]`
+  w `research_plan.md` §15.
+* **Otwarte, do decyzji człowieka:** czy przeklasyfikować rozbieżność F9-R1
+  z `engine_or_profile` na `apparatus`. Jeżeli tak, **obie** nieczyste rodziny
+  iteracji 2 K23 są `apparatus`, co wzmacnia zapisany już wniosek „iteracja 2
+  bez werdyktu", nie zmieniając go.
+
+Zapis trwały: `paper-arXiv/debs/research_plan.md` §14.20.
 
 ## 5. Jak odtworzyć
 
