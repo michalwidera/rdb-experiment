@@ -65,8 +65,12 @@ if [ "$gov" != "performance" ]; then
 fi
 echo "governor cpu$CPU: $gov"
 
-rm -rf "$OUT"
-mkdir -p "$OUT"
+[[ "$OUT" = /* ]] || { echo "BLAD: OUT musi byc sciezka bezwzgledna" >&2; exit 2; }
+[[ ! -e "$OUT" ]] || { echo "BLAD: $OUT juz istnieje; odmowa nadpisania kalibracji" >&2; exit 2; }
+mkdir -p "$OUT/plans"
+for scale in "${scales[@]}"; do
+  "$HERE/gen_calib.py" --scale "${scale/_//}" --out "$OUT/plans" >/dev/null
+done
 runs=0
 
 for profile in "${profiles[@]}"; do
@@ -79,8 +83,8 @@ for profile in "${profiles[@]}"; do
       dir="$OUT/$profile/${family}_s${scale}"
       mkdir -p "$dir/temp"
       ( cd "$dir"
-        cp "$HERE/plans/${family}_Q32_s${scale}.rql" p.rql
-        cp "$HERE"/data/*.txt .
+        cp "$OUT/plans/${family}_Q32_s${scale}.rql" p.rql
+        cp "$HERE"/../data/calib/*.txt .
         set +e
         RDB_BENCH_CSV="$dir/slot.csv" timeout 600 \
           taskset -c "$CPU" "$binary" p.rql -m "$slots" -r -k >run.out 2>&1

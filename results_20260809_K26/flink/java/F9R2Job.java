@@ -70,6 +70,7 @@ public class F9R2Job {
     if (!planOnly) {
       env.execute("k26-f9r2-" + variant + "-q" + q);
       System.out.println(Canon.logicalReport());
+      System.out.println(Canon.workReport());
     }
   }
 

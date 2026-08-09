@@ -23,25 +23,48 @@ def read_ints(path, count):
     return [int(line) for line in path.read_text().splitlines()[:count]]
 
 
-def interleave(fast, slow):
+def tagged_interleave(fast, slow, fast_tag, slow_tag):
     """Definition-level merge on a 1/100 time grid; slow wins equal-time ties."""
-    events = [(2 * index, 0, value) for index, value in enumerate(slow)]
-    events += [(index, 1, value) for index, value in enumerate(fast)]
+    events = [(2 * index, 0, slow_tag, value) for index, value in enumerate(slow)]
+    events += [(index, 1, fast_tag, value) for index, value in enumerate(fast)]
     events.sort(key=lambda item: (item[0], item[1]))
-    return [value for _, _, value in events]
+    return [(tag, value) for _, _, tag, value in events]
 
 
-def expected_values():
+def interleave(fast, slow):
+    return [value for _, value in tagged_interleave(fast, slow, "fast", "slow")]
+
+
+def source_values():
     data = ROOT / "data" / "main"
-    front = interleave(
+    return (
         read_ints(data / "front_vib.txt", SLOTS),
         read_ints(data / "front_cur.txt", SLOTS // 2),
-    )
-    rear = interleave(
         read_ints(data / "rear_vib.txt", SLOTS),
         read_ints(data / "rear_cur.txt", SLOTS // 2),
     )
+
+
+def expected_values(sources):
+    front_vib, front_cur, rear_vib, rear_cur = sources
+    front = interleave(front_vib, front_cur)
+    rear = interleave(rear_vib, rear_cur)
     return [math.isqrt(left * left + right * right) for left, right in zip(front, rear)]
+
+
+def historical_latch_values(sources):
+    """Rejected K23 model: preserve A-D identity through `#` in four latches."""
+    front_vib, front_cur, rear_vib, rear_cur = sources
+    front = tagged_interleave(front_vib, front_cur, "A", "B")
+    rear = tagged_interleave(rear_vib, rear_cur, "C", "D")
+    latch = {tag: 0 for tag in "ABCD"}
+    values = []
+    for (front_tag, front_value), (rear_tag, rear_value) in zip(front, rear):
+        latch[front_tag] = front_value
+        latch[rear_tag] = rear_value
+        old_sum = latch["A"] * latch["C"] + latch["B"] * latch["D"]
+        values.append(math.isqrt(abs(old_sum)))
+    return values
 
 
 def classpath():
@@ -99,8 +122,15 @@ def main():
     if output.exists():
         shutil.rmtree(output)
     output.mkdir()
-    expected = expected_values()
-    report = ["variant\tmonitor\trecords\toracle_match\tcontinuous_slots"]
+    sources = source_values()
+    expected = expected_values(sources)
+    historical = historical_latch_values(sources)
+    latch_mismatches = sum(left != right for left, right in zip(expected, historical))
+    if len(expected) != len(historical) or latch_mismatches == 0:
+        raise VerificationError("historical A-D latch mutant is not distinguished by the pilot corpus")
+    report = [
+        "variant\tmonitor\trecords\toracle_match\tcontinuous_slots\thistorical_latch_rejected"
+    ]
     for variant in ("natural", "manual"):
         out = output / variant
         out.mkdir()
@@ -112,13 +142,21 @@ def main():
             slots = [slot for _, slot, _ in rows]
             continuous = slots == list(range(slots[0], slots[0] + len(slots)))
             match = values == expected
-            report.append(f"{variant}\t{monitor}\t{len(rows)}\t{str(match).lower()}\t{str(continuous).lower()}")
-            if not match or not continuous:
+            latch_rejected = values != historical
+            report.append(
+                f"{variant}\t{monitor}\t{len(rows)}\t{str(match).lower()}\t{str(continuous).lower()}"
+                f"\t{str(latch_rejected).lower()}"
+            )
+            if not match or not continuous or not latch_rejected:
                 raise VerificationError(
-                    f"{variant}/{monitor}: records={len(rows)}, oracle={match}, continuous={continuous}"
+                    f"{variant}/{monitor}: records={len(rows)}, oracle={match}, continuous={continuous}, "
+                    f"historical_latch_rejected={latch_rejected}"
                 )
     (output / "verification.tsv").write_text("\n".join(report) + "\n")
-    print(f"OK: 16/16 F9-X streams, {len(expected)} values each, independent oracle 100%")
+    print(
+        f"OK: 16/16 F9-X streams, {len(expected)} values each, independent oracle 100%; "
+        f"historical A-D latch mutant rejected ({latch_mismatches}/{len(expected)} mismatches)"
+    )
     return 0
 
 

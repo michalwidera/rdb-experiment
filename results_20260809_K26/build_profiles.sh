@@ -87,13 +87,14 @@ while IFS=$'\t' read -r profile slug dedup share commutative factor; do
     -DRDB_OPT_SHARE_EQUIVALENT_SELECTS="$share" \
     -DRDB_OPT_COMMUTATIVE_ADD="$commutative" \
     -DRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES="$factor" \
+    -DRDB_OPT_SIMPLIFY_EXPRESSIONS=ON \
     -DRDB_BENCH_PROBE=ON >"$raw_dir/cmake-$slug.log" 2>&1
 
   "${build_wrapper[@]}" cmake --build "$build_dir" --target xretractor \
     --parallel "$jobs" >"$raw_dir/build-$slug.log" 2>&1
 
   binary="$build_dir/src/retractor/xretractor"
-  verify_probe_binary_profile "$binary" "$dedup" "$share" "$commutative" "$factor" ||
+  verify_probe_binary_profile "$binary" "$dedup" "$share" "$commutative" "$factor" ON ||
     die "profil $profile nie potwierdza się w --build-info"
   "$binary" --build-info >"$raw_dir/build-info-$slug.txt"
 

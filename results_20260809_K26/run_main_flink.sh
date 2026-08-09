@@ -49,6 +49,9 @@ for spec in "F9_R2:F9R2Job:--a $DATA/axis_x.txt --b $DATA/axis_y.txt" \
       grep -q '^LOGICAL ' "$dir/job.out" || {
         echo "BLAD: $family/$variant/Q=$q — brak wiersza LOGICAL, job sie nie wykonal" >&2
         tail -5 "$dir/job.err" >&2; exit 3; }
+      grep -q '^WORK ' "$dir/job.out" || {
+        echo "BLAD: $family/$variant/Q=$q — brak wiersza WORK, eksport mechanizmu bylby niepelny" >&2
+        tail -5 "$dir/job.err" >&2; exit 3; }
       printf '  ok  %-22s %s\n' "${family}_${variant}_q${q}" "$(grep -m1 '^LOGICAL ' "$dir/job.out")"
       runs=$((runs + 1))
     done

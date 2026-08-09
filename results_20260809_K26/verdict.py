@@ -118,6 +118,7 @@ CURVE_TOLERANCE = Fraction(5, 1000)
 #: Bramki, które muszą być obecne w `gates.tsv` dla każdej rodziny. Brak wpisu to
 #: iteracja NIEPEŁNA, nie bramka zdana.
 REQUIRED_GATES = [
+    "corpus_validity",      # exact 21 plans, pinned SHA, 84/84 compile and 4/4 reject evidence
     "oracle_values",        # ≥2000 publicznych rekordów każdego nazwanego wyniku
     "oracle_mutants",       # ≥3 mutanty na mechanizm: faza/shift, kolejność pola, NULL/luka
     "counter_known_answer", # ≥30 przypadków o znanej odpowiedzi na instrumencie
@@ -639,9 +640,9 @@ def selftest():
                              lambda r: r["family"] == "F9-X" and r["gate"] == "oracle_mutants",
                              {"status": "FAIL", "classification": "apparatus"}))
 
-    case("blad korpusu w jednej rodzinie -> BRAK WERDYKTU", 2,
+    case("bramka waznosci korpusu w jednej rodzinie -> BRAK WERDYKTU", 2,
          lambda p: patch_tsv(p, "gates.tsv", GATE_COLUMNS,
-                             lambda r: r["family"] == "F9-X" and r["gate"] == "oracle_values",
+                             lambda r: r["family"] == "F9-X" and r["gate"] == "corpus_validity",
                              {"status": "FAIL", "classification": "corpus"}))
 
     case("nieznana klasyfikacja nadal fail-closed -> BRAK WERDYKTU", 2,

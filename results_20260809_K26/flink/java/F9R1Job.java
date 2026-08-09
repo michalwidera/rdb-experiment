@@ -89,6 +89,7 @@ public class F9R1Job {
     if (!planOnly) {
       env.execute("k26-f9r1-" + variant + "-q" + q);
       System.out.println(Canon.logicalReport());
+      System.out.println(Canon.workReport());
     }
   }
 

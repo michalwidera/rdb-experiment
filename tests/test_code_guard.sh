@@ -128,7 +128,7 @@ assert_empty_scope_is_error() {
   return $rc
 }
 
-# 6. Weryfikacja profilu jest bajtowa: profil o innej piątce musi zawieść.
+# 6. Weryfikacja profilu jest bajtowa: inny blok flag albo niejawna flaga musi zawieść.
 assert_profile_check_is_exact() {
   local root binary rc=0
   root=$(mktemp -d "${TMPDIR:-/tmp}/rdb-profile-XXXXXX") || return 1
@@ -145,6 +145,10 @@ EOF
   verify_probe_binary_profile "$binary" ON ON OFF ON >/dev/null 2>&1 || rc=1  # STRUCT+R1
   verify_probe_binary_profile "$binary" ON ON ON ON >/dev/null 2>&1 && rc=1   # ALGSTRUCT
   verify_probe_binary "$binary" >/dev/null 2>&1 && rc=1
+  printf "printf 'RDB_OPT_SIMPLIFY_EXPRESSIONS=ON\\n'\n" >> "$binary"
+  verify_probe_binary_profile "$binary" ON ON OFF ON ON >/dev/null 2>&1 || rc=1
+  verify_probe_binary_profile "$binary" ON ON OFF ON OFF >/dev/null 2>&1 && rc=1
+  verify_probe_binary_profile "$binary" ON ON OFF ON >/dev/null 2>&1 && rc=1
   rm -rf "$root"
   return $rc
 }

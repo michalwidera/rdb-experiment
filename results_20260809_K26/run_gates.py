@@ -3,13 +3,15 @@
 
 Kolejnosc jest czescia bramki
 -----------------------------
-Bramka mutantow idzie PIERWSZA i jej porazka konczy skrypt, zanim policzy
-cokolwiek innego. Powod jest zapisany w tym luku szesc razy: oracle, ktory nie
-odrzuca wlasnych mutantow, "przechodzi" wszystko i niczego nie dowodzi. Dopiero
-po niej wolno pokazac, ze wariant poprawny jest akceptowany.
+Najpierw idzie bezkosztowa bramka waznosci zamrozonego korpusu. Wsrod bramek
+runtime bramka mutantow idzie PIERWSZA i jej porazka konczy interpretacje,
+zanim wariant poprawny moze zostac uznany za dowod. Powod jest zapisany w tym
+luku szesc razy: oracle, ktory nie odrzuca wlasnych mutantow, "przechodzi"
+wszystko i niczego nie dowodzi.
 
-Szesc bramek `REQUIRED_GATES` skryptu werdyktu
----------------------------------------------
+Siedem bramek `REQUIRED_GATES` skryptu werdyktu
+-----------------------------------------------
+  corpus_validity       dokladny, przypiety korpus i dowod 84/84 + 4/4
   oracle_mutants        mutanty odrzucone przez warunki ZAMIERZONE (§7.1)
   oracle_values         RetractorDB wobec Flinka, >= 2000 rekordow kazdego wyniku
   public_identity       publiczne artefakty identyczne MIEDZY PROFILAMI
@@ -30,10 +32,12 @@ Zadnego kosztu nie czyta i zadnego nie produkuje.
 import argparse
 import os
 import re
+import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import oracle_values as ov
+import validate_corpus
 
 PROFILES = ["DEFAULT", "NO_R2_CANON", "NO_R1_FACTOR", "NO_R1_NO_R2"]
 FAMILIES = ["F9_R2", "F9_R1", "F9_X"]
@@ -61,6 +65,28 @@ NO_MATERIALIZATION_PLANS = ["F9_R2_controls", "F9_R1_controls", "F9_X_controls"]
 
 def monitors_of(family, q):
     return [f"m{i + 1}" for i in range(q)]
+
+
+def gate_corpus_validity(report):
+    """Globalna bramka korpusu odwzorowana na kazda rodzine w `gates.tsv`.
+
+    Sprawdza dokladny inwentarz 21 planow, ich zgodnosc z generatorem, przypiete
+    SHA silnika i binariow, komplet dowodu 84 poprawnych kompilacji, cztery
+    odrzucone historyczne mutanty oraz zamkniety manifest dowodu. Nie czyta
+    danych runtime ani kosztu.
+    """
+    problems = {family: [] for family in FAMILIES}
+    try:
+        checksums = validate_corpus.check_evidence(
+            validate_corpus.HERE / "corpus_validation"
+        )
+    except (validate_corpus.GateError, subprocess.CalledProcessError, OSError) as exc:
+        for family in FAMILIES:
+            problems[family].append(str(exc))
+        report(f"   FAIL: {exc}")
+        return problems
+    report(f"   PASS: 21 planow, 84/84 kompilacje, 4/4 mutanty, {checksums} sum kontrolnych")
+    return problems
 
 
 def read_counters(path):
@@ -406,7 +432,7 @@ def gate_no_materialization(rdb_dir, report):
 
 # ── Zapis ────────────────────────────────────────────────────────────────────
 
-GATE_ORDER = ["oracle_values", "oracle_mutants", "counter_known_answer",
+GATE_ORDER = ["corpus_validity", "oracle_values", "oracle_mutants", "counter_known_answer",
               "public_identity", "near_miss_controls", "no_materialization"]
 
 
@@ -449,6 +475,11 @@ def main():
             issues = problems[family]
             status[family][gate] = "PASS" if not issues else "FAIL"
             detail[family][gate] = issues
+
+    print("== 0. Waznosc zamrozonego korpusu — przed bramkami runtime ==")
+    problems = gate_corpus_validity(report)
+    print(f"   rozbieznosci: {sum(len(v) for v in problems.values())}\n")
+    record("corpus_validity", problems)
 
     print("== 1. BRAMKA MUTANTOW — pokazana PRZED wariantem poprawnym ==")
     count = gate_mutants(args.rdb, args.work, report)
@@ -502,7 +533,7 @@ def main():
         print("\nKolumna `classification` w gates.tsv jest przy FAIL PUSTA — `verdict.py`")
         print("bez niej werdyktu nie wyda (kod 2). To jest zamierzone, nie usterka.")
         return 6
-    print("\nWszystkie szesc bramek czyste w kazdej z trzech rodzin.")
+    print("\nWszystkie siedem bramek czyste w kazdej z trzech rodzin.")
     return 0
 
 

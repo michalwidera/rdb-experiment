@@ -47,7 +47,10 @@ FAMILIES = ["F9_R2", "F9_R1", "F9_X"]
 #: a nie liczbę slotów.
 SLOTS = {"F9_R2": 600, "F9_R1": 1200, "F9_X": 1200}
 
-DECLARE = re.compile(r"^(DECLARE\s+v\s+INTEGER\s+STREAM\s+\w+,\s*)(\d+/\d+)(\s*)(FILE\s+'.*')\s*$")
+DECLARE = re.compile(
+    r"^(DECLARE\s+[A-Za-z_][A-Za-z0-9_]*\s+INTEGER\s+STREAM\s+\w+,\s*)"
+    r"(\d+/\d+)(\s*)(FILE\s+'.*')\s*$"
+)
 
 
 def scale_plan(text, scale):

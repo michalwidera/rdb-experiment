@@ -85,8 +85,11 @@ def cell(plan_path, probe_path, rql_path):
     authored = authored_names(rql_path)
     substrates = classify(streams, authored)
 
-    rewrite = re.search(r"REWRITE_APPLIED r1=(\d+) r2=(\d+)", probe_path.read_text())
-    r1, r2 = (int(x) for x in rewrite.groups()) if rewrite else (0, 0)
+    rewrites = re.findall(r"^REWRITE_APPLIED r1=(\d+) r2=(\d+) r3=(\d+)$",
+                          probe_path.read_text(), re.M)
+    if len(rewrites) != 1:
+        raise ValueError(f"{probe_path}: oczekiwano jednego pelnego wiersza REWRITE_APPLIED")
+    r1, r2, r3 = (int(x) for x in rewrites[0])
 
     consumers = {
         name: sum(1 for s in streams.values() if name in s["sources"]) for name in substrates
@@ -101,6 +104,7 @@ def cell(plan_path, probe_path, rql_path):
     return {
         "r1": r1,
         "r2": r2,
+        "r3": r3,
         "selects": [n for n in substrates if n.startswith("STREAM_SELECT_")],
         "substrates": substrates,
         "consumers": consumers,
@@ -116,7 +120,7 @@ def report(plan_dir, rql_dir, plans, profiles, verbose=True):
     for plan in plans:
         if verbose:
             print(f"\n=== {plan} ===")
-            print(f"{'profil':<13} {'r1':>3} {'r2':>3} {'SELECT_':>8} {'substraty':>10} {'jednostki':>10}")
+            print(f"{'profil':<13} {'r1':>3} {'r2':>3} {'r3':>3} {'SELECT_':>8} {'substraty':>10} {'jednostki':>10}")
         for profile in profiles:
             plan_file = plan_dir / f"{profile}_{plan}.plan"
             probe_file = plan_dir / f"{profile}_{plan}.probe"
@@ -128,7 +132,7 @@ def report(plan_dir, rql_dir, plans, profiles, verbose=True):
             out[(profile, plan)] = data
             if verbose:
                 print(
-                    f"{profile:<13} {data['r1']:>3} {data['r2']:>3} {len(data['selects']):>8} "
+                    f"{profile:<13} {data['r1']:>3} {data['r2']:>3} {data['r3']:>3} {len(data['selects']):>8} "
                     f"{len(data['substrates']):>10} {data['units']:>10.3f}"
                 )
                 for name in data["substrates"]:
@@ -189,6 +193,9 @@ def gate():
                     f"(a) {profile}/{plan}: nowa klasyfikacja rusza plan glowny "
                     f"(dodane {sorted(set(new) - set(old))}, usuniete {sorted(set(old) - set(new))})"
                 )
+            data = cell(plan_file, plan_dir / f"{profile}_{plan}.probe", rql_dir / f"{plan}.rql")
+            if plan in GATE_MAIN_PLANS and data["r3"] != 0:
+                failures.append(f"(d) {profile}/{plan}: R3 wykonala {data['r3']} przepisan")
             if plan not in GATE_MAIN_PLANS and new != old:
                 differences.append((profile, plan, sorted(set(old) - set(new)), sorted(set(new) - set(old))))
 
@@ -226,6 +233,7 @@ def gate():
     print(f"OK: (b) roznica wobec wersji obalonej obejmuje dokladnie z1/z2 i STREAM_HASH_CA_CB "
           f"({len(differences)} komorek kontrolnych)")
     print("OK: (c) publiczny strumien konwencji kompilatora liczy sie do mianownika")
+    print("OK: (d) R3 nie przepisuje zadnego glownego planu K26")
     return 0
 
 

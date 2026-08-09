@@ -105,6 +105,7 @@ public class F9XJob {
     if (!planOnly) {
       env.execute("k26-f9x-" + variant + "-q" + q);
       System.out.println(Canon.logicalReport());
+      System.out.println(Canon.workReport());
     }
   }
 

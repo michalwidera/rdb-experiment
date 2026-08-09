@@ -1,2 +1,3 @@
 F9-X manual Q=8: wezly podplanu=5 jednostki=5.0000 kosztowny_program/slot=1.0000 eval_tokeny=20.0000 etapy publiczne=8 sinki=8 zrodla=4 wezly grafu=25 wierzcholki JobGraphu=7
 LOGICAL substrat: zapisy=750 bajty=6750  publiczne: rekordy=1200
+WORK eval: wywolania=1950 tokeny=3000  hash: wybory=300  add: scalenia=150

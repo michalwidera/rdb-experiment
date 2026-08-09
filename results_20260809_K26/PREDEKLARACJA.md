@@ -1,16 +1,27 @@
 # PREDEKLARACJA K26 / H9 — nowa iteracja po K23
 
-**Status: przygotowana do zamrożenia 2026-08-09; STOP-5 pozostaje otwarty do
-zatwierdzenia, commitu i pushu. Żaden pomiar kosztowy K26 nie został wykonany.**
+**Status: poprawiana przed rozpoczęciem eksperymentu 2026-08-09; STOP-5
+pozostaje otwarty do zatwierdzenia, końcowego commitu i pushu. Żaden przebieg
+P6 ani pomiar kosztowy K26 nie został wykonany.**
 
-Zmiana któregokolwiek z poniższych ustaleń po zamrożeniu wymaga nowej
-predeklaracji i nowego katalogu. Danych K23 i K26 nie wolno łączyć.
+Wcześniejsze commity katalogu są wersjami przeglądowymi, nie momentem
+zamrożenia. **Zamrożenie zaczyna obowiązywać w chwili rozpoczęcia eksperymentu**,
+zdefiniowanej operacyjnie jako pierwsze uruchomienie P6 na danych głównych.
+Bezpośrednio przed nim muszą istnieć zatwierdzony końcowy commit i push oraz
+zielony `freeze_check.sh predeklaracja`. Polecenie `bind_campaign.py`, wywołane
+bezpośrednio przed pierwszym P6, zapisuje bieżące SHA silnika, eksperymentu i
+czterech binariów hosta do `results/ANEKS-0_start.tsv`; ten zapis jest chwilą
+rozpoczęcia kampanii i od niego SHA stają się niezmienne. Od tej chwili zmiana
+któregokolwiek z poniższych ustaleń wymaga
+nowej predeklaracji i nowego katalogu. Danych K23 i K26 nie wolno łączyć.
 
 ## 0. Powód nowej iteracji
 
-K23 zakończyła się bez werdyktu. F9-R1 odpadła przez bramkę wymagającą
-identycznej liczby artefaktów mimo formalnego warunku `Lat(Q)<=Lat(P)`, a F9-X
-nie była legalnym programem RQL: nazywała składniki po przeplocie `#`.
+K23 zakończyła się bez werdyktu. F9-R1 ma klasyfikację **`apparatus` — defekt
+harnessu**: odpadła przez bramkę wymagającą identycznej liczby artefaktów mimo
+formalnego warunku `Lat(Q)<=Lat(P)`. F9-X również ma klasyfikację `apparatus`:
+nie była legalnym programem RQL, bo nazywała składniki po przeplocie `#`, a port
+nadawał znaczenie programowi spoza algebry języka.
 
 K26 zamyka te dwa defekty aparatury, nie zmieniając hipotezy, progów ani rodzin
 F9-R2/F9-R1. Katalog `results_20260808_K23v2/` jest tylko historycznym dowodem;
@@ -21,16 +32,23 @@ nie jest źródłem danych, wyników ani klasyfikacji K26.
 | Pozycja | Wartość |
 |---|---|
 | Gałąź eksperymentu | `experiment/20260809_K26` |
-| SHA silnika | `189b3f8187d80492644438be706e45c7e783b201` |
+| SHA silnika | przed startem zmienne; wiążące SHA zapisuje `ANEKS-0_start.tsv` przy pierwszym P6 |
 | Profile | `DEFAULT`, `NO_R2_CANON`, `NO_R1_FACTOR`, `NO_R1_NO_R2` |
 | Flink | 2.3.0, JDK 17 przypięty ścieżką |
 | Generator danych i RQL | `gen_corpus.py` |
 | Korpus | 21 planów: 18 rodzin + 3 kontrole |
 
 Binaria profili są budowane w osobnych `build/K26-*` i przed użyciem
-sprawdzane przez `--build-info`. `freeze_check.sh predeklaracja` wymaga czystego
-drzewa silnika, właściwego SHA, właściwej gałęzi eksperymentu, czystego drzewa
-eksperymentu i zgodności manifestu.
+sprawdzane przez `--build-info`. Nowa flaga
+`RDB_OPT_SIMPLIFY_EXPRESSIONS=ON` jest jawnie wspólna dla wszystkich czterech
+profili i nie stanowi osi ablacji; główne plany muszą wykazać `r3=0`. Przed
+rozpoczęciem HEAD silnika może się
+zmieniać: wtedy trzeba przebudować profile i ponownie wygenerować dowód korpusu,
+który zapisuje użyte SHA. `freeze_check.sh predeklaracja` wymaga czystego drzewa
+silnika, zgodności bieżącego HEAD-u z dowodem, właściwej gałęzi eksperymentu,
+czystego drzewa eksperymentu i zgodności manifestu. Dopiero
+`bind_campaign.py` tworzy wiążący pin; `freeze_check.sh bound` i późniejsze
+bramki odrzucają każde inne SHA.
 
 ## 2. Pytanie, metryka i próg H9
 
@@ -137,7 +155,8 @@ Przed zamrożeniem `validate_corpus.py`:
 
 1. wyprowadza dokładną listę 21 planów z generatora;
 2. odrzuca brak lub dodatkowy plan na dysku;
-3. sprawdza SHA silnika i czystość jego drzewa;
+3. sprawdza czystość drzewa silnika i zgodność bieżącego SHA z SHA zapisanym
+   podczas generowania dowodu, bez wiążącego pinu przed startem;
 4. sprawdza flagi i tożsamość czterech binariów;
 5. kompiluje każdy plan w każdym profilu — 84 kompilacje;
 6. wymaga odrzucenia historycznego F9-X w każdym profilu;
@@ -178,14 +197,27 @@ Plan-only przy `Q=8` daje:
 Serializer kanoniczny przechodzi 18/18 wektorów wobec oracle'a C++ linkowanego
 z `librdb`. Pilot wykonawczy F9-X uruchamia oba warianty na 100 szybkich i 50
 wolnych rekordach: **16/16** publicznych strumieni ma po 150 ciągłych rekordów
-i zgadza się w 100% z niezależnym oracle'em `isqrt(front²+rear²)`. Są to bramki
-aparatury, nie pomiar H9.
+i zgadza się w 100% z niezależnym oracle'em `isqrt(front²+rear²)`. Ten sam test
+odtwarza historyczny model `latch[A..D]` i wymaga jego odrzucenia przez każdy
+strumień; na korpusie pilota legalny oracle różni się od mutanta w 150/150
+rekordach. `freeze_check.sh` przed rozpoczęciem kampanii przebudowuje klasy Flinka z
+przypiętego JDK, ponownie wykonuje oba warianty i wymaga bajtowego odtworzenia
+dowodów z manifestu. Są to bramki aparatury, nie pomiar H9.
 
 ## 7. Bramki poprawności i klasyfikacja
 
-Wymagane bramki per rodzina: `oracle_values`, `oracle_mutants`,
-`counter_known_answer`, `public_identity`, `near_miss_controls` oraz
-`no_materialization`.
+Wymagane bramki per rodzina: `corpus_validity`, `oracle_values`,
+`oracle_mutants`, `counter_known_answer`, `public_identity`,
+`near_miss_controls` oraz `no_materialization`.
+
+`corpus_validity` idzie przed wszystkimi bramkami runtime i nie czyta kosztu.
+Ponownie sprawdza dokładny inwentarz 21 planów i jego zgodność z generatorem,
+zgodność bieżącego SHA silnika i czterech binariów z dowodem, a po starcie także
+z wiążącym pinem, zamknięty manifest dowodu, komplet
+84/84 poprawnych kompilacji oraz 4/4 odrzucone historyczne mutanty. Wynik jest
+zapisywany osobno dla każdej rodziny w `gates.tsv`. FAIL pozostaje bez
+automatycznej klasyfikacji; `verdict.py` odmawia werdyktu, dopóki przyczyna nie
+zostanie sklasyfikowana na STOP-6.
 
 Nieczysty wpis musi otrzymać dokładnie jedną klasyfikację:
 
@@ -224,22 +256,59 @@ a następnie uruchamia 4 profile × 6 reprezentatywnych planów. Wynik:
 Pilot nie jest pomiarem kosztowym. Liczniki dowodzą jedynie, że instrument działa
 i że główne rodziny materializują niezerowy substrat.
 
-## 9. Kolejność dalszego wykonania
+## 9. Wykonanie i produkty aparatury
+
+P8 wykonuje `run_matrix_supervisor.sh`. Dla każdej rodziny worker
+`run_matrix_worker.py`:
+
+1. sprawdza wiążący `ANEKS-0_start.tsv`, SHA binariów z ANEKS-2, kernel,
+   izolowany CPU i governor z ANEKS-3;
+2. wykonuje po jednym warm-upie `Q=32` na każdy profil, poza wynikiem;
+3. konsumuje dokładnie 480 wierszy rodziny z `blocks.tsv` (20 bloków × 6 Q ×
+   4 profile), z `taskset`, trybem czasu absolutnego `-t` i danymi głównymi;
+4. zapisuje temperaturę przed i po komórce, pełną sondę oraz pojedynczy
+   `summary.tsv`;
+5. liczy zgubione rekordy jako ubytek publicznych dopisań wobec tej samej
+   komórki P6; nadmiar jest błędem aparatury, a ubytek lub `p99 > 80%` slotu
+   tworzy `STOP-8` i natychmiast zatrzymuje rodzinę;
+6. po 480/480 tworzy archiwum surowe. Nadzorca kopiuje je na host, weryfikuje
+   SHA-256, dopisuje do indeksu poza git i restartuje worker między rodzinami.
+
+`reduce_results.py mechanism` tworzy 108 deterministycznych wierszy
+`mechanism.tsv` ze zrzutów planu, liczników P6 RDB oraz rzeczywistych liczników
+P6 Flinka. `reduce_results.py timing` wymaga dokładnie wszystkich 1440
+jednowierszowych podsumowań zgodnych z `blocks.tsv`; odrzuca brak, duplikat,
+dodatkową komórkę i inną kolejność. Oba pliki mają dokładny schemat
+`verdict.py`.
+
+ANEKS-1 tworzy wyłącznie `calib/analyze_calib.py --out results/ANEKS-1_rate.tsv`:
+zapisuje wybrany rate,
+`calibration_saw_effect=no`, sloty z `slot_grid`, najgorszą komórkę, liczby
+slotów i skrót wszystkich CSV. ANEKS-2/3 tworzy `capture_worker.py` jednym
+odczytem SSH; skrypt odmawia nadpisania. `freeze_check.sh worker` porównuje
+aneksy z żywym workerem, w tym z czterema binariami.
+
+## 10. Kolejność dalszego wykonania
 
 1. przegląd tej predeklaracji i całego diffu;
-2. commit i push zamrożenia — STOP-5;
-3. pełne bramki P6 na danych głównych, bez odczytu kosztu;
-4. klasyfikacja każdego FAIL przed dalszym krokiem;
-5. kalibracja na osobnych danych, bez porównania efektu;
-6. 20 sparowanych bloków pełnej macierzy;
-7. automatyczny werdykt `verdict.py`;
-8. raport bez łączenia danych z K23.
+2. na finalnym HEAD-zie przebudowa profili i ponowny dowód korpusu, następnie
+   `capture_worker.py`, końcowy commit i push oraz
+   `freeze_check.sh predeklaracja` — STOP-5;
+3. bezpośrednio przed pierwszym P6 `bind_campaign.py`; utworzenie
+   `ANEKS-0_start.tsv` jest początkiem eksperymentu i od tej chwili zamrożenie
+   jest wiążące;
+4. pełne bramki P6 na danych głównych, bez odczytu kosztu;
+5. klasyfikacja każdego FAIL przed dalszym krokiem;
+6. kalibracja na osobnych danych, bez porównania efektu;
+7. 20 sparowanych bloków pełnej macierzy;
+8. automatyczny werdykt `verdict.py`;
+9. raport bez łączenia danych z K23.
 
 Przekroczenie 80% slotu lub zgubiony rekord zatrzymuje całą rodzinę bez
 werdyktu. Zmiana rate po takim zatrzymaniu wymaga kolejnej predeklaracji i
 nowego katalogu.
 
-## 10. Granica twierdzenia
+## 11. Granica twierdzenia
 
 Nawet wsparcie H9 upoważnia jedynie do stwierdzenia, że w badanych trzech
 rodzinach i przy `Q=8` automatyczne współdzielenie osiągnęło zadeklarowany próg

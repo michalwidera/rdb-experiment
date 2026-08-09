@@ -25,6 +25,7 @@ sa najdrozsze, wiec ich zostawienie moze kalibracje tylko UTRUDNIC.
 
 import argparse
 import csv
+import hashlib
 import sys
 from pathlib import Path
 
@@ -61,10 +62,36 @@ def read_compute_ms(path):
     return sorted(out)
 
 
+def sha256_inputs(paths, root):
+    digest = hashlib.sha256()
+    for path in sorted(paths):
+        relative = path.relative_to(root).as_posix()
+        payload = path.read_bytes()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(str(len(payload)).encode("ascii"))
+        digest.update(b"\0")
+        digest.update(payload)
+    return digest.hexdigest()
+
+
+def write_annex(path, rows):
+    if path.exists():
+        raise SystemExit(f"BLAD: odmowa nadpisania istniejacego {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    with temporary.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.writer(handle, delimiter="\t", lineterminator="\n")
+        writer.writerow(["key", "value"])
+        writer.writerows(rows)
+    temporary.replace(path)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--runs", required=True, help="katalog z <profil>/<rodzina>_s<skala>/slot.csv")
     parser.add_argument("--slots", default=str(Path(__file__).resolve().parent / "slots.tsv"))
+    parser.add_argument("--out", help="zapisz maszynowy ANEKS-1_rate.tsv")
     args = parser.parse_args()
 
     slots = {}
@@ -74,6 +101,8 @@ def main():
 
     runs = Path(args.runs)
     verdict_rows = []
+    details = {}
+    all_csv = []
 
     for scale in SCALES:
         print(f"\n=== rate_scale = {scale_label(scale)} ===")
@@ -81,16 +110,18 @@ def main():
         for family in FAMILIES:
             slot = slots[(family, scale)]
             budget = BUDGET_FRACTION * slot
-            worst_p99, worst_max = 0.0, 0.0
+            worst_p99, worst_max, worst_profile = 0.0, 0.0, None
             per_profile = []
             for profile in PROFILES:
                 csv_path = runs / profile / f"{family}_s{scale}" / "slot.csv"
                 if not csv_path.exists():
                     raise SystemExit(f"BLAD: brak {csv_path} — przebieg niepelny")
+                all_csv.append(csv_path)
                 values = read_compute_ms(csv_path)
                 p99 = percentile(values, 0.99)
                 per_profile.append(p99)
-                worst_p99 = max(worst_p99, p99)
+                if p99 > worst_p99:
+                    worst_p99, worst_profile = p99, profile
                 worst_max = max(worst_max, values[-1])
             passed = worst_p99 <= budget
             scale_ok = scale_ok and passed
@@ -99,6 +130,13 @@ def main():
                   f"{'OK' if passed else 'PRZEKROCZONY'}")
             print(f"          p99 per profil [ms]: " +
                   "  ".join(f"{p:.3f}" for p in per_profile) + f"   max {worst_max:.3f}")
+            details[(scale, family)] = {
+                "slot": slot,
+                "worst_p99": worst_p99,
+                "worst_profile": worst_profile,
+                "measured": sum(len(read_compute_ms(
+                    runs / profile / f"{family}_s{scale}" / "slot.csv")) for profile in PROFILES),
+            }
         print(f"  --> rate_scale {scale_label(scale)}: "
               f"{'SPELNIA kryterium §8.1' if scale_ok else 'ODRZUCONY przez kryterium §8.1'}")
         verdict_rows.append((scale, scale_ok))
@@ -116,6 +154,36 @@ def main():
     # przechodzacy" jest jedynym, ktory nie jest arbitralny.
     chosen = min(accepted, key=lambda s: int(s.split("_")[0]) / int(s.split("_")[1]))
     print(f"WYBRANY rate_scale   : {scale_label(chosen)} (najmniejszy czynnik spelniajacy kryterium)")
+    if args.out:
+        chosen_details = [(family, details[(chosen, family)]) for family in FAMILIES]
+        worst_family, worst = max(chosen_details, key=lambda item: item[1]["worst_p99"] / item[1]["slot"])
+        measured = sum(item[1]["measured"] for item in chosen_details)
+        exceeding = 0
+        for family in FAMILIES:
+            slot = details[(chosen, family)]["slot"]
+            for profile in PROFILES:
+                values = read_compute_ms(runs / profile / f"{family}_s{chosen}" / "slot.csv")
+                exceeding += sum(value > slot for value in values)
+        rows = [
+            ("rate_scale", scale_label(chosen)),
+            ("calibration_saw_effect", "no"),
+            ("criterion", "p99 <= 50% shortest logical slot; worst profile; Q=32"),
+            ("worst_p99_fraction_percent", f"{100 * worst['worst_p99'] / worst['slot']:.6f}"),
+            ("worst_p99_family", worst_family),
+            ("worst_p99_profile", worst["worst_profile"]),
+        ]
+        rows.extend((f"slot_min_ms_{family}", f"{item['slot']:.6f}")
+                    for family, item in chosen_details)
+        rows.extend([
+            ("slots_exceeding_slot", str(exceeding)),
+            ("slots_measured", str(measured)),
+            ("runs", str(len(PROFILES) * len(FAMILIES) * len(SCALES))),
+            ("ladder_rejected", ",".join(scale_label(scale) for scale in rejected)),
+            ("ladder_accepted", ",".join(scale_label(scale) for scale in accepted)),
+            ("input_slot_csv_sha256", sha256_inputs(all_csv, runs)),
+        ])
+        write_annex(Path(args.out), rows)
+        print(f"ZAPISANO ANEKS-1: {args.out}")
     return 0
 
 
