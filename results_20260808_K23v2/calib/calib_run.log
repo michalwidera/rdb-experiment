@@ -1,0 +1,67 @@
+governor cpu3: performance
+== profil DEFAULT ==
+  ok  F9_R2        skala 1_4   wierszy=599
+  ok  F9_R2        skala 1_2   wierszy=599
+  ok  F9_R2        skala 1_1   wierszy=599
+  ok  F9_R2        skala 2_1   wierszy=599
+  ok  F9_R2        skala 4_1   wierszy=599
+  ok  F9_R1        skala 1_4   wierszy=1199
+  ok  F9_R1        skala 1_2   wierszy=1199
+  ok  F9_R1        skala 1_1   wierszy=1199
+  ok  F9_R1        skala 2_1   wierszy=1199
+  ok  F9_R1        skala 4_1   wierszy=1199
+  ok  F9_X         skala 1_4   wierszy=1199
+  ok  F9_X         skala 1_2   wierszy=1199
+  ok  F9_X         skala 1_1   wierszy=1199
+  ok  F9_X         skala 2_1   wierszy=1199
+  ok  F9_X         skala 4_1   wierszy=1199
+== profil NO_R2_CANON ==
+  ok  F9_R2        skala 1_4   wierszy=599
+  ok  F9_R2        skala 1_2   wierszy=599
+  ok  F9_R2        skala 1_1   wierszy=599
+  ok  F9_R2        skala 2_1   wierszy=599
+  ok  F9_R2        skala 4_1   wierszy=599
+  ok  F9_R1        skala 1_4   wierszy=1199
+  ok  F9_R1        skala 1_2   wierszy=1199
+  ok  F9_R1        skala 1_1   wierszy=1199
+  ok  F9_R1        skala 2_1   wierszy=1199
+  ok  F9_R1        skala 4_1   wierszy=1199
+  ok  F9_X         skala 1_4   wierszy=1199
+  ok  F9_X         skala 1_2   wierszy=1199
+  ok  F9_X         skala 1_1   wierszy=1199
+  ok  F9_X         skala 2_1   wierszy=1199
+  ok  F9_X         skala 4_1   wierszy=1199
+== profil NO_R1_FACTOR ==
+  ok  F9_R2        skala 1_4   wierszy=599
+  ok  F9_R2        skala 1_2   wierszy=599
+  ok  F9_R2        skala 1_1   wierszy=599
+  ok  F9_R2        skala 2_1   wierszy=599
+  ok  F9_R2        skala 4_1   wierszy=599
+  ok  F9_R1        skala 1_4   wierszy=1199
+  ok  F9_R1        skala 1_2   wierszy=1199
+  ok  F9_R1        skala 1_1   wierszy=1199
+  ok  F9_R1        skala 2_1   wierszy=1199
+  ok  F9_R1        skala 4_1   wierszy=1199
+  ok  F9_X         skala 1_4   wierszy=1199
+  ok  F9_X         skala 1_2   wierszy=1199
+  ok  F9_X         skala 1_1   wierszy=1199
+  ok  F9_X         skala 2_1   wierszy=1199
+  ok  F9_X         skala 4_1   wierszy=1199
+== profil NO_R1_NO_R2 ==
+  ok  F9_R2        skala 1_4   wierszy=599
+  ok  F9_R2        skala 1_2   wierszy=599
+  ok  F9_R2        skala 1_1   wierszy=599
+  ok  F9_R2        skala 2_1   wierszy=599
+  ok  F9_R2        skala 4_1   wierszy=599
+  ok  F9_R1        skala 1_4   wierszy=1199
+  ok  F9_R1        skala 1_2   wierszy=1199
+  ok  F9_R1        skala 1_1   wierszy=1199
+  ok  F9_R1        skala 2_1   wierszy=1199
+  ok  F9_R1        skala 4_1   wierszy=1199
+  ok  F9_X         skala 1_4   wierszy=1199
+  ok  F9_X         skala 1_2   wierszy=1199
+  ok  F9_X         skala 1_1   wierszy=1199
+  ok  F9_X         skala 2_1   wierszy=1199
+  ok  F9_X         skala 4_1   wierszy=1199
+
+OK: 60 przebiegow kalibracyjnych, kazdy z niepusta sonda slotu

@@ -1,0 +1,50 @@
+#	ANEKS-1 — skalibrowany rate K23 iteracja 2. Wchodzi w P7 (2026-08-09).
+#	PREDEKLARACJA §0.2: predeklaracja zamraza PROTOKOL kalibracji (§8.1), a WARTOSC
+#	rate wchodzi tym aneksem, podpisanym przed macierza (P7 -> STOP-7). Od chwili
+#	zapisania plik jest niezmienny; `freeze_check.sh macierz` go czyta.
+#
+#	Znaczenie `rate_scale`: czynnik, przez ktory mnozony jest KAZDY interwal
+#	`DECLARE` zamrozonych planow `rql/`. Stosunki interwalow sa zachowane
+#	z definicji, a stale przesuniec i=2, k=1, >3 leza w tresci SELECT i nie sa
+#	dotykane — relacja i*Delta_A = k*Delta_B przezywa skalowanie obu stron tym
+#	samym czynnikiem. Plikow w `rql/` kalibracja NIE ZAPISUJE; warianty powstaja
+#	w `calib/plans/` przez `calib/gen_calib.py`, ktorego bramka `--check`
+#	potwierdza, ze przy scale=1 generator oddaje zamrozony plan znak w znak.
+#
+#	Kryterium §8.1: najgorszy profil przy Q=32 ma p99 <= 50% LOGICZNEGO SLOTU.
+#	Logicznym slotem jest NAJKROTSZY odstep miedzy pobudkami petli, wyznaczony
+#	przez `calib/slot_grid` — narzedzie kompilujace `CRSMath.cpp` SILNIKA, wiec
+#	nie bedace trzecim przepisaniem regul osi czasu. Ma to znaczenie: F9-R1 i F9-X
+#	maja dwa niewspolmierne takty i wersja obalona "slot = najkrotszy zadeklarowany
+#	takt" dawalaby budzet DWUKROTNIE ZA LUZNY (6,667 zamiast 3,333 ms przy skali 1).
+#
+#	Bramka pokazana z obu stron, zgodnie z regula luku: kryterium najpierw
+#	ODRZUCILO cztery zbyt szybkie rate'y, dopiero potem zaakceptowalo wybrany.
+#	Odrzucone: 1/4 (do 625% slotu), 1/2 (do 354%), 1 (do 143%), 2 (do 83%).
+#	Zaakceptowane: 4. Wybrano NAJMNIEJSZY czynnik spelniajacy kryterium — kazdy
+#	wiekszy tez by przeszedl, wiec tylko ten wybor nie jest arbitralny.
+#
+#	`calibration_saw_effect=no`: kalibracja NIE liczyla i NIE wypisala zadnego
+#	ilorazu DEFAULT/ablacja. Cztery profile weszly wylacznie po to, zeby wziac
+#	z nich MAKSIMUM — tego zada §8.1 slowem "najgorszy profil". Metryki pierwotnej
+#	(bajtow substratow) ani licznikow LOGICAL/WORK kalibracja nie czytala. Dane
+#	byly OSOBNE: `data/calib/`, ziarno 20260808_0002, 600/300 rekordow.
+key	value
+rate_scale	4
+calibration_saw_effect	no
+kryterium	p99 <= 50% najkrotszego slotu, najgorszy profil, Q=32
+najgorszy_p99_udzial_slotu_proc	37.9
+najgorszy_p99_rodzina	F9_X
+najgorszy_p99_profil	NO_R1_NO_R2
+slot_min_ms_F9_R2	40.000
+slot_min_ms_F9_R1	13.333
+slot_min_ms_F9_X	13.333
+slotow_przekraczajacych_slot	0
+slotow_zmierzonych	10788
+przebiegow	60
+drabina_odrzucona	1/4, 1/2, 1, 2
+drabina_zaakceptowana	4
+dane	data/calib (ziarno 20260808_0002, 600/300 rekordow)
+maszyna	worker pi400, aarch64, taskset -c 3, governor performance
+tryb	bez -t (kryterium dotyczy compute_ns, ktory nie zalezy od trybu snu)
+odczyt_data	2026-08-09

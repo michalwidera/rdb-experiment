@@ -3,3 +3,4 @@ slot_grid
 # Kopia robocza danych kalibracyjnych na potrzeby wysyłki na workera.
 # Wersją autorytatywną jest `../data/calib/`, objęta `manifest.sha256`.
 data/
+runs/
