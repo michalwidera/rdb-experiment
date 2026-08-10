@@ -1,0 +1,7 @@
+family	variant	q	costly_program_tokens	costly_evals_nh	eval_calls_nh	eval_tokens_nh	hash_picks_nh	add_merges_nh
+F9-R2	natural	8	8	5.3333	10.6667	48.0000	0.0000	5.3333
+F9-R2	manual	8	8	0.6667	6.0000	10.6667	0.0000	0.6667
+F9-R1	natural	8	3	8.0000	16.0000	32.0000	8.0000	0.0000
+F9-R1	manual	8	3	8.0000	9.0000	25.0000	1.0000	0.0000
+F9-X	natural	8	8	8.0000	40.0000	96.0000	16.0000	8.0000
+F9-X	manual	8	8	1.0000	13.0000	20.0000	2.0000	1.0000
