@@ -1,8 +1,8 @@
 # PREDEKLARACJA K26v2 / H9 — powtórzenie po nieważnej K26
 
-**Status 2026-08-10: przygotowanie P3/P4 w toku; STOP-5 jest otwarty. K26v2 nie
-ma ANEKS-0, P6 nie rozpoczęto i nie wykonano żadnego pomiaru kosztowego tej
-iteracji.**
+**Status 2026-08-10: P3/P4 wykonane; końcowe przypięcie STOP-5 w toku. K26v2
+nie ma ANEKS-0, P6 nie rozpoczęto i nie wykonano żadnego pomiaru kosztowego tej
+iteracji. ANEKS-2/3 opisują przygotowany worker i cztery jego binaria.**
 
 Wcześniejsze commity katalogu są wersjami przeglądowymi, nie momentem
 zamrożenia. **Zamrożenie zaczyna obowiązywać w chwili rozpoczęcia eksperymentu**,

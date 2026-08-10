@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Buduje profile ablacyjne K26 z profiles.tsv w izolowanych katalogach
+# Buduje profile ablacyjne K26v2 z profiles.tsv w izolowanych katalogach
 # build/K26v2-<slug> repozytorium kodu i weryfikuje --build-info bajtowo.
 #
 # KOPIA results_20260730_K6c/build_profiles.sh z DWIEMA zmianami (i tylko nimi):
 #   1. liczba profili nie jest już zaszyta jako 5 — wynika z profiles.tsv, bo
-#      K26 ma cztery profile (`OFF` nie jest kontrolą przyczynową H9);
+#      K26v2 ma cztery profile (`OFF` nie jest kontrolą przyczynową H9);
 #      reguła "zero zbudowanych profili nie jest sukcesem" zachowana jawnie;
 #   2. prefiks katalogu builda K6- → K26v2-, żeby kampania nie mieszała binariów
 #      z K6c ani K23 w tym samym drzewie kodu.
@@ -100,7 +100,7 @@ while IFS=$'\t' read -r profile slug dedup share commutative factor; do
 
   if [ "${K6_SETCAP:-0}" = "1" ]; then
     # R7: sonda mierzy pod SCHED_FIFO i mlockall, więc capabilities muszą być
-    # na KAŻDEJ z pięciu binarek, nie tylko na zainstalowanej.
+    # na KAŻDEJ z czterech binarek, nie tylko na zainstalowanej.
     sudo -n setcap cap_sys_nice,cap_ipc_lock+ep "$binary" ||
       die "nie można nadać capabilities RT na $binary"
     getcap "$binary" | grep -q "cap_ipc_lock,cap_sys_nice=ep\|cap_sys_nice,cap_ipc_lock=ep" ||

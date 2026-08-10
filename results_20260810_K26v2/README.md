@@ -6,8 +6,9 @@ wyników. K26 zakończyła się bez werdyktu jako `apparatus`, gdy długie poł�
 SSH zamknęło sesję workera po 9/480 komórkach F9-R2, pozostawiając zawieszonego
 nadzorcę hosta.
 
-Stan: **P3/P4 w toku; STOP-5 otwarty, P6 nie rozpoczęte**. Nie wykonano pomiaru
-kosztowego K26v2. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
+Stan: **P3/P4 wykonane; końcowe przypięcie STOP-5 w toku, P6 nie rozpoczęte**.
+Nie wykonano pomiaru kosztowego K26v2. ANEKS-2/3 opisują przygotowany worker i
+cztery jego binaria. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
 aktualne SHA do ignorowanego `results/ANEKS-0_start.tsv`. Dopiero ten zapis
 rozpoczyna kampanię i wiąże rewizje; wcześniej HEAD silnika może się zmieniać,
 pod warunkiem przebudowy profili, ponowienia dowodu korpusu oraz końcowego
