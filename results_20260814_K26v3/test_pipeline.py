@@ -5,9 +5,11 @@ import csv
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import unittest
+from unittest import mock
 from fractions import Fraction
 from pathlib import Path
 
@@ -387,3 +389,150 @@ class CalibrationAnnexTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ResumeTest(unittest.TestCase):
+    """N10: bieg przerwany w polowie musi dac sie wznowic bez straty i bez duplikatu.
+
+    Pomiar trwa 16 h na rodzine, wiec kampania nie moze wymagac, zeby urzadzenie
+    przetrwalo caly ten czas bez przerwy. Test uzywa zredukowanej macierzy — regula
+    ksiegowania jest ta sama niezaleznie od liczby komorek.
+    """
+
+    def cell(self, root, complete=True, median=200):
+        root.mkdir(parents=True, exist_ok=True)
+        write_probe(root / "slot.csv", [100, median, 300])
+        (root / "run.rc").write_text("0\n")
+        if complete:
+            reduce_results.write_tsv(root / "summary.tsv", reduce_results.SUMMARY_COLUMNS, [{
+                "family": "F9-R2", "profile": "DEFAULT", "q": 8, "block": 1, "order": 0,
+                "compute_median_ns": median, "compute_p99_ns": 300, "slot_ns": 1000,
+                "lost_records": 0, "probe_rows": 3, "public_appends": 10,
+                "temp_before_millic": 40000, "temp_after_millic": 41000,
+            }])
+        return root
+
+    def test_complete_cell_is_recognised(self):
+        with tempfile.TemporaryDirectory() as name:
+            path = self.cell(Path(name) / "cell")
+            self.assertTrue(run_matrix_worker.cell_is_complete(path))
+
+    def test_partial_cells_are_never_trusted(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            missing_summary = self.cell(root / "a", complete=False)
+            self.assertFalse(run_matrix_worker.cell_is_complete(missing_summary))
+
+            nonzero_rc = self.cell(root / "b")
+            (nonzero_rc / "run.rc").write_text("2\n")
+            self.assertFalse(run_matrix_worker.cell_is_complete(nonzero_rc))
+
+            truncated = self.cell(root / "c")
+            write_probe(truncated / "slot.csv", [100])  # sonda krotsza niz w summary
+            self.assertFalse(run_matrix_worker.cell_is_complete(truncated))
+
+            no_probe = self.cell(root / "d")
+            (no_probe / "slot.csv").unlink()
+            self.assertFalse(run_matrix_worker.cell_is_complete(no_probe))
+
+    def test_resume_skips_done_cells_and_redoes_partial_ones(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            done = self.cell(root / "done")
+            before = (done / "summary.tsv").read_bytes()
+            partial = self.cell(root / "partial", complete=False)
+            (partial / "marker").write_text("slad przerwanego biegu")
+
+            self.assertFalse(run_matrix_worker.prepare_cell(done, resume=True))
+            self.assertEqual((done / "summary.tsv").read_bytes(), before,
+                             "komorka sprzed przerwy zostala naruszona")
+            self.assertTrue(run_matrix_worker.prepare_cell(partial, resume=True))
+            self.assertFalse(partial.exists(), "niekompletna komorka musi zniknac przed powtorzeniem")
+
+    def test_without_resume_existing_cell_is_refused(self):
+        with tempfile.TemporaryDirectory() as name:
+            path = self.cell(Path(name) / "cell")
+            with self.assertRaisesRegex(run_matrix_worker.MatrixError, "odmowa nadpisania"):
+                run_matrix_worker.prepare_cell(path, resume=False)
+
+    def test_missing_cell_is_simply_run(self):
+        with tempfile.TemporaryDirectory() as name:
+            path = Path(name) / "nie-ma"
+            self.assertTrue(run_matrix_worker.prepare_cell(path, resume=True))
+            self.assertTrue(run_matrix_worker.prepare_cell(path, resume=False))
+
+    def _rate_annex(self, path):
+        reduce_results.write_tsv(path, ["key", "value"], [
+            {"key": "rate_scale", "value": "4"},
+            {"key": "slot_min_ms_F9_R2", "value": "25"},
+            {"key": "slot_min_ms_F9_R1", "value": "25"},
+            {"key": "slot_min_ms_F9_X", "value": "25"},
+        ])
+        return path
+
+    def test_interrupted_run_resumes_to_a_complete_matrix(self):
+        """Pelna ksiegowosc wznowienia na prawdziwej petli `main()`.
+
+        `run_one` jest zastapione atrapa, zeby test nie trwal 16 h; przerwanie
+        udaje `KeyboardInterrupt`, ktorego `main()` nie lapie — tak jak nie zlapie
+        zabicia procesu. Zywy test twardego wylaczenia workera jest osobno.
+        """
+        crash_after = 100
+        calls, crashed = [], []
+
+        def fake_run_one(family, profile, q, block, order, out, *rest, **kwargs):
+            if not crashed and len(calls) == crash_after and not kwargs.get("warmup"):
+                crashed.append(True)  # przerwanie zdarza sie RAZ, nie przy kazdym wznowieniu
+                raise KeyboardInterrupt("udawane zabicie procesu")
+            calls.append(out)
+            out.mkdir(parents=True, exist_ok=False)
+            write_probe(out / "slot.csv", [100, 200, 300])
+            (out / "run.rc").write_text("0\n")
+            reduce_results.write_tsv(out / "summary.tsv", reduce_results.SUMMARY_COLUMNS, [{
+                "family": family, "profile": profile, "q": q, "block": block, "order": order,
+                "compute_median_ns": 200, "compute_p99_ns": 300, "slot_ns": 1000,
+                "lost_records": 0, "probe_rows": 3, "public_appends": 10,
+                "temp_before_millic": 40000, "temp_after_millic": 41000,
+            }])
+            return {"compute_p99_ns": 300}
+
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            out, archives = root / "out", root / "archives"
+            annex = self._rate_annex(root / "rate.tsv")
+            argv = ["run_matrix_worker.py", "--family", "F9-R2", "--out", str(out),
+                    "--archive-dir", str(archives), "--p6-rdb", str(root / "p6"),
+                    "--rate-annex", str(annex)]
+
+            with mock.patch.object(run_matrix_worker, "check_environment"), \
+                 mock.patch.object(run_matrix_worker, "run_one", fake_run_one), \
+                 mock.patch.object(sys, "argv", argv):
+                with self.assertRaises(KeyboardInterrupt):
+                    run_matrix_worker.main()
+
+            # `crash_after` liczy WSZYSTKIE zapisy: 4 warm-upy + reszta to komorki.
+            written = len(calls)
+            cells_done = crash_after - len(run_matrix_worker.PROFILES)
+            self.assertEqual(written, crash_after)
+            self.assertFalse((out / "RUN_COMPLETE").exists())
+
+            # Ostatnia komorka udaje przerwanie W TRAKCIE zapisu.
+            truncated = calls[-1]
+            (truncated / "summary.tsv").unlink()
+            fingerprints = {path: (path / "summary.tsv").read_bytes() for path in calls[:-1]}
+
+            with mock.patch.object(run_matrix_worker, "check_environment"), \
+                 mock.patch.object(run_matrix_worker, "run_one", fake_run_one), \
+                 mock.patch.object(sys, "argv", argv + ["--resume"]):
+                self.assertEqual(run_matrix_worker.main(), 0)
+
+            self.assertEqual((out / "RUN_COMPLETE").read_text(), "480/480\n")
+            summaries = [p for p in out.rglob("summary.tsv") if "warmup" not in p.parts]
+            self.assertEqual(len(summaries), 480, "macierz nie jest kompletna")
+            self.assertEqual(len(summaries), len({p.parent for p in summaries}), "duplikat komorki")
+            for path, content in fingerprints.items():
+                self.assertEqual((path / "summary.tsv").read_bytes(), content,
+                                 f"komorka sprzed przerwy zmieniona: {path}")
+            self.assertIn(truncated, calls[written:], "niekompletna komorka nie zostala powtorzona")
+            self.assertEqual(len(calls) - written, 480 - cells_done + 1,
+                             "wznowienie policzylo komorki juz zrobione")

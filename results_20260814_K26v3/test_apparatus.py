@@ -100,8 +100,15 @@ class ScriptContractTest(unittest.TestCase):
                    "/home/michal/" + self.CAMPAIGN}
         offenders = []
         pattern = re.compile(r'^(\w+)="\$\{\1:-([^}]*)\}"')
+        # Ta sama pulapka siedziala po stronie Pythona: `--code-repo` mialo
+        # domyslnie `Path.home() / "K26"`, czyli katalog uniewaznionej kampanii.
+        python_default = re.compile(r'"--code-repo".*default=Path\.home\(\)\s*/\s*"([^"]+)"')
         for path in self.scripts():
-            if path.suffix != ".sh":
+            if path.suffix == ".py":
+                for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+                    found = python_default.search(line)
+                    if found and found.group(1) != self.CAMPAIGN:
+                        offenders.append(f"{path.relative_to(self.HERE)}:{number} -> {found.group(1)}")
                 continue
             for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
                 found = pattern.match(line.strip())

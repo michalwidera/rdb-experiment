@@ -19,7 +19,8 @@ from fractions import Fraction
 from pathlib import Path
 
 from calib.gen_calib import scale_plan
-from reduce_results import SUMMARY_COLUMNS, ReductionError, summarize_probe, write_tsv
+from reduce_results import (SUMMARY_COLUMNS, ReductionError, read_tsv, summarize_probe,
+                            write_tsv)
 
 HERE = Path(__file__).resolve().parent
 FAMILIES = ["F9-R2", "F9-R1", "F9-X"]
@@ -220,22 +221,64 @@ def archive_family(out, archive_dir, family):
     return archive, digest
 
 
+def cell_is_complete(path):
+    """Czy komorka jest KOMPLETNA i ZWERYFIKOWANA, a wiec wolno ja pominac.
+
+    Wznowienie nie moze wierzyc samemu istnieniu katalogu: bieg przerwany w
+    polowie zapisu zostawia katalog, czasem `run.rc`, czasem obcieta sonde.
+    Komorka liczy sie za zrobiona dopiero, gdy `run.rc` jest zerowe, a mediana,
+    p99 i liczba wierszy w `summary.tsv` zgadzaja sie z PRZELICZONA sonda — to
+    ta sama regula, ktorej uzywa `reduce_results.py timing`.
+    """
+    summary_path, probe_path, rc_path = path / "summary.tsv", path / "slot.csv", path / "run.rc"
+    if not (summary_path.is_file() and probe_path.is_file() and rc_path.is_file()):
+        return False
+    try:
+        if rc_path.read_text().strip() != "0":
+            return False
+        rows = read_tsv(summary_path)
+        if len(rows) != 1 or list(rows[0]) != SUMMARY_COLUMNS:
+            return False
+        recomputed = summarize_probe(probe_path)
+        return all(int(rows[0][column]) == recomputed[column]
+                   for column in ("compute_median_ns", "compute_p99_ns", "probe_rows"))
+    except (OSError, ValueError, KeyError, ReductionError):
+        return False
+
+
+def prepare_cell(path, resume):
+    """Zwraca True, gdy komorke trzeba wykonac; False, gdy jest juz zrobiona."""
+    if not path.exists():
+        return True
+    if not resume:
+        raise MatrixError(f"odmowa nadpisania istniejacej komorki {path}")
+    if cell_is_complete(path):
+        return False
+    # Komorka niekompletna to slad przerwania w jej trakcie — kasujemy JA JEDNA
+    # i liczymy od nowa. Nigdy nie dopisujemy do polowicznego katalogu.
+    shutil.rmtree(path)
+    return True
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--family", required=True, choices=FAMILIES)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--archive-dir", type=Path, required=True)
     parser.add_argument("--p6-rdb", type=Path, required=True)
-    parser.add_argument("--code-repo", type=Path, default=Path.home() / "K26")
+    parser.add_argument("--code-repo", type=Path, default=Path.home() / "K26v3")
     parser.add_argument("--start-record", type=Path, default=HERE / "results" / "ANEKS-0_start.tsv")
     parser.add_argument("--annex-bin", type=Path, default=HERE / "ANEKS-2_worker_binaria.tsv")
     parser.add_argument("--annex-env", type=Path, default=HERE / "ANEKS-3_worker_srodowisko.tsv")
     parser.add_argument("--rate-annex", type=Path, default=HERE / "results" / "ANEKS-1_rate.tsv")
+    parser.add_argument("--blocks", type=Path, default=HERE / "blocks.tsv")
+    parser.add_argument("--resume", action="store_true",
+                        help="wznow przerwany bieg: komorki kompletne i zweryfikowane sa pomijane")
     parser.add_argument("--cpu", type=int, default=3)
     parser.add_argument("--timeout", type=int, default=900)
     args = parser.parse_args()
     try:
-        if args.out.exists():
+        if args.out.exists() and not args.resume:
             raise MatrixError(f"odmowa nadpisania istniejacego katalogu {args.out}")
         if subprocess.run(["pgrep", "-x", "xretractor"], stdout=subprocess.DEVNULL).returncode == 0:
             raise MatrixError("xretractor juz dziala")
@@ -245,24 +288,34 @@ def main():
         scale = Fraction(rate["rate_scale"])
         slot_key = f"slot_min_ms_{FAMILY_FILE[args.family]}"
         slot_ns = int(Fraction(rate[slot_key]) * 1_000_000)
-        rows = rows_for_family(HERE / "blocks.tsv", args.family)
-        args.out.mkdir(parents=True)
+        rows = rows_for_family(args.blocks, args.family)
+        args.out.mkdir(parents=True, exist_ok=args.resume)
+        skipped = 0
         for profile in PROFILES:
+            warmup_dir = args.out / "warmup" / profile
+            if not prepare_cell(warmup_dir, args.resume):
+                skipped += 1
+                continue
             run_one(args.family, profile, 32, 0, 0,
-                    args.out / "warmup" / profile, args.code_repo.resolve(), args.p6_rdb,
+                    warmup_dir, args.code_repo.resolve(), args.p6_rdb,
                     args.cpu, scale, slot_ns, args.timeout, warmup=True)
         for index, row in enumerate(rows, 1):
             block, q, order, profile = (int(row["block"]), int(row["q"]),
                                          int(row["order"]), row["profile"])
             target = args.out / "raw" / f"block-{block:02d}" / f"q-{q}" / f"order-{order}_{profile}"
+            if not prepare_cell(target, args.resume):
+                skipped += 1
+                continue
             summary = run_one(args.family, profile, q, block, order, target,
                               args.code_repo.resolve(), args.p6_rdb, args.cpu, scale,
                               slot_ns, args.timeout)
-            print(f"[{index:03d}/480] {args.family} b={block} q={q} {profile} "
+            print(f"[{index:03d}/{len(rows)}] {args.family} b={block} q={q} {profile} "
                   f"p99={summary['compute_p99_ns']} ns", flush=True)
-        (args.out / "RUN_COMPLETE").write_text("480/480\n")
+        if skipped:
+            print(f"wznowienie: pominieto {skipped} komorek juz kompletnych", flush=True)
+        (args.out / "RUN_COMPLETE").write_text(f"{len(rows)}/{len(rows)}\n")
         archive, digest = archive_family(args.out, args.archive_dir, args.family)
-        print(f"OK: {args.family} 480/480; {archive} sha256={digest}")
+        print(f"OK: {args.family} {len(rows)}/{len(rows)}; {archive} sha256={digest}")
         return 0
     except (KeyError, OSError, subprocess.CalledProcessError, ReductionError, MatrixError) as exc:
         print(f"BLAD: {exc}", file=sys.stderr)
