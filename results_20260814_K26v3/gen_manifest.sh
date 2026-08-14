@@ -31,6 +31,7 @@ mapfile -t FILES < <(
     run_matrix_chain.sh \
     run_matrix_family.sh \
     run_matrix_worker.py \
+    run_rehearsal.sh \
     start_matrix_p8.sh \
     test_apparatus.py \
     test_pipeline.py \

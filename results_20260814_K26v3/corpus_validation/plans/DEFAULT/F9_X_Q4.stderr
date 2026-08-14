@@ -1,4 +1,4 @@
 PLAN bench (publiczne/substraty/tokeny-from/tokeny-pol, dedup=ON): wejscie=8/0/40/32  przed-dedup=8/6/26/38  po-dedup=8/4/22/36  wyjscie=8/5/17/16
 REWRITE_APPLIED r1=2 r2=2 r3=0
-COMPILE_NS 173176 sonda=472
+COMPILE_NS 164131 sonda=461
 PLAN capacity: strumieni=10 suma=24 maks=4

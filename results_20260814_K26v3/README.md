@@ -7,9 +7,10 @@ kalibracja 60/60, macierz 1440/1440 — ale zatrzymała się na procedurze
 decyzyjnej, która pierwszy raz w całym łuku zetknęła się z prawdziwymi danymi.
 Jej werdykt brzmi **BRAK WERDYKTU** i taki pozostaje.
 
-Stan: **F0–F2 wykonane (naprawy N1–N10), P6 nie rozpoczęte**.
-Nie wykonano pomiaru kosztowego K26v3. ANEKS-2/3 wymagają odświeżenia dla nowych
-binariów. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
+Stan: **F0–F3 wykonane (naprawy N1–N10, P3/P4), P6 nie rozpoczęte**.
+Nie wykonano pomiaru kosztowego K26v3. ANEKS-2/3 odczytane z workera po
+zbudowaniu czterech profili `K26v3-*` na pinie silnika; dowód korpusu wytworzony
+od nowa na tych binariach. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
 aktualne SHA do ignorowanego `results/ANEKS-0_start.tsv`. Dopiero ten zapis
 rozpoczyna kampanię i wiąże rewizje; wcześniej HEAD silnika może się zmieniać,
 pod warunkiem przebudowy profili, ponowienia dowodu korpusu oraz końcowego
@@ -65,8 +66,9 @@ Wynik referencyjny przygotowania:
 - 84/84 poprawne kompilacje i 4/4 odrzucone historyczne mutanty F9-X;
 - 24/24 komórki pilota compile-only i runtime;
 - 16/16 strumieni F9-X Flinka, po 150 wartości, niezależny oracle 100%;
-- 20/20 przypadków własnych skryptu werdyktu;
-- 45/45 testów jednostkowych aparatury, w tym kontrakty łańcucha systemd,
+- 24/24 przypadki własne skryptu werdyktu, z przypadkami zdegenerowanymi §7.4
+  i tolerancją kontroli §7.3;
+- 46/46 testów jednostkowych aparatury, w tym kontrakty łańcucha systemd,
   wznowienia i odmowa nadpisania statusu;
 - serializer Flinka 18/18 wobec oracle'a linkowanego z `librdb`;
 - F9-X przy `Q=8`: RDB `5/6/10/12` jednostek planu, Flink
