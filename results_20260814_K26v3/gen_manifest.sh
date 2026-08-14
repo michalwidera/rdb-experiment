@@ -15,21 +15,23 @@ mapfile -t FILES < <(
     bind_campaign.py \
     build_profiles.sh \
     capture_worker.py \
+    collect_p8_archives.sh \
     dump_control_plans.sh \
     freeze_check.sh \
     gen_blocks.py \
     gen_corpus.py \
     gen_manifest.sh \
+    install_worker_service.sh \
     mechanism_table.py \
     oracle_values.py \
     reduce_results.py \
     run_gates.py \
     run_main_flink.sh \
     run_main_rdb.sh \
+    run_matrix_chain.sh \
     run_matrix_family.sh \
-    run_matrix_supervisor.sh \
     run_matrix_worker.py \
-    start_matrix_screen.sh \
+    start_matrix_p8.sh \
     test_apparatus.py \
     test_pipeline.py \
     validate_corpus.py \

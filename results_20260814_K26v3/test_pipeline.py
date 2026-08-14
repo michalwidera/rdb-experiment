@@ -7,7 +7,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import time
 import unittest
 from unittest import mock
 from fractions import Fraction
@@ -111,63 +110,270 @@ class BlocksTest(unittest.TestCase):
         self.assertEqual(run_matrix_worker.stop_reason(1, 100, 1000), "lost_records")
 
 
-class ScreenRunnerTest(unittest.TestCase):
-    def run_wrapper(self, runner_rc):
+class FamilyWrapperTest(unittest.TestCase):
+    """Wrapper rodziny: status nienadpisywalny, ale podejscia wznawialne.
+
+    Bieg przerwany twardym wylaczeniem nie zostawia `runner.rc`, wiec wrapper
+    musi dac sie uruchomic po raz drugi na tym samym katalogu kontrolnym.
+    Nienadpisywalny pozostaje wylacznie status zakonczonej rodziny.
+    """
+
+    def wrapper_root(self):
         temp = tempfile.TemporaryDirectory()
         root = Path(temp.name)
-        wrapper = root / "run_matrix_family.sh"
-        shutil.copy2(HERE / "run_matrix_family.sh", wrapper)
+        shutil.copy2(HERE / "run_matrix_family.sh", root / "run_matrix_family.sh")
         runner = root / "run_matrix_worker.py"
         runner.write_text(
             "#!/usr/bin/env bash\n"
             "echo fake-runner \"$@\"\n"
-            f"exit {runner_rc}\n"
+            "exit ${FAKE_RC:-0}\n"
         )
         runner.chmod(0o755)
-        control = root / "control"
-        control.mkdir()
-        completed = subprocess.run(
-            [str(wrapper), "F9-R2", "3", "/code", "/p6", "/out", "/archive", str(control)],
-            text=True, capture_output=True,
-        )
-        return temp, control, completed
+        (root / "control").mkdir()
+        return temp, root
 
-    def test_detached_wrapper_persists_zero_status_and_log(self):
-        temp, control, completed = self.run_wrapper(0)
+    def run_wrapper(self, root, runner_rc=0, resume=False):
+        environment = dict(os.environ, FAKE_RC=str(runner_rc))
+        if resume:
+            environment["RESUME"] = "1"
+        return subprocess.run(
+            [str(root / "run_matrix_family.sh"), "F9-R2", "3", "/code", "/p6", "/out",
+             "/archive", str(root / "control")],
+            text=True, capture_output=True, env=environment,
+        )
+
+    def test_wrapper_persists_zero_status_and_log(self):
+        temp, root = self.wrapper_root()
         with temp:
+            completed = self.run_wrapper(root)
+            control = root / "control"
             self.assertEqual(completed.returncode, 0, completed.stderr)
             self.assertEqual((control / "runner.rc").read_text(), "0\n")
             self.assertIn("fake-runner --family F9-R2", (control / "runner.log").read_text())
-            self.assertIn("family\tF9-R2", (control / "started.tsv").read_text())
+            attempts = (control / "started.tsv").read_text().splitlines()
+            self.assertEqual(attempts[0].split("\t")[:2], ["attempt", "family"])
+            self.assertEqual(attempts[1].split("\t")[:2], ["1", "F9-R2"])
 
-    def test_detached_wrapper_persists_failure_status(self):
-        temp, control, completed = self.run_wrapper(7)
+    def test_wrapper_persists_failure_status(self):
+        temp, root = self.wrapper_root()
         with temp:
+            completed = self.run_wrapper(root, runner_rc=7)
             self.assertEqual(completed.returncode, 7)
-            self.assertEqual((control / "runner.rc").read_text(), "7\n")
+            self.assertEqual((root / "control" / "runner.rc").read_text(), "7\n")
 
-    def test_detached_wrapper_refuses_to_overwrite_status(self):
-        temp, control, completed = self.run_wrapper(0)
+    def test_wrapper_refuses_to_overwrite_status(self):
+        temp, root = self.wrapper_root()
         with temp:
-            self.assertEqual(completed.returncode, 0)
-            repeated = subprocess.run(
-                [str(Path(temp.name) / "run_matrix_family.sh"), "F9-R2", "3", "/code",
-                 "/p6", "/out", "/archive", str(control)],
-                text=True, capture_output=True,
-            )
+            self.assertEqual(self.run_wrapper(root).returncode, 0)
+            repeated = self.run_wrapper(root, resume=True)
             self.assertEqual(repeated.returncode, 2)
             self.assertIn("odmowa nadpisania", repeated.stderr)
-            self.assertEqual((control / "runner.rc").read_text(), "0\n")
+            self.assertEqual((root / "control" / "runner.rc").read_text(), "0\n")
 
-    def test_supervisor_requires_screen_and_never_holds_worker_command_over_ssh(self):
-        supervisor = (HERE / "run_matrix_supervisor.sh").read_text()
-        starter = (HERE / "start_matrix_screen.sh").read_text()
-        self.assertIn('[[ -n "${STY:-}" ]]', supervisor)
-        self.assertIn("screen -dmS", supervisor)
-        self.assertIn("screen -dmS", starter)
-        self.assertIn("wait_screen_closed", supervisor)
-        self.assertIn("SUPERVISOR_COMPLETE", supervisor)
-        self.assertNotIn("./run_matrix_worker.py --family", supervisor)
+    def test_second_attempt_after_crash_appends_and_resumes(self):
+        """Twarde wylaczenie: brak `runner.rc`, wiec rodzina musi ruszyc ponownie."""
+        temp, root = self.wrapper_root()
+        with temp:
+            control = root / "control"
+            self.assertEqual(self.run_wrapper(root).returncode, 0)
+            (control / "runner.rc").unlink()  # tego pliku bieg przerwany nie zapisuje
+            self.assertEqual(self.run_wrapper(root, resume=True).returncode, 0)
+            attempts = (control / "started.tsv").read_text().splitlines()
+            self.assertEqual(len(attempts), 3, "kazde podejscie ma dopisac wlasny wiersz")
+            self.assertEqual(attempts[2].split("\t")[0], "2")
+            self.assertEqual(attempts[2].split("\t")[4], "1")
+            log = (control / "runner.log").read_text()
+            self.assertEqual(log.count("=== podejscie"), 2, "log poprzedniego podejscia zginal")
+            self.assertIn("--resume", log)
+
+
+class ChainTest(unittest.TestCase):
+    """N10 pkt 3: lancuch rodzin nalezy do workera, nie do sesji trzymanej przez SSH.
+
+    Kazde wywolanie obsluguje jedna rodzine i konczy sie prosba o restart, bo
+    usluga jest wlaczona na boot. Powrot po zaniku zasilania i restart miedzy
+    rodzinami ida wiec ta sama sciezka — testy chodza po niej wielokrotnie.
+    """
+
+    FAMILIES = ["F9-R2", "F9-R1", "F9-X"]
+
+    def chain_root(self, family_rc=0, stop8=False, run_complete=True):
+        temp = tempfile.TemporaryDirectory()
+        root = Path(temp.name)
+        family = root / "family.sh"
+        # Atrapa trzyma sie tego samego kontraktu co `run_matrix_family.sh`:
+        # zastany `runner.rc` jest odmowa, a nie cichym nadpisaniem statusu.
+        lines = ["#!/usr/bin/env bash", 'out="$5"', 'archives="$6"', 'control="$7"',
+                 'if [ -e "$control/runner.rc" ]; then echo "odmowa nadpisania" >&2; exit 2; fi',
+                 'mkdir -p "$out" "$archives"',
+                 f'printf "%s\\n" "$1" >>"{root}/family-calls.txt"']
+        if stop8:
+            lines.append('touch "$out/STOP-8"')
+        if run_complete:
+            # Runner konczy rodzine w tej kolejnosci: wynik, archiwum, suma.
+            lines.append('printf "480/480\\n" >"$out/RUN_COMPLETE"')
+            lines.append('printf "tar\\n" >"$archives/K26v3-P8-$1.tar.gz"')
+            lines.append('printf "sum\\n" >"$archives/K26v3-P8-$1.sha256"')
+        lines.append('printf "%s\\n" "$?" >"$control/runner.rc"')
+        lines.append(f"exit {family_rc}")
+        family.write_text("\n".join(lines) + "\n")
+        family.chmod(0o755)
+        sudo = root / "sudo.sh"
+        sudo.write_text(
+            "#!/usr/bin/env bash\n"
+            f'printf "%s\\n" "$*" >>"{root}/sudo-calls.txt"\n'
+            "exit 0\n"
+        )
+        sudo.chmod(0o755)
+        return temp, root
+
+    def run_chain(self, root):
+        environment = dict(
+            os.environ, P8_OUT=str(root / "p8"), CONTROL=str(root / "control"),
+            ARCHIVES=str(root / "archives"), FAMILY_SCRIPT=str(root / "family.sh"),
+            SUDO=str(root / "sudo.sh"), SETTLE_SECONDS="0",
+            CODE_REPO="/code", P6_RDB="/p6",
+        )
+        return subprocess.run([str(HERE / "run_matrix_chain.sh")], text=True,
+                              capture_output=True, env=environment)
+
+    def calls(self, root, name):
+        path = root / name
+        return path.read_text().splitlines() if path.exists() else []
+
+    def test_one_invocation_runs_one_family_and_asks_for_reboot(self):
+        temp, root = self.chain_root()
+        with temp:
+            completed = self.run_chain(root)
+            self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
+            self.assertEqual(self.calls(root, "family-calls.txt"), ["F9-R2"])
+            sudo = self.calls(root, "sudo-calls.txt")
+            self.assertIn("systemctl --no-block reboot", sudo)
+            self.assertTrue(any("scaling_governor" in call for call in sudo),
+                            "governor musi byc ustawiony po kazdym boocie")
+            self.assertFalse(any("disable" in call for call in sudo))
+            self.assertFalse((root / "p8" / "P8_COMPLETE").exists())
+
+    def test_three_invocations_walk_the_whole_chain_and_disable_the_unit(self):
+        temp, root = self.chain_root()
+        with temp:
+            for _ in self.FAMILIES:
+                self.assertEqual(self.run_chain(root).returncode, 0)
+            self.assertEqual(self.calls(root, "family-calls.txt"), self.FAMILIES)
+            sudo = self.calls(root, "sudo-calls.txt")
+            self.assertEqual(sudo.count("systemctl --no-block reboot"), 2,
+                             "po ostatniej rodzinie worker nie ma sie restartowac")
+            self.assertIn("systemctl disable k26v3-p8.service", sudo)
+            self.assertEqual((root / "p8" / "P8_COMPLETE").read_text(), "3/3 rodzin\n")
+            # Kolejny boot nie moze zaczac niczego od nowa.
+            self.assertEqual(self.run_chain(root).returncode, 0)
+            self.assertEqual(self.calls(root, "family-calls.txt"), self.FAMILIES)
+
+    def test_stop8_halts_the_chain_and_never_reboots(self):
+        temp, root = self.chain_root(family_rc=2, stop8=True, run_complete=False)
+        with temp:
+            completed = self.run_chain(root)
+            self.assertEqual(completed.returncode, 2)
+            halt = run_matrix_worker.key_values(root / "p8" / "HALT")
+            self.assertEqual(halt["reason"], "stop8")
+            self.assertEqual(halt["family"], "F9-R2")
+            self.assertNotIn("systemctl --no-block reboot", self.calls(root, "sudo-calls.txt"))
+            # Zastany HALT blokuje kazde nastepne wejscie, takze po boocie.
+            repeated = self.run_chain(root)
+            self.assertEqual(repeated.returncode, 2)
+            self.assertEqual(self.calls(root, "family-calls.txt"), ["F9-R2"])
+
+    def test_failure_without_stop8_halts_as_apparatus(self):
+        temp, root = self.chain_root(family_rc=3, run_complete=False)
+        with temp:
+            completed = self.run_chain(root)
+            self.assertEqual(completed.returncode, 3)
+            self.assertEqual(run_matrix_worker.key_values(root / "p8" / "HALT")["reason"],
+                             "apparatus")
+
+    def test_family_counted_but_without_closed_archive_is_repacked(self):
+        """Twarde wylaczenie miedzy `RUN_COMPLETE` a suma archiwum.
+
+        Rodzina policzona, ale bez zamknietego archiwum, nie moze byc uznana za
+        zrobiona: archiwum jest tym, co wyjezdza z workera. Niezamknieta paczka
+        musi zniknac, inaczej runner odmowi jej nadpisania.
+        """
+        temp, root = self.chain_root()
+        with temp:
+            done = root / "p8" / "F9-R2"
+            done.mkdir(parents=True)
+            (done / "RUN_COMPLETE").write_text("480/480\n")
+            (root / "archives").mkdir()
+            partial = root / "archives" / "K26v3-P8-F9-R2.tar.gz"
+            partial.write_text("urwane pakowanie")
+            control = root / "control" / "F9-R2"
+            control.mkdir(parents=True)
+            (control / "runner.rc").write_text("0\n")  # status podejscia sprzed przerwy
+            self.assertEqual(self.run_chain(root).returncode, 0)
+            self.assertEqual(self.calls(root, "family-calls.txt"), ["F9-R2"])
+            self.assertEqual(partial.read_text(), "tar\n", "niezamknieta paczka przetrwala")
+            self.assertTrue((root / "archives" / "K26v3-P8-F9-R2.sha256").exists())
+            rotated = list(control.glob("runner.rc.*"))
+            self.assertEqual(len(rotated), 1, "status poprzedniego podejscia mial pojsc do historii")
+
+    def test_zero_status_without_run_complete_is_apparatus(self):
+        """Rodzina bez `RUN_COMPLETE` nie liczy sie za zrobiona, choc runner dal 0."""
+        temp, root = self.chain_root(run_complete=False)
+        with temp:
+            completed = self.run_chain(root)
+            self.assertEqual(completed.returncode, 2)
+            self.assertEqual(run_matrix_worker.key_values(root / "p8" / "HALT")["reason"],
+                             "apparatus_bez_run_complete")
+
+
+class WorkerServiceTest(unittest.TestCase):
+    """Kontrakt unitu systemd — jedynego miejsca, w ktorym opisany jest start P8."""
+
+    def unit_text(self):
+        completed = subprocess.run([str(HERE / "install_worker_service.sh"), "--print"],
+                                   text=True, capture_output=True, check=True)
+        return completed.stdout
+
+    def test_unit_starts_at_boot_and_never_restarts_itself(self):
+        text = self.unit_text()
+        self.assertIn("WantedBy=multi-user.target", text)
+        self.assertIn("Restart=no", text)
+        self.assertNotIn("Restart=always", text)
+        self.assertNotIn("Restart=on-failure", text,
+                         "STOP-8 ma zatrzymac lancuch, a nie zapetlic go")
+        self.assertIn("ExecStart=" + str(HERE / "run_matrix_chain.sh"), text)
+        self.assertIn("User=michal", text)
+
+    def test_install_refuses_to_overwrite_a_different_unit(self):
+        with tempfile.TemporaryDirectory() as name:
+            root = Path(name)
+            unit = root / "k26v3-p8.service"
+            unit.write_text("[Service]\nExecStart=/bin/false\n")
+            completed = subprocess.run(
+                [str(HERE / "install_worker_service.sh")], text=True, capture_output=True,
+                env=dict(os.environ, UNIT_PATH=str(unit), CONTROL=str(root / "control"),
+                         SUDO=str(root / "nie-ma-sudo")),
+            )
+            self.assertEqual(completed.returncode, 2)
+            self.assertIn("rozni sie od generowanego", completed.stderr)
+            self.assertEqual(unit.read_text(), "[Service]\nExecStart=/bin/false\n")
+
+
+class NoScreenTest(unittest.TestCase):
+    """Po N10 zadna czesc P8 nie wisi na sesji `screen` po zadnej ze stron."""
+
+    P8_SCRIPTS = ["run_matrix_chain.sh", "run_matrix_family.sh", "install_worker_service.sh",
+                  "start_matrix_p8.sh", "collect_p8_archives.sh"]
+
+    def code_lines(self, name):
+        for number, line in enumerate((HERE / name).read_text().splitlines(), start=1):
+            if not line.lstrip().startswith("#"):
+                yield number, line
+
+    def test_p8_no_longer_depends_on_screen(self):
+        for name in self.P8_SCRIPTS:
+            for number, line in self.code_lines(name):
+                self.assertNotIn("screen", line, f"{name}:{number} — P8 nie uzywa juz screen")
 
     def test_no_script_uses_the_two_broken_screen_constructs(self):
         """D4 i D5 jako kontrakt statyczny.
@@ -176,33 +382,10 @@ class ScreenRunnerTest(unittest.TestCase):
         defekt D4. Konstrukcje moga wystepowac wylacznie w komentarzach, jako
         zapis historii.
         """
-        for name in ("run_matrix_supervisor.sh", "start_matrix_screen.sh"):
-            for number, line in enumerate((HERE / name).read_text().splitlines(), start=1):
-                if line.lstrip().startswith("#"):
-                    continue
-                self.assertNotIn("-DmS", line, f"{name}:{number} — `-DmS` nie forkuje (D4)")
-                self.assertNotIn("-Q select", line, f"{name}:{number} — `-Q select` wisi (D5)")
-
-    def test_detached_screen_returns_immediately(self):
-        """D4 u zrodla: `-dmS` forkuje, wiec polecenie startowe wraca od razu."""
-        session = f"K26v3-test-{os.getpid()}"
-        start = time.monotonic()
-        try:
-            subprocess.run(["screen", "-dmS", session, "sleep", "10"], check=True, timeout=10)
-            elapsed = time.monotonic() - start
-            self.assertLess(elapsed, 2.0, "screen -dmS nie wrocil od razu — zachowuje sie jak -DmS")
-        finally:
-            subprocess.run(["screen", "-S", session, "-X", "quit"],
-                           capture_output=True, timeout=10)
-
-    def test_session_probe_returns_fast_for_missing_session(self):
-        """D5: odpytanie NIEISTNIEJACEJ sesji musi wrocic w mniej niz 5 s."""
-        probe = "screen -ls '%s' 2>/dev/null | grep -qE '^[[:space:]]*[0-9]+\\.%s[[:space:]]'"
-        missing = f"K26v3-nie-ma-{os.getpid()}"
-        start = time.monotonic()
-        done = subprocess.run(["bash", "-c", probe % (missing, missing)], timeout=5)
-        self.assertLess(time.monotonic() - start, 5.0)
-        self.assertNotEqual(done.returncode, 0, "sonda zglosila zywa sesje, ktorej nie ma")
+        for path in sorted(HERE.rglob("*.sh")):
+            for number, line in self.code_lines(path.relative_to(HERE)):
+                self.assertNotIn("-DmS", line, f"{path.name}:{number} — `-DmS` nie forkuje (D4)")
+                self.assertNotIn("-Q select", line, f"{path.name}:{number} — `-Q select` wisi (D5)")
 
 
 MINIMAL_ABLATION = {"F9-R2": "NO_R2_CANON", "F9-R1": "NO_R1_FACTOR", "F9-X": "NO_R1_NO_R2"}

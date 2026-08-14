@@ -7,7 +7,7 @@ kalibracja 60/60, macierz 1440/1440 — ale zatrzymała się na procedurze
 decyzyjnej, która pierwszy raz w całym łuku zetknęła się z prawdziwymi danymi.
 Jej werdykt brzmi **BRAK WERDYKTU** i taki pozostaje.
 
-Stan: **F0 — naprawy N1–N8 wykonane, N9 i N10 przed nami; P6 nie rozpoczęte**.
+Stan: **F0–F2 wykonane (naprawy N1–N10), P6 nie rozpoczęte**.
 Nie wykonano pomiaru kosztowego K26v3. ANEKS-2/3 wymagają odświeżenia dla nowych
 binariów. Bezpośrednio przed pierwszym P6 `bind_campaign.py` zapisuje
 aktualne SHA do ignorowanego `results/ANEKS-0_start.tsv`. Dopiero ten zapis
@@ -66,8 +66,8 @@ Wynik referencyjny przygotowania:
 - 24/24 komórki pilota compile-only i runtime;
 - 16/16 strumieni F9-X Flinka, po 150 wartości, niezależny oracle 100%;
 - 20/20 przypadków własnych skryptu werdyktu;
-- 23/23 testy jednostkowe aparatury, w tym kontrakty `screen` i odmowa
-  nadpisania statusu;
+- 45/45 testów jednostkowych aparatury, w tym kontrakty łańcucha systemd,
+  wznowienia i odmowa nadpisania statusu;
 - serializer Flinka 18/18 wobec oracle'a linkowanego z `librdb`;
 - F9-X przy `Q=8`: RDB `5/6/10/12` jednostek planu, Flink
   `natural=32`, `manual=5`.
@@ -89,12 +89,13 @@ OUT=/bezwzgledna/sciezka/do/k26v3_calib ./calib/run_calib_rdb.sh
 ./freeze_check.sh macierz
 ```
 
-Macierz rozpoczyna wyłącznie `start_matrix_screen.sh`; surowe dane, log nadzorcy
-i indeks SHA pozostają poza git. Do sesji można wejść przez
-`screen -r K26v2-P8-supervisor` i odłączyć się przez `Ctrl-a d`. Po 1440/1440
-workerowe sesje zamykają się automatycznie po zapisaniu `runner.rc`, a sesja
-hosta po `SUPERVISOR_COMPLETE`. Aktywnej sesji nie wolno kończyć przez
-`screen -X quit`. Wejścia werdyktu powstają deterministycznie:
+Macierz rozpoczyna wyłącznie `start_matrix_p8.sh`; surowe dane, log łańcucha i
+indeks SHA pozostają poza git. Pomiar prowadzi usługa `k26v3-p8.service` na
+workerze: jedna rodzina na uruchomienie, restart między rodzinami, samodzielny
+powrót po zaniku zasilania. Host nie trzyma sesji i może być wyłączony przez
+cały pomiar. Stan i archiwa odbiera `collect_p8_archives.sh`, uruchamiany
+kiedykolwiek — po komplecie zapisuje `COLLECT_COMPLETE`. Wejścia werdyktu
+powstają deterministycznie:
 
 ```bash
 ./reduce_results.py mechanism --rdb /sciezka/do/P6-rdb \

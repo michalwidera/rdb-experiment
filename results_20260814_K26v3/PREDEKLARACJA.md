@@ -373,12 +373,24 @@ i że główne rodziny materializują niezerowy substrat.
 
 ## 9. Wykonanie i produkty aparatury
 
-P8 rozpoczyna wyłącznie `start_matrix_screen.sh`. Skrypt tworzy odłączoną sesję
-`screen` hosta dla `run_matrix_supervisor.sh`; nadzorca uruchamia osobną,
-odłączoną sesję `screen` workera dla każdej rodziny. Połączenie SSH służy tylko
-do krótkich startów, odczytów stanu i kopiowania archiwum — jego zerwanie nie
-wysyła sygnału do runnera ani `xretractor`. Dla każdej rodziny worker
-`run_matrix_worker.py`:
+P8 rozpoczyna wyłącznie `start_matrix_p8.sh`. Skrypt wykonuje bramkę
+`freeze_check.sh macierz`, instaluje na workerze usługę systemd
+`k26v3-p8.service` przez `install_worker_service.sh`, porównuje sumę SHA-256
+zainstalowanego unitu z tekstem generowanym na hoście — liczy się plik po
+stronie, która go wykonuje — i uruchamia łańcuch. Od tej chwili host nie ma
+udziału w pomiarze i może być wyłączony do końca macierzy.
+
+Łańcuch prowadzi `run_matrix_chain.sh` po stronie workera. Jedno uruchomienie
+usługi obsługuje **dokładnie jedną rodzinę**: ustawia governor, wybiera pierwszą
+rodzinę bez `RUN_COMPLETE`, liczy ją z wznowieniem, a po jej zamknięciu prosi o
+restart workera. Usługa jest włączona na `multi-user.target`, więc po restarcie
+wstaje sama i bierze następną rodzinę. Powrót po zaniku zasilania idzie tą samą
+ścieżką co planowany restart między rodzinami; nie ma osobnej procedury
+awaryjnej. `Restart=no` jest celowe: STOP-8 i błąd aparatury zapisują plik
+`HALT`, który blokuje każde następne wejście aż do decyzji człowieka. Połączenie
+SSH służy wyłącznie do startu, odczytów stanu i kopiowania archiwum — jego
+zerwanie nie wysyła sygnału do runnera ani `xretractor`. Dla każdej rodziny
+worker `run_matrix_worker.py`:
 
 1. sprawdza wiążący `ANEKS-0_start.tsv`, SHA binariów z ANEKS-2, kernel,
    izolowany CPU i governor z ANEKS-3;
@@ -390,21 +402,25 @@ wysyła sygnału do runnera ani `xretractor`. Dla każdej rodziny worker
 5. liczy zgubione rekordy jako ubytek publicznych dopisań wobec tej samej
    komórki P6; nadmiar jest błędem aparatury, a ubytek lub `p99 > 80%` slotu
    tworzy `STOP-8` i natychmiast zatrzymuje rodzinę;
-6. po 480/480 tworzy archiwum surowe. Nadzorca kopiuje je na host, weryfikuje
-   SHA-256, dopisuje do indeksu poza git i restartuje worker między rodzinami.
+6. po 480/480 tworzy archiwum surowe, które zostaje na workerze do odbioru.
 
-`run_matrix_family.sh` zapisuje poza wynikiem niezmienne `started.tsv`, pełny
-`runner.log` i końcowy `runner.rc`. Nadzorca co minutę wykonuje krótki odczyt:
-żywotność `screen`, liczbę kompletnych `summary.tsv`, `STOP-8`, temperaturę i
-wolne miejsce. Zniknięcie sesji bez `runner.rc`, kod niezerowy bez `STOP-8` lub
-kod 0 bez `RUN_COMPLETE` i 480/480 jest błędem `apparatus` i zatrzymuje
-iterację. Skrypty odmawiają nadpisania sesji, katalogu wynikowego, statusu,
-archiwum oraz indeksu hosta.
-Po zapisaniu `runner.rc` nadzorca czeka na automatyczne zamknięcie sesji
-`screen` workera i odmawia przejścia dalej, jeśli socket pozostaje żywy przez
-30 sekund. Po trzeciej rodzinie zapisuje `SUPERVISOR_COMPLETE`; dopiero potem
-kończy się proces i automatycznie zamyka sesję `screen` hosta. Sesji z aktywnym
-runnerem nie wolno zamykać przez `screen -X quit`.
+`run_matrix_family.sh` zapisuje poza wynikiem po jednym wierszu `started.tsv` na
+każde podejście, dopisuje `runner.log` i na końcu jednorazowe, nienadpisywalne
+`runner.rc`. Bieg przerwany twardym wyłączeniem nie zostawia `runner.rc`, więc
+rodzina rusza ponownie po boocie: `--resume` pomija wyłącznie komórki kompletne
+i zweryfikowane **przeliczeniem sondy** — tą samą regułą, której używa
+`reduce_results.py timing` — a komórkę niekompletną kasuje w całości i liczy od
+nowa. Do połowicznego katalogu komórki nigdy nie dopisujemy. Kod niezerowy bez
+`STOP-8` oraz kod 0 bez `RUN_COMPLETE` i 480/480 są błędem `apparatus`; łańcuch
+zapisuje wtedy `HALT` z klasyfikacją i zatrzymuje iterację. Skrypty odmawiają
+nadpisania unitu o innej treści, katalogu wynikowego, statusu rodziny, archiwum
+oraz indeksu hosta.
+
+Archiwa odbiera `collect_p8_archives.sh`: krótki, bezstanowy odczyt hosta, który
+wolno uruchomić kiedykolwiek — także dopiero po całym pomiarze. Skrypt kopiuje
+gotowe archiwa rodzin, weryfikuje SHA-256 po obu stronach, dopisuje indeks poza
+git i po komplecie 1440/1440 zapisuje `COLLECT_COMPLETE`. Nie jest warunkiem
+postępu: worker liczy dalej, gdy host jest wyłączony.
 
 `reduce_results.py mechanism` tworzy 108 deterministycznych wierszy
 `mechanism.tsv` ze zrzutów planu, liczników P6 RDB oraz rzeczywistych liczników
@@ -432,7 +448,7 @@ aneksy z żywym workerem, w tym z czterema binariami.
 4. pełne bramki P6 na danych głównych, bez odczytu kosztu;
 5. klasyfikacja każdego FAIL przed dalszym krokiem;
 6. kalibracja na osobnych danych, bez porównania efektu;
-7. `start_matrix_screen.sh` i 20 sparowanych bloków pełnej macierzy;
+7. `start_matrix_p8.sh` i 20 sparowanych bloków pełnej macierzy;
 8. automatyczny werdykt `verdict.py`;
 9. raport bez łączenia danych z K23 ani K26.
 

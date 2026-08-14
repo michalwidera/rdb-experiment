@@ -16,7 +16,7 @@ HERE = Path(__file__).resolve().parent
 PROFILES = ["DEFAULT", "NO_R2_CANON", "NO_R1_FACTOR", "NO_R1_NO_R2"]
 ENV_KEYS = [
     "engine_sha", "kernel", "cpu_online", "cpu_pinning",
-    "cpu_isolated", "governor", "arch", "model", "os", "gcc", "screen",
+    "cpu_isolated", "governor", "arch", "model", "os", "gcc", "systemd",
     "temp_c_at_freeze", "mem_total_mb",
 ]
 
@@ -87,7 +87,7 @@ printf 'arch\\t%s\\n' "$(uname -m)"
 printf 'model\\t%s\\n' "$(tr -d '\\000' </proc/device-tree/model 2>/dev/null || hostnamectl --static)"
 printf 'os\\t%s\\n' "$(. /etc/os-release; printf '%s' "$PRETTY_NAME")"
 printf 'gcc\\t%s\\n' "$(gcc --version | head -n1)"
-printf 'screen\\t%s\\n' "$(screen --version | head -n1)"
+printf 'systemd\\t%s\\n' "$(systemctl --version | head -n1)"
 printf 'temp_c_at_freeze\\t%s\\n' "$(awk '{{printf "%.3f", $1/1000}}' /sys/class/thermal/thermal_zone0/temp)"
 printf 'mem_total_mb\\t%s\\n' "$(awk '/MemTotal:/ {{printf "%d", $2/1024}}' /proc/meminfo)"
 test "$(cat /sys/devices/system/cpu/cpu{cpu}/cpufreq/scaling_governor)" = performance

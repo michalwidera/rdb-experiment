@@ -9,6 +9,6 @@ arch	aarch64
 model	Raspberry Pi 400 Rev 1.0
 os	Ubuntu 24.04.4 LTS
 gcc	gcc (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0
-screen	Screen version 4.09.01 (GNU) 20-Aug-23
+systemd	systemd 255 (255.4-1ubuntu8.17)
 temp_c_at_freeze	35.537
 mem_total_mb	3784

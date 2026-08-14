@@ -20,7 +20,6 @@ EXPECTED_GOVERNOR="performance"
 EXPECTED_JAVA_SHA256="a89ad12dc799a14a20d9e570ef788dbcfec70d037d8ede404c2c924354933237"
 EXPECTED_JAVAC_SHA256="9a4eedebe503abd0daf458063d99c9dbc2d8892bba03fd5efe48f33d7a65dc9d"
 EXPECTED_FLINK_JAR_SHA256="7c51cba8e3f2b35d62cc0f7212eb03b73e07c9541e0ce566579846af5ea9d493"
-EXPECTED_SCREEN_VERSION="Screen version 4.09.01 (GNU) 20-Aug-23"
 
 START_RECORD="$HERE/results/ANEKS-0_start.tsv"
 ANEKS_RATE="$HERE/results/ANEKS-1_rate.tsv"
@@ -72,7 +71,6 @@ check_host() {
   echo "== zakres hosta K26v3 (require_frozen=$require_frozen) =="
 
   eq "$(git -C "$EXP_REPO" branch --show-current)" "$EXPECTED_BRANCH" "galaz kampanii"
-  eq "$(screen --version | head -n1)" "$EXPECTED_SCREEN_VERSION" "wersja screen hosta"
   code_sha="$(git -C "$CODE_REPO" rev-parse HEAD)"
   experiment_sha="$(git -C "$EXP_REPO" rev-parse HEAD)"
   [[ -z "$(git -C "$CODE_REPO" status --short)" ]] || fail "drzewo silnika jest brudne"
@@ -165,8 +163,9 @@ check_worker() {
   live_governor="$(ssh -F "$SSH_CONFIG" -o BatchMode=yes "$WORKER_SSH" \
     'cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor | sort -u | tr "\n" " "')"
   eq "${live_governor% }" "$EXPECTED_GOVERNOR" "governor workera"
-  eq "$(ssh -F "$SSH_CONFIG" -o BatchMode=yes "$WORKER_SSH" 'screen --version | head -n1')" \
-    "$(awk -F'\t' '$1=="screen"{print $2}' "$ANEKS_WORKER_ENV")" "wersja screen workera"
+  # P8 wisi teraz na systemd workera, a nie na sesji `screen` trzymanej przez SSH.
+  eq "$(ssh -F "$SSH_CONFIG" -o BatchMode=yes "$WORKER_SSH" 'systemctl --version | head -n1')" \
+    "$(awk -F'\t' '$1=="systemd"{print $2}' "$ANEKS_WORKER_ENV")" "wersja systemd workera"
   [[ -n "$frozen_cpus" ]] || fail "ANEKS-3 nie zawiera cpu_pinning"
   live_code="$(ssh -F "$SSH_CONFIG" -o BatchMode=yes "$WORKER_SSH" "git -C '$WORKER_CODE_REPO' rev-parse HEAD")" \
     || fail "nie mozna odczytac SHA silnika workera"
