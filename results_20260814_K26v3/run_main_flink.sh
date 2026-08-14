@@ -19,7 +19,7 @@ JAVA_HOME_PINNED="${JAVA_HOME_PINNED:-/usr/lib/jvm/java-17-openjdk-amd64}"
 FLINK_HOME="${FLINK_HOME:-/home/michal/opt/flink-2.3.0}"
 SLOTS="${SLOTS:-3000}"
 OUT="${OUT:-$HOME/k26v3_gates_flink}"
-DATA="$HERE/data/main"
+DATA="${DATA:-$HERE/data/main}"
 
 CP="$HERE/flink/build:$(find "$FLINK_HOME/lib" -maxdepth 1 -name '*.jar' | sort | paste -sd:)"
 

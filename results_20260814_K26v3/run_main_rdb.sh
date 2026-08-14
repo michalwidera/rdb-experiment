@@ -20,6 +20,11 @@ cd "$(dirname "$0")"
 HERE="$(pwd)"
 CODE_REPO="${CODE_REPO:-/home/michal/github/retractordb}"
 OUT="${OUT:-$HOME/k26v3_gates_rdb}"
+# Proba generalna procedury decyzyjnej (§7.5) biegnie na danych pilota.
+# Domyslne wartosci sa DOKLADNIE te, ktorych uzywa P6 — knoby niczego w nim
+# nie zmieniaja i nie moga byc uzyte w kampanii pomiarowej.
+DATA="${DATA:-$HERE/data/main}"
+SLOTS_DIVISOR="${SLOTS_DIVISOR:-1}"
 
 # Ile iteracji petli planu, zeby ZRODLO SZYBKIEGO TAKTU oddalo swoje 3000 rekordow
 # (§4 predeklaracji zamraza LICZBE REKORDOW ZRODLA, nie wartosc `-m`; po stronie
@@ -34,8 +39,8 @@ OUT="${OUT:-$HOME/k26v3_gates_rdb}"
 # dokladnie 3000 + 1500 — obydwa zrodla skonsumowane w calosci.
 slots_for() {
   case "$1" in
-    F9_R2*) echo 3000 ;;
-    F9_R1*|F9_X*) echo 6000 ;;
+    F9_R2*) echo $((3000 / SLOTS_DIVISOR)) ;;
+    F9_R1*|F9_X*) echo $((6000 / SLOTS_DIVISOR)) ;;
     *) echo "BLAD: nieznana rodzina $1" >&2; exit 2 ;;
   esac
 }
@@ -89,7 +94,7 @@ for profile in "${profiles[@]}"; do
     echo "$slots" >"$dir/cell.slots"
     ( cd "$dir"
       cp "$HERE/rql/$plan.rql" .
-      cp "$HERE"/data/main/*.txt .
+      cp "$DATA"/*.txt .
       set +e
       RDB_BENCH_LOGICAL=1 RDB_BENCH_WORK=1 timeout 1800 \
         "$binary" "$plan.rql" -m "$slots" -r -k >cell.out 2>cell.counters
@@ -108,4 +113,4 @@ for profile in "${profiles[@]}"; do
 done
 
 echo
-echo "OK: $cells komorek na danych glownych, kazda z licznikami LOGICAL i WORK"
+echo "OK: $cells komorek na danych $(basename "$DATA"), kazda z licznikami LOGICAL i WORK"
