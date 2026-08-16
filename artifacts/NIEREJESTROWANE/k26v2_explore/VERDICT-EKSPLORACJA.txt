@@ -1,0 +1,41 @@
+==============================================================================
+WERDYKT K26 / H9 — automatyczny, wg progow zamrozonych w PREDEKLARACJA.md §7
+==============================================================================
+
+--- F9-R2 (ablacja minimalna: NO_R2_CANON) ---
+  metryka pierwotna @Q=8:
+    redukcja wobec ablacji        50.000%   prog 40%   OK
+    redukcja wobec FLINK_NATURAL  87.500%   prog 40%   OK
+  cena czasowa DEFAULT/ablacja: punkt 0.9219, 95% CI [0.9124, 0.9249], prog gornej granicy 1.05   OK
+  praca (work_costly_evals, rozdzielajaca w tej rodzinie): redukcja wobec FLINK_NATURAL 87.504%  [raportowana, nie progowa]
+  bramki czyste: tak   kontrole negatywne czyste: tak   identycznosc publicznych wynikow: tak
+    uwaga: Q=1: redukcja wobec FLINK_NATURAL 100.000% wobec predeklarowanej 0.000%
+  RODZINA: SUPPORT
+
+--- F9-R1 (ablacja minimalna: NO_R1_FACTOR) ---
+  metryka pierwotna @Q=8:
+    redukcja wobec ablacji        50.000%   prog 40%   OK
+    redukcja wobec FLINK_NATURAL  87.497%   prog 40%   OK
+  cena czasowa DEFAULT/ablacja: punkt 0.9893, 95% CI [0.9865, 0.9920], prog gornej granicy 1.05   OK
+  praca (work_hash_picks, rozdzielajaca w tej rodzinie): redukcja wobec FLINK_NATURAL 87.508%  [raportowana, nie progowa]
+  bramki czyste: tak   kontrole negatywne czyste: tak   identycznosc publicznych wynikow: tak
+  RODZINA: SUPPORT
+
+--- F9-X (ablacja minimalna: NO_R1_NO_R2) ---
+  metryka pierwotna @Q=8:
+    redukcja wobec ablacji        58.333%   prog 40%   OK
+    redukcja wobec FLINK_NATURAL  84.374%   prog 40%   OK
+  cena czasowa DEFAULT/ablacja: punkt 0.7443, 95% CI [0.7256, 0.7483], prog gornej granicy 1.05   OK
+  praca (work_costly_evals, rozdzielajaca w tej rodzinie): redukcja wobec FLINK_NATURAL 87.511%  [raportowana, nie progowa]
+  bramki czyste: tak   kontrole negatywne czyste: tak   identycznosc publicznych wynikow: tak
+    uwaga: Q=1: redukcja wobec FLINK_NATURAL -0.011% wobec predeklarowanej -25.000%
+  RODZINA: SUPPORT
+
+==============================================================================
+Rodzin wspierajacych H9: 3/3 (F9-R2, F9-R1, F9-X)
+Regula: wsparcie przy co najmniej 2/3
+
+WERDYKT: H9 WSPARTA w klasie Q=8.
+Wniosek dotyczy AUTOMATYZACJI wspoldzielenia materializacji, nie ogolnej
+szybkosci. Zdania 'RetractorDB jest szybszy od Flinka', 'zawsze zuzywa mniej
+pamieci' i 'Flink nie potrafi wspoldzielic' pozostaja NIEUPRAWNIONE (§10).

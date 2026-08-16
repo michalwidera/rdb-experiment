@@ -35,7 +35,9 @@ Razem **1440/1440 komórek** i 48 h 34 min zegara, bez `STOP-8`, bez `HALT`,
 bez interwencji z hosta. Dwa zaplanowane restarty workera wypadły między
 rodzinami; usługa wstała sama z bootu i podjęła następną rodzinę.
 
-Surowe sondy pozostają poza git; ich audyt integralności prowadzi
+Surowe sondy trafiły do repozytorium jako trzy archiwa
+(`artifacts/K26v3/k26v3_archives/`, decyzja 2026-08-16 o przechowywaniu
+artefaktów w repozytorium); ich audyt integralności prowadzi
 [`K26v3-P8_raw.index.tsv`](K26v3-P8_raw.index.tsv). Sumy porównano po obu
 stronach przed i po kopiowaniu na hosta.
 
@@ -150,7 +152,8 @@ Reguły metodyczne, które ta iteracja potwierdziła:
 |---|---|
 | Aparatura, predeklaracja, manifest 438 pozycji | ten katalog, w git |
 | Wejścia werdyktu | [`matrix/`](matrix/), w git |
-| Bramki P6, kalibracja P7 | `~/k26v3_gates_*`, `~/k26v3_gates.tsv` — poza git |
-| Surowe sondy P8 (3 archiwa, 1440 komórek) | `~/k26v3_archives/` — poza git, indeks SHA w git |
+| Bramki P6, kalibracja P7 | `artifacts/K26v3/k26v3_gates_*.tar.gz`, `k26v3_gates.tsv` |
+| Surowe sondy P8 (3 archiwa, 1440 komórek) | `artifacts/K26v3/k26v3_archives/`, sumy = [`K26v3-P8_raw.index.tsv`](K26v3-P8_raw.index.tsv) |
+| Oś czasu P8 (`chain.log`, logi rodzin) | `artifacts/K26v3/k26v3_control/` — **jedyna kopia**, nie ma jej w archiwach |
 | ANEKS-0/ANEKS-1 | `results/` — poza git, sumy powyżej |
 | Dokument prowadzący kampanię | `paper-arXiv/debs/plan-K26v3.md` |

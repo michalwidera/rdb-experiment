@@ -1,0 +1,34 @@
+== zakres hosta K26v2 (require_frozen=yes) ==
+  ok  galaz i czysty silnik 856ee54b0f4ab450a6b61e3c08e045f404a79488
+  ok  wiazacy pin kampanii aktywny
+  ok  czyste drzewo eksperymentu i zgodny manifest (435 plikow)
+  ok  korpus: 21 planow, 84/84 kompilacje, 4/4 mutanty odrzucone
+----------------------------------------------------------------------
+Ran 23 tests in 1.005s
+
+[32mOK[0m
+  ok  pilot runtime: 24/24 komorki, mutant odrzucony
+  ok  bloki, skala rate, werdykt 20/20, testy aparatury i klasyfikator planu
+  ok  cztery binaria K26v2: flagi i SHA zgodne
+  ok  JDK/Flink przypiete; serializer 18/18; F9-X plan natural/manual = 32/5
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+  ok  Flink F9-X przebudowany: 16/16, oracle 100%, historyczny mutant zatrzaskow odrzucony
+  ok  swiezy runtime Flinka odtwarza zamrozone dowody bajt w bajt
+== zakres worker K26v2 (przed P6) ==
+  ok  worker: kernel, governor, przypiecie, rewizje i cztery binaria zamrozone
+  ok  rate zamrozony: skala 4
+START: F9-R2 w screen workera K26v2-P8-F9-R2
+CHECK: 2026-08-11 06:17:32 CEST family=F9-R2 cells=480/480 screen=0 rc=0 STOP-8=0 temp_millic=36998 disk_avail_kib=37553176
+CLOSE: sesja screen workera K26v2-P8-F9-R2 zakonczona
+K26v2-P8-F9-R2.tar.gz                           0%    0     0.0KB/s   --:-- ETAK26v2-P8-F9-R2.tar.gz                         100%   20MB  73.2MB/s   00:00    
+START: F9-R1 w screen workera K26v2-P8-F9-R1
+CHECK: 2026-08-11 22:29:15 CEST family=F9-R1 cells=480/480 screen=0 rc=0 STOP-8=0 temp_millic=36024 disk_avail_kib=37250212
+CLOSE: sesja screen workera K26v2-P8-F9-R1 zakonczona
+K26v2-P8-F9-R1.tar.gz                           0%    0     0.0KB/s   --:-- ETAK26v2-P8-F9-R1.tar.gz                          27%   10MB  10.0MB/s   00:02 ETAK26v2-P8-F9-R1.tar.gz                          58%   21MB  10.1MB/s   00:01 ETAK26v2-P8-F9-R1.tar.gz                          89%   32MB  10.2MB/s   00:00 ETAK26v2-P8-F9-R1.tar.gz                         100%   36MB  10.9MB/s   00:03    
+Terminated
+START: F9-X w screen workera K26v2-P8-F9-X
+CHECK: 2026-08-12 18:29:03 CEST family=F9-X cells=480/480 screen=0 rc=0 STOP-8=0 temp_millic=34076 disk_avail_kib=36925968
+CLOSE: sesja screen workera K26v2-P8-F9-X zakonczona
+K26v2-P8-F9-X.tar.gz                            0%    0     0.0KB/s   --:-- ETAK26v2-P8-F9-X.tar.gz                           28%   10MB  10.5MB/s   00:02 ETAK26v2-P8-F9-X.tar.gz                           58%   21MB  10.5MB/s   00:01 ETAK26v2-P8-F9-X.tar.gz                           88%   33MB  10.6MB/s   00:00 ETAK26v2-P8-F9-X.tar.gz                          100%   37MB  11.0MB/s   00:03    
+OK: P8 1440/1440; archiwa i indeks: /home/michal/k26v2_archives

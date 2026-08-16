@@ -4337,6 +4337,104 @@ werdyktu K26v3 wchodzą do git (`results_20260814_K26v3/matrix/`), żeby wynik
 dał się przeliczyć po skasowaniu gałęzi. Surowe sondy P8 — trzy archiwa, 1440
 komórek, 96 MB — zostają poza git zgodnie z polityką z 2026-07-31; audyt
 integralności prowadzi `results_20260814_K26v3/K26v3-P8_raw.index.tsv`, kopia
-na hoście w `~/k26v3_archives/`. Pełny raport kampanii:
+w repozytorium: `artifacts/K26v3/k26v3_archives/` (przeniesione tam
+2026-08-16 z katalogu domowego — wpis niżej). Pełny raport kampanii:
 `results_20260814_K26v3/WERDYKT.md`. `README.md` kampanii został **nietknięty**
 — jest w zamrożonym manifeście i jego zmiana wywróciłaby `freeze_check.sh`.
+
+## 2026-08-16 — higienizacja workera i hosta po zamknięciu łuku H9; reguła „aparatura nie pisze do `~`"
+
+Po wydaniu werdyktu K26v3 worker i host trzymały artefakty czterech kampanii
+luzem w katalogach domowych. Porządkowanie przeprowadzone tego samego dnia,
+po werdykcie i po scaleniu gałęzi, więc nic z tego nie mogło wpłynąć na wynik.
+
+### Najpierw dowód, potem kasowanie
+
+Kolejność była nienegocjowalna: **żaden katalog nie został skasowany, zanim nie
+wykazano, że jego treść istnieje gdzie indziej.** Porównania robione sumą
+sum (`find -type f | sort | xargs sha256sum | sha256sum`), nie po nazwach ani
+rozmiarach.
+
+Trzy rzeczy okazały się **jedynymi kopiami** i zostały odzyskane z workera
+zanim cokolwiek zniknęło:
+
+| Co | Ile | Dlaczego było jedyne |
+|---|---|---|
+| `k26v3_control/` — `chain.log`, `runner.log`, `started.tsv`, `runner.rc` ×3 rodziny | 10 plików | archiwa P8 zawierają wyłącznie `F9-*/raw/…` i `RUN_COMPLETE`; katalog kontrolny nigdy do nich nie wchodził |
+| `k26_p8/` — 9/480 komórek K26 sprzed awarii SSH | 704 pliki, 4,4 MB | K26 unieważniona w P8, archiwum nigdy nie powstało |
+| bramki i kalibracja K23v2 | 55 MB | host miał tylko bramki Flinka |
+
+To jest znalezisko, nie formalność: **`chain.log` jest jedynym zapisem osi czasu
+P8** i źródłem czasów 16 h 09 / 16 h 10 / 16 h 10, które `research_plan.md`
+§14.21 cytuje przy prostowaniu nieprawdziwego „czas zmierzony, nie szacowany".
+Gdyby worker został wyczyszczony bez tego kroku, liczba przeżyłaby w dokumencie,
+a jej źródło nie.
+
+### Co skasowano na workerze
+
+Po wykazaniu redundancji — archiwa P8 zgadzały się w trzech miejscach naraz
+(worker = host = indeks SHA w git), a `k26_*`, `k26v2_*` i `k26v3_*` bramki oraz
+kalibracje zgadzały się z hostem co do sumy sum — usunięto 43 pozycje: dane
+pomiarowe czterech kampanii oraz cztery klony aparatury z drzewami `build`
+(`~/K23`, `~/K26`, `~/K26v2`, `~/K26v3`, po ~1,8 GB każdy). **Zwolniono 8 GiB**,
+zajętość spadła z 23 GB do 15 GB.
+
+Usunięto też `k26v3-p8.service` z `/etc/systemd/system/`. Jednostka była już
+`inactive`/`disabled` i bez dowiązania w `multi-user.target.wants`, więc po
+restarcie i tak by nie wstała; skasowanie zamyka drogę ręcznego
+`systemctl start` na zamkniętej kampanii. Kolejna kampania generuje własną
+jednostkę przez `install_worker_service.sh --print`.
+
+Kontrola po restarcie: żadnego unitu `k26`, żadnego procesu kampanii, brak
+`failed units`, `isolcpus=3` z wiersza poleceń jądra zachowane, 35 °C.
+Governor wrócił do `ondemand` — to stan **poprawny dla workera bezczynnego**;
+`performance` ustawiał łańcuch P8 po każdym boocie i ustawia go runner następnej
+kampanii, nie boot.
+
+### Co zmieniono na hoście
+
+1,9 GB artefaktów zebrane z `~` w podziale na kampanie (`K23v2/`, `K26/`,
+`K26v2/`, `K26v3/`) plus `NIEREJESTROWANE/` na `k26v2_explore` — eksplorację
+spoza predeklaracji, której nie wolno cytować. Po decyzji z tego samego dnia
+katalog wszedł **do repozytorium** jako `artifacts/`.
+
+Wejście do repozytorium wymagało sprowadzenia 1,9 GB do rozmiaru, który git ma
+sens wozić. Dwa kroki, oba z dowodem przed skasowaniem czegokolwiek:
+
+* **1,3 GB odpadło jako odtwarzalne.** `k26v3_p9/raw/` i `k26v2_p9/raw/`
+  (2 × 659 MB) to rozpakowane archiwa P8. Sprawdzone sumą sum, rodzina po
+  rodzinie, sześć porównań, wszystkie zgodne — dopiero potem usunięte. Wejścia
+  werdyktu (`*_p9/matrix/`) zostały, bo są małe i to one karmią `verdict.py`.
+* **Drzewa katalogów spakowane, 14 sztuk.** Bramki i kalibracje kompresują się
+  dwudziestokrotnie (27 MB → 1,3 MB). Każde archiwum przed usunięciem drzewa
+  rozpakowano do katalogu tymczasowego i porównano sumą sum; 14/14 zgodnych.
+
+Wynik: **1,9 GB → 260 MB**, z czego 185 MB to archiwa sond P8 obu kampanii,
+już skompresowane. Największy pojedynczy plik ma 38 MB, więc limit 100 MB
+GitHuba nie jest zagrożony. Całość opisuje `artifacts/README.md`, a spójność
+kontroluje `artifacts/MANIFEST.sha256` — 139 pozycji, weryfikuje się w całości.
+
+### Reguły, które to wymusiło
+
+**1. Artefakty badań przechowuje repozytorium, nie maszyna.** Dowód istniejący
+wyłącznie w katalogu domowym jednego komputera znika przy zmianie maszyny,
+a kampanie kosztują doby pomiaru — K26v3 to 48 h 34 min zegara. Reguła zawęża,
+nie uchyla, politykę z 2026-07-31: poza gitem zostaje wyłącznie plik powyżej
+limitu 100 MB, jak 155-megabajtowy `raw.tar.gz` rodziny W8 z K6c.
+
+**2. Aparatura nie pisze do katalogu domowego.** Skrypty klasy K26v3 czytają
+ścieżki wyłącznie ze zmiennych środowiska, ale ich domyślne wartości to
+`$HOME/k26v3_*` — i to one wyprodukowały bałagan po obu stronach. Wykaz
+zmiennych oraz sposób poprawienia domyślnych wartości opisuje `README.md`
+repozytorium, w sekcji „Artefakty kampanii — gdzie mają mieszkać".
+
+Poprawka **nie została wykonana w `results_20260814_K26v3/`** i nie wolno jej
+tam wykonać: te skrypty są w `manifest.sha256`, manifest weryfikuje się dziś
+438/438, a zmiana domyślnej ścieżki po fakcie unieważniłaby dowód kampanii,
+która wydała werdykt. Domyślne wartości poprawia się w kopii, przy zakładaniu
+następnej kampanii, przed wygenerowaniem manifestu.
+
+Uwaga na przyszłość: `freeze_check.sh predeklaracja` zwraca dziś błąd bramki
+gałęzi, bo kampania jest w `main`, a nie na `experiment/20260814_K26v3`. To
+oczekiwany skutek P10, nie regresja — bramka jest przeznaczona dla kampanii
+żywej. Manifest, czyli właściwy dowód niezmienności, przechodzi w całości.

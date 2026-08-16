@@ -1,0 +1,13 @@
+  ok  DEFAULT          F9_R2_controls
+  ok  DEFAULT          F9_R1_controls
+  ok  DEFAULT          F9_X_controls
+  ok  NO_R2_CANON      F9_R2_controls
+  ok  NO_R2_CANON      F9_R1_controls
+  ok  NO_R2_CANON      F9_X_controls
+  ok  NO_R1_FACTOR     F9_R2_controls
+  ok  NO_R1_FACTOR     F9_R1_controls
+  ok  NO_R1_FACTOR     F9_X_controls
+  ok  NO_R1_NO_R2      F9_R2_controls
+  ok  NO_R1_NO_R2      F9_R1_controls
+  ok  NO_R1_NO_R2      F9_X_controls
+OK: zrzuty planow kontrolnych w /home/michal/k26v2_gates_plans

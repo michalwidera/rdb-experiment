@@ -1,0 +1,33 @@
+==============================================================================
+WERDYKT K26 / H9 — automatyczny, wg progow zamrozonych w PREDEKLARACJA.md §7
+==============================================================================
+
+--- F9-R2 (ablacja minimalna: NO_R2_CANON) ---
+  metryka pierwotna @Q=8:
+    redukcja wobec ablacji        50.000%   prog 40%   OK
+    redukcja wobec FLINK_NATURAL  87.500%   prog 40%   OK
+  cena czasowa DEFAULT/ablacja: punkt 0.9219, 95% CI [0.9124, 0.9249], prog gornej granicy 1.05   OK
+  praca (work_costly_evals, rozdzielajaca w tej rodzinie): redukcja wobec FLINK_NATURAL 87.504%  [raportowana, nie progowa]
+  bramki czyste: tak   kontrole negatywne czyste: tak   identycznosc publicznych wynikow: tak
+    uwaga: Q=1: redukcja wobec FLINK_NATURAL 100.000% wobec predeklarowanej 0.000%
+  RODZINA: SUPPORT
+
+--- F9-R1 (ablacja minimalna: NO_R1_FACTOR) ---
+  ITERACJA NIEWAZNA: F9-R1 Q=1: DEFAULT ma WIECEJ instancji wspolnego podplanu niz ablacja — plan nie izoluje mechanizmu (STOP-6)
+
+--- F9-X (ablacja minimalna: NO_R1_NO_R2) ---
+  metryka pierwotna @Q=8:
+    redukcja wobec ablacji        58.333%   prog 40%   OK
+    redukcja wobec FLINK_NATURAL  84.374%   prog 40%   OK
+  cena czasowa DEFAULT/ablacja: punkt 0.7443, 95% CI [0.7256, 0.7483], prog gornej granicy 1.05   OK
+  praca (work_costly_evals, rozdzielajaca w tej rodzinie): redukcja wobec FLINK_NATURAL 87.511%  [raportowana, nie progowa]
+  bramki czyste: tak   kontrole negatywne czyste: NIE   identycznosc publicznych wynikow: tak
+    uwaga: Q=1: redukcja wobec FLINK_NATURAL -0.011% wobec predeklarowanej -25.000%
+    uwaga: przy Q=1 redukcja wewnetrzna wynosi 0.000%, choc klasy rownowaznosci nie ma — nieoczekiwane scalenie kontroli
+  RODZINA: NO_SUPPORT
+
+==============================================================================
+BRAK WERDYKTU — 1 rodzin(a) technicznie niewaznych lub niepelnych.
+§10: taka iteracja nie wydaje werdyktu i musi zostac powtorzona w NOWYM
+katalogu; danych miedzy iteracjami nie wolno laczyc.
+  F9-R1: F9-R1 Q=1: DEFAULT ma WIECEJ instancji wspolnego podplanu niz ablacja — plan nie izoluje mechanizmu (STOP-6)

@@ -27,6 +27,88 @@ Na workerze:
 Repozytoria mają oddzielne historie. Worker nigdy nie zapisuje wyników ani
 commitów do brancha kodu.
 
+## Artefakty kampanii — gdzie mają mieszkać
+
+Dwie reguły, obie z 2026-08-16, obie wymuszone tym samym bałaganem: cztery
+kampanie zostawiły 1,9 GB luzem w `~` na hoście i 8,9 GB na workerze.
+
+**1. Aparatura nie pisze do katalogu domowego.** Katalog domowy jest miejscem
+przejściowym, nie magazynem dowodów.
+
+**2. Artefakty badań przechowuje repozytorium, nie maszyna.** Dowód, który
+istnieje wyłącznie w `~` jednego komputera, znika przy zmianie maszyny i nie da
+się go odtworzyć — kampanie kosztują doby pomiaru. Docelowe miejsce:
+
+```text
+rdb-experiment/artifacts/<KAMPANIA>/     # np. artifacts/K26v3/
+```
+
+Katalog ma własny [`README.md`](artifacts/README.md) z mapą kampanii,
+`MANIFEST.sha256` obejmujący każdą pozycję oraz opis, czego nie wolno z niego
+cytować.
+
+Postać przechowywania: **drzewa katalogów pakuje się do `.tar.gz`** — bramki i
+kalibracje kompresują się dwudziestokrotnie (27 MB → 1,3 MB), a repozytorium
+nie ma powodu wozić dziesiątek tysięcy drobnych plików. Rozpakowywać poza
+repozytorium (`tar xzf … -C /tmp`). Rozpakowanych kopii archiwów sond nie
+przechowuje się w ogóle — są bajtowo tym samym co archiwum, co sprawdza się
+sumą sum przed usunięciem.
+
+Granica wobec polityki z 2026-07-31 (`.gitignore`, wzorzec `*raw.tar.gz`):
+**ta reguła jej nie uchyla, tylko zawęża.** Poza gitem zostaje wyłącznie to,
+czego git unieść nie może — pojedynczy plik powyżej limitu 100 MB GitHuba, jak
+155-megabajtowy `raw.tar.gz` rodziny W8 w K6c. Wszystko poniżej limitu wchodzi
+do repozytorium; audyt integralności w obu przypadkach prowadzi indeks SHA-256.
+
+Aparatura klasy K26v3 czyta ścieżki wyłącznie ze zmiennych środowiska, więc
+korzeń wymusza się bez zmiany skryptów:
+
+| Zmienna | Skrypt | Domyślna wartość, której **nie** używać |
+|---|---|---|
+| `OUT` | `run_main_rdb.sh` | `$HOME/k26v3_gates_rdb` |
+| `OUT` | `run_main_flink.sh` | `$HOME/k26v3_gates_flink` |
+| `OUT` | `dump_control_plans.sh` | `$HOME/k26v3_gates_plans` |
+| `OUT` | `calib/run_calib_rdb.sh` | `$HOME/k26v3_calib` |
+| `OUT` | `run_rehearsal.sh` | `$HOME/k26v3_rehearsal` |
+| `CODE_REPO` | `calib/run_calib_rdb.sh` | `$HOME/K26v3` |
+| `HOST_ARCHIVES` | `collect_p8_archives.sh` | `$HOME/k26v3_archives` |
+| `REMOTE_P6_RDB`, `REMOTE_P8_OUT`, `REMOTE_ARCHIVES`, `REMOTE_CONTROL` | `start_matrix_p8.sh`, `collect_p8_archives.sh` | `/home/michal/k26v3_*` na workerze |
+| `P6_RDB`, `P8_OUT`, `ARCHIVES`, `CONTROL` | `install_worker_service.sh`, `run_matrix_chain.sh` | j.w., trafiają do unitu systemd |
+
+**Katalogów zamkniętych kampanii nie wolno poprawiać.**
+`results_20260814_K26v3/` jest objęty `manifest.sha256` (438 pozycji,
+weryfikuje się w całości) i te skrypty są w manifeście; zmiana domyślnej
+ścieżki po fakcie wywróciłaby `freeze_check.sh` i unieważniła dowód kampanii,
+która wydała werdykt. Domyślne wartości poprawia się **w kopii, przy zakładaniu
+następnej kampanii**, przed wygenerowaniem manifestu:
+
+```bash
+REPO=$(git rev-parse --show-toplevel)          # katalog repozytorium, nie ~
+cd results_<NOWA_KAMPANIA>
+
+# host: wyniki lądują w repozytorium
+sed -i "s#\$HOME/k26v3_#$REPO/artifacts/<NOWA>/#g" \
+  run_main_rdb.sh run_main_flink.sh dump_control_plans.sh \
+  run_rehearsal.sh collect_p8_archives.sh calib/run_calib_rdb.sh
+
+# worker: katalog roboczy pomiaru, sprzątany po odbiorze archiwów
+sed -i "s#/home/michal/k26v3_#/home/michal/scratch-<NOWA>/#g" \
+  start_matrix_p8.sh collect_p8_archives.sh install_worker_service.sh \
+  run_matrix_chain.sh
+
+grep -rn 'HOME/k26\|/home/michal/k26' *.sh calib/*.sh   # musi być pusto
+./gen_manifest.sh
+```
+
+Rozdział jest celowy: **worker liczy, host archiwizuje.** Na workerze zostaje
+katalog roboczy poza repozytorium, bo jego treść i tak wraca archiwami przez
+`collect_p8_archives.sh`; do repozytorium wchodzi wyłącznie to, co host odebrał
+i sprawdził sumami. Katalog roboczy workera kasuje się po zamknięciu kampanii —
+razem z jednostką systemd i klonem aparatury.
+
+Dopóki to nie zostanie zrobione, uruchamianie aparatury K26v3 wymaga podania
+zmiennych jawnie — inaczej znowu zapisze do `~`.
+
 ## Warunki wstępne
 
 1. Oba repozytoria istnieją i są czyste na nadzorcy oraz workerze.

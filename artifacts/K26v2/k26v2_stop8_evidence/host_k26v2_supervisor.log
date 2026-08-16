@@ -1,0 +1,24 @@
+== zakres hosta K26v2 (require_frozen=yes) ==
+  ok  galaz i czysty silnik 856ee54b0f4ab450a6b61e3c08e045f404a79488
+  ok  wiazacy pin kampanii aktywny
+  ok  czyste drzewo eksperymentu i zgodny manifest (435 plikow)
+  ok  korpus: 21 planow, 84/84 kompilacje, 4/4 mutanty odrzucone
+----------------------------------------------------------------------
+Ran 23 tests in 1.016s
+
+[32mOK[0m
+  ok  pilot runtime: 24/24 komorki, mutant odrzucony
+  ok  bloki, skala rate, werdykt 20/20, testy aparatury i klasyfikator planu
+  ok  cztery binaria K26v2: flagi i SHA zgodne
+  ok  JDK/Flink przypiete; serializer 18/18; F9-X plan natural/manual = 32/5
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+  ok  Flink F9-X przebudowany: 16/16, oracle 100%, historyczny mutant zatrzaskow odrzucony
+  ok  swiezy runtime Flinka odtwarza zamrozone dowody bajt w bajt
+== zakres worker K26v2 (przed P6) ==
+  ok  worker: kernel, governor, przypiecie, rewizje i cztery binaria zamrozone
+  ok  rate zamrozony: skala 4
+START: F9-R2 w screen workera K26v2-P8-F9-R2
+CHECK: 2026-08-10 14:02:37 CEST family=F9-R2 cells=0/480 screen=0 rc=2 STOP-8=0 temp_millic=35537 disk_avail_kib=unknown
+CLOSE: sesja screen workera K26v2-P8-F9-R2 zakonczona
+BLAD NADZORCY: F9-R2: runner zakonczony rc=2 bez STOP-8 — apparatus

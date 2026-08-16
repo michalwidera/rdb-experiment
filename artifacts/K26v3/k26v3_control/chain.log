@@ -1,0 +1,12 @@
+2026-08-14 17:28:52 CEST start lancucha; odczekanie 60 s po boocie
+2026-08-14 17:29:52 CEST START: rodzina F9-R2 (pozostalo 3 z 3)
+2026-08-15 09:39:25 CEST KONIEC: rodzina F9-R2 rc=0, RUN_COMPLETE
+2026-08-15 09:39:25 CEST restart workera przed nastepna rodzina; usluga wstanie sama z bootu
+2026-08-15 09:39:35 CEST start lancucha; odczekanie 60 s po boocie
+2026-08-15 09:41:07 CEST START: rodzina F9-R1 (pozostalo 2 z 3)
+2026-08-16 01:51:17 CEST KONIEC: rodzina F9-R1 rc=0, RUN_COMPLETE
+2026-08-16 01:51:17 CEST restart workera przed nastepna rodzina; usluga wstanie sama z bootu
+2026-08-16 01:51:28 CEST start lancucha; odczekanie 60 s po boocie
+2026-08-16 01:52:58 CEST START: rodzina F9-X (pozostalo 1 z 3)
+2026-08-16 18:03:23 CEST KONIEC: rodzina F9-X rc=0, RUN_COMPLETE
+2026-08-16 18:03:23 CEST P8_COMPLETE: 3/3 rodzin; archiwa czekaja w /home/michal/k26v3_archives
