@@ -1,0 +1,492 @@
+# PREDEKLARACJA K26v3 / H9 — powtórzenie po K26v2 bez werdyktu
+
+**Status 2026-08-14: F0 w toku — naprawy aparatury N1–N8 wykonane, N9 (próba
+generalna procedury decyzyjnej na danych pilota) i N10 (wznawialność) przed
+nami. K26v3 nie ma ANEKS-0, P6 nie rozpoczęto i nie wykonano żadnego pomiaru
+kosztowego tej iteracji. ANEKS-2/3 wymagają odświeżenia dla nowych binariów.**
+
+Wcześniejsze commity katalogu są wersjami przeglądowymi, nie momentem
+zamrożenia. **Zamrożenie zaczyna obowiązywać w chwili rozpoczęcia eksperymentu**,
+zdefiniowanej operacyjnie jako pierwsze uruchomienie P6 na danych głównych.
+Bezpośrednio przed nim muszą istnieć zatwierdzony końcowy commit i push oraz
+zielony `freeze_check.sh predeklaracja`. Polecenie `bind_campaign.py`, wywołane
+bezpośrednio przed pierwszym P6, zapisuje bieżące SHA silnika, eksperymentu i
+czterech binariów hosta do `results/ANEKS-0_start.tsv`; ten zapis jest chwilą
+rozpoczęcia kampanii i od niego SHA stają się niezmienne. Od tej chwili zmiana
+któregokolwiek z poniższych ustaleń wymaga
+nowej predeklaracji i nowego katalogu. Danych K23, K26, K26v2 i K26v3 nie
+wolno łączyć.
+
+## 0. Powód nowej iteracji
+
+K23 zakończyła się bez werdyktu. F9-R1 ma klasyfikację **`apparatus` — defekt
+harnessu**: odpadła przez bramkę wymagającą identycznej liczby artefaktów mimo
+formalnego warunku `Lat(Q)<=Lat(P)`. F9-X również ma klasyfikację `apparatus`:
+nie była legalnym programem RQL, bo nazywała składniki po przeplocie `#`, a port
+nadawał znaczenie programowi spoza algebry języka.
+
+K26 zamknęła te dwa defekty aparatury K23, lecz została technicznie
+unieważniona w P8. Po 4/4 warm-upach i 9/480 komórkach F9-R2 sesja wykonawcza
+SSH workera zamknęła się, a klient SSH nadzorcy pozostał zawieszony. Na
+workerze nie działał już `run_matrix_worker.py` ani `xretractor`; nie powstał
+`STOP-8` ani `RUN_COMPLETE`. Zdarzenie sklasyfikowano jako **`apparatus` —
+defekt cyklu życia procesu zależnego od długiego połączenia SSH**. Kosztów
+dziewięciu komórek nie odczytano, nie zredukowano i nie zinterpretowano.
+
+K26v2 naprawiła transport i nadzór P8 i **przeszła cały pomiar**: bramki P6
+21/21 `PASS/clean`, kalibracja P7 60/60, macierz P8 1440/1440 bez zgubionego
+rekordu i bez `STOP-8`. Zatrzymała się dopiero na procedurze decyzyjnej, która
+w całym łuku badawczym po raz pierwszy zetknęła się z prawdziwymi danymi.
+Ujawniły się trzy defekty, wszystkie w `verdict.py` i `reduce_results.py`:
+
+- **D6** — `reduction()` dzieliło przez zero tam, gdzie substrat nie
+  materializuje się po żadnej ze stron (F9-R2 przy `Q=1`), a nieprzechwycony
+  wyjątek kończył skrypt kodem 1, czyli kodem ważnego wyniku negatywnego;
+- **D7** — licznik `instances` zliczał w F9-R1 wyłącznie węzły `STREAM_HASH_*`,
+  które istnieją tylko przy R1 ON, więc strażnik izolacji mechanizmu odwracał
+  się i unieważnił iterację mimo poprawnego planu;
+- **D8** — kontrola negatywna przy `Q=1` porównywała mierzoną wielkość ściśle z
+  zerem i odwróciła werdykt F9-X przy reszcie rzędu `10⁻⁸`.
+
+Werdykt K26v2 brzmi **BRAK WERDYKTU** i taki pozostaje. K26v3 zmienia wyłącznie
+procedurę decyzyjną i jej bramki: §2.1, §7.2, §7.3, §7.4, §7.5 i §12 zapisują
+reguły, które w K26v2 były milczące albo sprzeczne, a §7.5 wymaga uruchomienia
+procedury na danych pilota **przed** związaniem kampanii. Hipoteza, progi,
+rodziny, dane, bloki, profile i reguły STOP pozostają identyczne z K26v2.
+Katalogi `results_20260808_K23v2/`, `results_20260809_K26/` i
+`results_20260810_K26v2/` są wyłącznie historycznymi dowodami; nie są źródłem
+wyników ani klasyfikacji K26v3.
+
+## 1. Przypięcia i proweniencja
+
+| Pozycja | Wartość |
+|---|---|
+| Gałąź eksperymentu | `experiment/20260814_K26v3` |
+| SHA silnika | przed startem zmienne; wiążące SHA zapisuje `ANEKS-0_start.tsv` przy pierwszym P6 |
+| Profile | `DEFAULT`, `NO_R2_CANON`, `NO_R1_FACTOR`, `NO_R1_NO_R2` |
+| Flink | 2.3.0, JDK 17 przypięty ścieżką |
+| Generator danych i RQL | `gen_corpus.py` |
+| Korpus | 21 planów: 18 rodzin + 3 kontrole |
+
+Binaria profili są budowane w osobnych `build/K26v3-*` i przed użyciem
+sprawdzane przez `--build-info`. Nowa flaga
+`RDB_OPT_SIMPLIFY_EXPRESSIONS=ON` jest jawnie wspólna dla wszystkich czterech
+profili i nie stanowi osi ablacji; główne plany muszą wykazać `r3=0`. Przed
+rozpoczęciem HEAD silnika może się
+zmieniać: wtedy trzeba przebudować profile i ponownie wygenerować dowód korpusu,
+który zapisuje użyte SHA. `freeze_check.sh predeklaracja` wymaga czystego drzewa
+silnika, zgodności bieżącego HEAD-u z dowodem, właściwej gałęzi eksperymentu,
+czystego drzewa eksperymentu i zgodności manifestu. Dopiero
+`bind_campaign.py` tworzy wiążący pin; `freeze_check.sh bound` i późniejsze
+bramki odrzucają każde inne SHA.
+
+## 2. Pytanie, metryka i próg H9
+
+Pytanie pozostaje takie jak w K23: czy automatyczne rozpoznanie wspólnego
+materializowanego podplanu daje co najmniej 40% redukcji logicznych bajtów
+substratu na publiczny rekord, względem minimalnej ablacji oraz naturalnego
+planu Flinka, bez ceny czasowej większej niż 5% według górnej granicy
+sparowanego bootstrapu 95% CI.
+
+Komórką rozstrzygającą jest `Q=8`; `Q={1,2,4}` kontroluje trend, a
+`Q={16,32}` skalowanie. Wsparcie H9 wymaga przejścia pełnego progu przez co
+najmniej 2 z 3 rodzin. Próg, reguła 2/3, 20 bloków, 10 000 replikacji i ziarno
+bootstrapu `20260809_2603` są stałymi `verdict.py`, nie parametrami CLI.
+
+### 2.1. Wielkość rozdzielająca pracy — osobno dla każdej rodziny
+
+Obok metryki pierwotnej raportowana jest jedna wielkość pracy na rodzinę, wybrana
+tak, by rozdzielała profile w tej właśnie rodzinie:
+
+| Rodzina | Wielkość | Powód |
+|---|---|---|
+| F9-R2 | `work_costly_evals` | kosztowny program pola liczy się na węźle `STREAM_ADD` |
+| F9-X | `work_costly_evals` | jak wyżej, po złożeniu R1 → R2 |
+| F9-R1 | `work_hash_picks` | kwadrat jest programem monitora publicznego; rodzinę rozdziela licznik wyborów hash |
+
+Wielkość pracy jest **raportowana, nie progowa**: o H9 rozstrzyga wyłącznie
+metryka pierwotna i cena czasowa z §2. Wybór jest zamrożony przed kampanią, żeby
+nie dało się go dobrać po zobaczeniu wyniku.
+
+## 3. Rodziny
+
+### 3.1. F9-R2
+
+Źródła `A,B` mają takt `1/100`. Monitor liczy
+`Sqrt(A[0]*A[0]+B[0]*B[0])` nad `A+B` albo `B+A`. Mechanizm to kanonizacja
+przemiennego `+` oraz wspólna materializacja równoważnego SELECT.
+
+### 3.2. F9-R1
+
+Źródła `A` (`1/100`) i `B` (`1/50`) mają ten sam schemat. Dwie postacie to
+`(A>2)#(B>1)` oraz `(A#B)>3`. Program monitora czyta własny wynik. R1 zachowuje
+ciąg wartości i origin, ale może skrócić ogon.
+
+### 3.3. F9-X — legalne złożenie R1 → R2
+
+Pary `(A,B)` i `(C,D)` mają odpowiednio wspólne pola `front` i `rear`:
+
+```rql
+DECLARE front INTEGER STREAM A, 1/100 FILE 'front_vib.txt'
+DECLARE front INTEGER STREAM B, 1/50  FILE 'front_cur.txt'
+DECLARE rear  INTEGER STREAM C, 1/100 FILE 'rear_vib.txt'
+DECLARE rear  INTEGER STREAM D, 1/50  FILE 'rear_cur.txt'
+SELECT Sqrt(front*front+rear*rear) STREAM m
+FROM ((A>2)#(B>1))+((C>2)#(D>1))
+```
+
+W szybkim slocie wynik jest normą `(A,C)`, w wolnym `(B,D)`. Program odwołuje
+się do schematów wyników `#`, nie do tożsamości jego składników. Cztery postacie
+W1, W4, W2, W3 zachowują układ R1 × kolejność R2. Przy `Q=8` liczba
+`STREAM_SELECT_*` wynosi `1/2/2/4`, a jednostki planu RDB wynoszą odpowiednio
+`5/6/10/12` dla czterech profili.
+
+Historyczna postać `Sqrt(A[0]*C[0]+B[0]*D[0])` jest mutantem negatywnym i musi
+zostać odrzucona przez każdy profil.
+
+### 3.4. Dlaczego F9-X pozostaje ważną rodziną metodologiczną
+
+F9-X jest rodziną **mechanizmową**, a nie próbą reprezentatywnego benchmarku
+całych zastosowań. Jej rolą jest sprawdzenie przypadku, którego nie obejmują
+F9-R1 ani F9-R2 osobno: czy wspólna materializacja zostaje rozpoznana dopiero po
+złożeniu dwóch niezależnych równoważności, R1 na każdym przeplocie i R2 na ich
+sumie. Układ czterech profili jest dzięki temu kontrolą 2×2: `NO_R2_CANON`
+usuwa tylko R2, `NO_R1_FACTOR` tylko R1, a `NO_R1_NO_R2` oba przejścia. Rodzina
+pozostaje w badaniu tylko wtedy, gdy obserwowana struktura planu ma postać
+`1/2/2/4`; inny układ nie jest słabszym efektem H9, lecz nieudaną izolacją
+mechanizmu.
+
+Scenariusz ma legalne znaczenie domenowe. `front` i `rear` są dwiema pozycjami
+pomiaru, a szybkie tory A/C i wolne B/D są parami tej samej modalności i fazy.
+Przeplot wybiera modalność, nie zachowuje tożsamości źródła; w każdym slocie
+monitor liczy więc normę dwóch jednoczesnych wartości tej samej modalności.
+Nazwa pola wynikowego jest dokładnie informacją dostępną po `#`. Historyczne
+zatrzaski A–D oraz wariant z rozplotem `&`/`%` są wykluczone, bo pierwszy nie
+jest programem RQL, a drugi zmienia takt, graf operatorów i badany mechanizm.
+
+Postać inline jest częścią badanej populacji, a nie sztucznym sposobem
+wymuszenia wyniku. Każdy przesunięty przeplot jest używany raz w pojedynczym
+monitorze, więc wydzielenie go przez autora jako nazwany wynik nie usuwa
+powtórzenia między `Q` monitorami; przenosi natomiast materializację przez
+granicę publiczne/substrat i zmienia mianownik metryki. Badane pytanie brzmi
+właśnie, czy kompilator rozpozna wspólną postać powtarzaną przez monitory bez
+ręcznego przepisania programu do wariantu `manual`.
+
+Decyzja o zachowaniu rodziny, jej znaczenie i układ ablacji zostały zapisane
+przed otwarciem kosztów K26. Liczby `5/6/10/12`, pilot runtime i oracle są
+bramkami poprawności konstrukcji, nie obserwacją wspierającą H9. Nawet wynik
+pozytywny wolno uogólnić wyłącznie na tę klasę legalnych, jednorazowych
+podwyrażeń inline o zgodnych schematach i fazach; nie dowodzi on częstości tej
+postaci w programach użytkowników ani ogólnej przewagi wydajnościowej.
+
+## 4. Korpus i dane
+
+| Pozycja | Wartość |
+|---|---|
+| Ziarno danych głównych | `20260809_2601` |
+| Ziarno danych kalibracyjnych | `20260809_2602` |
+| Zakres | całkowite `[0,1000]` |
+| Źródło szybkie | 3000 rekordów |
+| Źródło wolne | 1500 rekordów |
+| Kalibracja | 600/300 rekordów, osobny strumień PRNG |
+| Siatka Q | `1,2,4,8,16,32` |
+
+K26v3 celowo odtwarza bajtowo wejścia i kolejność bloków K26v2: zatrzymanie było
+defektem procedury decyzyjnej, a nie korpusu, rate'u ani losowania. Żaden pomiar
+K26 ani K26v2 nie wchodzi do redukcji K26v3; ponowione zostają P6, P7 i pełne P8.
+Konsekwencja, którą trzeba nazwać wprost: przy tych samych ziarnach strona
+bajtowa jest deterministyczna, więc K26v3 powtarza **procedurę decyzyjną na
+naprawionej aparaturze**, a niezależnie świeży jest wyłącznie pomiar czasu.
+
+`gen_corpus.py --check` wymaga dokładnej zgodności treści oraz odrzuca każdy
+dodatkowy plik w `data/` lub `rql/`.
+
+### 4.1. Bramka ważności całego korpusu
+
+Przed zamrożeniem `validate_corpus.py`:
+
+1. wyprowadza dokładną listę 21 planów z generatora;
+2. odrzuca brak lub dodatkowy plan na dysku;
+3. sprawdza czystość drzewa silnika i zgodność bieżącego SHA z SHA zapisanym
+   podczas generowania dowodu, bez wiążącego pinu przed startem;
+4. sprawdza flagi i tożsamość czterech binariów;
+5. kompiluje każdy plan w każdym profilu — 84 kompilacje;
+6. wymaga odrzucenia historycznego F9-X w każdym profilu;
+7. zapisuje plany, diagnostykę, proweniencję i własny manifest.
+
+Wynik przed zamrożeniem: **84/84 PASS, 4/4 REJECTED, 182 sumy kontrolne**.
+`--check` odtwarza kompletność dowodu bez ponownego wyboru populacji.
+
+## 5. Profile i oczekiwania planu
+
+| Profil | R1 | R2 | Rola |
+|---|---:|---:|---|
+| `DEFAULT` | ON | ON | oba mechanizmy |
+| `NO_R2_CANON` | ON | OFF | minimalna ablacja F9-R2 |
+| `NO_R1_FACTOR` | OFF | ON | minimalna ablacja F9-R1 |
+| `NO_R1_NO_R2` | OFF | OFF | minimalna ablacja F9-X |
+
+Predeklarowane krzywe redukcji wewnętrznej są zamrożone w `verdict.py`:
+F9-R2 i F9-R1: `0,0,1/2,1/2,1/2,1/2`; F9-X:
+`0,0,1/2,7/12,7/12,7/12` dla rosnącego Q. Odejście od krzywej jest
+raportowane, ale samo nie unieważnia wyniku; o H9 rozstrzyga próg.
+
+## 6. Port Flinka
+
+Wariant `natural` tworzy osobny podplan na monitor, a `manual` ręcznie wydziela
+wspólną postać osiąganą przez `DEFAULT`. F9-X łączy bieżący rekord przeplotu
+`front` z bieżącym rekordem `rear` i liczy `sqrt(left²+right²)`. Nie przechowuje
+zatrzasków A–D.
+
+Plan-only przy `Q=8` daje:
+
+| Rodzina | Flink natural | Flink manual |
+|---|---:|---:|
+| F9-R2 | 5.3333 | 0.6667 |
+| F9-R1 | 8 | 1 |
+| F9-X | 32 | 5 |
+
+Serializer kanoniczny przechodzi 18/18 wektorów wobec oracle'a C++ linkowanego
+z `librdb`. Pilot wykonawczy F9-X uruchamia oba warianty na 100 szybkich i 50
+wolnych rekordach: **16/16** publicznych strumieni ma po 150 ciągłych rekordów
+i zgadza się w 100% z niezależnym oracle'em `isqrt(front²+rear²)`. Ten sam test
+odtwarza historyczny model `latch[A..D]` i wymaga jego odrzucenia przez każdy
+strumień; na korpusie pilota legalny oracle różni się od mutanta w 150/150
+rekordach. `freeze_check.sh` przed rozpoczęciem kampanii przebudowuje klasy Flinka z
+przypiętego JDK, ponownie wykonuje oba warianty i wymaga bajtowego odtworzenia
+dowodów z manifestu. Są to bramki aparatury, nie pomiar H9.
+
+## 7. Bramki poprawności i klasyfikacja
+
+Wymagane bramki per rodzina: `corpus_validity`, `oracle_values`,
+`oracle_mutants`, `counter_known_answer`, `public_identity`,
+`near_miss_controls` oraz `no_materialization`.
+
+`corpus_validity` idzie przed wszystkimi bramkami runtime i nie czyta kosztu.
+Ponownie sprawdza dokładny inwentarz 21 planów i jego zgodność z generatorem,
+zgodność bieżącego SHA silnika i czterech binariów z dowodem, a po starcie także
+z wiążącym pinem, zamknięty manifest dowodu, komplet
+84/84 poprawnych kompilacji oraz 4/4 odrzucone historyczne mutanty. Wynik jest
+zapisywany osobno dla każdej rodziny w `gates.tsv`. FAIL pozostaje bez
+automatycznej klasyfikacji; `verdict.py` odmawia werdyktu, dopóki przyczyna nie
+zostanie sklasyfikowana na STOP-6.
+
+Nieczysty wpis musi otrzymać dokładnie jedną klasyfikację:
+
+| Klasyfikacja | Znaczenie | Skutek |
+|---|---|---|
+| `engine_or_profile` | rozbieżność przypisana silnikowi/profilowi | ważny wynik przeciw H9 w rodzinie |
+| `apparatus` | port, oracle albo harness | brak werdyktu, nowa iteracja |
+| `corpus` | plan nie jest poprawnym członkiem zadeklarowanej populacji | unieważnienie komórki i iteracji, nowy katalog |
+
+Brak lub nieznana klasyfikacja daje kod 2 i zakazuje werdyktu. `clean` jest
+używane wyłącznie dla PASS.
+
+### 7.1. `public_identity` zgodne z Obs
+
+Dla profili o tym samym stanie R1 wymagane są identyczne artefakty. Dla pary
+R1-ON wobec R1-OFF wymagane są:
+
+- identyczny deskryptor;
+- identyczny wspólny prefiks wartości i kolejności;
+- brak NULL i luk w obu przebiegach;
+- co najmniej 2000 wspólnych rekordów;
+- liczba rekordów R1-ON nie mniejsza niż R1-OFF, czyli
+  `Lat(R1-ON) <= Lat(R1-OFF)`.
+
+Testy negatywne odrzucają dłuższy ogon po optymalizacji, zmianę wartości oraz
+NULL/lukę. Sama różna liczba rekordów nie jest już błędem, jeśli różnica ma
+dozwolony kierunek.
+
+### 7.2. `instances` — co liczy i w którą stronę
+
+`instances` to liczba **zmaterializowanych substratów wewnętrznych** badanego
+podplanu w danej komórce, niezależna od nazwy węzła i identyczna dla wszystkich
+rodzin. **Mniej znaczy więcej współdzielenia**, więc plan izoluje mechanizm
+tylko wtedy, gdy dla każdej rodziny i każdego `Q`:
+
+```text
+instances(DEFAULT) <= instances(ablacja minimalna)
+```
+
+Naruszenie jest błędem struktury planu i daje `STOP-6`. Warunek jest sprawdzany
+na zamrożonych zrzutach planu **w P4**, a nie dopiero przy werdykcie.
+
+Reguła powstała po K26v2, gdzie licznik zliczał w F9-R1 wyłącznie substraty
+nazwane `STREAM_HASH_*`. Taki węzeł istnieje z konstrukcji tylko przy R1 ON,
+więc ablacja raportowała `0` zamiast swoich dwóch substratów, strażnik odwracał
+się i unieważniał iterację mimo poprawnego planu (D7).
+
+### 7.3. Tolerancja kontroli negatywnej przy `Q=1`
+
+Kontrola nierównoważności przy `Q=1` porównuje redukcję wewnętrzną z zerem
+**z tolerancją równą `CURVE_TOLERANCE` = 0,005**, nigdy ściśle.
+
+Uzasadnienie: metryka jest ilorazem **zmierzonych** bajtów substratu na rekord
+publiczny, a profile kończą przebieg z różną długością ogona, więc dokładna
+równość nie jest na niej osiągalna. W K26v2 ścisłe porównanie odwróciło werdykt
+rodziny F9-X przy reszcie `1/20207272 ≈ 4,9·10⁻⁸`, wytworzonej przez różnicę
+dwóch rekordów publicznych (D8).
+
+Przekroczenie tolerancji pozostaje tym, czym było: **brakiem wsparcia H9 w
+rodzinie**, nie unieważnieniem iteracji.
+
+### 7.4. Metryka zdegenerowana
+
+Redukcja `1 − m(DEFAULT)/m(odniesienie)` jest **określona** także wtedy, gdy
+metryka odniesienia wynosi zero:
+
+| `m(odniesienie)` | `m(DEFAULT)` | Redukcja |
+|---|---|---|
+| `= 0` | `= 0` | **0** — substrat nie zmaterializował się po żadnej ze stron |
+| `= 0` | `> 0` | **BRAK WERDYKTU** — wzrost bez odniesienia nie ma wyrażenia w tej metryce |
+| `> 0` | dowolne | `1 − m(D)/m(ref)` |
+
+Przypadek pierwszy jest realny: przy `Q=1` nie ma klasy równoważności, więc
+F9-R2 nie materializuje żadnego substratu w żadnym profilu. §5 podaje dla `Q=1`
+redukcję `0` we wszystkich rodzinach, co zakłada, że funkcja jest tam
+określona. Wymóg niezerowego mianownika samej metryki (`public_appends > 0`)
+pozostaje bez zmian.
+
+### 7.5. Kody wyjścia procedury decyzyjnej
+
+`verdict.py` kończy się kodem `0` (wsparcie), `1` (brak wsparcia) albo `2`
+(brak werdyktu). **Kod 1 oznacza ważny wynik negatywny i nie może być osiągalny
+przez awarię skryptu**: każdy nieprzechwycony wyjątek daje kod `2` i ślad na
+stderr. W K26v2 nieprzechwycony `ZeroDivisionError` zakończył werdykt kodem 1,
+nieodróżnialnym od legalnego „brak wsparcia H9" (D6).
+
+Procedura decyzyjna — `reduce_results.py` i `verdict.py` — musi zostać
+uruchomiona **na danych pilota przed związaniem kampanii** i zakończyć się
+kodem, nigdy wyjątkiem. Progi liczone na danych pilota są bez znaczenia i nie
+wolno ich odczytywać; sprawdzana jest wykonywalność procedury, nie jej orzeczenie.
+
+## 8. Pilot przed zamrożeniem
+
+`pilot/run_pilot.py` najpierw odrzuca plan, który kompiluje się, ale nie wykonuje,
+a następnie uruchamia 4 profile × 6 reprezentatywnych planów. Wynik:
+**24/24 kompilacje i 24/24 przebiegi runtime**, każdy z wierszami `LOGICAL` i
+`WORK` oraz niezerowym mianownikiem.
+
+Pilot nie jest pomiarem kosztowym. Liczniki dowodzą jedynie, że instrument działa
+i że główne rodziny materializują niezerowy substrat.
+
+## 9. Wykonanie i produkty aparatury
+
+P8 rozpoczyna wyłącznie `start_matrix_p8.sh`. Skrypt wykonuje bramkę
+`freeze_check.sh macierz`, instaluje na workerze usługę systemd
+`k26v3-p8.service` przez `install_worker_service.sh`, porównuje sumę SHA-256
+zainstalowanego unitu z tekstem generowanym na hoście — liczy się plik po
+stronie, która go wykonuje — i uruchamia łańcuch. Od tej chwili host nie ma
+udziału w pomiarze i może być wyłączony do końca macierzy.
+
+Łańcuch prowadzi `run_matrix_chain.sh` po stronie workera. Jedno uruchomienie
+usługi obsługuje **dokładnie jedną rodzinę**: ustawia governor, wybiera pierwszą
+rodzinę bez `RUN_COMPLETE`, liczy ją z wznowieniem, a po jej zamknięciu prosi o
+restart workera. Usługa jest włączona na `multi-user.target`, więc po restarcie
+wstaje sama i bierze następną rodzinę. Powrót po zaniku zasilania idzie tą samą
+ścieżką co planowany restart między rodzinami; nie ma osobnej procedury
+awaryjnej. `Restart=no` jest celowe: STOP-8 i błąd aparatury zapisują plik
+`HALT`, który blokuje każde następne wejście aż do decyzji człowieka. Połączenie
+SSH służy wyłącznie do startu, odczytów stanu i kopiowania archiwum — jego
+zerwanie nie wysyła sygnału do runnera ani `xretractor`. Dla każdej rodziny
+worker `run_matrix_worker.py`:
+
+1. sprawdza wiążący `ANEKS-0_start.tsv`, SHA binariów z ANEKS-2, kernel,
+   izolowany CPU i governor z ANEKS-3;
+2. wykonuje po jednym warm-upie `Q=32` na każdy profil, poza wynikiem;
+3. konsumuje dokładnie 480 wierszy rodziny z `blocks.tsv` (20 bloków × 6 Q ×
+   4 profile), z `taskset`, trybem czasu absolutnego `-t` i danymi głównymi;
+4. zapisuje temperaturę przed i po komórce, pełną sondę oraz pojedynczy
+   `summary.tsv`;
+5. liczy zgubione rekordy jako ubytek publicznych dopisań wobec tej samej
+   komórki P6; nadmiar jest błędem aparatury, a ubytek lub `p99 > 80%` slotu
+   tworzy `STOP-8` i natychmiast zatrzymuje rodzinę;
+6. po 480/480 tworzy archiwum surowe, które zostaje na workerze do odbioru.
+
+`run_matrix_family.sh` zapisuje poza wynikiem po jednym wierszu `started.tsv` na
+każde podejście, dopisuje `runner.log` i na końcu jednorazowe, nienadpisywalne
+`runner.rc`. Bieg przerwany twardym wyłączeniem nie zostawia `runner.rc`, więc
+rodzina rusza ponownie po boocie: `--resume` pomija wyłącznie komórki kompletne
+i zweryfikowane **przeliczeniem sondy** — tą samą regułą, której używa
+`reduce_results.py timing` — a komórkę niekompletną kasuje w całości i liczy od
+nowa. Do połowicznego katalogu komórki nigdy nie dopisujemy. Kod niezerowy bez
+`STOP-8` oraz kod 0 bez `RUN_COMPLETE` i 480/480 są błędem `apparatus`; łańcuch
+zapisuje wtedy `HALT` z klasyfikacją i zatrzymuje iterację. Skrypty odmawiają
+nadpisania unitu o innej treści, katalogu wynikowego, statusu rodziny, archiwum
+oraz indeksu hosta.
+
+Archiwa odbiera `collect_p8_archives.sh`: krótki, bezstanowy odczyt hosta, który
+wolno uruchomić kiedykolwiek — także dopiero po całym pomiarze. Skrypt kopiuje
+gotowe archiwa rodzin, weryfikuje SHA-256 po obu stronach, dopisuje indeks poza
+git i po komplecie 1440/1440 zapisuje `COLLECT_COMPLETE`. Nie jest warunkiem
+postępu: worker liczy dalej, gdy host jest wyłączony.
+
+`reduce_results.py mechanism` tworzy 108 deterministycznych wierszy
+`mechanism.tsv` ze zrzutów planu, liczników P6 RDB oraz rzeczywistych liczników
+P6 Flinka. `reduce_results.py timing` wymaga dokładnie wszystkich 1440
+jednowierszowych podsumowań zgodnych z `blocks.tsv`; odrzuca brak, duplikat,
+dodatkową komórkę i inną kolejność. Oba pliki mają dokładny schemat
+`verdict.py`.
+
+ANEKS-1 tworzy wyłącznie `calib/analyze_calib.py --out results/ANEKS-1_rate.tsv`:
+zapisuje wybrany rate,
+`calibration_saw_effect=no`, sloty z `slot_grid`, najgorszą komórkę, liczby
+slotów i skrót wszystkich CSV. ANEKS-2/3 tworzy `capture_worker.py` jednym
+odczytem SSH; skrypt odmawia nadpisania. `freeze_check.sh worker` porównuje
+aneksy z żywym workerem, w tym z czterema binariami.
+
+## 10. Kolejność dalszego wykonania
+
+1. przegląd tej predeklaracji i całego diffu;
+2. na finalnym HEAD-zie przebudowa profili i ponowny dowód korpusu, następnie
+   `capture_worker.py`, końcowy commit i push oraz
+   `freeze_check.sh predeklaracja` — STOP-5;
+3. bezpośrednio przed pierwszym P6 `bind_campaign.py`; utworzenie
+   `ANEKS-0_start.tsv` jest początkiem eksperymentu i od tej chwili zamrożenie
+   jest wiążące;
+4. pełne bramki P6 na danych głównych, bez odczytu kosztu;
+5. klasyfikacja każdego FAIL przed dalszym krokiem;
+6. kalibracja na osobnych danych, bez porównania efektu;
+7. `start_matrix_p8.sh` i 20 sparowanych bloków pełnej macierzy;
+8. automatyczny werdykt `verdict.py`;
+9. raport bez łączenia danych z K23 ani K26.
+
+Przekroczenie 80% slotu lub zgubiony rekord zatrzymuje całą rodzinę bez
+werdyktu. Zmiana rate po takim zatrzymaniu wymaga kolejnej predeklaracji i
+nowego katalogu.
+
+## 11. Granica twierdzenia
+
+Nawet wsparcie H9 upoważnia jedynie do stwierdzenia, że w badanych trzech
+rodzinach i przy `Q=8` automatyczne współdzielenie osiągnęło zadeklarowany próg
+bez zadeklarowanej ceny czasowej. Nie dowodzi ogólnej przewagi RetractorDB nad
+Flinkiem ani uniwersalnej redukcji pamięci.
+
+## 12. Protokół kalibracji rate (wartość → ANEKS-1)
+
+Kalibracja biegnie na **osobnych danych kalibracyjnych** (`data/calib/`, ziarno
+`20260809_2602`), **bez porównywania `DEFAULT` z ablacją**. Kryterium: najgorszy
+profil RetractorDB przy `Q = 32` ma `p99 <= 50%` logicznego slotu. Kalibracja
+skaluje **wszystkie** interwały wspólnym czynnikiem, zachowując ich stosunki —
+stałe `i = 2`, `k = 1`, `>3` pozostają nienaruszone. Rate jest potem **stały dla
+wszystkich profili danej rodziny**.
+
+`ANEKS-1_rate.tsv` musi zawierać `rate_scale` oraz `calibration_saw_effect=no`;
+`freeze_check.sh macierz` bez tego nie przechodzi. Próg 50% jest **ostrzejszy**
+niż twardy `STOP` z §10 (`p99 > 80%` slotu), który obowiązuje niezależnie.
+
+Protokół był w K23v2 zapisany jako §8.1, a przy przebudowie dokumentu w K26 nie
+został przeniesiony; skrypty kalibracji cytowały wtedy paragraf, którego
+predeklaracja nie miała (D1). Każdy paragraf cytowany przez skrypt musi istnieć
+w tym dokumencie i jest to sprawdzane testem aparatury.
+
+### 12.1. Dlaczego rate wchodzi aneksem, a nie jest zamrożony w predeklaracji
+
+Wartość `rate_scale` nie jest znana w chwili predeklaracji, bo zależy od
+zmierzonego czasu `processRows()` na konkretnym workerze i konkretnych
+binariach. Zamrożony jest **protokół** jej wyznaczenia — dane, kryterium, reguła
+wspólnego czynnika i zakaz porównania efektu — a sama wartość zostaje podpisana
+w ANEKS-1 przed macierzą. ANEKS-1 jest produkowany na hoście i **konsumowany na
+workerze**, więc musi zostać rozesłany na workera z weryfikacją SHA-256 po obu
+stronach; bramka `macierz` sprawdza obie kopie i wymaga ich zgodności.
