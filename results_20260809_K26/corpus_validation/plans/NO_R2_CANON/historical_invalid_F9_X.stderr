@@ -1,0 +1,3 @@
+Syntax error @Rql
+line:1:41 at 0x6331f76ddd50
+msg:mismatched input '<EOF>' expecting FROM

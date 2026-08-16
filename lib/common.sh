@@ -442,9 +442,10 @@ require_tmpfs() {
 
 # Weryfikacja binarki wobec ZADANEGO profilu ablacyjnego (K6: piec profili).
 # Porownanie jest bajtowe wzgledem pelnego bloku --build-info, nie grepem po
-# jednej linii: profil rozni sie od profilu wylacznie wartosciami tych piatek.
+# jednej linii. Szosty argument jest opcjonalny, zeby nowe kampanie mogly jawnie
+# zamrozic RDB_OPT_SIMPLIFY_EXPRESSIONS bez zmiany kontraktu kampanii historycznych.
 verify_probe_binary_profile() {
-  local binary="$1" dedup="$2" share="$3" commutative="$4" factor="$5"
+  local binary="$1" dedup="$2" share="$3" commutative="$4" factor="$5" simplify="${6:-}"
   local actual expected
   [ -x "$binary" ] || {
     log "BLAD: brak wykonywalnej binarki xretractor: $binary"
@@ -460,6 +461,9 @@ verify_probe_binary_profile() {
     "RDB_OPT_COMMUTATIVE_ADD=$commutative" \
     "RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=$factor" \
     "RDB_BENCH_PROBE=ON")
+  if [ -n "$simplify" ]; then
+    expected=$(printf '%s\n%s\n' "$expected" "RDB_OPT_SIMPLIFY_EXPRESSIONS=$simplify")
+  fi
   [ "$actual" = "$expected" ] || {
     log "BLAD: $binary nie jest oczekiwanym profilem ($dedup/$share/$commutative/$factor)"
     diff -u <(printf '%s\n' "$expected") <(printf '%s\n' "$actual") >&2 || true
