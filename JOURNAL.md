@@ -4208,3 +4208,135 @@ uruchomienie biegło na governorze `ondemand` (kampania ustawia `performance`) �
 przez „rozpięcie częstotliwości slotu" okazało się błędne, bo ekspozycja zależy
 od długości luki, nie od częstotliwości. Zestaw zostawiono decyzją człowieka,
 słabość zapisana w predeklaracji.
+
+## 2026-08-16 — łuk K26 → K26v2 → K26v3 scalony do `main`; H9 WSPARTA 3/3 w klasie `Q=8`
+
+Trzy kampanie tej samej hipotezy zamknięte i scalone jedna po drugiej, w
+kolejności powstania, osobnymi commitami scalającymi — żeby historia pomiarów
+została czytelna, a każda kampania miała własny punkt zamknięcia z własnym
+werdyktem.
+
+| Kampania | Katalog | Co osiągnęła | Werdykt | Commit scalający |
+|---|---|---|---|---|
+| K26 | `results_20260809_K26/` | P6 21/21, P7 60/60, P8 9/480 | **brak — `apparatus`** | `f7abb89` |
+| K26v2 | `results_20260810_K26v2/` | P6 21/21, P7 60/60, P8 1440/1440 | **BRAK WERDYKTU** | `ce2fbd7` |
+| K26v3 | `results_20260814_K26v3/` | P6 21/21, P7 60/60, P8 1440/1440, P9 | **H9 WSPARTA, kod 0** | `d14b0a7` |
+
+Dowód wchłonięcia wykonany przed jakimkolwiek sprzątaniem, dla każdej gałęzi
+osobno: `git cherry main <branch>` pusty, `git diff <tip> main -- <katalog>`
+pusty, `git merge-base --is-ancestor <branch> main` prawdziwy. Gałęzie
+`experiment/20260809_K26`, `experiment/20260810_K26v2` i
+`experiment/20260814_K26v3` wolno teraz skasować; zostały zachowane do decyzji.
+
+### Co położyło dwie pierwsze kampanie
+
+**K26 — cykl życia procesu.** Podczas pierwszej rodziny P8 długie połączenie
+SSH zamknęło sesję workera po 4/4 warm-upach i 9/480 komórkach; na workerze nie
+został ani runner, ani `xretractor`, natomiast hostowy klient i nadzorca wisiały
+dalej. Wszystkie 13 `run.rc` miały kod 0, nie było OOM ani `STOP-8`. To nie jest
+wynik pomiarowy, tylko defekt aparatury — klasyfikacja `apparatus`, zakaz
+wznowienia, nowa wersja.
+
+**K26v2 — procedura decyzyjna nietestowana na prawdziwych danych.** Naprawiła
+cykl życia (odłączone sesje `screen`, krótkie SSH) i przeszła **cały** pomiar:
+bramki, kalibracja, macierz 1440/1440. Przerwała się dopiero w P9, bo
+`verdict.py` po raz pierwszy zobaczył prawdziwe liczby **po** 48 h macierzy i
+wywrócił się na metryce zdegenerowanej (redukcja niezdefiniowana przy zerowym
+odniesieniu, `0/0`). Werdykt brzmi **BRAK WERDYKTU** i taki zostaje; danych
+K26v2 nie wolno łączyć z K26v3.
+
+To jest właściwa lekcja tego łuku i była droga: **bramka aparatury musi objąć
+także procedurę decyzyjną, nie tylko pomiar**. Samotest na danych syntetycznych
+tego nie łapie.
+
+### Co K26v3 zrobiła inaczej
+
+Dziesięć napraw: D1–D8 z audytu K26v2 plus dwa wymagania własne.
+
+* **N9 — próba generalna procedury decyzyjnej na danych pilota, przed
+  związaniem kampanii.** Najważniejsza naprawa: D6, D7 i D8 zostałyby wykryte
+  w P4 zamiast po macierzy. Próba miała zęby — pokazała ścieżkę §7.4 (`Q=1`,
+  `substrate_bytes=0`) i ścieżkę §7.2 (`instances` 1 vs 2/3).
+* **N10 — wznawialność na poziomie bloku i pętla pod `systemd` workera.**
+  Komórka jest zrobiona dopiero, gdy `run.rc=0` **i** `summary.tsv` zgadza się
+  z przeliczoną sondą; niekompletna jest kasowana w całości. Sprawdzone żywym
+  `sysrq-b` w trakcie zapisu: jedna z uszkodzonych komórek miała wszystkie trzy
+  pliki, ale `summary.tsv` 0 bajtów — naiwne „plik istnieje" wpuściłoby ją do
+  macierzy.
+
+### Przebieg P8 — 1440/1440, bez interwencji z hosta
+
+| Rodzina | Start | Koniec | Czas | `rc` |
+|---|---|---|---:|---|
+| F9-R2 | 2026-08-14 17:29:52 | 2026-08-15 09:39:25 | 16 h 09 min | 0 |
+| F9-R1 | 2026-08-15 09:41:07 | 2026-08-16 01:51:17 | 16 h 10 min | 0 |
+| F9-X | 2026-08-16 01:52:58 | 2026-08-16 18:03:23 | 16 h 10 min | 0 |
+
+48 h 34 min zegara, dwa zaplanowane restarty workera między rodzinami — usługa
+wstała sama z bootu i podjęła następną rodzinę. Host był przez cały pomiar
+zbędny; stan odczytywał bezstanowy `collect_p8_archives.sh`. Zero `STOP-8`,
+zero `HALT`, unit skończył `disabled` z `Result=success`.
+
+### Werdykt
+
+`verdict.py` uruchomiony **raz**, na kompletnych wejściach (mechanism 108,
+timing 1440, gates 21), kod wyjścia **0**.
+
+| Rodzina | Redukcja / ablacja @`Q=8` | / `FLINK_NATURAL` | Cena czasowa, 95% CI | Rodzina |
+|---|---:|---:|---|---|
+| F9-R2 | 50,000% | 87,500% | 0,9170 [0,9150; 0,9274] | SUPPORT |
+| F9-R1 | 50,000% | 87,497% | 0,9799 [0,9495; 0,9934] | SUPPORT |
+| F9-X | 58,333% | 84,374% | 0,7399 [0,7207; 0,7437] | SUPPORT |
+
+Progi zamrożone przed pomiarem: redukcja ≥ 40% wobec ablacji minimalnej **oraz**
+wobec `FLINK_NATURAL`; górna granica sparowanego bootstrap 95% CI ilorazu
+`DEFAULT/ablacja` ≤ 1,05. Spełnione w każdej rodzinie. **H9 WSPARTA w klasie
+`Q=8`, 3/3 rodziny** przy regule 2/3.
+
+### Co zostało potwierdzone, a co nie
+
+Potwierdzone:
+
+* mechanizm automatycznego współdzielenia materializacji **działa i jest
+  praktycznie bezkosztowy czasowo** w zbadanej klasie — cena czasowa wyszła
+  poniżej 1 we wszystkich trzech rodzinach;
+* aparatura utrzymuje reżim czasu rzeczywistego: `lost_records` w całej macierzy
+  **0**, najgorszy udział `p99` **34,5%** (F9-R1, `NO_R1_FACTOR`, `Q=32`,
+  blok 20). Ogon, który w kalibracji dał dwa przekroczenia na 11 988 slotów,
+  w macierzy nie wystąpił ani razu;
+* wszystkie 21 bramek `PASS`/`clean`, kontrole negatywne czyste, identyczność
+  wyników publicznych zachowana;
+* `rate_scale=4` wyprowadzony od zera drugi raz niezależnie (K26v2 miała przy
+  tej skali zapas 29,9%, K26v3 — 41,7%). Zgodność wyboru jest wynikiem, nie
+  przeniesieniem.
+
+**Nie** potwierdzone i nie do uogólniania:
+
+* **nic o ogólnej szybkości.** „RetractorDB jest szybszy od Flinka", „zawsze
+  zużywa mniej pamięci" i „Flink nie potrafi współdzielić" pozostają
+  nieuprawnione. Rola Flinka w progu jest bajtowa i strukturalna; czasu
+  RetractorDB z czasem JVM nie porównywano;
+* **dwa przewidywania punktowe przy `Q=1` były chybione** — F9-R2 dała 100,000%
+  wobec predeklarowanych 0,000%, F9-X −0,011% wobec −25,000%. `verdict.py`
+  zaraportował je jako uwagi, bo metryka pierwotna jest zamrożona na `Q=8` i te
+  punkty do niej nie wchodzą. Werdykt stoi, ale zapis zostaje niewygładzony;
+* **K26v3 nie jest niezależną replikacją strony bajtowej.** Korpus i ziarna są
+  te same co w K26v2, bo predeklaracja je zamraża, a strona planu jest
+  deterministyczna. Świeży jest pomiar czasu;
+* **identyczność `DEFAULT` i `FLINK_MANUAL` jest konstrukcyjna** — `MANUAL`
+  zbudowano jako odtworzenie węzłów planu `DEFAULT`, więc nigdy nie wolno tego
+  nazywać niezależnym potwierdzeniem;
+* **motivational validity pozostaje osią ryzyka.** Pytanie „kto pisze to samo
+  obliczenie w ośmiu postaciach?" nie zostało rozbrojone — zostało zapisane
+  w predeklaracji przed wynikami i tak trzeba je cytować.
+
+### Gdzie leżą dowody
+
+Aparatura, predeklaracje i manifesty trzech kampanii są w `main`. Wejścia
+werdyktu K26v3 wchodzą do git (`results_20260814_K26v3/matrix/`), żeby wynik
+dał się przeliczyć po skasowaniu gałęzi. Surowe sondy P8 — trzy archiwa, 1440
+komórek, 96 MB — zostają poza git zgodnie z polityką z 2026-07-31; audyt
+integralności prowadzi `results_20260814_K26v3/K26v3-P8_raw.index.tsv`, kopia
+na hoście w `~/k26v3_archives/`. Pełny raport kampanii:
+`results_20260814_K26v3/WERDYKT.md`. `README.md` kampanii został **nietknięty**
+— jest w zamrożonym manifeście i jego zmiana wywróciłaby `freeze_check.sh`.
