@@ -82,6 +82,12 @@ decyduje również `W_src`. To rozstrzyga pytanie z zadania 1a **przecząco**:
 dla tych trzech klas nie ma postaci `O(1)` analogicznej do `+` czy `@`;
 dokładna postać jest przeglądowa, `O(p+q)`, dokładnie jak w klasie `#`.
 
+**Korekta z 2026-08-18 (faza 2c).** Zdanie „postaci `O(1)` nie ma" jest
+prawdziwe dla **członu własnego** jako funkcji `(p, q)` — i tylko w tym zakresie
+było mierzone. Pełny ogon **jest** funkcją `O(1)`; rozkład, który to pokazuje,
+idzie po `idx(n) = n·r + e(n)`, a nie po granicy „generyczne przeliczenie plus
+dodatek". Wyprowadzenie i dowód: [`DERIVATION.md`](DERIVATION.md) §5.
+
 Uboczny wniosek diagnostyczny: **`Θ` przy ilorazie całkowitym ma człon własny
 zerowy w 100% węzłów**. Dzisiejszy komentarz w `compiler.cpp`
 („Θ zawsze wyprzedza swój slot o mniej niż jeden okres wyjścia. Jeden slot jest

@@ -140,56 +140,100 @@ deklaracje wymagają C2 i myli się siedem pozostałych klas. Kampania K24
 implementuje, więc wyprowadzenie idzie dalej w C1. Gdyby człowiek rozstrzygnął
 odwrotnie, zmiana dotyczy siedmiu klas i całego artykułu, nie tej pozycji.
 
-## 5. Zadanie 1c — materiał do `SOperations.hpp` (do wklejenia w fazie 3)
+## 5. Postać zamknięta `O(1)` — przegląd był narzędziem dowodu
 
-Odwzorowania indeksu **już istnieją** w `SOperations.hpp` i są używane przez
-`computeLogicalOrigin()`: `Subtract(d_src, d_out, n)`, `Div(d_out, param, n)`,
-`Mod(param, d_out, n)`. Faza 3 nie pisze nowych odwzorowań — przegląd wywołuje
-te same funkcje, co rachunek początku logicznego. To zarazem kontrola spójności:
-jedna definicja odwzorowania obsługuje obie wielkości.
+Sekcja dopisana po fazie 2c. Wyprowadzenie wariantu zapasowego pokazało, że
+przegląd okresu **nie jest potrzebny w silniku**: te same wartości daje postać
+`O(1)`.
 
-Szkic wspólnej funkcji:
+**Twierdzenie.** Niech `r = d_out/d_src` i niech odwzorowanie indeksu rozkłada
+się jako `idx(n) = n·r + e(n)`, gdzie `sup_n e(n) = c` jest **osiągane**. Wtedy
 
-```cpp
-// Ogon operatora jednoargumentowego o odwzorowaniu indeksu `indexMap`.
-// Warunek dostępności dla slotu n: rekord indexMap(n) składowej jest określony
-// w chwili (indexMap(n)+1+W_src)*d_src, a slot n kończy się w (n+1+W)*d_out, więc
-//   W >= ceil( (indexMap(n)+1+W_src) * d_src/d_out ) - 1 - n.
-// Prawa strona jest okresowa o okresie q = mianownik skróconego d_out/d_src:
-// przez q slotów wyjścia odwzorowanie przesuwa się o dokładnie p rekordów
-// składowej (p/q = d_out/d_src), więc faza odczytu wraca do punktu wyjścia
-// (lemat okresowości, investigation_K24H10/DERIVATION.md §1). Maksimum po
-// [0, q) jest zatem maksimum po wszystkich slotach — przegląd nie potrzebuje
-// początku logicznego i nie wiąże się z kolejnością wobec computeLogicalOrigin().
-//
-// Koszt O(q). Powyżej kPhaseScanLimit wraca postać zawyżająca sprzed 2026-08-18:
-// zaniżenie ogona oznacza rekord wyemitowany przed określeniem zależności,
-// zawyżenie — tylko slot opóźnienia.
-template <typename IndexMap>
-inline int ScanStartupLatency(const rational<int> &deltaSource, const rational<int> &deltaTarget,
-                              const int sourceLatency, IndexMap indexMap);
+```
+W = max(0, ceil( (c + 1 + W_src) / r ) - 1).
 ```
 
-Trzy wejścia i to, co znika:
+*Dowód.* Podstawiając rozkład do warunku dostępności:
 
-| Klasa | `indexMap(n)` | Co znika z dzisiejszego rachunku |
+```
+f(n) = ceil( (n·r + e(n) + 1 + W_src)/r ) - 1 - n = ceil( (e(n)+1+W_src)/r ) - 1,
+```
+
+bo `n·r/r = n` jest całkowite i wychodzi przed sufit, kasując `-n`. Prawa strona
+zależy od `n` wyłącznie przez `e(n)` i rośnie z nim niemalejąco, więc maksimum
+po `n` osiąga się tam, gdzie `e(n)` osiąga kres. ∎
+
+**Stałe `c` i osiągalność kresu** (`d_out/d_src = p/q`, `gcd(p,q)=1`):
+
+| Klasa | `e(n)` | `c` | Kres osiągany, bo |
+|---|---|---|---|
+| `-` | `ceil(np/q) - np/q = (q - s)/q`, `s = np mod q` | `(q-1)/q` | `gcd(p,q)=1`, więc `s=1` dla pewnego `n` |
+| `Θ` | `(a - t)/b` przy `t=0`, inaczej `(a + b - t)/b`, `t = (n+1)a mod b` | `(a+b-1)/b` | `gcd(a,b)=1`, więc `t=1` dla pewnego `n` (dla `b=1` kres to `a`, ta sama wartość) |
+| `~Θ` | `-(na mod b)/b <= 0` | `0` | `n = 0` |
+
+Osiągalność jest istotą rzeczy: bez niej postać byłaby tylko oszacowaniem
+z góry. To zarazem wyjaśnia, dlaczego dzisiejsza reguła `-` zawyża — jej człon
+fazowy `(q-1)/q` jest poprawny, ale wchodzi do rachunku w złym miejscu
+(jako dodatek do `W_src` zamiast do indeksu), a reguła `Θ` dokłada stały slot
+tam, gdzie kres wynosi `a/b` i po podzieleniu przez `r` daje zero.
+
+**Weryfikacja** ([`phase2_closed.py`](phase2_closed.py), [`phase2_bound.py`](phase2_bound.py)):
+
+| Kontrola | `-` | `Θ` | `~Θ` |
+|---|---|---|---|
+| postać `O(1)` `==` oracle, korpus, ziarno `20260804` | 4329/4329 | 2578/2578 | 2503/2503 |
+| to samo, ziarno `20260807` | 4320/4320 | 2612/2612 | 2619/2619 |
+| postać `O(1)` `==` przegląd okresu (oba ziarna) | 100% | 100% | 100% |
+| przemiatanie poza korpusem (`q` do 60, `W_src` do 8): zaniżeń | 0 / 19818 | 0 / 13218 | 0 / 13218 |
+| to samo: przypadków, gdzie `O(1)` `==` przegląd | 100% | 100% | 100% |
+
+**Korekta wobec `PHASE0.md` §3.** Tam zapisano „postaci `O(1)` nie ma".
+Zdanie jest prawdziwe w tym, co mierzyło — **człon własny** operatora nie jest
+funkcją samego `(p, q)` — ale mylące jako wniosek ogólny: pełny ogon **jest**
+funkcją `O(1)` argumentów `(c, r, W_src)`. Pomyłka brała się stąd, że człon
+własny rozbija rachunek na „generyczne przeliczenie plus dodatek", a poprawny
+rozkład idzie po `idx(n) = n·r + e(n)`, nie po tej granicy.
+
+**Skutek dla planu: znika próg przeglądu.** Nie ma `kPhaseScanLimit`, nie ma
+wariantu zapasowego i nie ma zadania 2c w pierwotnym brzmieniu — kontrola progu
+zamieniła się w kontrolę dokładności postaci, i tę postać zamyka dowód, a nie
+przemiatanie. Klasa `#` zostaje jedyną, która przegląda okres (`O(p+q)`).
+
+## 6. Zadanie 1c — materiał do `SOperations.hpp` (do wklejenia w fazie 3)
+
+Odwzorowania indeksu (`Subtract`, `Div`, `Mod`) zostają tam, gdzie są — używa
+ich `computeLogicalOrigin()`. Rachunek ogona ich **nie wywołuje**: wchodzi do
+niego wyłącznie stała `c` wyprowadzona z tego samego odwzorowania.
+
+```cpp
+// Ogon C-Delta. Rekord n czyta rekord ceil(n*d_out/d_src) źródła, czyli
+// idx(n) = n*r + e(n) przy r = d_out/d_src = p/q, gdzie e(n) = (q - n*p mod q)/q.
+// Warunek dostępności upraszcza się wtedy do W >= ceil((e(n)+1+W_src)/r) - 1,
+// a kres e(n) = (q-1)/q jest osiągany, bo gcd(p,q) = 1 (dowód: DERIVATION.md §5).
+constexpr int SubtractStartupLatency(const rational<int> &deltaSource, const rational<int> &deltaTarget,
+                                     const int sourceLatency) {
+  const auto ratio = deltaTarget / deltaSource;
+  const rational<int> phase(ratio.denominator() - 1, ratio.denominator());
+  return std::max(0, ceilR((phase + 1 + sourceLatency) / ratio) - 1);
+}
+```
+
+| Klasa | `c` | Co znika z dzisiejszego rachunku |
 |---|---|---|
-| `-` | `Subtract(d_src, d_out, n)` | człon fazowy `(q-1)/q` **i** gałąź `sourceDeclared` (§4) |
-| `Θ` | `Div(d_out, param, n)` | bezwarunkowe `++result` |
-| `~Θ` | `Mod(param, d_out, n)` | milczące poleganie na zaokrągleniu bazy `ceil(W_src*d_src/d_out)` |
+| `-` | `(q-1)/q` | gałąź `sourceDeclared` (§4) oraz błędne miejsce członu fazowego |
+| `Θ` | `(a+b-1)/b`, `a/b = d_out/param` | bezwarunkowe `++result` |
+| `~Θ` | `0` | milczące poleganie na zaokrągleniu bazy `ceil(W_src*d_src/d_out)` |
 
 Uwaga do komentarzy, które trzeba **poprawić, a nie tylko uzupełnić**:
 dzisiejszy tekst przy `STREAM_DEHASH_DIV` w `compiler.cpp` („Θ zawsze wyprzedza
 swój slot o mniej niż jeden okres wyjścia. Jeden slot jest dokładnym własnym
 ogonem operatora") jest nieprawdziwy — przy ilorazie całkowitym człon własny
-`Θ` wynosi zero w 100% węzłów korpusu (PHASE0.md §3).
+`Θ` wynosi zero w 100% węzłów korpusu.
 
-## 6. Co faza 1 zostawia fazie 2
+## 7. Co faza 1 i 2 zostawiają fazie 3
 
-- Postać jest **jedna**, więc kontrola zasięgu w fazie 2b sprowadza się do
-  sprawdzenia, że sześć pozostałych klas nie zmienia ani jednego węzła.
-- Próg `kPhaseScanLimit` (2c) wymaga wariantu zapasowego, który **nie zaniża**.
-  Kandydatem jest dzisiejsza reguła każdej z trzech klas: w całym korpusie jej
-  odchyłka wobec dokładnej postaci wynosi `0` albo `+1`, nigdy `-1`. Dla `q`
-  poza korpusem jest to na razie **założenie**, nie wynik — faza 2c ma je
-  sprawdzić celowaną kontrolą, a nie odziedziczyć.
+- Trzy postacie `O(1)`, każda w jednej linii, bez przeglądu i bez progu.
+- Rachunek ogona przestaje zależeć od `isDeclaration()` — jedna zmienna mniej
+  w sygnaturze.
+- Przypadki ręczne do testu są policzone i sprawdzone wobec oracle'a
+  ([`PHASE2.md`](PHASE2.md) §4).
