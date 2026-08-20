@@ -52,8 +52,9 @@ Release jeden przebieg oblał na `it_issue6_adhoc-run` (187/188). Test przechodz
 w izolacji, jego zapytanie nie zawiera żadnej z trzech zmienionych klas
 (`DECLARE` + projekcja), a jego oprawa synchronizuje się `sleep 0.1` przed
 ubiciem serwera. Zjawisko ma własny plan —
-`paper-arXiv/debs/plan-ad-hoc-falk.md` — i **nie jest zamknięte**. Wpisane tutaj,
-bo przypięcie ma mówić prawdę o stanie, w którym kampania startowała.
+`paper-arXiv/debs/done/plan-ad-hoc-flak.md` — i **w chwili startu kampanii nie
+było zamknięte**. Wpisane tutaj, bo przypięcie ma mówić prawdę o stanie,
+w którym kampania startowała.
 
 ## 4. Bramki aparatury (przed kampanią)
 
