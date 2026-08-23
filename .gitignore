@@ -12,6 +12,19 @@ __pycache__/
 # Wzorzec lapie i bezimienny 'raw.tar.gz' (worker), i nazwany '..._raw.tar.gz' (host).
 *raw.tar.gz
 
+# Korekta 2026-08-23. Polityka wyzej zostaje dla archiwow przyszlych, ale trzy
+# archiwa, ktore zdazyla objac, wracaja do repozytorium. Powod: reszta (piatnastka
+# sprzed 2026-07-31) nigdy z niego nie wyszla, bo .gitignore nie przestaje sledzic
+# tego, co juz bylo sledzone. Powstal stan, w ktorym klon niosl 15 z 18 archiwow,
+# a o pozostalych trzech mowil tylko, ze istnieja gdzies na jednej maszynie.
+# Dwa mieszcza sie w limicie GitHuba i wchodza wprost:
+!results_20260730_K6c/ablation/study_07_W9/results_20260730_K6c_study_07_W9_raw.tar.gz
+!results_20260731_hygiene220/results/raw.tar.gz
+# Trzecie (W8, 155 MB) przekracza twardy limit 100 MB na plik, wiec wchodzi
+# w czesciach po 45 MiB — patrz lib/raw_parts.sh. Czesci '.part-NN' i indeks
+# '.parts.tsv' nie koncza sie na 'raw.tar.gz', wiec wzorzec ich nie lapie,
+# a sama calosc pozostaje poza git swiadomie: skladalna, nie przechowywana.
+
 # Katalogi robocze przebiegow K24: kampania i bramka odwzorowania zapisuja tam
 # query.rql, dane zrodlowe i artefakty binarne kazdego planu. To jest scratch
 # odtwarzalny z ziarna, nie artefakt badania — indeks SHA-256 obejmuje wylacznie
