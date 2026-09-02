@@ -1,13 +1,13 @@
-# K22v5 — werdykt H8
+# K22v5 — H8 verdict
 
-Kampania jest prospektywną kontynuacją po zatrzymanym pilocie K22.
+The campaign is a prospective continuation after the halted K22 pilot.
 
-| Rodzina | Wygrane | Próg | Wynik |
+| Family | Wins | Threshold | Result |
 |---|---:|---:|---|
 | F1 | 0/4 | 3/4 | FAIL |
 | F2 | 1/4 | 3/4 | FAIL |
 | F3 | 2/4 | 3/4 | FAIL |
 
-**H8: BRAK WSPARCIA** (0/3 rodzin).
+**H8: NO SUPPORT** (0/3 families).
 
-M1/F2 i M1/F3 pozostają z góry zapisanymi brakami wygranej niezależnie od pomiaru.
+M1/F2 and M1/F3 remain pre-recorded absences of a win, independently of the measurement.

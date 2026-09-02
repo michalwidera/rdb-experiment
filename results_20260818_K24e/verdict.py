@@ -21,9 +21,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 
-EXACT = "dokładna"
-CONSERVATIVE = "zawyżająca"
-UNDER = "ZANIŻAJĄCA"
+EXACT = "exact"
+CONSERVATIVE = "over-approximating"
+UNDER = "UNDER-APPROXIMATING"
 
 
 def load(path):
@@ -107,10 +107,10 @@ def controls(rows):
         return sum(1 for row in selected if row[column] != "0")
 
     return {
-        "HC_SINGLE (dosłownie)": (len(literal_single), breaches(literal_single, "divergence_a")),
-        "HC_SINGLE (operatory bez własnego ogona)": (len(phase_free), breaches(phase_free, "divergence_a")),
-        "HC_INT (dosłownie)": (len(literal_int), breaches(literal_int, "divergence_a")),
-        "HC_INT (węzły `#`, reguła lokalna B)": (len(int_hash), breaches(int_hash, "divergence_b")),
+        "HC_SINGLE (literal)": (len(literal_single), breaches(literal_single, "divergence_a")),
+        "HC_SINGLE (operators with no tail of their own)": (len(phase_free), breaches(phase_free, "divergence_a")),
+        "HC_INT (literal)": (len(literal_int), breaches(literal_int, "divergence_a")),
+        "HC_INT (`#` nodes, local rule B)": (len(int_hash), breaches(int_hash, "divergence_b")),
     }
 
 
@@ -121,17 +121,18 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
     plans = len({row["plan"] for row in rows})
 
     lines = [
-        "# K24d / H10 — werdykt", "",
-        f"Korpus: **{plans} planów**, **{len(rows)} obserwacji węzłowych**, "
-        f"zero błędów aparatury. Ziarno {seed}, silnik `{engine}` (PIN.md).", "",
-        "Werdykt jest raportowany per klasa operatora. Zgodność 100% jest jedynym",
-        "wsparciem H10a w klasie; jedna niezgodność falsyfikuje H10a w tej klasie.", "",
-        "## 1. H10a — dokładność, per klasa operatora", "",
-        "Kolumna **izolowana** jest werdyktem: postać zamknięta policzona z ogonów",
-        "składowych wziętych z oracle'a, więc niezgodność pochodzi z reguły tego",
-        "węzła. Kolumna **propagowana** to zgodność zrzutu planu silnika z oracle'em",
-        "na całym planie — zawiera skutki niezgodności odziedziczonych po dzieciach.", "",
-        "| Klasa | Węzłów | Izolowana C1 | Izolowana C2 | Propagowana C1 | Reżim | Werdykt H10a |",
+        "# K24d / H10 — verdict", "",
+        f"Corpus: **{plans} plans**, **{len(rows)} node observations**, "
+        f"zero apparatus errors. Seed {seed}, engine `{engine}` (PIN.md).", "",
+        "The verdict is reported per operator class. 100% agreement is the only",
+        "support for H10a in a class; one mismatch falsifies H10a in that class.", "",
+        "## 1. H10a — exactness, per operator class", "",
+        "The **isolated** column is the verdict: the closed form computed from the",
+        "component tails taken from the oracle, so a mismatch originates in this",
+        "node's own rule. The **propagated** column is the agreement of the engine's",
+        "plan dump with the oracle over the whole plan — it carries the effects of",
+        "mismatches inherited from children.", "",
+        "| Class | Nodes | Isolated C1 | Isolated C2 | Propagated C1 | Regime | H10a verdict |",
         "|---|---:|---:|---:|---:|---|---|",
     ]
 
@@ -140,7 +141,7 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
         entry = stats[kind]
         mode = regime(entry)
         regimes[kind] = mode
-        verdict = "**wsparta**" if mode == EXACT else "**FALSYFIKACJA**"
+        verdict = "**supported**" if mode == EXACT else "**FALSIFICATION**"
         lines.append(
             f"| `{kind}` | {entry['n']} | {entry['step1'] / entry['n']:.1%} | "
             f"{entry['step2'] / entry['n']:.1%} | {entry['prop'] / entry['n']:.1%} | "
@@ -150,18 +151,19 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
     over = [k for k, v in regimes.items() if v == CONSERVATIVE]
     under = [k for k, v in regimes.items() if v == UNDER]
 
-    lines += ["", "### Trzy reżimy", "",
-              f"* **dokładna** (postać zamknięta == oracle wszędzie): "
-              f"{', '.join(f'`{k}`' for k in exact) or 'brak'};",
-              f"* **zawyżająca** (nigdy nie zaniża, bezpieczna, ale nie równa): "
-              f"{', '.join(f'`{k}`' for k in over) or 'brak'};",
-              f"* **zaniżająca** (ogon mniejszy od wymaganego przez model zdarzeniowy): "
-              f"{', '.join(f'`{k}`' for k in under) or 'brak'}.", "",
-              "Reżim zaniżający jest jakościowo inny od zawyżającego: zawyżenie",
-              "opóźnia emisję o slot, zaniżenie oznacza rekord wyemitowany, zanim",
-              "wszystkie jego zależności są określone.", "",
-              "### Rozkład różnicy (postać zamknięta − oracle C1)", "",
-              "| Klasa | Rozkład |", "|---|---|"]
+    lines += ["", "### The three regimes", "",
+              f"* **exact** (closed form == oracle everywhere): "
+              f"{', '.join(f'`{k}`' for k in exact) or 'none'};",
+              f"* **over-approximating** (never under-approximates; safe, but not equal): "
+              f"{', '.join(f'`{k}`' for k in over) or 'none'};",
+              f"* **under-approximating** (tail shorter than the event model requires): "
+              f"{', '.join(f'`{k}`' for k in under) or 'none'}.", "",
+              "The under-approximating regime is qualitatively different from the",
+              "over-approximating one: over-approximation delays emission by a slot,",
+              "under-approximation means a record emitted before all its dependencies",
+              "are determined.", "",
+              "### Difference distribution (closed form − oracle C1)", "",
+              "| Class | Distribution |", "|---|---|"]
     for kind in sorted(stats, key=lambda key: -stats[key]["n"]):
         entry = stats[kind]
         total = entry["n"]
@@ -169,22 +171,22 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
                          for gap, count in sorted(entry["delta"].items()))
         lines.append(f"| `{kind}` | {dist} |")
 
-    lines += ["", "### Świadkowie", "",
-              "| Klasa | Kierunek | Plan | Węzeł | Interwał | Silnik | Postać zamknięta (izol.) | Oracle C1 |",
+    lines += ["", "### Witnesses", "",
+              "| Class | Direction | Plan | Node | Interval | Engine | Closed form (isol.) | Oracle C1 |",
               "|---|---|---:|---|---|---:|---:|---:|"]
     for kind in sorted(stats, key=lambda key: -stats[key]["n"]):
-        for direction, key in (("zawyżenie", "witness_over"), ("**zaniżenie**", "witness_under")):
+        for direction, key in (("over", "witness_over"), ("**under**", "witness_under")):
             for row in stats[kind][key]:
                 lines.append(f"| `{kind}` | {direction} | {row['plan']} | {row['node']} | "
                              f"`{row['delta']}` | {row['engine_tail']} | {row['step_c1']} | "
                              f"{row['oracle_c1']} |")
 
     origin_stats = classify_origin(rows)
-    lines += ["", "## 1b. H10a — początek logiczny, per klasa operatora", "",
-              "Wielkość wprowadzona przestemplowaniem z 2026-08-06 i nieobecna",
-              "w kampaniach K24/K24r. Kolumna **suma** porównuje origin+ogon —",
-              "to jedyna wielkość wspólna z kampaniami sprzed zmiany.", "",
-              "| Klasa | Węzłów | Izolowana | Propagowana | Suma (origin+ogon) | Reżim | Werdykt |",
+    lines += ["", "## 1b. H10a — logical origin, per operator class", "",
+              "A quantity introduced by the re-stamping of 2026-08-06 and absent from",
+              "the K24/K24r campaigns. The **sum** column compares origin+tail — the",
+              "only quantity shared with the campaigns predating that change.", "",
+              "| Class | Nodes | Isolated | Propagated | Sum (origin+tail) | Regime | Verdict |",
               "|---|---:|---:|---:|---:|---|---|"]
     origin_regimes = {}
     for kind in sorted(origin_stats, key=lambda key: -origin_stats[key]["n"]):
@@ -196,14 +198,14 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
         else:
             mode = CONSERVATIVE
         origin_regimes[kind] = mode
-        verdict = "**wsparta**" if mode == EXACT else "**FALSYFIKACJA**"
+        verdict = "**supported**" if mode == EXACT else "**FALSIFICATION**"
         lines.append(
             f"| `{kind}` | {entry['n']} | {entry['step'] / entry['n']:.1%} | "
             f"{entry['prop'] / entry['n']:.1%} | {entry['silence'] / entry['n']:.1%} | "
             f"{mode} | {verdict} |")
 
-    lines += ["", "### Rozkład różnicy origin (rachunek silnika − oracle)", "",
-              "| Klasa | Rozkład |", "|---|---|"]
+    lines += ["", "### Origin difference distribution (engine calculus − oracle)", "",
+              "| Class | Distribution |", "|---|---|"]
     for kind in sorted(origin_stats, key=lambda key: -origin_stats[key]["n"]):
         entry = origin_stats[kind]
         total = entry["n"]
@@ -212,29 +214,29 @@ def render(rows, out, seed="20260803", engine="5e3eb42"):
         lines.append(f"| `{kind}` | {dist} |")
 
     origin_under = [k for k, v in origin_regimes.items() if v == UNDER]
-    lines += ["", f"Origin zaniżony (odczyt przed początkiem źródła): "
-                  f"{', '.join(f'`{k}`' for k in origin_under) or '**brak**'}.", ""]
+    lines += ["", f"Origin under-approximated (a read before the source's origin): "
+                  f"{', '.join(f'`{k}`' for k in origin_under) or '**none**'}.", ""]
 
-    lines += ["## 2. H10b — nielokalność", "",
-              f"* rozjazd reguły lokalnej A z dokładną: **{b['diverging']} z {b['plans']} "
-              f"planów = {b['share']:.1%}** (próg predeklarowany: >= 5%)",
-              f"* populacja predeklarowana (dokładnie jeden `#`, poza tym `PASS`/`>N`): "
-              f"**{b['eligible']} planów**, rozjazdów dodatnich **{b['positive']}**",
-              f"* rozjazdów o predeklarowanej postaci `ceil((p+q-1)/p)`: "
-              f"**{b['matching']} z {b['positive']}** "
-              f"({b['matching'] / max(b['positive'], 1):.1%}; próg: 100%)", ""]
+    lines += ["## 2. H10b — non-locality", "",
+              f"* divergence of local rule A from the exact one: **{b['diverging']} of "
+              f"{b['plans']} plans = {b['share']:.1%}** (pre-declared threshold: >= 5%)",
+              f"* pre-declared population (exactly one `#`, otherwise `PASS`/`>N`): "
+              f"**{b['eligible']} plans**, positive divergences **{b['positive']}**",
+              f"* divergences of the pre-declared form `ceil((p+q-1)/p)`: "
+              f"**{b['matching']} of {b['positive']}** "
+              f"({b['matching'] / max(b['positive'], 1):.1%}; threshold: 100%)", ""]
 
-    lines += ["## 3. Kontrole negatywne", "",
-              "| Kontrola | Węzłów | Rozjazdów | Stan |", "|---|---:|---:|---|"]
+    lines += ["## 3. Negative controls", "",
+              "| Control | Nodes | Divergences | State |", "|---|---:|---:|---|"]
     for label, (count, breaks) in ctl.items():
-        state = "**przeszła**" if breaks == 0 else "**ZŁAMANA**"
+        state = "**passed**" if breaks == 0 else "**BROKEN**"
         lines.append(f"| {label} | {count} | {breaks} | {state} |")
 
-    lines += ["", "Obie kontrole predeklarowane **w postaci dosłownej są złamane**.",
-              "Zgodnie z PREDECLARATION.md §6 oznacza to źle zdefiniowaną regułę",
-              "lokalną, a nie wynik — dlatego **człon (b) jest nieocenialny na tej",
-              "aparaturze** i powyższe liczby H10b nie stanowią werdyktu. Diagnoza",
-              "sprzeczności w specyfikacji członu (b): REPORT.md §5.", ""]
+    lines += ["", "Both pre-declared controls **are broken in their literal form**.",
+              "Under PREDECLARATION.md §6 this means an ill-defined local rule rather",
+              "than a result — therefore **part (b) is not assessable on this",
+              "apparatus** and the H10b figures above do not constitute a verdict.",
+              "Diagnosis of the contradiction in part (b)'s specification: REPORT.md §5.", ""]
 
     Path(out).write_text("\n".join(lines) + "\n", encoding="utf-8")
     return {"exact": exact, "over": over, "under": under, "b": b, "controls": ctl,
@@ -251,14 +253,14 @@ def main():
     parser.add_argument("--engine", default="db4a360")
     args = parser.parse_args()
     summary = render(load(args.raw), args.out, args.seed, args.engine)
-    print(f"dokładne: {summary['exact']}")
-    print(f"zawyżające: {summary['over']}")
-    print(f"zaniżające: {summary['under']}")
-    print(f"origin — klasy z zaniżeniem: {summary['origin_under'] or 'brak'}")
-    print(f"H10b (nieocenialny): rozjazd {summary['b']['share']:.1%}, "
-          f"postać {summary['b']['matching']}/{summary['b']['positive']}")
+    print(f"exact: {summary['exact']}")
+    print(f"over-approximating: {summary['over']}")
+    print(f"under-approximating: {summary['under']}")
+    print(f"origin — classes with under-approximation: {summary['origin_under'] or 'none'}")
+    print(f"H10b (not assessable): divergence {summary['b']['share']:.1%}, "
+          f"form {summary['b']['matching']}/{summary['b']['positive']}")
     for label, (count, breaks) in summary["controls"].items():
-        print(f"kontrola {label}: {breaks}/{count}")
+        print(f"control {label}: {breaks}/{count}")
 
 
 if __name__ == "__main__":

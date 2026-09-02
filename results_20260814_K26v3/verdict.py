@@ -456,7 +456,7 @@ def run(matrix_dir, stream=sys.stdout):
     try:
         mech, time, gate = load(matrix_dir)
     except (FileNotFoundError, ValueError) as exc:
-        print(f"BRAK WERDYKTU: {exc}", file=stream)
+        print(f"NO VERDICT: {exc}", file=stream)
         return 2
 
     results, problems = {}, {}
@@ -467,58 +467,58 @@ def run(matrix_dir, stream=sys.stdout):
             problems[family] = str(exc)
 
     print("=" * 78, file=stream)
-    print("WERDYKT K26 / H9 — automatyczny, wg progow zamrozonych w PREDEKLARACJA.md §7", file=stream)
+    print("VERDICT K26 / H9 -- automatic, by the thresholds frozen in PREDEKLARACJA.md §7", file=stream)
     print("=" * 78, file=stream)
 
     for family in FAMILIES:
-        print(f"\n--- {family} (ablacja minimalna: {MINIMAL_ABLATION[family]}) ---", file=stream)
+        print(f"\n--- {family} (minimal ablation: {MINIMAL_ABLATION[family]}) ---", file=stream)
         if family in problems:
-            print(f"  ITERACJA NIEWAZNA: {problems[family]}", file=stream)
+            print(f"  ITERATION INVALID: {problems[family]}", file=stream)
             continue
         verdict, d = results[family]
-        print(f"  metryka pierwotna @Q={DECISIVE_Q}:", file=stream)
-        print(f"    redukcja wobec ablacji      {float(d['red_ablation']) * 100:8.3f}%   "
-              f"prog {float(THRESHOLD_REDUCTION) * 100:.0f}%   "
-              f"{'OK' if d['red_ablation'] >= THRESHOLD_REDUCTION else 'PONIZEJ'}", file=stream)
-        print(f"    redukcja wobec FLINK_NATURAL{float(d['red_flink']) * 100:8.3f}%   "
-              f"prog {float(THRESHOLD_REDUCTION) * 100:.0f}%   "
-              f"{'OK' if d['red_flink'] >= THRESHOLD_REDUCTION else 'PONIZEJ'}", file=stream)
-        print(f"  cena czasowa DEFAULT/ablacja: punkt {float(d['ratio']):.4f}, "
+        print(f"  primary metric @Q={DECISIVE_Q}:", file=stream)
+        print(f"    reduction vs ablation       {float(d['red_ablation']) * 100:8.3f}%   "
+              f"threshold {float(THRESHOLD_REDUCTION) * 100:.0f}%   "
+              f"{'OK' if d['red_ablation'] >= THRESHOLD_REDUCTION else 'BELOW'}", file=stream)
+        print(f"    reduction vs FLINK_NATURAL  {float(d['red_flink']) * 100:8.3f}%   "
+              f"threshold {float(THRESHOLD_REDUCTION) * 100:.0f}%   "
+              f"{'OK' if d['red_flink'] >= THRESHOLD_REDUCTION else 'BELOW'}", file=stream)
+        print(f"  time penalty DEFAULT/ablation: point {float(d['ratio']):.4f}, "
               f"95% CI [{float(d['ci_low']):.4f}, {float(d['ci_high']):.4f}], "
-              f"prog gornej granicy {float(THRESHOLD_TIME_CI_UPPER):.2f}   "
-              f"{'OK' if d['time_ok'] else 'PRZEKROCZONY'}", file=stream)
-        print(f"  praca ({d['work_column']}, rozdzielajaca w tej rodzinie): redukcja wobec "
-              f"FLINK_NATURAL {float(d['work_reduction']) * 100:.3f}%  [raportowana, nie progowa]",
+              f"upper-bound threshold {float(THRESHOLD_TIME_CI_UPPER):.2f}   "
+              f"{'OK' if d['time_ok'] else 'EXCEEDED'}", file=stream)
+        print(f"  work ({d['work_column']}, discriminating in this family): reduction vs "
+              f"FLINK_NATURAL {float(d['work_reduction']) * 100:.3f}%  [reported, not a threshold]",
               file=stream)
-        print(f"  bramki czyste: {'tak' if d['gates_clean'] else 'NIE'}   "
-              f"kontrole negatywne czyste: {'tak' if d['controls_clean'] else 'NIE'}   "
-              f"identycznosc publicznych wynikow: {'tak' if d['identity_ok'] else 'NIE'}", file=stream)
+        print(f"  gates clean: {'yes' if d['gates_clean'] else 'NO'}   "
+              f"negative controls clean: {'yes' if d['controls_clean'] else 'NO'}   "
+              f"public results identical: {'yes' if d['identity_ok'] else 'NO'}", file=stream)
         for note in d["notes"]:
-            print(f"    uwaga: {note}", file=stream)
-        print(f"  RODZINA: {verdict}", file=stream)
+            print(f"    note: {note}", file=stream)
+        print(f"  FAMILY: {verdict}", file=stream)
 
     print("\n" + "=" * 78, file=stream)
     if problems:
-        print(f"BRAK WERDYKTU — {len(problems)} rodzin(a) technicznie niewaznych lub niepelnych.",
+        print(f"NO VERDICT -- {len(problems)} family/families technically invalid or incomplete.",
               file=stream)
-        print("§10: taka iteracja nie wydaje werdyktu i musi zostac powtorzona w NOWYM", file=stream)
-        print("katalogu; danych miedzy iteracjami nie wolno laczyc.", file=stream)
+        print("§10: such an iteration issues no verdict and must be repeated in a NEW", file=stream)
+        print("directory; data must not be merged across iterations.", file=stream)
         for family, why in problems.items():
             print(f"  {family}: {why}", file=stream)
         return 2
 
     supporting = [f for f in FAMILIES if results[f][0] == "SUPPORT"]
-    print(f"Rodzin wspierajacych H9: {len(supporting)}/{len(FAMILIES)} "
-          f"({', '.join(supporting) if supporting else 'zadna'})", file=stream)
-    print(f"Regula: wsparcie przy co najmniej {FAMILIES_REQUIRED}/{len(FAMILIES)}", file=stream)
+    print(f"Families supporting H9: {len(supporting)}/{len(FAMILIES)} "
+          f"({', '.join(supporting) if supporting else 'none'})", file=stream)
+    print(f"Rule: support at a minimum of {FAMILIES_REQUIRED}/{len(FAMILIES)}", file=stream)
     if len(supporting) >= FAMILIES_REQUIRED:
-        print(f"\nWERDYKT: H9 WSPARTA w klasie Q={DECISIVE_Q}.", file=stream)
-        print("Wniosek dotyczy AUTOMATYZACJI wspoldzielenia materializacji, nie ogolnej", file=stream)
-        print("szybkosci. Zdania 'RetractorDB jest szybszy od Flinka', 'zawsze zuzywa mniej", file=stream)
-        print("pamieci' i 'Flink nie potrafi wspoldzielic' pozostaja NIEUPRAWNIONE (§10).", file=stream)
+        print(f"\nVERDICT: H9 SUPPORTED in the class Q={DECISIVE_Q}.", file=stream)
+        print("The conclusion concerns the AUTOMATION of materialization sharing, not", file=stream)
+        print("general speed. The claims 'RetractorDB is faster than Flink', 'it always", file=stream)
+        print("uses less memory' and 'Flink cannot share' remain UNWARRANTED (§10).", file=stream)
         return 0
-    print("\nWERDYKT: H9 BEZ WSPARCIA.", file=stream)
-    print("Wynik K6c pozostaje obserwacja W9; jego mechanizmu nie wolno uogolniac (§10).", file=stream)
+    print("\nVERDICT: H9 NOT SUPPORTED.", file=stream)
+    print("The K6c result remains observation W9; its mechanism must not be generalized (§10).", file=stream)
     return 1
 
 

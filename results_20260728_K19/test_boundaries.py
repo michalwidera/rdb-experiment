@@ -136,7 +136,7 @@ def check_nulls_and_reductions() -> dict:
     if not all(detected.values()):
         raise AssertionError(f"niewykryte mutacje: {detected}")
     if mirror[0] != (10, 20, None) or sums[:3] != ((30,), (60,), (90,)):
-        raise AssertionError("NULL lub redukcja zmieniły semantykę")
+        raise AssertionError("NULL or reduction changed the semantics")
     return {
         "forward": forward,
         "mirror": mirror,

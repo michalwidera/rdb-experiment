@@ -1,42 +1,44 @@
-# K24d / H10 — werdykt
+# K24d / H10 — verdict
 
-Korpus: **10010 planów**, **35703 obserwacji węzłowych**, zero błędów aparatury. Ziarno 20260820, silnik `e2a61ff` (PIN.md).
+Corpus: **10010 plans**, **35703 node observations**, zero apparatus errors. Seed 20260820, engine `e2a61ff` (PIN.md).
 
-Werdykt jest raportowany per klasa operatora. Zgodność 100% jest jedynym
-wsparciem H10a w klasie; jedna niezgodność falsyfikuje H10a w tej klasie.
+The verdict is reported per operator class. 100% agreement is the only
+support for H10a in a class; one mismatch falsifies H10a in that class.
 
-## 1. H10a — dokładność, per klasa operatora
+## 1. H10a — exactness, per operator class
 
-Kolumna **izolowana** jest werdyktem: postać zamknięta policzona z ogonów
-składowych wziętych z oracle'a, więc niezgodność pochodzi z reguły tego
-węzła. Kolumna **propagowana** to zgodność zrzutu planu silnika z oracle'em
-na całym planie — zawiera skutki niezgodności odziedziczonych po dzieciach.
+The **isolated** column is the verdict: the closed form computed from the
+component tails taken from the oracle, so a mismatch originates in this
+node's own rule. The **propagated** column is the agreement of the engine's
+plan dump with the oracle over the whole plan — it carries the effects of
+mismatches inherited from children.
 
-| Klasa | Węzłów | Izolowana C1 | Izolowana C2 | Propagowana C1 | Reżim | Werdykt H10a |
+| Class | Nodes | Isolated C1 | Isolated C2 | Propagated C1 | Regime | H10a verdict |
 |---|---:|---:|---:|---:|---|---|
-| `HASH` | 5958 | 100.0% | 51.4% | 100.0% | dokładna | **wsparta** |
-| `SHIFT` | 5395 | 100.0% | 95.8% | 100.0% | dokładna | **wsparta** |
-| `PASS` | 4688 | 100.0% | 0.0% | 100.0% | dokładna | **wsparta** |
-| `AGSE` | 4417 | 100.0% | 43.8% | 100.0% | dokładna | **wsparta** |
-| `SUB` | 4376 | 100.0% | 71.7% | 100.0% | dokładna | **wsparta** |
-| `REDUCE` | 3309 | 100.0% | 0.0% | 100.0% | dokładna | **wsparta** |
-| `THETA` | 2574 | 100.0% | 69.9% | 100.0% | dokładna | **wsparta** |
-| `NTHETA` | 2521 | 100.0% | 99.4% | 100.0% | dokładna | **wsparta** |
-| `ADD` | 2465 | 100.0% | 43.0% | 100.0% | dokładna | **wsparta** |
+| `HASH` | 5958 | 100.0% | 51.4% | 100.0% | exact | **supported** |
+| `SHIFT` | 5395 | 100.0% | 95.8% | 100.0% | exact | **supported** |
+| `PASS` | 4688 | 100.0% | 0.0% | 100.0% | exact | **supported** |
+| `AGSE` | 4417 | 100.0% | 43.8% | 100.0% | exact | **supported** |
+| `SUB` | 4376 | 100.0% | 71.7% | 100.0% | exact | **supported** |
+| `REDUCE` | 3309 | 100.0% | 0.0% | 100.0% | exact | **supported** |
+| `THETA` | 2574 | 100.0% | 69.9% | 100.0% | exact | **supported** |
+| `NTHETA` | 2521 | 100.0% | 99.4% | 100.0% | exact | **supported** |
+| `ADD` | 2465 | 100.0% | 43.0% | 100.0% | exact | **supported** |
 
-### Trzy reżimy
+### The three regimes
 
-* **dokładna** (postać zamknięta == oracle wszędzie): `HASH`, `SHIFT`, `PASS`, `AGSE`, `SUB`, `REDUCE`, `THETA`, `NTHETA`, `ADD`;
-* **zawyżająca** (nigdy nie zaniża, bezpieczna, ale nie równa): brak;
-* **zaniżająca** (ogon mniejszy od wymaganego przez model zdarzeniowy): brak.
+* **exact** (closed form == oracle everywhere): `HASH`, `SHIFT`, `PASS`, `AGSE`, `SUB`, `REDUCE`, `THETA`, `NTHETA`, `ADD`;
+* **over-approximating** (never under-approximates; safe, but not equal): none;
+* **under-approximating** (tail shorter than the event model requires): none.
 
-Reżim zaniżający jest jakościowo inny od zawyżającego: zawyżenie
-opóźnia emisję o slot, zaniżenie oznacza rekord wyemitowany, zanim
-wszystkie jego zależności są określone.
+The under-approximating regime is qualitatively different from the
+over-approximating one: over-approximation delays emission by a slot,
+under-approximation means a record emitted before all its dependencies
+are determined.
 
-### Rozkład różnicy (postać zamknięta − oracle C1)
+### Difference distribution (closed form − oracle C1)
 
-| Klasa | Rozkład |
+| Class | Distribution |
 |---|---|
 | `HASH` | `+0`: 5958 (100.0%) |
 | `SHIFT` | `+0`: 5395 (100.0%) |
@@ -48,32 +50,32 @@ wszystkie jego zależności są określone.
 | `NTHETA` | `+0`: 2521 (100.0%) |
 | `ADD` | `+0`: 2465 (100.0%) |
 
-### Świadkowie
+### Witnesses
 
-| Klasa | Kierunek | Plan | Węzeł | Interwał | Silnik | Postać zamknięta (izol.) | Oracle C1 |
+| Class | Direction | Plan | Node | Interval | Engine | Closed form (isol.) | Oracle C1 |
 |---|---|---:|---|---|---:|---:|---:|
 
-## 1b. H10a — początek logiczny, per klasa operatora
+## 1b. H10a — logical origin, per operator class
 
-Wielkość wprowadzona przestemplowaniem z 2026-08-06 i nieobecna
-w kampaniach K24/K24r. Kolumna **suma** porównuje origin+ogon —
-to jedyna wielkość wspólna z kampaniami sprzed zmiany.
+A quantity introduced by the re-stamping of 2026-08-06 and absent from
+the K24/K24r campaigns. The **sum** column compares origin+tail — the
+only quantity shared with the campaigns predating that change.
 
-| Klasa | Węzłów | Izolowana | Propagowana | Suma (origin+ogon) | Reżim | Werdykt |
+| Class | Nodes | Isolated | Propagated | Sum (origin+tail) | Regime | Verdict |
 |---|---:|---:|---:|---:|---|---|
-| `HASH` | 5958 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `SHIFT` | 5395 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `PASS` | 4688 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `AGSE` | 4417 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `SUB` | 4376 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `REDUCE` | 3309 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `THETA` | 2574 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `NTHETA` | 2521 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
-| `ADD` | 2465 | 100.0% | 100.0% | 100.0% | dokładna | **wsparta** |
+| `HASH` | 5958 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `SHIFT` | 5395 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `PASS` | 4688 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `AGSE` | 4417 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `SUB` | 4376 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `REDUCE` | 3309 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `THETA` | 2574 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `NTHETA` | 2521 | 100.0% | 100.0% | 100.0% | exact | **supported** |
+| `ADD` | 2465 | 100.0% | 100.0% | 100.0% | exact | **supported** |
 
-### Rozkład różnicy origin (rachunek silnika − oracle)
+### Origin difference distribution (engine calculus − oracle)
 
-| Klasa | Rozkład |
+| Class | Distribution |
 |---|---|
 | `HASH` | `+0`: 5958 (100.0%) |
 | `SHIFT` | `+0`: 5395 (100.0%) |
@@ -85,26 +87,26 @@ to jedyna wielkość wspólna z kampaniami sprzed zmiany.
 | `NTHETA` | `+0`: 2521 (100.0%) |
 | `ADD` | `+0`: 2465 (100.0%) |
 
-Origin zaniżony (odczyt przed początkiem źródła): **brak**.
+Origin under-approximated (a read before the source's origin): **none**.
 
-## 2. H10b — nielokalność
+## 2. H10b — non-locality
 
-* rozjazd reguły lokalnej A z dokładną: **5275 z 10010 planów = 52.7%** (próg predeklarowany: >= 5%)
-* populacja predeklarowana (dokładnie jeden `#`, poza tym `PASS`/`>N`): **492 planów**, rozjazdów dodatnich **351**
-* rozjazdów o predeklarowanej postaci `ceil((p+q-1)/p)`: **351 z 351** (100.0%; próg: 100%)
+* divergence of local rule A from the exact one: **5275 of 10010 plans = 52.7%** (pre-declared threshold: >= 5%)
+* pre-declared population (exactly one `#`, otherwise `PASS`/`>N`): **492 plans**, positive divergences **351**
+* divergences of the pre-declared form `ceil((p+q-1)/p)`: **351 of 351** (100.0%; threshold: 100%)
 
-## 3. Kontrole negatywne
+## 3. Negative controls
 
-| Kontrola | Węzłów | Rozjazdów | Stan |
+| Control | Nodes | Divergences | State |
 |---|---:|---:|---|
-| HC_SINGLE (dosłownie) | 4098 | 0 | **przeszła** |
-| HC_SINGLE (operatory bez własnego ogona) | 3809 | 0 | **przeszła** |
-| HC_INT (dosłownie) | 6890 | 3192 | **ZŁAMANA** |
-| HC_INT (węzły `#`, reguła lokalna B) | 2878 | 345 | **ZŁAMANA** |
+| HC_SINGLE (literal) | 4098 | 0 | **passed** |
+| HC_SINGLE (operators with no tail of their own) | 3809 | 0 | **passed** |
+| HC_INT (literal) | 6890 | 3192 | **BROKEN** |
+| HC_INT (`#` nodes, local rule B) | 2878 | 345 | **BROKEN** |
 
-Obie kontrole predeklarowane **w postaci dosłownej są złamane**.
-Zgodnie z PREDECLARATION.md §6 oznacza to źle zdefiniowaną regułę
-lokalną, a nie wynik — dlatego **człon (b) jest nieocenialny na tej
-aparaturze** i powyższe liczby H10b nie stanowią werdyktu. Diagnoza
-sprzeczności w specyfikacji członu (b): REPORT.md §5.
+Both pre-declared controls **are broken in their literal form**.
+Under PREDECLARATION.md §6 this means an ill-defined local rule rather
+than a result — therefore **part (b) is not assessable on this
+apparatus** and the H10b figures above do not constitute a verdict.
+Diagnosis of the contradiction in part (b)'s specification: REPORT.md §5.
 

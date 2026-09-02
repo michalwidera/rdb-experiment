@@ -160,13 +160,13 @@ def verdict(rows):
     family_pass = {family: cells_for[0]["family_pass"] == "YES" for family in FAMILY_DIR
                    if (cells_for := [x for x in cells if x["family"] == family])}
     support = sum(family_pass.values()) >= 2
-    lines = ["# K22v5 — werdykt H8", "", "Kampania jest prospektywną kontynuacją po zatrzymanym pilocie K22.", "",
-             "| Rodzina | Wygrane | Próg | Wynik |", "|---|---:|---:|---|"]
+    lines = ["# K22v5 — H8 verdict", "", "The campaign is a prospective continuation after the halted K22 pilot.", "",
+             "| Family | Wins | Threshold | Result |", "|---|---:|---:|---|"]
     for family in FAMILY_DIR:
         row = next(x for x in cells if x["family"] == family)
         lines.append(f"| {family} | {row['family_wins']}/4 | {row['family_threshold']}/4 | {'PASS' if family_pass[family] else 'FAIL'} |")
-    lines += ["", f"**H8: {'OGRANICZONE WSPARCIE' if support else 'BRAK WSPARCIA'}** ({sum(family_pass.values())}/3 rodzin).", "",
-              "M1/F2 i M1/F3 pozostają z góry zapisanymi brakami wygranej niezależnie od pomiaru."]
+    lines += ["", f"**H8: {'LIMITED SUPPORT' if support else 'NO SUPPORT'}** ({sum(family_pass.values())}/3 families).", "",
+              "M1/F2 and M1/F3 remain pre-recorded absences of a win, independently of the measurement."]
     (RESULTS / "verdict.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
