@@ -97,7 +97,7 @@ def rate_consistency(rows: list[dict[str, str]]) -> tuple[list[str], int, dict[s
     required = ("scale", "f_phi_hz", "stream_hz")
     missing = [column for column in required if column not in rows[0]]
     if missing:
-        return [f"runs.csv nie ma kolumn {', '.join(f'`{c}`' for c in missing)} — kontroli rate'u nie da się wykonać"], 0, {}
+        return [f"runs.csv lacks columns {', '.join(f'`{c}`' for c in missing)} — the rate control cannot be performed"], 0, {}
     seen: dict[str, set[tuple[str, str, str]]] = {}
     for row in rows:
         seen.setdefault(row["case"], set()).add((row["scale"], row["f_phi_hz"], row["stream_hz"]))
@@ -105,11 +105,11 @@ def rate_consistency(rows: list[dict[str, str]]) -> tuple[list[str], int, dict[s
     rates: dict[str, str] = {}
     for case, values in sorted(seen.items()):
         if len(values) != 1:
-            listed = ", ".join(f"s={scale} f_phi={f_phi} strumień={stream} Hz" for scale, f_phi, stream in sorted(values))
-            problems.append(f"{case}: {len(values)} różnych rate'ów ({listed})")
+            listed = ", ".join(f"s={scale} f_phi={f_phi} stream={stream} Hz" for scale, f_phi, stream in sorted(values))
+            problems.append(f"{case}: {len(values)} different rates ({listed})")
             continue
         scale, f_phi, stream = next(iter(values))
-        rates[case] = f"s={scale}, f_phi generatora={f_phi} Hz, strumień={stream} Hz"
+        rates[case] = f"s={scale}, generator f_phi={f_phi} Hz, stream={stream} Hz"
     return problems, len(seen), rates
 
 
@@ -144,8 +144,8 @@ def saturation_control(rows: list[dict[str, str]], rate_json: dict[str, object])
         budget = fraction * slot
         if p99 > budget:
             warnings.append(
-                f"{case}/{profile}: p99 = {p99 / 1000:.2f} µs > budżet {budget / 1000:.2f} µs "
-                f"({p99 / slot * 100:.0f} % slotu {slot / 1000:.2f} µs)"
+                f"{case}/{profile}: p99 = {p99 / 1000:.2f} µs > budget {budget / 1000:.2f} µs "
+                f"({p99 / slot * 100:.0f} % of slot {slot / 1000:.2f} µs)"
             )
     return warnings
 
@@ -177,7 +177,7 @@ def main() -> int:
     output.mkdir(parents=True, exist_ok=True)
     rows = load_runs([p.resolve() for p in args.runs])
     if not rows:
-        raise SystemExit("BLAD: zero przebiegów do analizy")
+        raise SystemExit("ERROR: zero runs to analyse")
 
     rate_json: dict[str, object] = {}
     if args.rate_json and args.rate_json.is_file():
@@ -186,7 +186,7 @@ def main() -> int:
     # Warunek unieważniający nr 6 (nowy w v2): rate identyczny w obrębie komórki.
     rate_problems, rate_checked, rates_by_case = rate_consistency(rows)
     if rate_checked == 0:
-        rate_problems.append("zero sprawdzonych przypadków — kontrola rate'u nic nie porównała")
+        rate_problems.append("zero cases checked — the rate control compared nothing")
     saturation_warnings = saturation_control(rows, rate_json)
     excluded_cases = rate_json.get("excluded_cases", []) if rate_json else []
     excluded_families = rate_json.get("excluded_families", []) if rate_json else []
@@ -203,7 +203,7 @@ def main() -> int:
         by_case.setdefault(row["case"], set()).add(row["artifacts_sha256"])
     for case, digests in sorted(by_case.items()):
         if len(digests) != 1:
-            checksum_problems.append(f"{case}: {len(digests)} różnych checksumów artefaktów")
+            checksum_problems.append(f"{case}: {len(digests)} different artifact checksums")
 
     grouped = cells(rows, PRIMARY)
     cases = sorted({row["case"] for row in rows})
@@ -323,19 +323,19 @@ def main() -> int:
     (output / "analysis.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 
     lines = [
-        "# K6b — wynik kampanii ablacyjnej",
+        "# K6b — ablation campaign result",
         "",
-        f"- przebiegów: {len(rows)}",
-        f"- przypadków: {len(cases)}, profili: {len(profiles)}",
-        f"- metryka główna: `{PRIMARY}`, próg istotności praktycznej: {int(THRESHOLD * 100)}%",
-        f"- bootstrap: {BOOTSTRAP_REPLICATES} replikacji, ziarno {BOOTSTRAP_SEED}",
-        f"- kontrola rate'u: {rate_checked} przypadków sprawdzonych, {len(rate_problems)} niezgodności",
-        f"- komórek wykluczonych przez kalibrację: {len(excluded_cases)}",
-        f"- komórek wykluczonych decyzją człowieka: {len(decision_excluded_cases)}",
+        f"- runs: {len(rows)}",
+        f"- cases: {len(cases)}, profiles: {len(profiles)}",
+        f"- primary metric: `{PRIMARY}`, practical significance threshold: {int(THRESHOLD * 100)}%",
+        f"- bootstrap: {BOOTSTRAP_REPLICATES} replicates, seed {BOOTSTRAP_SEED}",
+        f"- rate control: {rate_checked} cases checked, {len(rate_problems)} mismatches",
+        f"- cells excluded by calibration: {len(excluded_cases)}",
+        f"- cells excluded by human decision: {len(decision_excluded_cases)}",
         "",
-        "## Metryka główna — wszystkie komórki",
+        "## Primary metric — all cells",
         "",
-        "| Przypadek | rate | `STRUCT` [µs] | `ALGSTRUCT` [µs] | iloraz | 95% CI | klasa | kontrola |",
+        "| Case | rate | `STRUCT` [µs] | `ALGSTRUCT` [µs] | ratio | 95% CI | class | control |",
         "|---|---|---:|---:|---:|---|:--:|:--:|",
     ]
     for record in records:
@@ -347,14 +347,14 @@ def main() -> int:
             f"{'neg' if record['negative_control'] else ''} |"
         )
 
-    lines += ["", "## Komórki wykluczone z Tier B przez kalibrację", ""]
+    lines += ["", "## Cells excluded from Tier B by calibration", ""]
     if excluded_cases:
         lines += [
-            "Komórka nie mieści się w budżecie `0,5 · slot` nawet przy `s = 1`. Nie jest",
-            "pomijana po cichu — wymagany rate jest podany, a jej nieobecność w tabeli",
-            "wyżej jest częścią wyniku.",
+            "The cell does not fit the `0.5 · slot` budget even at `s = 1`. It is not",
+            "dropped silently — the required rate is given, and its absence from the table",
+            "above is part of the result.",
             "",
-            "| Przypadek | `p99` przy `s=1` | slot (silnik) | budżet | wymagana częstotliwość |",
+            "| Case | `p99` at `s=1` | slot (engine) | budget | required frequency |",
             "|---|---:|---:|---:|---:|",
         ]
         for entry in excluded_cases:
@@ -364,46 +364,47 @@ def main() -> int:
                 f"{float(entry['required_stream_hz']):.2f} Hz |"
             )
         if excluded_families:
-            lines += ["", f"Rodziny wykluczone w całości: {', '.join(str(f) for f in excluded_families)}."]
+            lines += ["", f"Families excluded in full: {', '.join(str(f) for f in excluded_families)}."]
     else:
-        lines.append("Brak.")
+        lines.append("None.")
 
-    lines += ["", "## Komórki wykluczone z Tier B decyzją człowieka", ""]
+    lines += ["", "## Cells excluded from Tier B by human decision", ""]
     if decision_excluded_cases:
         lines += [
-            "Wykluczenie decyzją jest rozłączne z kalibracyjnym: komórka mieściła się",
-            "w budżecie kalibracji, ale została wyjęta z Tier B osobną decyzją. Jej",
-            "nieobecność w tabeli wyżej jest częścią wyniku, nie pominięciem.",
+            "Exclusion by decision is disjoint from calibration exclusion: the cell did",
+            "fit the calibration budget but was taken out of Tier B by a separate",
+            "decision. Its absence from the table above is part of the result, not an",
+            "omission.",
             "",
-            "| Przypadek | rodzina | powód |",
+            "| Case | family | reason |",
             "|---|---|---|",
         ]
         for entry in decision_excluded_cases:
             lines.append(f"| `{entry['case']}` | {entry['family']} | {entry['reason']} |")
     else:
-        lines.append("Brak.")
+        lines.append("None.")
 
-    lines += ["", "## Kontrola nasycenia (raportowana, nie unieważniająca)", ""]
+    lines += ["", "## Saturation control (reported, not invalidating)", ""]
     if saturation_warnings:
         lines += [
-            f"**{len(saturation_warnings)} komórek** przekroczyło budżet `0,5 · slot` w `p99` mimo",
-            "rate'u wybranego na profilach `OFF`/`STRUCT`. Kalibracja zakładała, że profile",
-            "z przepisywaniem algebraicznym mogą pracę wyłącznie usunąć; poniższe komórki",
-            "temu przeczą i ich interpretacja musi to uwzględnić.",
+            f"**{len(saturation_warnings)} cells** exceeded the `0.5 · slot` budget in `p99` despite",
+            "a rate chosen on the `OFF`/`STRUCT` profiles. Calibration assumed that profiles",
+            "with algebraic rewriting can only remove work; the cells below contradict that,",
+            "and their interpretation must take it into account.",
             "",
         ]
         lines += [f"- {warning}" for warning in saturation_warnings]
     else:
         lines.append(
-            "Żadna komórka nie przekroczyła budżetu `0,5 · slot` w `p99` — założenie kalibracji "
-            "(profile bez przepisywania są najdroższe) potwierdzone na danych właściwych."
+            "No cell exceeded the `0.5 · slot` budget in `p99` — the calibration assumption "
+            "(profiles without rewriting are the most expensive) is confirmed on the real data."
         )
 
     lines += [
         "",
-        "## Atrybucja profilowa (G14)",
+        "## Per-profile attribution (G14)",
         "",
-        "| Przypadek | " + " | ".join(f"`{p}` [µs]" for p in profiles) + " |",
+        "| Case | " + " | ".join(f"`{p}` [µs]" for p in profiles) + " |",
         "|---|" + "---:|" * len(profiles),
     ]
     for record in records:
@@ -413,58 +414,58 @@ def main() -> int:
             values.append(f"{float(record[key]) / 1000:.2f}" if key in record else "—")
         lines.append(f"| `{record['case']}` | " + " | ".join(values) + " |")
 
-    lines += ["", "## Werdykt", ""]
-    lines.append(f"- komórki (A) poprawa: **{counts['A']}**" + (f" — {', '.join(improvements)}" if improvements else ""))
-    lines.append(f"- komórki (B) neutralne: **{counts['B']}**")
-    lines.append(f"- komórki (C) regresja: **{counts['C']}**" + (f" — {', '.join(regressions)}" if regressions else ""))
+    lines += ["", "## Verdict", ""]
+    lines.append(f"- cells (A) improvement: **{counts['A']}**" + (f" — {', '.join(improvements)}" if improvements else ""))
+    lines.append(f"- cells (B) neutral: **{counts['B']}**")
+    lines.append(f"- cells (C) regression: **{counts['C']}**" + (f" — {', '.join(regressions)}" if regressions else ""))
     lines.append("")
     if rate_problems:
         lines.append(
-            "**KAMPANIA NIEWAŻNA (warunek nr 6).** Rate nie jest identyczny w obrębie komórki: "
+            "**CAMPAIGN INVALID (condition no. 6).** The rate is not identical within a cell: "
             + "; ".join(rate_problems)
-            + ". Porównanie profili przy różnych rate'ach nie mierzy optymalizacji, tylko rate."
+            + ". Comparing profiles at different rates does not measure optimization, only rate."
         )
     elif control_violations:
         lines.append(
-            f"**KAMPANIA NIEWAŻNA.** Kontrola negatywna dała efekt: {', '.join(control_violations)}. "
-            "Instrument mierzy coś innego niż optymalizację; pozostałych komórek nie wolno raportować jako wyniku."
+            f"**CAMPAIGN INVALID.** The negative control produced an effect: {', '.join(control_violations)}. "
+            "The instrument measures something other than optimization; the remaining cells must not be reported as a result."
         )
     elif checksum_problems:
         lines.append(
-            "**KAMPANIA NIEWAŻNA.** Wynik nie jest zachowany między profilami: "
+            "**CAMPAIGN INVALID.** The result is not preserved across profiles: "
             + "; ".join(checksum_problems)
-            + ". Przyspieszenie z innym wynikiem nie jest przyspieszeniem."
+            + ". A speed-up with a different result is not a speed-up."
         )
     elif counts["A"] == 0:
         lines.append(
-            "**Brak komórki klasy (A).** Korzyść z R1/R2 nie jest widoczna w czasie obliczeń przy "
-            f"progu {int(THRESHOLD * 100)}%. To jest wynik, nie porażka kampanii: korzyść pozostaje "
-            "strukturalna (plan, tokeny, bufory, materializacje), a artykuł ma tak ją opisać. "
-            "Zdanie „plan jest mniejszy, ale nie szybszy" + '" jest publikowalne.'
+            "**No class (A) cell.** The benefit of R1/R2 is not visible in compute time at the "
+            f"{int(THRESHOLD * 100)}% threshold. This is a result, not a failure of the campaign: the "
+            "benefit remains structural (plan, tokens, buffers, materializations), and the paper is "
+            "to describe it that way. The sentence 'the plan is smaller, but not faster' is publishable."
         )
     else:
-        lines.append(f"**Wykazano poprawę w {counts['A']} komórkach.**")
+        lines.append(f"**Improvement demonstrated in {counts['A']} cells.**")
         if external_improvement:
             lines.append(
-                f"Co najmniej jedna należy do rodziny umotywowanej zewnętrznie (W8): {', '.join(external_improvement)}."
+                f"At least one belongs to an externally motivated family (W8): {', '.join(external_improvement)}."
             )
         else:
             lines.append(
-                "**Żadna nie należy do rodziny umotywowanej zewnętrznie (W8)** — luka G7 pozostaje "
-                "otwarta dla twierdzenia kosztowego i tak trzeba to zaraportować."
+                "**None belongs to an externally motivated family (W8)** — gap G7 remains open for "
+                "the cost claim, and that is how it must be reported."
             )
         if regressions:
             lines.append(
-                f"Odnotowano też regresje: {', '.join(regressions)}. H4 wymaga sprawdzenia, czy nie "
-                "przekreślają korzyści."
+                f"Regressions were also recorded: {', '.join(regressions)}. H4 requires checking whether "
+                "they cancel the benefit."
             )
 
     if compile_records:
         lines += [
             "",
-            "## Koszt normalizacji — czas kompilacji (Tier A)",
+            "## Cost of normalization — compile time (Tier A)",
             "",
-            "| Przypadek | `STRUCT` [µs] | `ALGSTRUCT` [µs] | iloraz | 95% CI | klasa |",
+            "| Case | `STRUCT` [µs] | `ALGSTRUCT` [µs] | ratio | 95% CI | class |",
             "|---|---:|---:|---:|---|:--:|",
         ]
         for record in compile_records:
@@ -474,9 +475,9 @@ def main() -> int:
                 f"[{float(record['ci_low']):.3f}; {float(record['ci_high']):.3f}] | {record['class']} |"
             )
         lines.append("")
-        lines.append("Klasa (C) w tej tabeli jest **ceną** normalizacji, nie korzyścią.")
+        lines.append("Class (C) in this table is the **cost** of normalization, not a benefit.")
 
-    lines += ["", "## Metryki drugorzędne", ""]
+    lines += ["", "## Secondary metrics", ""]
     for metric, metric_records in secondary.items():
         classes = {"A": 0, "B": 0, "C": 0}
         for record in metric_records:
@@ -486,11 +487,11 @@ def main() -> int:
 
     (output / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(
-        f"komórek: {len(records)}, A={counts['A']} B={counts['B']} C={counts['C']}; "
-        f"rate sprawdzony na {rate_checked} przypadkach, wykluczonych komórek: {len(excluded_cases)}"
+        f"cells: {len(records)}, A={counts['A']} B={counts['B']} C={counts['C']}; "
+        f"rate checked on {rate_checked} cases, cells excluded: {len(excluded_cases)}"
     )
     if rate_problems or control_violations or checksum_problems:
-        print("KAMPANIA NIEWAŻNA", flush=True)
+        print("CAMPAIGN INVALID", flush=True)
         return 1
     return 0
 

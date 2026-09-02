@@ -1,79 +1,80 @@
-# K6b — wynik kampanii ablacyjnej
+# K6b — ablation campaign result
 
-- przebiegów: 780
-- przypadków: 13, profili: 5
-- metryka główna: `compute_median_ns`, próg istotności praktycznej: 10%
-- bootstrap: 10000 replikacji, ziarno 20260730
-- kontrola rate'u: 13 przypadków sprawdzonych, 0 niezgodności
-- komórek wykluczonych przez kalibrację: 0
-- komórek wykluczonych decyzją człowieka: 1
+- runs: 780
+- cases: 13, profiles: 5
+- primary metric: `compute_median_ns`, practical significance threshold: 10%
+- bootstrap: 10000 replicates, seed 20260730
+- rate control: 13 cases checked, 0 mismatches
+- cells excluded by calibration: 0
+- cells excluded by human decision: 1
 
-## Metryka główna — wszystkie komórki
+## Primary metric — all cells
 
-| Przypadek | rate | `STRUCT` [µs] | `ALGSTRUCT` [µs] | iloraz | 95% CI | klasa | kontrola |
+| Case | rate | `STRUCT` [µs] | `ALGSTRUCT` [µs] | ratio | 95% CI | class | control |
 |---|---|---:|---:|---:|---|:--:|:--:|
-| `W2_Q01` | s=12, f_phi generatora=180 Hz, strumień=180 Hz | 125.24 | 133.21 | 1.064 | [1.038; 1.100] | **B** |  |
-| `W2_Q08` | s=12, f_phi generatora=180 Hz, strumień=180 Hz | 606.25 | 642.99 | 1.061 | [1.053; 1.066] | **B** |  |
-| `W2_Q32` | s=12, f_phi generatora=180 Hz, strumień=180 Hz | 2458.34 | 2437.13 | 0.991 | [0.980; 0.994] | **B** |  |
-| `W3_d1` | s=12, f_phi generatora=180 Hz, strumień=180 Hz | 602.33 | 636.34 | 1.056 | [1.023; 1.064] | **B** |  |
-| `W3_d3` | s=12, f_phi generatora=180 Hz, strumień=405 Hz | 589.58 | 650.58 | 1.103 | [1.099; 1.106] | **C** |  |
-| `W4_Q08` | s=1, f_phi generatora=15 Hz, strumień=15 Hz | 8089.01 | 8109.23 | 1.002 | [0.999; 1.005] | **B** |  |
-| `W4_Q32` | s=1, f_phi generatora=15 Hz, strumień=15 Hz | 32512.90 | 32452.39 | 0.998 | [0.994; 1.000] | **B** |  |
-| `W5_Q32` | s=12, f_phi generatora=180 Hz, strumień=180 Hz | 2476.39 | 2523.15 | 1.019 | [1.010; 1.025] | **B** | neg |
-| `W7_Q32` | s=6, f_phi generatora=90 Hz, strumień=90 Hz | 3047.44 | 3066.58 | 1.006 | [1.001; 1.012] | **B** | neg |
-| `W8_Q01` | s=6, f_phi generatora=90 Hz, strumień=720 Hz | 519.56 | 517.30 | 0.996 | [0.934; 1.021] | **B** |  |
-| `W8_Q08` | s=6, f_phi generatora=90 Hz, strumień=720 Hz | 1060.77 | 1049.66 | 0.990 | [0.971; 1.001] | **B** |  |
-| `W9_Q08` | s=12, f_phi generatora=180 Hz, strumień=120 Hz | 894.93 | 817.42 | 0.913 | [0.899; 0.918] | **B** |  |
-| `W9_Q32` | s=12, f_phi generatora=180 Hz, strumień=120 Hz | 3077.53 | 2969.63 | 0.965 | [0.962; 0.971] | **B** |  |
+| `W2_Q01` | s=12, generator f_phi=180 Hz, stream=180 Hz | 125.24 | 133.21 | 1.064 | [1.038; 1.100] | **B** |  |
+| `W2_Q08` | s=12, generator f_phi=180 Hz, stream=180 Hz | 606.25 | 642.99 | 1.061 | [1.053; 1.066] | **B** |  |
+| `W2_Q32` | s=12, generator f_phi=180 Hz, stream=180 Hz | 2458.34 | 2437.13 | 0.991 | [0.980; 0.994] | **B** |  |
+| `W3_d1` | s=12, generator f_phi=180 Hz, stream=180 Hz | 602.33 | 636.34 | 1.056 | [1.023; 1.064] | **B** |  |
+| `W3_d3` | s=12, generator f_phi=180 Hz, stream=405 Hz | 589.58 | 650.58 | 1.103 | [1.099; 1.106] | **C** |  |
+| `W4_Q08` | s=1, generator f_phi=15 Hz, stream=15 Hz | 8089.01 | 8109.23 | 1.002 | [0.999; 1.005] | **B** |  |
+| `W4_Q32` | s=1, generator f_phi=15 Hz, stream=15 Hz | 32512.90 | 32452.39 | 0.998 | [0.994; 1.000] | **B** |  |
+| `W5_Q32` | s=12, generator f_phi=180 Hz, stream=180 Hz | 2476.39 | 2523.15 | 1.019 | [1.010; 1.025] | **B** | neg |
+| `W7_Q32` | s=6, generator f_phi=90 Hz, stream=90 Hz | 3047.44 | 3066.58 | 1.006 | [1.001; 1.012] | **B** | neg |
+| `W8_Q01` | s=6, generator f_phi=90 Hz, stream=720 Hz | 519.56 | 517.30 | 0.996 | [0.934; 1.021] | **B** |  |
+| `W8_Q08` | s=6, generator f_phi=90 Hz, stream=720 Hz | 1060.77 | 1049.66 | 0.990 | [0.971; 1.001] | **B** |  |
+| `W9_Q08` | s=12, generator f_phi=180 Hz, stream=120 Hz | 894.93 | 817.42 | 0.913 | [0.899; 0.918] | **B** |  |
+| `W9_Q32` | s=12, generator f_phi=180 Hz, stream=120 Hz | 3077.53 | 2969.63 | 0.965 | [0.962; 0.971] | **B** |  |
 
-## Komórki wykluczone z Tier B przez kalibrację
+## Cells excluded from Tier B by calibration
 
-Brak.
+None.
 
-## Komórki wykluczone z Tier B decyzją człowieka
+## Cells excluded from Tier B by human decision
 
-Wykluczenie decyzją jest rozłączne z kalibracyjnym: komórka mieściła się
-w budżecie kalibracji, ale została wyjęta z Tier B osobną decyzją. Jej
-nieobecność w tabeli wyżej jest częścią wyniku, nie pominięciem.
+Exclusion by decision is disjoint from calibration exclusion: the cell did
+fit the calibration budget but was taken out of Tier B by a separate
+decision. Its absence from the table above is part of the result, not an
+omission.
 
-| Przypadek | rodzina | powód |
+| Case | family | reason |
 |---|---|---|
 | `W8_Q32` | W8 | duty 243% p99 @720Hz - przeciazenie, silnik nie nadaza; decyzja czlowieka 2026-07-31; patrz README K6c |
 
-## Kontrola nasycenia (raportowana, nie unieważniająca)
+## Saturation control (reported, not invalidating)
 
-**23 komórek** przekroczyło budżet `0,5 · slot` w `p99` mimo
-rate'u wybranego na profilach `OFF`/`STRUCT`. Kalibracja zakładała, że profile
-z przepisywaniem algebraicznym mogą pracę wyłącznie usunąć; poniższe komórki
-temu przeczą i ich interpretacja musi to uwzględnić.
+**23 cells** exceeded the `0.5 · slot` budget in `p99` despite
+a rate chosen on the `OFF`/`STRUCT` profiles. Calibration assumed that profiles
+with algebraic rewriting can only remove work; the cells below contradict that,
+and their interpretation must take it into account.
 
-- W2_Q32/ALGSTRUCT: p99 = 2788.20 µs > budżet 2777.78 µs (50 % slotu 5555.56 µs)
-- W2_Q32/OFF: p99 = 3482.32 µs > budżet 2777.78 µs (63 % slotu 5555.56 µs)
-- W2_Q32/STRUCT: p99 = 3564.13 µs > budżet 2777.78 µs (64 % slotu 5555.56 µs)
-- W2_Q32/STRUCT_R1: p99 = 3404.17 µs > budżet 2777.78 µs (61 % slotu 5555.56 µs)
-- W3_d3/ALGSTRUCT: p99 = 1290.02 µs > budżet 1234.57 µs (52 % slotu 2469.14 µs)
-- W3_d3/OFF: p99 = 1375.28 µs > budżet 1234.57 µs (56 % slotu 2469.14 µs)
-- W4_Q32/ALGSTRUCT: p99 = 38540.47 µs > budżet 33333.33 µs (58 % slotu 66666.67 µs)
-- W4_Q32/OFF: p99 = 38154.40 µs > budżet 33333.33 µs (57 % slotu 66666.67 µs)
-- W4_Q32/STRUCT: p99 = 44916.00 µs > budżet 33333.33 µs (67 % slotu 66666.67 µs)
-- W4_Q32/STRUCT_R1: p99 = 38632.96 µs > budżet 33333.33 µs (58 % slotu 66666.67 µs)
-- W5_Q32/ALGSTRUCT: p99 = 3716.32 µs > budżet 2777.78 µs (67 % slotu 5555.56 µs)
-- W5_Q32/OFF: p99 = 3500.72 µs > budżet 2777.78 µs (63 % slotu 5555.56 µs)
-- W5_Q32/STRUCT: p99 = 3493.07 µs > budżet 2777.78 µs (63 % slotu 5555.56 µs)
-- W5_Q32/STRUCT_R1: p99 = 3539.95 µs > budżet 2777.78 µs (64 % slotu 5555.56 µs)
-- W8_Q01/ALGSTRUCT: p99 = 1054.72 µs > budżet 694.44 µs (76 % slotu 1388.89 µs)
-- W8_Q01/OFF: p99 = 1111.51 µs > budżet 694.44 µs (80 % slotu 1388.89 µs)
-- W8_Q01/STRUCT: p99 = 1142.80 µs > budżet 694.44 µs (82 % slotu 1388.89 µs)
-- W8_Q01/STRUCT_R1: p99 = 1102.96 µs > budżet 694.44 µs (79 % slotu 1388.89 µs)
-- W8_Q08/ALGSTRUCT: p99 = 1558.36 µs > budżet 694.44 µs (112 % slotu 1388.89 µs)
-- W8_Q08/OFF: p99 = 2012.42 µs > budżet 694.44 µs (145 % slotu 1388.89 µs)
-- W8_Q08/STRUCT: p99 = 1680.19 µs > budżet 694.44 µs (121 % slotu 1388.89 µs)
-- W8_Q08/STRUCT_R1: p99 = 1594.93 µs > budżet 694.44 µs (115 % slotu 1388.89 µs)
-- W9_Q32/OFF: p99 = 4809.32 µs > budżet 4166.67 µs (58 % slotu 8333.33 µs)
+- W2_Q32/ALGSTRUCT: p99 = 2788.20 µs > budget 2777.78 µs (50 % of slot 5555.56 µs)
+- W2_Q32/OFF: p99 = 3482.32 µs > budget 2777.78 µs (63 % of slot 5555.56 µs)
+- W2_Q32/STRUCT: p99 = 3564.13 µs > budget 2777.78 µs (64 % of slot 5555.56 µs)
+- W2_Q32/STRUCT_R1: p99 = 3404.17 µs > budget 2777.78 µs (61 % of slot 5555.56 µs)
+- W3_d3/ALGSTRUCT: p99 = 1290.02 µs > budget 1234.57 µs (52 % of slot 2469.14 µs)
+- W3_d3/OFF: p99 = 1375.28 µs > budget 1234.57 µs (56 % of slot 2469.14 µs)
+- W4_Q32/ALGSTRUCT: p99 = 38540.47 µs > budget 33333.33 µs (58 % of slot 66666.67 µs)
+- W4_Q32/OFF: p99 = 38154.40 µs > budget 33333.33 µs (57 % of slot 66666.67 µs)
+- W4_Q32/STRUCT: p99 = 44916.00 µs > budget 33333.33 µs (67 % of slot 66666.67 µs)
+- W4_Q32/STRUCT_R1: p99 = 38632.96 µs > budget 33333.33 µs (58 % of slot 66666.67 µs)
+- W5_Q32/ALGSTRUCT: p99 = 3716.32 µs > budget 2777.78 µs (67 % of slot 5555.56 µs)
+- W5_Q32/OFF: p99 = 3500.72 µs > budget 2777.78 µs (63 % of slot 5555.56 µs)
+- W5_Q32/STRUCT: p99 = 3493.07 µs > budget 2777.78 µs (63 % of slot 5555.56 µs)
+- W5_Q32/STRUCT_R1: p99 = 3539.95 µs > budget 2777.78 µs (64 % of slot 5555.56 µs)
+- W8_Q01/ALGSTRUCT: p99 = 1054.72 µs > budget 694.44 µs (76 % of slot 1388.89 µs)
+- W8_Q01/OFF: p99 = 1111.51 µs > budget 694.44 µs (80 % of slot 1388.89 µs)
+- W8_Q01/STRUCT: p99 = 1142.80 µs > budget 694.44 µs (82 % of slot 1388.89 µs)
+- W8_Q01/STRUCT_R1: p99 = 1102.96 µs > budget 694.44 µs (79 % of slot 1388.89 µs)
+- W8_Q08/ALGSTRUCT: p99 = 1558.36 µs > budget 694.44 µs (112 % of slot 1388.89 µs)
+- W8_Q08/OFF: p99 = 2012.42 µs > budget 694.44 µs (145 % of slot 1388.89 µs)
+- W8_Q08/STRUCT: p99 = 1680.19 µs > budget 694.44 µs (121 % of slot 1388.89 µs)
+- W8_Q08/STRUCT_R1: p99 = 1594.93 µs > budget 694.44 µs (115 % of slot 1388.89 µs)
+- W9_Q32/OFF: p99 = 4809.32 µs > budget 4166.67 µs (58 % of slot 8333.33 µs)
 
-## Atrybucja profilowa (G14)
+## Per-profile attribution (G14)
 
-| Przypadek | `ALGSTRUCT` [µs] | `OFF` [µs] | `STRUCT` [µs] | `STRUCT_R1` [µs] | `STRUCT_R2` [µs] |
+| Case | `ALGSTRUCT` [µs] | `OFF` [µs] | `STRUCT` [µs] | `STRUCT_R1` [µs] | `STRUCT_R2` [µs] |
 |---|---:|---:|---:|---:|---:|
 | `W2_Q01` | 133.21 | 124.83 | 125.24 | 132.07 | — |
 | `W2_Q08` | 642.99 | 606.66 | 606.25 | 635.22 | — |
@@ -89,17 +90,17 @@ temu przeczą i ich interpretacja musi to uwzględnić.
 | `W9_Q08` | 817.42 | 827.12 | 894.93 | — | 815.53 |
 | `W9_Q32` | 2969.63 | 3264.76 | 3077.53 | — | 2969.79 |
 
-## Werdykt
+## Verdict
 
-- komórki (A) poprawa: **0**
-- komórki (B) neutralne: **12**
-- komórki (C) regresja: **1** — W3_d3
+- cells (A) improvement: **0**
+- cells (B) neutral: **12**
+- cells (C) regression: **1** — W3_d3
 
-**Brak komórki klasy (A).** Korzyść z R1/R2 nie jest widoczna w czasie obliczeń przy progu 10%. To jest wynik, nie porażka kampanii: korzyść pozostaje strukturalna (plan, tokeny, bufory, materializacje), a artykuł ma tak ją opisać. Zdanie „plan jest mniejszy, ale nie szybszy" jest publikowalne.
+**No class (A) cell.** The benefit of R1/R2 is not visible in compute time at the 10% threshold. This is a result, not a failure of the campaign: the benefit remains structural (plan, tokens, buffers, materializations), and the paper is to describe it that way. The sentence 'the plan is smaller, but not faster' is publishable.
 
-## Koszt normalizacji — czas kompilacji (Tier A)
+## Cost of normalization — compile time (Tier A)
 
-| Przypadek | `STRUCT` [µs] | `ALGSTRUCT` [µs] | iloraz | 95% CI | klasa |
+| Case | `STRUCT` [µs] | `ALGSTRUCT` [µs] | ratio | 95% CI | class |
 |---|---:|---:|---:|---|:--:|
 | `W1` | 261.76 | 276.61 | 1.057 | [1.049; 1.068] | B |
 | `W2_Q01` | 260.83 | 276.79 | 1.061 | [1.055; 1.072] | B |
@@ -148,9 +149,9 @@ temu przeczą i ich interpretacja musi to uwzględnić.
 | `W9_Q16` | 2746.88 | 2627.16 | 0.956 | [0.951; 0.960] | B |
 | `W9_Q32` | 5186.54 | 5057.41 | 0.975 | [0.967; 0.979] | B |
 
-Klasa (C) w tej tabeli jest **ceną** normalizacji, nie korzyścią.
+Class (C) in this table is the **cost** of normalization, not a benefit.
 
-## Metryki drugorzędne
+## Secondary metrics
 
 - `compute_p99_ns`: A=1, B=12, C=0
 - `compute_sum_ns`: A=0, B=13, C=0
