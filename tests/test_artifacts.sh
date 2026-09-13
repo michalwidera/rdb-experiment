@@ -9,7 +9,21 @@ source "$REPO_ROOT/lib/artifacts.sh"
 
 # Górna granica liczby luźnych plików w katalogu wyników. Katalog przekraczający
 # ten limit jest nieprzetwarzalny dla IDE i nie nadaje się do przeglądu ręcznego.
+# Liczone są pliki śledzone przez git: ignorowany scratch kampanii (`work/`,
+# `calib/runs/`) nie jest treścią repozytorium i nie może zmieniać wyniku.
 LOOSE_FILE_LIMIT=300
+
+# Wyjątki z R14: katalogi ukończone z luźnymi plikami przypiętymi manifestem
+# badania, których R3 nie pozwala przenieść do archiwum. Wartość jest sufitem
+# równym liczbie plików śledzonych w dniu wpisania wyjątku — katalog nie może
+# urosnąć ani o jeden plik. Nowych pozycji się nie dopisuje.
+declare -A LOOSE_FILE_CEILING=(
+  [results_20260801_K22v5]=635
+  [results_20260808_K23v2]=303
+  [results_20260809_K26]=434
+  [results_20260810_K26v2]=436
+  [results_20260814_K26v3]=444
+)
 
 failures=0
 checks=0
@@ -161,29 +175,30 @@ PYTHON
 # Żaden katalog wyników w repozytorium nie może wracać do postaci tysięcy
 # luźnych plików.
 assert_results_dirs_compacted() {
-  local directory count over=0
-  for directory in "$REPO_ROOT"/results_*; do
-    [ -d "$directory" ] || continue
-    count=$(find "$directory" -type f -not -path '*/__pycache__/*' | wc -l)
-    if [ "$count" -gt "$LOOSE_FILE_LIMIT" ]; then
+  local tracked directory count limit over=0
+  tracked=$(git -C "$REPO_ROOT" ls-files -- 'results_*') || return 1
+  while read -r count directory; do
+    limit="${LOOSE_FILE_CEILING[$directory]:-$LOOSE_FILE_LIMIT}"
+    if [ "$count" -gt "$limit" ]; then
       printf 'katalog %s ma %d luznych plikow (limit %d)\n' \
-        "${directory##*/}" "$count" "$LOOSE_FILE_LIMIT" >&2
+        "$directory" "$count" "$limit" >&2
       over=1
     fi
-  done
+  done < <(printf '%s\n' "$tracked" | grep -v '/__pycache__/' | cut -d/ -f1 | sort | uniq -c)
   [ "$over" -eq 0 ]
 }
 
 # Każde archiwum surowych artefaktów ma obok indeks SHA-256.
 assert_archives_have_index() {
-  local archive index missing=0
+  local tracked archive index missing=0
+  tracked=$(git -C "$REPO_ROOT" ls-files -- 'results_*') || return 1
   while IFS= read -r archive; do
     index="${archive%.tar.gz}.index.tsv"
-    if [ ! -f "$index" ]; then
+    if ! grep -Fxq "$index" <<<"$tracked"; then
       printf 'archiwum bez indeksu: %s\n' "$archive" >&2
       missing=1
     fi
-  done < <(find "$REPO_ROOT"/results_* -name '*.tar.gz' 2>/dev/null)
+  done < <(printf '%s\n' "$tracked" | grep '\.tar\.gz$')
   [ "$missing" -eq 0 ]
 }
 

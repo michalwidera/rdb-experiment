@@ -299,10 +299,33 @@ kodu, commit repozytorium wyników, `SHA-256` każdego archiwum oraz dosłowny c
 poleceń odtwarzających artefakty od zera. Odtwarzalność wyniku nie może zależeć
 od przechowywania samych artefaktów.
 
+Limit luźnych plików wynosi 300 na katalog `results_*` i liczy pliki śledzone
+przez git. Ignorowany scratch kampanii (`work/`, `calib/runs/`) nie jest treścią
+repozytorium, więc nie może zmieniać wyniku regresji ani zależeć od stanu dysku.
+
+**Wyjątki (wpisane 2026-09-13, lista zamknięta).** Pięć ukończonych badań
+przekracza limit plikami, które nie są surowym wyjściem silnika i których
+nie wolno przenieść do archiwum:
+
+| Katalog | Plików w git (sufit) | Co trzyma limit |
+|---|---:|---|
+| `results_20260801_K22v5` | 635 | `tasks/` — kod mierzonych zadań, przypięty w `results/variant_sha256.tsv`, na który wskazują `manual_hits_review.csv` i `results/hits.csv`; `evidence/` czytane przez `prepare_review.py` |
+| `results_20260808_K23v2` | 303 | aparatura przypięta w `manifest.sha256` (plany pilota, bramek i Flinka) |
+| `results_20260809_K26` | 434 | jw., w tym `corpus_validation/plans` |
+| `results_20260810_K26v2` | 436 | jw. |
+| `results_20260814_K26v3` | 444 | jw. |
+
+Zapis zamrożenia każdego z tych badań przypina te pliki po ścieżce.
+Spakowanie wymagałoby przepisania zamrożonego manifestu, czyli zmiany
+zapisu badania, a nie tylko jego formy — tego R3 nie dopuszcza. Sufit jest
+liczbą plików z dnia wpisania wyjątku: katalog nie może urosnąć ani o plik.
+Nowej kampanii wyjątek nie przysługuje; aparaturę przypinaną manifestem trzyma
+się poniżej limitu albo pakuje przed wygenerowaniem manifestu.
+
 Regresja wymusza: zastąpienie drzewa archiwum, zgodność rozpakowanego archiwum
 z indeksem, determinizm archiwum, pakowanie po porażce z zachowaniem kodu
 wyjścia, brak plików dla przebiegów udanych oraz limit luźnych plików w każdym
-katalogu `results_*`:
+katalogu `results_*` wraz z sufitami wyjątków:
 
 ```bash
 ./tests/test_artifacts.sh

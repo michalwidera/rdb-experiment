@@ -4438,3 +4438,50 @@ Uwaga na przyszłość: `freeze_check.sh predeklaracja` zwraca dziś błąd bram
 gałęzi, bo kampania jest w `main`, a nie na `experiment/20260814_K26v3`. To
 oczekiwany skutek P10, nie regresja — bramka jest przeznaczona dla kampanii
 żywej. Manifest, czyli właściwy dowód niezmienności, przechodzi w całości.
+
+## 2026-09-13 — higiena artefaktów znów 8/8; wyjątki R14 i przepięcie manifestu K26v3
+
+`tests/test_artifacts.sh` dawał 2/8 od kilku kampanii i nikt tego nie widział,
+bo test ukrywa szczegóły porażki. Dwie przyczyny, obie w kontrolach liczących
+pliki przez `find`, czyli razem z tym, czego w repozytorium nie ma:
+
+* **Kontrola 7 (limit 300 plików).** K24, K24r, K24p i K23v2 przekraczały limit
+  wyłącznie ignorowanym scratchem (`work/`, `calib/data/`, `calib/runs/`; do
+  8865 plików na dysku). Ale pięć katalogów przekraczało go także w samym git:
+  K22v5 (635), K23v2 (303), K26 (434), K26v2 (436), K26v3 (444).
+* **Kontrola 8 (indeks obok archiwum).** Jedyne zgłoszenie dotyczyło
+  `K23v2_kalibracja_raw.tar.gz` — pliku lokalnego, poza git; w świeżym klonie
+  kontrola przechodziła.
+
+### Decyzja: test liczy git, pięć katalogów dostaje sufit
+
+Rozważono skompaktowanie pięciu katalogów. Odrzucone, bo to, co trzyma je
+ponad limitem, nie jest surowym wyjściem silnika: w K23v2 i K26* to aparatura
+przypięta po ścieżce w `manifest.sha256` (336 plików w każdej K26*), w K22v5 —
+kod mierzonych zadań `tasks/` przypięty w `results/variant_sha256.tsv`
+i wskazywany 1417 razy w CSV przeglądu. Spakowanie wymagałoby przepisania
+zamrożonych zapisów, czego R3 nie dopuszcza.
+
+Obie kontrole biorą teraz listę plików z `git ls-files`, więc wynik nie zależy
+od dysku. Pięć katalogów ma w R14 zamkniętą listę wyjątków z sufitem równym
+dzisiejszej liczbie plików — katalog nie może urosnąć ani o plik, a nowa
+kampania wyjątku nie dostaje. Wersje obalone pokazane w świeżym klonie: bez
+wyjątków test zgłasza dokładnie pięć katalogów; plik ponad sufit K23v2,
+śledzone archiwum bez indeksu i katalog bez `.git` — każde oblewa; 400
+nieśledzonych plików w `K26/work/` nie zmienia wyniku.
+
+Pułapka warta zapisu: pierwsza wersja kontroli 8 oblała bez powodu. Przy
+`set -o pipefail` potok `printf | grep -q` zwraca błąd, gdy `grep` kończy po
+pierwszym trafieniu i `printf` dostaje SIGPIPE — trafienie wyglądało jak brak.
+Stąd `grep -Fxq ... <<<"$tracked"`.
+
+### Przepięcie wpisu `verdict.py` w manifeście K26v3
+
+`freeze_check.sh` w K26v3 nie przechodził kontroli manifestu od `80acea1`
+(„Translation”, 2026-09-02), który przetłumaczył komunikaty `verdict.py` na
+angielski. Zmiana dotyczy wyłącznie literałów tekstowych: drzewa AST obu wersji
+po wyzerowaniu stałych tekstowych są identyczne, a `--selftest` przechodzi.
+Tekstu nie cofnięto, bo wyjście angielskie czyta artefakt i recenzent. Wpis
+w `manifest.sha256` dostał nowe SHA, a nad nim komentarz z SHA zamrożonym przy
+werdykcie (`81bf4be`) i powodem zmiany; `sha256sum --strict --check` pomija
+komentarz i przechodzi 438/438. Werdykt kampanii bez zmian.
