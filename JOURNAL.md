@@ -4485,3 +4485,11 @@ Tekstu nie cofnięto, bo wyjście angielskie czyta artefakt i recenzent. Wpis
 w `manifest.sha256` dostał nowe SHA, a nad nim komentarz z SHA zamrożonym przy
 werdykcie (`81bf4be`) i powodem zmiany; `sha256sum --strict --check` pomija
 komentarz i przechodzi 438/438. Werdykt kampanii bez zmian.
+
+## 2026-10-02 — G3b: poprawiony most oracle'a shift-matching (retractordb #353)
+
+Zamrożony most `results_20260726_G3/engine_check.py` daje 0/13 na każdym silniku od `5f310515`, w tym na pinie artykułu `40c28dbe`, przy zerowej liczbie rozbieżności wartości. Przyczyny leżą w aparaturze: parser czyta samo `tail=`, choć plan drukuje osobno `origin=` i `tail=`, a oracle zakłada równą ciszę trzech form, czyli regułę `W = W_src` dla `>N` sprzed `fcc5a444`. Werdykt H1 (poprawa dokładności silnika, nie regresja) jest w #353; w Lean rozstrzyga go `causal_shift_matching_declared`: nad źródłami deklarowanymi forma sfaktoryzowana ma ogon krótszy dokładnie o `min(W_hash, L) >= 1`.
+
+Katalogu kampanii nie poprawiano. Nowy `results_20261002_G3b/` importuje z niego `run_case` bez zmian, a podmienia tylko ocenę: cisza `origin + tail` i oczekiwanie każdej formy z modelu K24-C1, sprawdzanego wobec twierdzenia. Wynik: 13/13 na `40c28dbe` i `1695ed8d`, 0/13 na `fcc5a444^` (kontrola dodatnia, wyłącznie cisza; liczby rekordów równe lipcowemu `engine.json`). Kontrola higieny artefaktów: 8/8.
+
+Pin `rdb-experiment` w `rdb-artifact` (`d319e88`) zostaje; nota w `MAP.md` i `MANIFEST.md` odsyła do G3b po SHA.

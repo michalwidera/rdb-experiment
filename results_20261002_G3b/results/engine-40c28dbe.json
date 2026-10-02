@@ -1,0 +1,1646 @@
+{
+  "apparatus": "results_20261002_G3b/engine_check.py",
+  "issue": "retractordb #353",
+  "binary_name": "xretractor",
+  "binary_sha256": "5afa04357cd2a358d3ef4608265eec143ccdc423a09b2440d77fb69521c8e415",
+  "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=ON\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON\nRDB_BENCH_PROBE=OFF\nRDB_OPT_SIMPLIFY_EXPRESSIONS=ON",
+  "engine_commit": "40c28dbefec8324df45365d863050fc577623768",
+  "experiment": {
+    "commit": "d319e886ce14ec541fd5f9bbb2e18ea53b0a38c6",
+    "dirty": true,
+    "status": [
+      "?? results_20261002_G3b/"
+    ]
+  },
+  "python": "3.14.4 (main, Aug 20 2026, 10:41:58) [GCC 15.2.0]",
+  "platform": "Linux-6.18.40.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "silence_reference": "K24 event model, convention C1, checked against causal_shift_matching_declared",
+  "cases": [
+    {
+      "case": "p2_equal",
+      "delta_a": "1/100",
+      "delta_b": "1/100",
+      "ratio": "1",
+      "shift_a": 1,
+      "shift_b": 1,
+      "combined": 2,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/200",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 1,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "1/200",
+        "blocked": "1/200",
+        "explicit_rhs": "1/200"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 62,
+        "partial_null": 20,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 87,
+          "meta_records": 87,
+          "compared": 87,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 86,
+          "meta_records": 86,
+          "compared": 86,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 87,
+          "meta_records": 87,
+          "compared": 87,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 1,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          2,
+          0
+        ],
+        "blocked": [
+          2,
+          1
+        ],
+        "explicit_rhs": [
+          2,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          2,
+          0
+        ],
+        "blocked": [
+          2,
+          1
+        ],
+        "explicit_rhs": [
+          2,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p3_regression",
+      "delta_a": "1/10",
+      "delta_b": "1/5",
+      "ratio": "1/2",
+      "shift_a": 2,
+      "shift_b": 1,
+      "combined": 3,
+      "loops": 70,
+      "min_interval_ms": 100,
+      "source_records": 2500,
+      "expected_interval": "1/15",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "1/15",
+        "blocked": "1/15",
+        "explicit_rhs": "1/15"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 33,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 47,
+          "meta_records": 47,
+          "compared": 47,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          3,
+          0
+        ],
+        "blocked": [
+          3,
+          2
+        ],
+        "explicit_rhs": [
+          3,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          3,
+          0
+        ],
+        "blocked": [
+          3,
+          2
+        ],
+        "explicit_rhs": [
+          3,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p3_reverse",
+      "delta_a": "1/50",
+      "delta_b": "1/100",
+      "ratio": "2",
+      "shift_a": 1,
+      "shift_b": 2,
+      "combined": 3,
+      "loops": 80,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/150",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 1,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "1/150",
+        "blocked": "1/150",
+        "explicit_rhs": "1/150"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 41,
+        "partial_null": 12,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 56,
+          "meta_records": 56,
+          "compared": 56,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 56,
+          "meta_records": 56,
+          "compared": 56,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 1,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          3,
+          0
+        ],
+        "blocked": [
+          3,
+          1
+        ],
+        "explicit_rhs": [
+          3,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          3,
+          0
+        ],
+        "blocked": [
+          3,
+          1
+        ],
+        "explicit_rhs": [
+          3,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p4_skew",
+      "delta_a": "1/100",
+      "delta_b": "3/100",
+      "ratio": "1/3",
+      "shift_a": 3,
+      "shift_b": 1,
+      "combined": 4,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/400",
+      "legacy_hash_tail": 3,
+      "phase_safe_hash_tail": 3,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "3/400",
+        "blocked": "3/400",
+        "explicit_rhs": "3/400"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 38,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 52,
+          "meta_records": 52,
+          "compared": 52,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 3,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          4,
+          0
+        ],
+        "blocked": [
+          4,
+          3
+        ],
+        "explicit_rhs": [
+          4,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          4,
+          0
+        ],
+        "blocked": [
+          4,
+          3
+        ],
+        "explicit_rhs": [
+          4,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p5_remainder1",
+      "delta_a": "1/100",
+      "delta_b": "3/200",
+      "ratio": "2/3",
+      "shift_a": 3,
+      "shift_b": 2,
+      "combined": 5,
+      "loops": 100,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/500",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "3/500",
+        "blocked": "3/500",
+        "explicit_rhs": "3/500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 41,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          5,
+          0
+        ],
+        "blocked": [
+          5,
+          2
+        ],
+        "explicit_rhs": [
+          5,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          5,
+          0
+        ],
+        "blocked": [
+          5,
+          2
+        ],
+        "explicit_rhs": [
+          5,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p7_remainder1",
+      "delta_a": "1/100",
+      "delta_b": "1/75",
+      "ratio": "3/4",
+      "shift_a": 4,
+      "shift_b": 3,
+      "combined": 7,
+      "loops": 110,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/175",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 0,
+      "intervals": {
+        "optimized": "1/175",
+        "blocked": "1/175",
+        "explicit_rhs": "1/175"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 40,
+        "partial_null": 12,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 55,
+          "meta_records": 55,
+          "compared": 55,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          7,
+          0
+        ],
+        "blocked": [
+          7,
+          2
+        ],
+        "explicit_rhs": [
+          7,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          7,
+          0
+        ],
+        "blocked": [
+          7,
+          2
+        ],
+        "explicit_rhs": [
+          7,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p8_remainder2",
+      "delta_a": "1/100",
+      "delta_b": "1/60",
+      "ratio": "3/5",
+      "shift_a": 5,
+      "shift_b": 3,
+      "combined": 8,
+      "loops": 120,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "1/160",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "1/160",
+        "blocked": "1/160",
+        "explicit_rhs": "1/160"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 43,
+        "partial_null": 11,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 60,
+          "meta_records": 60,
+          "compared": 60,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 57,
+          "meta_records": 57,
+          "compared": 57,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 60,
+          "meta_records": 60,
+          "compared": 60,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 3,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          8,
+          0
+        ],
+        "blocked": [
+          8,
+          3
+        ],
+        "explicit_rhs": [
+          8,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          8,
+          0
+        ],
+        "blocked": [
+          8,
+          3
+        ],
+        "explicit_rhs": [
+          8,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p5_fast",
+      "delta_a": "3/1000",
+      "delta_b": "1/500",
+      "ratio": "3/2",
+      "shift_a": 4,
+      "shift_b": 6,
+      "combined": 10,
+      "loops": 130,
+      "min_interval_ms": 2,
+      "source_records": 2500,
+      "expected_interval": "3/2500",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "3/2500",
+        "blocked": "3/2500",
+        "explicit_rhs": "3/2500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 49,
+        "partial_null": 17,
+        "all_null": 3
+      },
+      "outputs": {
+        "optimized": {
+          "records": 71,
+          "meta_records": 71,
+          "compared": 71,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 69,
+          "meta_records": 69,
+          "compared": 69,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 71,
+          "meta_records": 71,
+          "compared": 71,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          10,
+          0
+        ],
+        "blocked": [
+          10,
+          2
+        ],
+        "explicit_rhs": [
+          10,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          10,
+          0
+        ],
+        "blocked": [
+          10,
+          2
+        ],
+        "explicit_rhs": [
+          10,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p5_slow",
+      "delta_a": "3/100",
+      "delta_b": "1/50",
+      "ratio": "3/2",
+      "shift_a": 4,
+      "shift_b": 6,
+      "combined": 10,
+      "loops": 70,
+      "min_interval_ms": 20,
+      "source_records": 2500,
+      "expected_interval": "3/250",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "3/250",
+        "blocked": "3/250",
+        "explicit_rhs": "3/250"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 22,
+        "partial_null": 7,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 33,
+          "meta_records": 33,
+          "compared": 33,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 31,
+          "meta_records": 31,
+          "compared": 31,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 33,
+          "meta_records": 33,
+          "compared": 33,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          10,
+          0
+        ],
+        "blocked": [
+          10,
+          2
+        ],
+        "explicit_rhs": [
+          10,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          10,
+          0
+        ],
+        "blocked": [
+          10,
+          2
+        ],
+        "explicit_rhs": [
+          10,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p18_fast",
+      "delta_a": "1/500",
+      "delta_b": "11/3500",
+      "ratio": "7/11",
+      "shift_a": 11,
+      "shift_b": 7,
+      "combined": 18,
+      "loops": 180,
+      "min_interval_ms": 2,
+      "source_records": 2500,
+      "expected_interval": "11/9000",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "11/9000",
+        "blocked": "11/9000",
+        "explicit_rhs": "11/9000"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 53,
+        "partial_null": 17,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 77,
+          "meta_records": 77,
+          "compared": 77,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 74,
+          "meta_records": 74,
+          "compared": 74,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 77,
+          "meta_records": 77,
+          "compared": 77,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 3,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          18,
+          0
+        ],
+        "blocked": [
+          18,
+          3
+        ],
+        "explicit_rhs": [
+          18,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          18,
+          0
+        ],
+        "blocked": [
+          18,
+          3
+        ],
+        "explicit_rhs": [
+          18,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p18_slow",
+      "delta_a": "1/50",
+      "delta_b": "11/350",
+      "ratio": "7/11",
+      "shift_a": 11,
+      "shift_b": 7,
+      "combined": 18,
+      "loops": 90,
+      "min_interval_ms": 20,
+      "source_records": 2500,
+      "expected_interval": "11/900",
+      "legacy_hash_tail": 2,
+      "phase_safe_hash_tail": 3,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "11/900",
+        "blocked": "11/900",
+        "explicit_rhs": "11/900"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 18,
+        "partial_null": 6,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 29,
+          "meta_records": 29,
+          "compared": 29,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 26,
+          "meta_records": 26,
+          "compared": 26,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 29,
+          "meta_records": 29,
+          "compared": 29,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 3,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          18,
+          0
+        ],
+        "blocked": [
+          18,
+          3
+        ],
+        "explicit_rhs": [
+          18,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          18,
+          0
+        ],
+        "blocked": [
+          18,
+          3
+        ],
+        "explicit_rhs": [
+          18,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p3_unreduced",
+      "delta_a": "3/200",
+      "delta_b": "1/100",
+      "ratio": "3/2",
+      "shift_a": 2,
+      "shift_b": 3,
+      "combined": 5,
+      "loops": 90,
+      "min_interval_ms": 10,
+      "source_records": 2500,
+      "expected_interval": "3/500",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "3/500",
+        "blocked": "3/500",
+        "explicit_rhs": "3/500"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 36,
+        "partial_null": 11,
+        "all_null": 2
+      },
+      "outputs": {
+        "optimized": {
+          "records": 51,
+          "meta_records": 51,
+          "compared": 51,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 49,
+          "meta_records": 49,
+          "compared": 49,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 51,
+          "meta_records": 51,
+          "compared": 51,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          5,
+          0
+        ],
+        "blocked": [
+          5,
+          2
+        ],
+        "explicit_rhs": [
+          5,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          5,
+          0
+        ],
+        "blocked": [
+          5,
+          2
+        ],
+        "explicit_rhs": [
+          5,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    },
+    {
+      "case": "p307_audio",
+      "delta_a": "8/3675",
+      "delta_b": "1/500",
+      "ratio": "160/147",
+      "shift_a": 147,
+      "shift_b": 160,
+      "combined": 307,
+      "loops": 1050,
+      "min_interval_ms": 2,
+      "source_records": 3557,
+      "expected_interval": "8/7675",
+      "legacy_hash_tail": 1,
+      "phase_safe_hash_tail": 2,
+      "legacy_tail_deficit": 1,
+      "intervals": {
+        "optimized": "8/7675",
+        "blocked": "8/7675",
+        "explicit_rhs": "8/7675"
+      },
+      "optimized_shape": true,
+      "blocked_shape": true,
+      "oracle_lhs_equals_rhs": true,
+      "null_coverage": {
+        "present": 157,
+        "partial_null": 56,
+        "all_null": 4
+      },
+      "outputs": {
+        "optimized": {
+          "records": 219,
+          "meta_records": 219,
+          "compared": 219,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "blocked": {
+          "records": 217,
+          "meta_records": 217,
+          "compared": 217,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        },
+        "explicit_rhs": {
+          "records": 219,
+          "meta_records": 219,
+          "compared": 219,
+          "gaps": [],
+          "schema": [
+            [
+              "value",
+              "INTEGER"
+            ],
+            [
+              "aux",
+              "INTEGER"
+            ]
+          ],
+          "mismatch_count": 0,
+          "first_mismatches": []
+        }
+      },
+      "optimized_equals_rhs": true,
+      "blocked_equals_rhs": false,
+      "schemas_equal": true,
+      "frozen_status": "MISMATCH",
+      "hash_tail": 2,
+      "shape": {
+        "optimized": "rhs",
+        "blocked": "lhs",
+        "explicit_rhs": "rhs"
+      },
+      "silence": {
+        "optimized": [
+          307,
+          0
+        ],
+        "blocked": [
+          307,
+          2
+        ],
+        "explicit_rhs": [
+          307,
+          0
+        ]
+      },
+      "expected_silence": {
+        "optimized": [
+          307,
+          0
+        ],
+        "blocked": [
+          307,
+          2
+        ],
+        "explicit_rhs": [
+          307,
+          0
+        ]
+      },
+      "failed": [],
+      "status": "OK"
+    }
+  ],
+  "verdict": "OK"
+}
