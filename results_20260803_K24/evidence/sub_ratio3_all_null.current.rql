@@ -1,0 +1,30 @@
+# Reproducer §6.1 REPORT.md w biezacej skladni RQL - kopia zamrozonego sub_ratio3_all_null.rql
+# (SHA256SUMS kampanii K24), ktory zostaje bez zmian.
+#
+# Roznice wobec oryginalu: naglowek w komentarzach `#` zamiast `--` (RQL nie zna `--` ani
+# w silniku kampanii 5e3eb42e, ani dzis, wiec oryginal konczy sie bledem skladni) oraz
+# TEXTFILE zamiast przestarzalego FILE (retractordb #346). Na silniku kampanii i na pinie
+# artykulu 40c28dbe, ktore nie znaja TEXTFILE, deklaracja brzmi `... FILE 's0.txt'`.
+#
+# Znalezisko (silnik kampanii 5e3eb42e, PIN.md): roznica o calkowitym ilorazie >= 3 daje
+# strumien zlozony wylacznie z rekordow NULL. Iloraz 1 i 2 dzialaja poprawnie.
+#
+#   xretractor sub_ratio3_all_null.current.rql -r -k -m 40
+#   (wtedy: ratio1, ratio2 maja wartosci; ratio3, ratio4 sa cale NULL)
+#
+# s0.txt: po jednej liczbie calkowitej w wierszu, co najmniej 200 wierszy.
+#
+# Stan 2026-11-02 (retractordb #593): defekt naprawiony w retractordb c4b63a78 (#225, K24/P1),
+# test regresji test/IntegrationTest/k24_capacity. Na 40c28dbe i dfcc42d2 przy -r -k -m 40
+# strumienie ratio1..ratio4 maja 39/19/13/9 rekordow bez NULL, a rekord n strumienia ratioR
+# rowna sie s0[R*n].
+
+STORAGE '.'
+SUBSTRAT 'default'
+
+DECLARE s0_f0 INTEGER STREAM s0, 1/100 TEXTFILE 's0.txt'
+
+SELECT * STREAM ratio1 FROM s0-1/100
+SELECT * STREAM ratio2 FROM s0-2/100
+SELECT * STREAM ratio3 FROM s0-3/100
+SELECT * STREAM ratio4 FROM s0-4/100
