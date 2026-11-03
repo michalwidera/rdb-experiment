@@ -9,10 +9,10 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKER_SSH="${WORKER_SSH:-michal@192.168.88.13}"
 SSH_CONFIG="${RDB_SSH_CONFIG:-/dev/null}"
-REMOTE_P8_OUT="${REMOTE_P8_OUT:-/home/michal/r593_p8}"
-REMOTE_ARCHIVES="${REMOTE_ARCHIVES:-/home/michal/r593_archives}"
-REMOTE_CONTROL="${REMOTE_CONTROL:-/home/michal/r593_control}"
-HOST_ARCHIVES="${HOST_ARCHIVES:-$HOME/r593_archives}"
+REMOTE_P8_OUT="${REMOTE_P8_OUT:-/home/michal/scratch-R593/p8}"
+REMOTE_ARCHIVES="${REMOTE_ARCHIVES:-/home/michal/scratch-R593/archives}"
+REMOTE_CONTROL="${REMOTE_CONTROL:-/home/michal/scratch-R593/control}"
+HOST_ARCHIVES="${HOST_ARCHIVES:-$(cd "$HERE/.." && pwd)/artifacts/R593/archives}"
 UNIT_NAME="${UNIT_NAME:-r593-p8.service}"
 
 SSH_OPTIONS=(-F "$SSH_CONFIG" -o BatchMode=yes -o ConnectTimeout=8 \

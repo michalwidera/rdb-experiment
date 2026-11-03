@@ -19,7 +19,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 HERE="$(pwd)"
 CODE_REPO="${CODE_REPO:-/home/michal/github/retractordb}"
-OUT="${OUT:-$HOME/r593_gates_rdb}"
+OUT="${OUT:-$HERE/../artifacts/R593/gates_rdb}"
 # Proba generalna procedury decyzyjnej (§7.5) biegnie na danych pilota.
 # Domyslne wartosci sa DOKLADNIE te, ktorych uzywa P6 — knoby niczego w nim
 # nie zmieniaja i nie moga byc uzyte w kampanii pomiarowej.
