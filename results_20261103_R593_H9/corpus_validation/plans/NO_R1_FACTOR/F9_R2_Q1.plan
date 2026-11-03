@@ -1,0 +1,19 @@
+:STORAGE	temp/
+:SUBSTRAT	memory
+A(1/100)	axis_x.txt
+	v: INTEGER
+B(1/100)	axis_y.txt
+	v: INTEGER
+m1(1/100)
+	:- PUSH_STREAM(A)
+	:- PUSH_STREAM(B)
+	:- STREAM_ADD
+	m1_0: INTEGER
+		PUSH_ID(m1[0])
+		PUSH_ID(m1[0])
+		MULTIPLY
+		PUSH_ID(m1[1])
+		PUSH_ID(m1[1])
+		MULTIPLY
+		ADD
+		CALL(Sqrt)

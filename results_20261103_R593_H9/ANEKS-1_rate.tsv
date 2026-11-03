@@ -1,0 +1,16 @@
+key	value
+rate_scale	4
+calibration_saw_effect	no
+criterion	p99 <= 50% shortest logical slot; worst profile; Q=32
+worst_p99_fraction_percent	41.732191
+worst_p99_family	F9_X
+worst_p99_profile	NO_R1_FACTOR
+slot_min_ms_F9_R2	40.000000
+slot_min_ms_F9_R1	13.333333
+slot_min_ms_F9_X	13.333333
+slots_exceeding_slot	2
+slots_measured	11988
+runs	60
+ladder_rejected	1/4,1/2,1,2
+ladder_accepted	4
+input_slot_csv_sha256	f62df65e0dc5f9d83359f8297181798da40c01d59c63c1f9605ba2d67d048126
