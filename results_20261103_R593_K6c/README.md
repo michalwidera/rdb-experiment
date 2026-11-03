@@ -21,6 +21,7 @@ Sprawdzian analizatora: `analyze.py` z tego katalogu uruchomiony na zamrożonych
 | Profile | 5 profili, `RDB_OPT_SIMPLIFY_EXPRESSIONS` nie istniał | te same 5 profili + jawne `SIMPLIFY=ON` we wszystkich | przełącznik powstał po K6c, `--build-info` go wypisuje; ON = wartość domyślna silnika, wspólna dla profili |
 | Plany | generator K6c, formy przestarzałe | ten sam generator + plany po migracji M1/S1/S2 | bieżąca składnia; ta sama praca (niżej) |
 | Harness | `worker/run_ablation_study.sh` | ten sam plik, bez zmian | |
+| Binarki profili na workerze | 5 osobnych buildów `build/K6-*` | `K6-OFF` zbudowany przez `build_profiles.sh`; cztery pozostałe to kopie binarek H9 o identycznych flagach (niżej) | ten sam commit źródła i te same `RDB_OPT_*`; oszczędność ok. 1 h 45 min budowy na Pi (decyzja człowieka 2026-11-03) |
 
 ## Migracja planów (M1, S1, S2)
 
@@ -39,6 +40,20 @@ Dane zewnętrzne W8 (`examples/ecg/rec205/{rec205,bp_coef.txt,d_coef.txt}`) są 
 - `generate.py`: nakładka opisana wyżej.
 
 Próba na hoście (x86, `-f`, `-m 600`, profile DEFAULT i NO_R1_NO_R2 hosta = ALGSTRUCT i STRUCT): 13/13 komórek z kodem 0 i kompletnym podsumowaniem; R1 odpala w W2/W3/W4/W8, R2 w W8/W9, kontrole W5 i W7 mają 0/0 i identyczne artefakty w obu profilach.
+
+## Binarki profili na workerze
+
+Wszystkie z `~/R593` @ `dfcc42d2`, Release, `RDB_BENCH_PROBE=ON`, `RDB_OPT_SIMPLIFY_EXPRESSIONS=ON`, `cap_ipc_lock,cap_sys_nice=ep`. Cztery profile K6c mają dokładnie te same przełączniki co profile H9 (`results_20261103_R593_H9/profiles.tsv`), więc ich binarki są kopiami tamtych; `--build-info` każdej kopii zweryfikowano wobec flag profilu K6c (`verify_probe_binary_profile`), a capabilities nadano kopii osobno.
+
+| Profil K6c | Źródło binarki | SHA-256 (16 znaków) |
+|---|---|---|
+| `OFF` | `build_profiles.sh` -> `build/K6-OFF` | `665524df193153e2` |
+| `STRUCT` | kopia `build/R593-NO_R1_NO_R2` | `3911eaacc9ac803a` |
+| `STRUCT_R1` | kopia `build/R593-NO_R2_CANON` | `486e7b10604f48eb` |
+| `STRUCT_R2` | kopia `build/R593-NO_R1_FACTOR` | `9f60838771a1c76c` |
+| `ALGSTRUCT` | kopia `build/R593-DEFAULT` | `4e8420e4ee9016bf` |
+
+Klient `xqry` (część aparatury, harness sprawdza jego commit) zbudowany w `build/R593-DEFAULT` i zainstalowany w `~/.local/bin`.
 
 ## Przebieg (worker)
 

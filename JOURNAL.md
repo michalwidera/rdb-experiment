@@ -4499,3 +4499,80 @@ Pin `rdb-experiment` w `rdb-artifact` (`d319e88`) zostaje; nota w `MAP.md` i `MA
 Decyzja człowieka 2026-11-03: wyniki `tab:k6-primary` (K6c) i `tab:h9-primary` (K26v3) zostają wynikami kampanii historycznych z ich rewizjami, a na silniku `dfcc42d2`, który ma zostać nowym przypięciem artykułu, biegnie zapowiedziana powtórka kontrolna: cały Tier B K6c (13 komórek, 780 przebiegów) i H9 w rozstrzygającej klasie Q=8 (240 z 1440 przebiegów). Rate obu kampanii zamrożony (`rate.json` K6c, ANEKS-1 K26v3), bez nowej kalibracji. Plany w bieżącej składni po migracji M1/S1/S2 z dowodem (`migrate_corpus.py`, paper-arXiv `08bd80f`). Kryteria zapisane przed pomiarem w `results_20261103_R593_K6c/README.md` i `results_20261103_R593_H9/README.md`.
 
 Przygotowanie na hoście: H9 - dowód korpusu 84/84 + 4/4 na profilach `R593-*`, P6 84/84, bramki bez Flinka czyste, redukcja przy Q=8 równa predykcji (50,000 / 50,000 / 58,333%), `freeze_check.sh preflight` zielony; K6c - nakładka na zamrożony generator (138 planów po migracji, sumy w `migration/migration.tsv`), próba 13/13 komórek z kodem 0, `analyze.py` odtwarza z zamrożonych `runs.csv` werdykt K6c A=0/B=12/C=1. Dwie usterki aparatury, które przerwałyby pomiar na nowym silniku, poprawione w kopiach z dowodem: `calib/gen_calib.py` (skaler rate nie rozpoznawał `TEXTFILE`) i `summarize_run.py` (licznik `r3` w `REWRITE_APPLIED`). Odziedziczone ograniczenie K26v3: historyczny mutant F9-X jest odrzucany błędem składni, nie granicą `#` (opis w README H9).
+
+## 2026-11-03T16:45:26+01:00 — results_20261103_R593_K6c / ablation / study_1 (W2)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W2, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W2_Q01=1440 slotow@180 Hz; W2_Q08=1440 slotow@180 Hz; W2_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 180
+- dane: `results_20261103_R593_K6c/ablation/study_01_W2`
+
+## 2026-11-03T17:00:07+01:00 — results_20261103_R593_K6c / ablation / study_2 (W3)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W3, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W3_d1=1440 slotow@180 Hz; W3_d3=3240 slotow@405 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_02_W3`
+
+## 2026-11-03T17:43:54+01:00 — results_20261103_R593_K6c / ablation / study_3 (W4)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W4, reps=15, scale=1, f_phi generatora=15 Hz
+- budzet slotow per komorka: W4_Q08=400 slotow@15 Hz; W4_Q32=400 slotow@15 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_03_W4`
+
+## 2026-11-03T17:53:00+01:00 — results_20261103_R593_K6c / ablation / study_4 (W5)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W5, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W5_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 60
+- dane: `results_20261103_R593_K6c/ablation/study_04_W5`
+
+## 2026-11-03T18:01:56+01:00 — results_20261103_R593_K6c / ablation / study_5 (W7)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W7, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W7_Q32=720 slotow@90 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 60
+- dane: `results_20261103_R593_K6c/ablation/study_05_W7`
+
+## 2026-11-03T18:43:26+01:00 — results_20261103_R593_K6c / ablation / study_6 (W8)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W8, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W8_Q01=5760 slotow@720 Hz; W8_Q08=5760 slotow@720 Hz; W8_Q32=5760 slotow@720 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: W8_Q32
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_06_W8`
+
+## 2026-11-03T19:04:20+01:00 — results_20261103_R593_K6c / ablation / study_7 (W9)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W9, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W9_Q08=960 slotow@120 Hz; W9_Q32=960 slotow@120 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_07_W9`
