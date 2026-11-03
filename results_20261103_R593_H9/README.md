@@ -40,7 +40,7 @@ Plany K26v3 (`migration/orig/`) przeszły `paper-arXiv/measurment-tool/migrate_c
 
 ## Zmiany w skopiowanej aparaturze
 
-Pliki skopiowane z `results_20260814_K26v3/`; poza zamianą nazw (`K26v3-` -> `R593-`, `~/K26v3` -> `~/R593`, `k26v3_*` -> `r593_*`, `k26v3-p8` -> `r593-p8`) zmienia się tylko:
+Pliki skopiowane z `results_20260814_K26v3/`; poza zamianą nazw (`K26v3-` -> `R593-`, `~/K26v3` -> `~/R593`, `k26v3-p8` -> `r593-p8`) i domyślnymi ścieżkami według reguły „aparatura nie pisze do `~`" z README repozytorium (katalogi robocze workera w `/home/michal/scratch-R593/`, wyniki hosta w `artifacts/R593/`) zmienia się tylko:
 
 - `run_matrix_worker.py`: 80 przebiegów na rodzinę (Q=8) zamiast 480; ANEKS-1 czytany z tego katalogu (śledzony w git);
 - `calib/gen_calib.py`: wyrażenie deklaracji przyjmuje `TEXTFILE`/`BINFILE`/`DEVICE` obok `FILE`. Bez tego `scale_plan` odrzuciłby każdy plan po migracji i macierz padłaby na pierwszej komórce. Równoważność: dla 21 planów `scale_plan(po migracji, 4)` równa się `scale_plan(oryginał, 4)` z `FILE` -> `TEXTFILE`, a przy skali 1 plan zostaje bez zmian (`gen_calib.py --check`);
@@ -64,7 +64,7 @@ Historyczny mutant F9-X w `validate_corpus.py` ma `FROM` w osobnym wierszu, wię
 ./capture_worker.py                      # ANEKS-2/3, commit i push
 ./bind_campaign.py                       # ANEKS-0 - od tej chwili rewizje są związane
 # worker: P6
-CODE_REPO=/home/michal/R593 OUT=/home/michal/r593_gates_rdb ./run_main_rdb.sh
+CODE_REPO=/home/michal/R593 OUT=/home/michal/scratch-R593/gates_rdb ./run_main_rdb.sh
 # host: start łańcucha P8 pod systemd; potem host może być wyłączony
 ./start_matrix_p8.sh
 ./collect_p8_archives.sh                 # kiedykolwiek; po komplecie COLLECT_COMPLETE
