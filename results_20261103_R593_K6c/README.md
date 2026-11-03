@@ -68,4 +68,28 @@ python3 analyze.py --runs ablation/study_*/runs.csv --rate-json results/rate.jso
 
 ## Stan
 
-Przygotowanie (2026-11-03): plany, migracja, próba na hoście. Pomiar nie rozpoczęty.
+Pomiar zakończony 2026-11-03: 7 badań (W2, W3, W4, W5, W7, W8, W9), 780 przebiegów, `ablation/study_*/runs.csv`. Analiza: `analyze.py --runs ablation/study_*/runs.csv --rate-json results/rate.json --output results` -> `results/summary.md`, `results/analysis.json`.
+
+Wynik: rozkład klas A=0, B=12, C=1, jak w K6c; regresja w tej samej komórce, `W3_d3` 1.113 [1.110; 1.115]; kontrole negatywne W5_Q32 i W7_Q32 czyste. Kryterium potwierdzenia z sekcji *Kryteria* spełnione (`control_violations` puste). Zestawienie z K6c (`results_20260730_K6c/results/analysis.json`):
+
+| Komórka | K6c iloraz [95% CI] | klasa | R593 iloraz [95% CI] | klasa |
+|---|---|:--:|---|:--:|
+| `W2_Q01` | 1.064 [1.038; 1.100] | B | 1.032 [1.021; 1.069] | B |
+| `W2_Q08` | 1.061 [1.053; 1.066] | B | 1.068 [1.063; 1.072] | B |
+| `W2_Q32` | 0.991 [0.980; 0.994] | B | 0.992 [0.974; 0.996] | B |
+| `W3_d1` | 1.056 [1.023; 1.064] | B | 1.066 [1.059; 1.070] | B |
+| `W3_d3` | 1.103 [1.099; 1.106] | C | 1.113 [1.110; 1.115] | C |
+| `W4_Q08` | 1.002 [0.999; 1.005] | B | 1.010 [1.006; 1.014] | B |
+| `W4_Q32` | 0.998 [0.994; 1.000] | B | 1.001 [0.997; 1.004] | B |
+| `W5_Q32` | 1.019 [1.010; 1.025] | B | 0.999 [0.996; 1.003] | B |
+| `W7_Q32` | 1.006 [1.001; 1.012] | B | 0.998 [0.994; 1.001] | B |
+| `W8_Q01` | 0.996 [0.934; 1.021] | B | 1.005 [0.987; 1.010] | B |
+| `W8_Q08` | 0.990 [0.971; 1.001] | B | 1.078 [1.072; 1.086] | B |
+| `W9_Q08` | 0.913 [0.899; 0.918] | B | 0.906 [0.900; 0.910] | B |
+| `W9_Q32` | 0.965 [0.962; 0.971] | B | 0.983 [0.977; 0.988] | B |
+
+Największa zmiana ilorazu: `W8_Q08` 0.990 -> 1.078 (klasa B bez zmian; rodzina W8 niesie ostrzeżenia nasycenia w `analysis.json`). Czasy bezwzględne niższe niż w K6c (~34%), co nie jest przedmiotem powtórki.
+
+Flaga `CAMPAIGN INVALID` z `analyze.py`: w siedmiu komórkach z R1 (W2_Q01, W2_Q08, W2_Q32, W3_d1, W3_d3, W4_Q08, W4_Q32) sumy artefaktów rozdzielają się według R1 (ALGSTRUCT, STRUCT_R1 wobec OFF, STRUCT). Kontrola `check_obs_r1.py` (raport `results/check_obs_r1.md`) odtwarza te komórki na hoście binarkami o tych samych flagach: sumy hosta równe sumom workera 14/14, deskryptory, wartości i kolejność identyczne na wspólnym prefiksie, bez NULL i luk, R1-ON o 2 rekordy dłuższy - relacja Obs 7/7. Przyczyna: od `fcc5a444` R1 skraca ogon (cor:shift-tail-gap), co def:observable dopuszcza (Val równe, Lat nierosnące). Warunek sum w `analyze.py` pochodzi z K6c, gdzie R1 nie zmieniał ogona, i zakłada równość bajtową.
+
+Decyzja człowieka 2026-11-03: wynik uznany za potwierdzony wg def:observable; flaga `CAMPAIGN INVALID` zostaje w `summary.md` jako wynik zamrożonego analizatora, a to zastrzeżenie wraz z raportem `check_obs_r1.md` jest częścią wyniku. Komórka `W9_Q08` 0.906 [0.900; 0.910] leży blisko progu 10% i pozostaje w klasie B.

@@ -4576,3 +4576,7 @@ Przygotowanie na hoście: H9 - dowód korpusu 84/84 + 4/4 na profilach `R593-*`,
 - komorki wykluczone decyzja: brak
 - przebiegow: 120
 - dane: `results_20261103_R593_K6c/ablation/study_07_W9`
+
+## 2026-11-03 — R593 K6c: wynik i decyzja o fladze sum artefaktów
+
+`analyze.py` na 780 przebiegach powtórki: A=0, B=12, C=1, regresja `W3_d3` 1.113 - rozkład K6c potwierdzony. Flaga `CAMPAIGN INVALID` wynika z różnych sum artefaktów R1-ON/R1-OFF w siedmiu komórkach z R1; `check_obs_r1.py` pokazuje Obs 7/7 (wartości identyczne, R1-ON o 2 rekordy dłuższy - krótszy ogon od `fcc5a444`). Decyzja człowieka: wynik potwierdzony wg def:observable, z zastrzeżeniem w `results_20261103_R593_K6c/README.md` (sekcja *Stan*). H9 (Q=8) w toku na workerze od 19:53 (`r593-p8.service`, związane przy `43377b5`).
