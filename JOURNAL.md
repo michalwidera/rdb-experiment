@@ -4593,3 +4593,7 @@ Decyzja człowieka 2026-11-04 (wariant a): sześć surowych archiwów K6c powtó
 - commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
 - parametry: rate_hz=360, clients=1, samples=20000, sink=null
 - dane: `results_20261104_R593_K18/rate_r593k18/study_01`
+
+## 2026-11-04 - R593 K18: kotwica bieżącej rewizji na `dfcc42d2` potwierdzona
+
+Ponowny pomiar K18 (#593 krok 6, decyzja człowieka 2026-11-04 wariant a) w `results_20261104_R593_K18/`. exactness/replay: 67 artefaktów, zero różnic; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego; 360 Hz: 19 999 interwałów, E1 mediana 885,7 µs, p99 1105,6 µs, max 1303,0 µs, queue-emission mediana 937,2 µs, p99 1211,1 µs, p99,9 1291,4 µs, max 1420,3 µs (51,1% budżetu slotu). Plan 360 Hz to `rec205-detect.rql` z drzewa `dfcc42d2`, inny tekst niż w K18, więc liczby czasowe nie są porównaniem tego samego obciążenia. Zmiany aparatury: `verify_probe_binary` wymaga `SIMPLIFY=ON`, gdy binarka go wypisuje (`3660df6`, decyzja człowieka); strażnik buildu nadzorcy nie zna `scripts/buildrdb/research.sh` - obejście ręczną instalacją i `--skip-build` (`25acde4`), strażnik niepoprawiony.

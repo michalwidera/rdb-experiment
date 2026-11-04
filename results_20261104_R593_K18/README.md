@@ -62,4 +62,24 @@ Na nadzorcy, po zatwierdzeniu exactness/replay:
 
 ## Stan
 
-W toku (kryteria zapisane przed pomiarem).
+**POTWIERDZONY 2026-11-04** - wszystkie trzy warunki z kryteriów zachodzą na `dev/muro@dfcc42d2`, binarka Release-Probe z `~/R593` (SHA-256 `xretractor` `014cb89fea5bd17b…`, `--build-info`: 4 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=ON`, `RDB_OPT_SIMPLIFY_EXPRESSIONS=ON`).
+
+1. exactness/replay (`exactness/`, commit `7d086e1`): 2 przebiegi, 67 artefaktów, 51 identycznych bitowo, 16 `.meta` identycznych po pominięciu czasu utworzenia; zero różnic;
+2. round-trip: `a2 == a`, `b2 == b` bez rekordu zastępczego, `c[2i] == b[i]`, `c[2i+1] == a[i]`; rekordy a=19 999, b=19 999, c=39 994, a2=19 996, b2=19 997 (prefiksy >= 19 990);
+3. 360 Hz (`rate_r593k18/study_01/`, commit `6afb4ca`): 19 999 interwałów w sondzie (żaden rekord nie zaginął), jeden klient `xqry`, harness zakończony sukcesem, governor `performance`, `throttled=0x0`, worker świeżo po restarcie.
+
+Liczby czasowe (opisowo, obok K18; plan 360 Hz nie jest tym samym tekstem co w K18, więc to nie jest porównanie tego samego obciążenia ani miara poprawy silnika):
+
+| Metryka | K18 `bc37186` | R593 K18 `dfcc42d2` |
+|---|---|---|
+| E1 mediana | 1312,4 µs | 885,7 µs |
+| E1 p99 | 1617,9 µs | 1105,6 µs |
+| E1 max | 1838,5 µs | 1303,0 µs |
+| queue-emission mediana | 1372,8 µs | 937,2 µs |
+| queue-emission p99 | 1718,6 µs | 1211,1 µs |
+| queue-emission p99,9 | 1832,5 µs | 1291,4 µs |
+| queue-emission max | 1944,0 µs | 1420,3 µs |
+| max queue-emission / budżet 2777,8 µs | 70,0% | 51,1% |
+| wake_lag mediana / max | 20,7 / 54,3 µs | 22,2 / 71,2 µs |
+
+Odstępstwo w przebiegu: pierwsze podejście nadzorcy (commit przygotowawczy `2993d98`) zatrzymało się przed buildem na strażniku `grep 'build/Release-Probe' scripts/buildrdb.sh` - w `dfcc42d2` kod profilu jest w `scripts/buildrdb/research.sh`. Nic nie zmierzono; katalog kampanii usunięty commitem `25acde4`, ten sam `build/Release-Probe` zainstalowany ręcznie (`cmake --install`, binarki w `~/.local/bin` bajt w bajt równe buildowi użytemu przez exactness), drugie podejście z `--skip-build`. Szczegóły w `manifest.md`. Strażnik w `start_supervisor.sh` nie jest poprawiony.
