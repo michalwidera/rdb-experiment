@@ -1,6 +1,6 @@
 # R376 - wynik kampanii
 
-Kampania 2026-11-04 15:12-18:31, pi400, uc03-uc08, 9 par A/B w kolejności ABBA, 30 podłączeń na przebieg: razem 108 przebiegów i 3240 podłączeń. Każdy przebieg był ważny: wątek slotu `SCHED_FIFO` na rdzeniu 3, `VmLck` > 0, governor `performance`. Żadna binarka nie różniła się od zbudowanej. Każdy klient dostał wiersz. Surowe dane leżą poza git: `results_20261104_R376_raw.tar.gz`, SHA-256 `1dafcb7ab809f30761c14a550a6802852479a8a51e9e33086c1d706da461d1be`. Indeks plików jest w `results_20261104_R376_raw.index.tsv`, a przebieg kampanii w `campaign.log`. Analiza: `analyze.py --raw <raw> --seed 376`; jej pełny wydruk jest niżej, w części *Wydruk analizy*.
+Kampania 2026-11-04 15:12-18:31, pi400, uc03-uc08, 9 par A/B w kolejności ABBA, 30 podłączeń na przebieg: razem 108 przebiegów i 3240 podłączeń. Każdy przebieg był ważny: wątek slotu `SCHED_FIFO` na rdzeniu 3, `VmLck` > 0, governor `performance`. Żadna binarka nie różniła się od zbudowanej. Każdy klient dostał wiersz. Surowe dane leżą poza tym repozytorium, w prywatnym `paper-arXiv`, w katalogu `rdb-experiment-embargo/R376/` (commit `f0686a1`, opis i polecenia sprawdzenia w `rdb-experiment-embargo/README.md`), bo pochodzą z korpusu objętego embargiem: `results_20261104_R376_raw.tar.gz`, SHA-256 `1dafcb7ab809f30761c14a550a6802852479a8a51e9e33086c1d706da461d1be`. Indeks plików jest w `results_20261104_R376_raw.index.tsv`, a przebieg kampanii w `campaign.log`. Analiza: `analyze.py --raw <raw> --seed 376`; jej pełny wydruk jest niżej, w części *Wydruk analizy*.
 
 ## Odpowiedź
 
