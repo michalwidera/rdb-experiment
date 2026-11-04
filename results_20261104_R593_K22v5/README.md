@@ -81,4 +81,30 @@ Pomiar na hoście x86-64 (K22v5: „Worker RT nieużywany”); przebieg RQL w cz
 
 ## Stan
 
-Kryteria zapisane; pomiar nie wykonany.
+**NIEPOTWIERDZONY 2026-11-04 - 9/15 komórek PASS, 6 FAIL klasy W** (`results/semantic.csv`, wydruki `compare.py` w `evidence/raw/<komórka>/oracle*.log`). Kryteria zapisane i wypchnięte przed pomiarem (`07c634c`); jeden przebieg, bez powtórek i poprawek. Bramka `freeze_check.sh` czysta (`results/environment.tsv`). Wynik idzie do człowieka.
+
+| Komórka | Werdykt | Klasa | `rql_vs_python` | `rql_vs_flink` | `python_vs_flink` | `rql.csv` = K22v5 |
+|---|---|---|---|---|---|---|
+| base_F1, M2_F1, M3_F1, M4_F1 | PASS | | PASS | PASS | PASS | tak |
+| base_F3, M2_F3, M3_F3, M4_F3 | PASS | | PASS | PASS | PASS | tak |
+| M4_F2 | PASS | | PASS | PASS | PASS | tak |
+| base_F2, M1_F2, M2_F2, M3_F2 | FAIL | W | FAIL | FAIL | PASS | nie |
+| M1_F1, M1_F3 | FAIL | W | FAIL | FAIL | PASS | nie |
+
+Kontrola rate w trzech komórkach M3: PASS. Wszystkie 15 emisji dało 2000 rekordów bez nulli, bez błędu aparatury i bez klasy T (M1 usunęło RATIONAL z celów). `python.csv` i `flink.csv` są we wszystkich 15 komórkach bajtowo równe zamrożonym plikom K22v5, więc writery i JDK 17.0.20.1 nie zmieniły odniesienia; każda różnica leży po stronie RQL. W dziewięciu komórkach PASS `rql.csv` z `dfcc42d2` jest bajtowo równy `rql.csv` z `dd733e3`.
+
+**Diagnoza po pomiarze (opisowa, nie zmienia klasy):** `diagnose_shift.py` -> `results/diagnosis.txt`. W każdej komórce FAIL **każde pole z osobna** jest ciągiem Pythona przesuniętym o stałą liczbę indeksów, ale pola tego samego rekordu przesuwają się o różne wartości, więc żadne mapowanie rekordu (a więc i klasa P z kryteriów) nie daje zgodności:
+
+| Komórka | Rekordy różne | Pola zgodne bez przesunięcia | Pola przesunięte (k) |
+|---|---:|---|---|
+| M1_F1 | 2000/2000 | `f1_out_0` (FIR) | `f1_out_1` (k=1) |
+| M1_F3 | 667/2000 | `f3_out_0` | `f3_out_1` (k=1) |
+| base_F2, M3_F2 | 1871/2000 | - | `qrs_out_0` (k=4), `qrs_out_1`, `qrs_out_2` (k=1) |
+| M1_F2 | 1994/2000 | - | `qrs_out_0`, `qrs_out_3` (k=4), `qrs_out_1`, `qrs_out_2` (k=1) |
+| M2_F2 | 1869/2000 | - | `qrs_out_0` (k=4), `qrs_out_1`, `qrs_out_2` (k=1) |
+
+(k: wartość RQL w indeksie `i + k` równa wartości Pythona w indeksie `i`)
+
+Najprostsza komórka pokazuje mechanizm. W M1_F1 zamrożony writer Pythona emituje dla okna FIR po próbkach `n-25..n` parę `(n + 1, [y, samples2[n + 1]])`, czyli łączy okno z próbką drugiego kanału o jeden slot późniejszą; tak liczył `dd733e3`. Na `dfcc42d2` złączenie `fir+channel2` daje próbkę z tej samej chwili co koniec okna (`samples2[n]`), zgodnie ze zmianą `5f310515` (okno `@` stemplowane końcem przedziału, `SOperations.hpp`: „złączenie okna z jego własnym źródłem (potok FIR) nie wyprzedza sygnału”). Pole FIR jest identyczne. Komórki PASS mają jeden strumień wyjściowy z jednej ścieżki okien (F1, F3 bez drugiego kanału, cel `mwi_q` w M4_F2), więc przesunięcie wspólne dla całego rekordu znosi mapowanie D1 (ii). Komórki FAIL łączą w jednym rekordzie ścieżki o różnej liczbie okien (F2 `qrs_out`: łańcuch czterech okien wobec ścieżek z jednym; M1: okno wobec surowego drugiego kanału). Wniosek z danych: różnica dotyczy wyrównania pól w złączeniu, nie arytmetyki - żadna wartość nie powstaje poza ciągiem odniesienia. To, że zmiana `5f310515` jest zamierzona, wynika z dokumentacji silnika, nie z tego pomiaru.
+
+Dla artykułu: warunek wstępny K22v5 w obecnym brzmieniu („all 15 measured cells pass a shared oracle at zero tolerance over 2000 slots”) **nie zachodzi** na `dfcc42d2` z zamrożonymi writerami K22v5; zostaje wynikiem historycznym na `dd733e3`. Czy i jak to opisać (np. writery w konwencji sprzed `5f310515`), decyduje człowiek.

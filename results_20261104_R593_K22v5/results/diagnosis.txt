@@ -1,0 +1,6 @@
+base_F2: rekordy rozne 1871/2000; qrs_out_0 rozne=1868 przesuniecie_pola=4; qrs_out_1 rozne=36 przesuniecie_pola=1; qrs_out_2 rozne=36 przesuniecie_pola=1
+M1_F1: rekordy rozne 2000/2000; f1_out_0 rozne=0 przesuniecie_pola=0; f1_out_1 rozne=2000 przesuniecie_pola=1
+M1_F2: rekordy rozne 1994/2000; qrs_out_0 rozne=1868 przesuniecie_pola=4; qrs_out_1 rozne=36 przesuniecie_pola=1; qrs_out_2 rozne=36 przesuniecie_pola=1; qrs_out_3 rozne=1872 przesuniecie_pola=4
+M1_F3: rekordy rozne 667/2000; f3_out_0 rozne=0 przesuniecie_pola=0; f3_out_1 rozne=667 przesuniecie_pola=1
+M2_F2: rekordy rozne 1869/2000; qrs_out_0 rozne=1867 przesuniecie_pola=4; qrs_out_1 rozne=17 przesuniecie_pola=1; qrs_out_2 rozne=17 przesuniecie_pola=1
+M3_F2: rekordy rozne 1871/2000; qrs_out_0 rozne=1868 przesuniecie_pola=4; qrs_out_1 rozne=36 przesuniecie_pola=1; qrs_out_2 rozne=36 przesuniecie_pola=1
