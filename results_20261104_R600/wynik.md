@@ -1,6 +1,6 @@
 # R600 - wynik kampanii
 
-Kampania 2026-11-04 21:56 - 2026-11-05 00:20, pi400, uc03, uc05, uc06, uc07, uc08, 9 par A/B w kolejności ABBA, 30 podłączeń na przebieg: razem 90 przebiegów i 2700 podłączeń. Każdy przebieg był ważny: wątek slotu `SCHED_FIFO` na rdzeniu 3, `VmLck` > 0, governor `performance`, uruchomiona binarka równa zbudowanej (`analyze.py` przerywa przy każdym z tych warunków). Każdy klient dostał wiersz. Log kampanii nie zawiera żadnego błędu i kończy się `CAMPAIGN_COMPLETE`; jego kopia to `campaign.log`. Surowe dane leżą poza git: `results_20261104_R600_raw.tar.gz` (42 010 932 B), SHA-256 `78d7c1060117e0c596f5c453723c7da2044a3a7d9638cf0c4f4fb77c0a8d13e5`. Indeks 540 plików (90 przebiegów × 6 plików) jest w `results_20261104_R600_raw.index.tsv`. Analiza według kryteriów: `analyze.py --raw <raw> --seed 600`; jej pełny wydruk jest niżej, w części *Wydruk analizy*. Eksploracja po pomiarze: `explore_k2.py --raw <raw>`; wydruk w części *Wydruk eksploracji*.
+Kampania 2026-11-04 21:56 - 2026-11-05 00:20, pi400, uc03, uc05, uc06, uc07, uc08, 9 par A/B w kolejności ABBA, 30 podłączeń na przebieg: razem 90 przebiegów i 2700 podłączeń. Każdy przebieg był ważny: wątek slotu `SCHED_FIFO` na rdzeniu 3, `VmLck` > 0, governor `performance`, uruchomiona binarka równa zbudowanej (`analyze.py` przerywa przy każdym z tych warunków). Każdy klient dostał wiersz. Log kampanii nie zawiera żadnego błędu i kończy się `CAMPAIGN_COMPLETE`; jego kopia to `campaign.log`. Surowe dane leżą poza tym repozytorium, w prywatnym `paper-arXiv`, w katalogu `rdb-experiment-embargo/R600/` (commit `f0686a1`), bo pochodzą z korpusu objętego embargiem: `results_20261104_R600_raw.tar.gz` (42 010 932 B), SHA-256 `78d7c1060117e0c596f5c453723c7da2044a3a7d9638cf0c4f4fb77c0a8d13e5`. Indeks 540 plików (90 przebiegów × 6 plików) jest w `results_20261104_R600_raw.index.tsv`. Analiza według kryteriów: `analyze.py --raw <raw> --seed 600`; jej pełny wydruk jest niżej, w części *Wydruk analizy*. Eksploracja po pomiarze: `explore_k2.py --raw <raw>`; wydruk w części *Wydruk eksploracji*.
 
 ## Odpowiedź
 
@@ -80,7 +80,7 @@ Po co: wynik ma dać się sprawdzić i powtórzyć bez rozmowy, w której powsta
 
 **Ponowna analiza z archiwum** (bez workera, ~15 s):
 
-1. Pobrać `results_20261104_R600_raw.tar.gz` z miejsca przechowywania archiwów i sprawdzić sumę: `sha256sum` musi dać wartość z nagłówka tego pliku.
+1. Pobrać `results_20261104_R600_raw.tar.gz` z `paper-arXiv/rdb-experiment-embargo/R600/` i sprawdzić sumę: `sha256sum` musi dać wartość z nagłówka tego pliku.
 2. `tar xzf results_20261104_R600_raw.tar.gz -C <katalog>`, co daje `<katalog>/raw/ucNN/{A,B}_PP/`. Każdy plik da się sprawdzić z `results_20261104_R600_raw.index.tsv` (ścieżka względem `raw/`, rozmiar, SHA-256).
 3. W tym katalogu (Python ≥ 3.10 z NumPy, np. `retractordb/.venv-python`):
    - `python3 -I analyze.py --raw <katalog>/raw --seed 600` musi dać wydruk identyczny z częścią *Wydruk analizy*;
