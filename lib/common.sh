@@ -472,7 +472,12 @@ verify_probe_binary_profile() {
 }
 
 verify_probe_binary() {
-  verify_probe_binary_profile "$1" ON ON ON ON || {
+  # Silnik z przelacznikiem RDB_OPT_SIMPLIFY_EXPRESSIONS wypisuje go w --build-info; komplet
+  # optymalizacji oznacza wtedy takze SIMPLIFY=ON. Binarki sprzed przelacznika sprawdzane jak dotad.
+  local info simplify=""
+  info=$("$1" --build-info 2>/dev/null) || info=""
+  grep -q '^RDB_OPT_SIMPLIFY_EXPRESSIONS=' <<<"$info" && simplify=ON
+  verify_probe_binary_profile "$1" ON ON ON ON "$simplify" || {
     log "BLAD: zainstalowana binarka nie jest oczekiwanym buildem Release-Probe"
     return 1
   }
