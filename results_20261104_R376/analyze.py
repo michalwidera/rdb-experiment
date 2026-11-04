@@ -114,13 +114,18 @@ def analyze_run(run_dir, rng):
         die(f"{run_dir}: binarka uruchomiona rozni sie od zbudowanej")
     rows = [l.split("\t") for l in (run_dir / "conns.tsv").read_text().splitlines()[1:]]
     conns = [(int(r[1]), int(r[3])) for r in rows]
-    # Klient zamykany SIGINT po pierwszym wierszu konczy sie kodem -2 (run_one.py, client()).
-    bad_rc = [r for r in rows if r[4] != "-2"]
+    # Klient po pierwszym wierszu konczy sie sam (0) albo przez SIGINT (-2); zly jest tylko brak wiersza
+    # albo zabicie po 5 s (run_one.py, client()). Ponizej ~1 kHz xqry zwykle zdazy skonczyc sie sam.
+    bad_rc = [r for r in rows if r[4].startswith(("no_row", "killed"))]
     rt = rt_tids(run_dir / "rt.txt")
     wins = windows_for_run(parse_trace(run_dir / "trace.txt"), conns, rt)
     s = load_slots(run_dir / "slots.csv")
     dl, end = s["deadline"], s["deadline"] + s["e2e"]
 
+    rel_slots = np.zeros(len(dl), dtype=bool)
+    for _, rel in wins:
+        if rel is not None:
+            rel_slots |= (dl <= rel[1]) & (end >= rel[0])
     events, hit_slots = [], np.zeros(len(dl), dtype=bool)
     for win, _ in wins:
         if win is None:
@@ -129,7 +134,8 @@ def analyze_run(run_dir, rng):
         mask = (dl <= w1) & (end >= w0)
         hit_slots |= mask
         events.append({"w_ns": w1 - w0, "mmap_ns": win[2], "len": win[3],
-                       "max_e2e": int(s["e2e"][mask].max()) if mask.any() else None, "n_slots": int(mask.sum())})
+                       "max_e2e": int(s["e2e"][mask].max()) if mask.any() else None, "n_slots": int(mask.sum()),
+                       "on_release": bool((mask & rel_slots).any())})
     releases = []
     for _, rel in wins:
         if rel is None:
@@ -304,9 +310,30 @@ def family_report(fam, runs, rng):
     lines.append(f"- Efekt #283 wg kryterium README: {'POTWIERDZONY' if confirmed else 'NIEPOTWIERDZONY'}"
                  f"{'' if len(verdict) == 2 else ' (p99 nieraportowane przy n_hit < 100)'}.")
 
+    if side["B"]["hit"] and side["B"]["pseudo"]:
+        excess = pct(side["B"]["hit"], 50) - pct(side["B"]["pseudo"], 50)
+        lines.append(f"- Ryzyko szczątkowe, wielkość: mediana zdarzeń B - mediana pseudo-zdarzeń B = {fmt_ms(excess)} ms.")
+    # Eksploracja po pomiarze, poza kryteriami: zdarzenia, ktorych sloty nie trafiaja na okno zwolnienia kolejki.
+    clean = {s: [e["max_e2e"] for e in side[s]["events"] if e["max_e2e"] is not None and not e["on_release"]] for s in "AB"}
+    parts = []
+    for s in "AB":
+        txt = f"{s}: n = {len(clean[s])} (odrzucone {len(side[s]['hit']) - len(clean[s])}), p50 / max {fmt_ms(pct(clean[s], 50))} / {fmt_ms(pct(clean[s], 100))}"
+        if len(clean[s]) >= 100:
+            # Osobny generator: eksploracja nie przesuwa losowan kryteriow w kolejnych rodzinach.
+            lo, hi = boot_p99(clean[s], np.random.default_rng(376))
+            p99 = pct(clean[s], 99)
+            txt += f", p99 {fmt_ms(p99)} [{fmt_ms(lo)}, {fmt_ms(hi)}] {'stabilne' if (hi - lo) / 2 <= 0.10 * p99 else 'NIESTABILNE'}"
+        parts.append(txt)
+    lines.append(f"- Eksploracja po pomiarze (poza kryteriami), zdarzenia bez slotu w oknie zwolnienia: {'; '.join(parts)}; "
+                 f"MW A > B p = {mann_whitney_greater(clean['A'], clean['B']):.3g}, "
+                 f"B > pseudo B p = {mann_whitney_greater(clean['B'], side['B']['pseudo']):.3g}.")
+
     for key, label in (("per_run_compute_p50", "compute_ns p50"), ("per_run_wake_p99", "wake_lag_ns p99")):
-        a, b = side["A"][key], side["B"][key]
-        if len(a) and len(b):
+        a = [x for x in side["A"][key] if not math.isnan(x)]
+        b = [x for x in side["B"][key] if not math.isnan(x)]
+        if not (a and b):
+            lines.append(f"- Kontrola aparatury, {label} per przebieg: brak slotów kontrolnych - nie do oceny.")
+        else:
             diff = float(np.median(a) - np.median(b))
             spread = max(max(a) - min(a), max(b) - min(b))
             p = permutation_mw_two_sided(a, b)

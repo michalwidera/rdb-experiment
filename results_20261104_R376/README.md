@@ -72,4 +72,4 @@ Wynik orientacyjny uc05 (1 przebieg na stronę, nie do wniosków): max `e2e_ns` 
 
 ## Stan
 
-Aparatura gotowa, kampania uc03-uc08 (uc01, uc02 nasycone) do uruchomienia.
+Kampania zakończona 2026-11-04 (108/108 przebiegów ważnych). Wynik: `wynik.md`. Efekt #283 potwierdzony według kryterium w uc03 i uc06; w uc05 p99 niestabilne (eksploracja po pomiarze w `wynik.md`, do decyzji człowieka); uc04 nie do oceny; uc07 i uc08 poniżej 100 trafień.
