@@ -1,0 +1,598 @@
+-- Last two lines of ~/.bashrc are:
+export PATH="$HOME/.local/bin:$PATH"
+source ~/.venv/bin/activate
+-- Note: Current folder is [ R593 ] and will start build in [ /home/michal/R593 ]
+-- Dependency check complete for option 'conan'.
+detect_api: Found cc=gcc-14.2.0
+detect_api: gcc>=5, using the major as version
+detect_api: gcc C++ standard library: libstdc++11
+
+Detected profile:
+WARN: This profile is a guess of your environment, please check it.
+WARN: The output of this command is not guaranteed to be stable and can change in future Conan versions.
+WARN: Use your own profile files for stability.
+Saving detected profile to /home/michal/.conan2/profiles/default
+[settings]
+arch=armv8
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=14
+os=Linux
+
+-- Dependency check complete for option 'ninja'.
+[settings]
+arch=armv8
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu23
+compiler.libcxx=libstdc++11
+compiler.version=14
+os=Linux
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+-- Dependency check complete for option 'probe'.
+
+======== Input profiles ========
+Profile host:
+[settings]
+arch=armv8
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu23
+compiler.libcxx=libstdc++11
+compiler.version=14
+os=Linux
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+
+Profile build:
+[settings]
+arch=armv8
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu23
+compiler.libcxx=libstdc++11
+compiler.version=14
+os=Linux
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+
+
+======== Computing dependency graph ========
+Graph root
+    conanfile.py (retractordb/0.1.12): /home/michal/R593/conanfile.py
+Requirements
+    antlr4/4.13.1#c5ac7d11bd74b64564ec5bab66791fbd - Cache
+    antlr4-cppruntime/4.13.2#cc92480070ebd971aada9faf2be36f9f - Cache
+    boost/1.91.0#9b41246fdc6288d648e8ad5b1649fbaf - Cache
+    fmt/12.1.0#50abab23274d56bb8f42c94b3b9a40c7 - Cache
+    gtest/1.18.0#e2507fc4efe2ec9e2db9e5c91eefab9f - Cache
+    libbacktrace/cci.20210118#a7691bfccd8caaf66309df196790a5a1 - Cache
+    magic_enum/0.9.8#07eec6b649e10d7ce20e21fce5077e4a - Cache
+    openjdk/21.0.1#d501945d7bd0389210414c627b6bbb29 - Cache
+    spdlog/1.17.0#bcbaaf7147bda6ad24ffbd1ac3d7142c - Cache
+    tomlplusplus/3.4.0#85dbfed71376fb8dc23cdcc0570e4727 - Cache
+Build requirements
+    b2/5.5.1#64d533c0c55f96a91011f77fd2900b45 - Cache
+    cmake/4.4.4#fec9c7048fae91e03c31e59977cd9c12 - Cache
+Resolved version ranges
+    b2/[>=5.2 <6]: b2/5.5.1
+    cmake/[>=3.16]: cmake/4.4.4
+    cmake/[>=4.4.2]: cmake/4.4.4
+
+======== Computing necessary packages ========
+Requirements
+    antlr4-cppruntime/4.13.2#cc92480070ebd971aada9faf2be36f9f:944960f38cf4d6fdd8f9482b586d708a34971443#cedb938eae4396bf35b4d501e9cfd3b6 - Cache
+    antlr4/4.13.1#c5ac7d11bd74b64564ec5bab66791fbd:9a4eb3c8701508aa9458b1a73d0633783ecc2270#d2dbc358120a79d905071e43c03d5875 - Cache
+    boost/1.91.0#9b41246fdc6288d648e8ad5b1649fbaf:0f92a89e5a7fbf3380d1c1b3988ba942459960ab#5aa345489ab78e75af3082ea8edb132a - Cache
+    fmt/12.1.0#50abab23274d56bb8f42c94b3b9a40c7:13d5d42a13585e7864d83848bba2139f22d46686#cc6002bf37c96791668af0d4c0dd05e3 - Cache
+    gtest/1.18.0#e2507fc4efe2ec9e2db9e5c91eefab9f:897b16a9c7726dcd2f49e419a964a3a5884938bb#72f4c77c45562ba05586916b86755791 - Cache
+    libbacktrace/cci.20210118#a7691bfccd8caaf66309df196790a5a1:5b2093669979718e7a4cca5ff87ef9326abf0414#bb69d3e18d7a13e6fa89592ce1cd7893 - Cache
+    magic_enum/0.9.8#07eec6b649e10d7ce20e21fce5077e4a:da39a3ee5e6b4b0d3255bfef95601890afd80709#9691f8bdf480cda32b3e978dafed8239 - Cache
+    openjdk/21.0.1#d501945d7bd0389210414c627b6bbb29:c93719558cf197f1df5a7f1d071093e26f0e44a0#b7a38854822e9e2f09930d0d4761b898 - Cache
+    spdlog/1.17.0#bcbaaf7147bda6ad24ffbd1ac3d7142c:da39a3ee5e6b4b0d3255bfef95601890afd80709#14254cd558ea53bc65947692aaadfb80 - Cache
+    tomlplusplus/3.4.0#85dbfed71376fb8dc23cdcc0570e4727:da39a3ee5e6b4b0d3255bfef95601890afd80709#310ad233754420a41a3c26a824ececd6 - Cache
+Build requirements
+    cmake/4.4.4#fec9c7048fae91e03c31e59977cd9c12:c93719558cf197f1df5a7f1d071093e26f0e44a0#b01d1c3b227d01fea17e31e26683f698 - Cache
+Skipped binaries
+    b2/5.5.1
+
+======== Installing packages ========
+antlr4-cppruntime/4.13.2: Already installed! (1 of 11)
+cmake/4.4.4: Already installed! (2 of 11)
+fmt/12.1.0: Already installed! (3 of 11)
+libbacktrace/cci.20210118: Already installed! (4 of 11)
+magic_enum/0.9.8: Already installed! (5 of 11)
+openjdk/21.0.1: Already installed! (6 of 11)
+openjdk/21.0.1: Creating JAVA_HOME environment variable with : /home/michal/.conan2/p/b/openj58497ebb7c13c/p
+tomlplusplus/3.4.0: Already installed! (7 of 11)
+gtest/1.18.0: Already installed! (8 of 11)
+antlr4/4.13.1: Already installed! (9 of 11)
+boost/1.91.0: Already installed! (10 of 11)
+spdlog/1.17.0: Already installed! (11 of 11)
+WARN: deprecated: Usage of deprecated Conan 1.X features that will be removed in Conan 2.X:
+WARN: deprecated:     'cpp_info.filenames' used in: boost/1.91.0, antlr4-cppruntime/4.13.2
+WARN: deprecated:     'cpp_info.build_modules' used in: antlr4-cppruntime/4.13.2
+WARN: deprecated:     'env_info' used in: boost/1.91.0, openjdk/21.0.1
+WARN: deprecated:     'cpp_info.names' used in: boost/1.91.0
+WARN: deprecated:     'user_info' used in: boost/1.91.0
+
+======== Finalizing install (deploy, generators) ========
+>>> Generate step
+Generating files for conanfile.py (retractordb/0.1.12)
+Generators folder: /home/michal/R593/build/Conan-Release-Probe/build/Release/generators
+Generator 'CMakeToolchain' calling 'generate()'
+CMakeToolchain generated: conan_toolchain.cmake
+CMakeToolchain: Preset 'conan-release' added to CMakePresets.json.
+    (cmake>=3.23) cmake --preset conan-release
+    (cmake<3.23) cmake <path> -G Ninja
+                 -DCMAKE_TOOLCHAIN_FILE=<output_folder>/generators/conan_toolchain.cmake 
+                 -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=Release
+CMakeToolchain generated: /home/michal/R593/build/Conan-Release-Probe/build/Release/generators/CMakePresets.json
+CMakeToolchain generated: /home/michal/R593/CMakeUserPresets.json
+Generator 'CMakeDeps' calling 'generate()'
+CMakeDeps necessary find_package() and targets for your CMakeLists.txt
+    find_package(Boost)
+    find_package(GTest)
+    find_package(antlr4-runtime)
+    find_package(antlr4)
+    find_package(spdlog)
+    find_package(openjdk)
+    find_package(magic_enum)
+    find_package(tomlplusplus)
+    target_link_libraries(... boost::boost gtest::gtest antlr4_static antlr4::antlr4 spdlog::spdlog_header_only openjdk::openjdk magic_enum::magic_enum tomlplusplus::tomlplusplus)
+Generator 'VirtualBuildEnv' calling 'generate()'
+Generating aggregated env files
+Generated aggregated env files: ['conanbuild.sh', 'conanrun.sh']
+Install finished successfully
+-- Using Conan toolchain: /home/michal/R593/build/Conan-Release-Probe/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: C++ Standard 23 with extensions ON
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Warning at CMakeLists.txt:225 (message):
+  RDB_BENCH_PROBE=ON - benchmark probes compiled in; NOT a production build.
+
+
+-- RDB_OPT_DEDUP_SUBSTRATES=ON
+-- RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+-- RDB_OPT_COMMUTATIVE_ADD=ON
+-- RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON
+-- RDB_OPT_SIMPLIFY_EXPRESSIONS=ON
+-- RDB_BENCH_PROBE=ON
+-- Performing Test RDB_MOLD_LINKS
+-- Performing Test RDB_MOLD_LINKS - Success
+-- mold 2.30.0 < 2.37: link dependencies from linker OFF
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- PlatformChecks: proby liczone od nowa (zmienione wejscia albo pierwsza konfiguracja)
+-- Performing Test RDB_HAS_CLOCK_NANOSLEEP
+-- Performing Test RDB_HAS_CLOCK_NANOSLEEP - Success
+-- Looking for C++ include mach/mach_time.h
+-- Looking for C++ include mach/mach_time.h - not found
+-- Performing Test RDB_HAS_SCHED_SETSCHEDULER
+-- Performing Test RDB_HAS_SCHED_SETSCHEDULER - Success
+-- Performing Test RDB_HAS_SCHED_AFFINITY
+-- Performing Test RDB_HAS_SCHED_AFFINITY - Success
+-- Performing Test RDB_HAS_MLOCKALL
+-- Performing Test RDB_HAS_MLOCKALL - Success
+-- Performing Test RDB_HAS_MCL_ONFAULT
+-- Performing Test RDB_HAS_MCL_ONFAULT - Success
+-- Performing Test RDB_HAS_PTHREAD_SCHEDPARAM_CALLABLE
+-- Performing Test RDB_HAS_PTHREAD_SCHEDPARAM_CALLABLE - Success
+-- Performing Test RDB_HAS_ROBUST_MUTEX
+-- Performing Test RDB_HAS_ROBUST_MUTEX - Success
+-- Performing Test RDB_HAS_SYSCTL_KERN_PROC
+-- Performing Test RDB_HAS_SYSCTL_KERN_PROC - Failed
+-- Performing Test RDB_HAS_LD_WRAP
+-- Performing Test RDB_HAS_LD_WRAP - Success
+-- Performing Test RDB_HAS_STATVFS_CALLABLE
+-- Performing Test RDB_HAS_STATVFS_CALLABLE - Success
+-- RDB_HAS_ADDR2LINE=1
+-- RDB_HAS_CLOCK_NANOSLEEP=1
+-- RDB_HAS_MACH_TIME_H=0
+-- RDB_HAS_SCHED_SETSCHEDULER=1
+-- RDB_HAS_SCHED_AFFINITY=1
+-- RDB_HAS_MLOCKALL=1
+-- RDB_HAS_MCL_ONFAULT=1
+-- RDB_HAS_PTHREAD_SCHEDPARAM=1
+-- RDB_HAS_ROBUST_MUTEX=1
+-- RDB_HAS_SYSCTL_KERN_PROC=0
+-- RDB_HAS_LD_WRAP=1
+-- RDB_HAS_STATVFS=1
+-- ccache found, enabling as compiler launcher: /usr/bin/ccache
+-- IPO for Release: OFF
+-- Conan: Component target declared 'Boost::diagnostic_definitions'
+-- Conan: Component target declared 'Boost::disable_autolinking'
+-- Conan: Component target declared 'Boost::dynamic_linking'
+-- Conan: Component target declared 'Boost::headers'
+-- Conan: Component target declared 'Boost::boost'
+-- Conan: Component target declared 'boost::_libboost'
+-- Conan: Component target declared 'Boost::container'
+-- Conan: Component target declared 'Boost::exception'
+-- Conan: Component target declared 'Boost::program_options'
+-- Conan: Component target declared 'Boost::regex'
+-- Conan: Component target declared 'Boost::stacktrace'
+-- Conan: Component target declared 'Boost::stacktrace_addr2line'
+-- Conan: Component target declared 'Boost::stacktrace_backtrace'
+-- Conan: Component target declared 'Boost::stacktrace_basic'
+-- Conan: Component target declared 'Boost::stacktrace_from_exception'
+-- Conan: Component target declared 'Boost::stacktrace_noop'
+-- Conan: Target declared 'boost::boost'
+-- Conan: Target declared 'libbacktrace::libbacktrace'
+-- Conan: Component target declared 'spdlog::spdlog_header_only'
+-- Conan: Component target declared 'fmt::fmt'
+-- Conan: Target declared 'antlr4_static'
+-- Conan: Component target declared 'GTest::gtest'
+-- Conan: Component target declared 'GTest::gtest_main'
+-- Conan: Component target declared 'GTest::gmock'
+-- Conan: Component target declared 'GTest::gmock_main'
+-- Conan: Target declared 'gtest::gtest'
+-- Conan: Target declared 'antlr4::antlr4'
+-- Conan: Target declared 'openjdk::openjdk'
+-- Conan: Target declared 'magic_enum::magic_enum'
+-- Conan: Target declared 'tomlplusplus::tomlplusplus'
+-- Performing Test RDB_BOOST_POSIX_SHM
+-- Performing Test RDB_BOOST_POSIX_SHM - Success
+-- RDB_BOOST_POSIX_SHM=1 (obiekty IPC pod /dev/shm)
+-- Memory checker: /usr/bin/valgrind
+-- Performing Test RDB_API_HAS_PIPE2_CALLABLE
+-- Performing Test RDB_API_HAS_PIPE2_CALLABLE - Success
+-- Looking for POSIX_SPAWN_CLOEXEC_DEFAULT
+-- Looking for POSIX_SPAWN_CLOEXEC_DEFAULT - not found
+-- Looking for C++ include crt_externs.h
+-- Looking for C++ include crt_externs.h - not found
+-- setup descgrammar in PROJECT_SOURCE_DIR=/home/michal/R593/src/rdb/lib
+-- setup rqlgrammar in PROJECT_SOURCE_DIR=/home/michal/R593/src/retractor/lib
+-- Optional tool not found: clang-tidy (ctidy target disabled)
+-- Remove folder /home/michal/R593/build/Release-Probe/test
+-- Copy folder /home/michal/R593/test to /home/michal/R593/build/Release-Probe/test/..
+-- doc_drift_scalar_functions: NIESPRAWDZONY - brak dokumentacji (RDB_DOCS_PL/RDB_DOCS_EN)
+-- Configuring done (8.4s)
+-- Generating done (1.2s)
+-- Build files have been written to: /home/michal/R593/build/Release-Probe
+-- Building with -j3 (RAM-aware cap applied automatically by default; override with RDB_BUILD_JOBS=N, or force a fixed cap via 'lowmem')
+[0/2] Re-checking globbed directories...
+[1/296] Building CXX object src/common/CMakeFiles/common.dir/osPlatform.cpp.o
+[2/296] Building CXX object src/common/CMakeFiles/common.dir/uxSysTermTools.cpp.o
+[3/296] Building CXX object src/common/CMakeFiles/common.dir/ipcSecurity.cpp.o
+[4/296] Linking CXX static library src/common/libcommon.a
+[5/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdDropFile.cpp.o
+[6/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/xtrdbLauncher.cpp.o
+[7/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/xtrdbStorageMap.cpp.o
+[8/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdFieldAccess.cpp.o
+[9/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdMeta.cpp.o
+[10/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdOpen.cpp.o
+[11/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdPayload.cpp.o
+[12/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdStatus.cpp.o
+[13/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/cmdStorage.cpp.o
+[14/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/__/retractor/lib/lockFile.cpp.o
+[15/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/__/retractor/lib/serverName.cpp.o
+[16/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/cmake_pch.hxx.gch
+[17/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/__/retractor/lib/bus.cpp.o
+[18/296] Building CXX object src/rdb/CMakeFiles/xtrdb.dir/__/retractor/lib/appConfig.cpp.o
+[19/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/DESCParser.cc.o
+[20/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/bitsetCodec.cc.o
+[21/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/accessorFactory.cc.o
+[22/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/convertTypes.cc.o
+[23/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptor.cc.o
+[24/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptorIO.cc.o
+[25/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/error.cc.o
+[26/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccbindev.cc.o
+[27/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccfs.cc.o
+[28/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccmemory.cc.o
+[29/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposix.cc.o
+[30/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposixshd.cc.o
+[31/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/facctxtsrc.cc.o
+[32/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/gapDetector.cc.o
+[33/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/fagrp.cc.o
+[34/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/indexRecord.cc.o
+[35/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/memoryStore.cc.o
+[36/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaData.cc.o
+[37/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaIndexStore.cc.o
+In file included from /usr/include/aarch64-linux-gnu/c++/14/bits/c++allocator.h:33,
+                 from /usr/include/c++/14/bits/allocator.h:46,
+                 from /usr/include/c++/14/string:43,
+                 from /usr/include/c++/14/stdexcept:39,
+                 from /usr/include/c++/14/system_error:43,
+                 from /usr/include/c++/14/bits/fs_fwd.h:35,
+                 from /usr/include/c++/14/filesystem:51,
+                 from /home/michal/R593/build/Release-Probe/src/rdb/lib/CMakeFiles/rdb.dir/cmake_pch.hxx:6,
+                 from <command-line>:
+In member function ‘void std::__new_allocator<_Tp>::deallocate(_Tp*, size_type) [with _Tp = std::byte]’,
+    inlined from ‘constexpr void std::allocator< <template-parameter-1-1> >::deallocate(_Tp*, std::size_t) [with _Tp = std::byte]’ at /usr/include/c++/14/bits/allocator.h:208:35,
+    inlined from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::deallocate(allocator_type&, pointer, size_type) [with _Tp = std::byte]’ at /usr/include/c++/14/bits/alloc_traits.h:513:23,
+    inlined from ‘constexpr std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::_M_realloc_append(_Args&& ...)::_Guard::~_Guard() [with _Args = {const std::byte&}; _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/14/bits/vector.tcc:616:18,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::_M_realloc_append(_Args&& ...) [with _Args = {const std::byte&}; _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/14/bits/vector.tcc:688:7,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::push_back(const value_type&) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/14/bits/stl_vector.h:1294:21,
+    inlined from ‘constexpr std::back_insert_iterator<_Container>& std::back_insert_iterator<_Container>::operator=(const typename _Container::value_type&) [with _Container = std::vector<std::byte>]’ at /usr/include/c++/14/bits/stl_iterator.h:730:22,
+    inlined from ‘constexpr std::__conditional_t<_IsMove, std::ranges::in_out_result<_Iter, _Out>, std::ranges::in_out_result<_Iter, _Out> > std::ranges::__copy_or_move(_Iter, _Sent, _Out) [with bool _IsMove = false; _Iter = const std::byte*; _Sent = const std::byte*; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/14/bits/ranges_algobase.h:274:13,
+    inlined from ‘constexpr std::__conditional_t<_IsMove, std::ranges::in_out_result<_Iter, _Out>, std::ranges::in_out_result<_Iter, _Out> > std::ranges::__copy_or_move(_Iter, _Sent, _Out) [with bool _IsMove = false; _Iter = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte> >; _Sent = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte> >; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/14/bits/ranges_algobase.h:241:39,
+    inlined from ‘constexpr std::ranges::copy_result<_Iter, _Out> std::ranges::__copy_fn::operator()(_Iter, _Sent, _Out) const [with _Iter = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte> >; _Sent = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte> >; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/14/bits/ranges_algobase.h:303:38,
+    inlined from ‘constexpr std::ranges::copy_result<std::ranges::borrowed_iterator_t<_Range>, _Out> std::ranges::__copy_fn::operator()(_Range&&, _Out) const [with _Range = std::span<const std::byte>; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/14/bits/ranges_algobase.h:313:16,
+    inlined from ‘rdb::Result<> rdb::MetaIndexStore::rewrite(const std::vector<rdb::IndexRecord>&)’ at /home/michal/R593/src/rdb/lib/metaIndexStore.cc:131:22:
+/usr/include/c++/14/bits/new_allocator.h:172:33: warning: ‘void operator delete(void*, std::size_t)’ called on pointer ‘<unknown>’ with nonzero offset [1, 9223372036854775807] [-Wfree-nonheap-object]
+  172 |         _GLIBCXX_OPERATOR_DELETE(_GLIBCXX_SIZED_DEALLOC(__p, __n));
+      |                                 ^
+In member function ‘_Tp* std::__new_allocator<_Tp>::allocate(size_type, const void*) [with _Tp = std::byte]’,
+    inlined from ‘constexpr _Tp* std::allocator< <template-parameter-1-1> >::allocate(std::size_t) [with _Tp = std::byte]’ at /usr/include/c++/14/bits/allocator.h:196:40,
+    inlined from ‘static constexpr _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(allocator_type&, size_type) [with _Tp = std::byte]’ at /usr/include/c++/14/bits/alloc_traits.h:478:28,
+    inlined from ‘constexpr std::_Vector_base<_Tp, _Alloc>::pointer std::_Vector_base<_Tp, _Alloc>::_M_allocate(std::size_t) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/14/bits/stl_vector.h:380:33,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::reserve(size_type) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/14/bits/vector.tcc:79:33,
+    inlined from ‘rdb::Result<> rdb::MetaIndexStore::rewrite(const std::vector<rdb::IndexRecord>&)’ at /home/michal/R593/src/rdb/lib/metaIndexStore.cc:130:20:
+/usr/include/c++/14/bits/new_allocator.h:151:55: note: returned from ‘void* operator new(std::size_t)’
+  151 |         return static_cast<_Tp*>(_GLIBCXX_OPERATOR_NEW(__n * sizeof(_Tp)));
+      |                                                       ^
+[38/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaShadow.cc.o
+[39/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/payload.cc.o
+[40/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/probe.cc.o
+[41/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/rleSegment.cc.o
+[42/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/sourceBuffer.cc.o
+[43/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/stackTrace.cc.o
+[44/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storage.cc.o
+[45/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storagePaths.cc.o
+[46/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storageRotation.cc.o
+[47/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/accessorFactory.cc.o
+[48/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/bitsetCodec.cc.o
+[49/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/convertTypes.cc.o
+[50/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/descriptor.cc.o
+[51/296] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storageShadow.cc.o
+[52/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/error.cc.o
+[53/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/descriptorIO.cc.o
+[54/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/faccbindev.cc.o
+[55/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/faccfs.cc.o
+[56/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/faccmemory.cc.o
+[57/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/faccposix.cc.o
+[58/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/faccposixshd.cc.o
+[59/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/gapDetector.cc.o
+[60/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/facctxtsrc.cc.o
+[61/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/memoryStore.cc.o
+[62/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/indexRecord.cc.o
+[63/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/fagrp.cc.o
+[64/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/metaData.cc.o
+[65/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/metaIndexStore.cc.o
+[66/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/metaShadow.cc.o
+[67/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/probe.cc.o
+[68/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/rleSegment.cc.o
+[69/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/payload.cc.o
+[70/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/sourceBuffer.cc.o
+[71/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/storagePaths.cc.o
+[72/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/storage.cc.o
+[73/296] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCBaseListener.cpp.o
+[74/296] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCLexer.cpp.o
+[75/296] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCListener.cpp.o
+[76/296] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCParser.cpp.o
+[77/296] Linking CXX static library src/rdb/lib/.antlr/libdescparser.a
+[78/296] Linking CXX static library src/rdb/lib/librdb.a
+[79/296] Linking CXX executable src/rdb/xtrdb
+[80/296] Building CXX object src/embed/CMakeFiles/rdbembed.dir/configBridge.cc.o
+[81/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/storageRotation.cc.o
+[82/296] Building CXX object src/rdb/lib/CMakeFiles/rdb_noexcept_check.dir/storageShadow.cc.o
+[83/296] Building CXX object src/embed/CMakeFiles/rdbembed.dir/engine.cc.o
+[84/296] Building CXX object src/embed/CMakeFiles/rdbembed_noexcept_check.dir/engine.cc.o
+[85/296] Building CXX object src/embed/CMakeFiles/rdbembed.dir/storageGuard.cc.o
+[86/296] Building CXX object src/embed/CMakeFiles/rdbembed_noexcept_check.dir/storageGuard.cc.o
+[87/296] Building CXX object src/embed/CMakeFiles/rdbembed.dir/__/retractor/lib/appConfig.cpp.o
+[88/296] Building CXX object src/qry/CMakeFiles/qry.dir/boostJson.cpp.o
+[89/296] Building CXX object src/qry/CMakeFiles/qry.dir/jsonOutput.cpp.o
+[90/296] Building CXX object src/qry/CMakeFiles/qry.dir/formatters.cpp.o
+[91/296] Building CXX object src/qry/CMakeFiles/qry.dir/serverRouting.cpp.o
+[92/296] Building CXX object src/qry/CMakeFiles/qry.dir/qry.cpp.o
+[93/296] Building CXX object src/qry/CMakeFiles/xqry.dir/__/retractor/lib/appConfig.cpp.o
+[94/296] Building CXX object src/qry/CMakeFiles/xqry.dir/__/retractor/lib/bus.cpp.o
+[95/296] Building CXX object src/qry/CMakeFiles/qry.dir/ipcClient.cpp.o
+[96/296] Linking CXX static library src/qry/libqry.a
+[97/296] Building CXX object src/qry/CMakeFiles/xqry.dir/__/retractor/lib/lockFile.cpp.o
+[98/296] Building CXX object src/qry/CMakeFiles/xqry.dir/__/retractor/lib/serverName.cpp.o
+[99/296] Building CXX object src/qry/CMakeFiles/xqry.dir/qryLauncher.cpp.o
+[100/296] Building CXX object src/qry/CMakeFiles/xqry.dir/__/retractor/lib/ipcResponses.cpp.o
+[101/296] Linking CXX executable src/qry/xqry
+[102/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/cmake_pch.hxx.gch
+[103/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/CRSMath.cpp.o
+[104/296] Building CXX object src/retractor/CMakeFiles/xretractor.dir/launcher.cpp.o
+[105/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/CRSMath.cpp.o
+[106/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/coreState.cpp.o
+[107/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/dataModel.cpp.o
+[108/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/dumpManager.cpp.o
+[109/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/compiler.cpp.o
+[110/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/executor_rt.cpp.o
+[111/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/exprSimplify.cpp.o
+[112/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/expressionShape.cpp.o
+[113/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/field.cpp.o
+[114/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/persistentCounter.cpp.o
+[115/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/expressionEvaluator.cpp.o
+[116/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/planSource.cpp.o
+[117/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/query.cpp.o
+[118/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/qTree.cpp.o
+[119/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/token.cpp.o
+[120/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/streamInstance.cpp.o
+[121/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/coreState.cpp.o
+[122/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/RQLParser.cpp.o
+[123/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/compiler.cpp.o
+[124/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/dataModel.cpp.o
+[125/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/exprSimplify.cpp.o
+[126/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/executor_rt.cpp.o
+[127/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/dumpManager.cpp.o
+[128/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/expressionShape.cpp.o
+[129/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/field.cpp.o
+[130/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/persistentCounter.cpp.o
+[131/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/expressionEvaluator.cpp.o
+[132/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/planSource.cpp.o
+[133/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/qTree.cpp.o
+[134/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/query.cpp.o
+[135/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/streamInstance.cpp.o
+[136/296] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLBaseListener.cpp.o
+[137/296] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLLexer.cpp.o
+[138/296] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLListener.cpp.o
+[139/296] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLParser.cpp.o
+[140/296] Linking CXX static library src/retractor/lib/.antlr/librqlparser.a
+[141/296] Linking CXX static library src/retractor/lib/libretractorcore.a
+[142/296] Linking CXX static library src/embed/librdbembed.a
+[143/296] Building CXX object src/retractor/lib/CMakeFiles/retractorcore_noexcept_check.dir/token.cpp.o
+[144/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/cmake_pch.hxx.gch
+[145/296] Building CXX object test/UnitTest/CMakeFiles/test_accessorFactory.dir/test_accessorFactory.cpp.o
+[146/296] Building CXX object test/UnitTest/CMakeFiles/test_main_obj.dir/launch/main.cpp.o
+[147/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/appConfig.cpp.o
+[148/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/bus.cpp.o
+[149/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsm.cpp.o
+[150/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmAdHoc.cpp.o
+[151/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmCommands.cpp.o
+[152/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmPlanReload.cpp.o
+[153/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmState.cpp.o
+[154/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/ipcResponses.cpp.o
+[155/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/lockFile.cpp.o
+[156/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/ipcServer.cpp.o
+[157/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/lockManager.cpp.o
+[158/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/presenter.cpp.o
+[159/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/serverName.cpp.o
+[160/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/serviceControl.cpp.o
+[161/296] Building CXX object test/UnitTest/CMakeFiles/test_bitsetCodec.dir/test_bitsetCodec.cpp.o
+[162/296] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/shmBudget.cpp.o
+[163/296] Linking CXX static library src/retractor/lib/libretractor.a
+[164/296] Linking CXX executable src/retractor/xretractor
+[165/296] Linking CXX executable test/UnitTest/test_accessorFactory
+[166/296] Linking CXX executable test/UnitTest/test_bitsetCodec
+[167/296] Building CXX object test/UnitTest/CMakeFiles/test_bus.dir/test_bus.cpp.o
+[168/296] Linking CXX executable test/UnitTest/test_bus
+[169/296] Building CXX object test/UnitTest/CMakeFiles/test_appConfig.dir/test_appConfig.cpp.o
+[170/296] Linking CXX executable test/UnitTest/test_appConfig
+[171/296] Building CXX object test/UnitTest/CMakeFiles/test_capacities.dir/test_capacities.cpp.o
+[172/296] Linking CXX executable test/UnitTest/test_capacities
+[173/296] Building CXX object test/UnitTest/CMakeFiles/test_busFallback.dir/test_busFallback.cpp.o
+[174/296] Linking CXX executable test/UnitTest/test_busFallback
+[175/296] Building CXX object test/UnitTest/CMakeFiles/test_busSlotCount.dir/test_busSlotCount.cpp.o
+[176/296] Linking CXX executable test/UnitTest/test_busSlotCount
+[177/296] Building CXX object test/UnitTest/CMakeFiles/test_contracts.dir/test_contracts.cpp.o
+[178/296] Linking CXX executable test/UnitTest/test_contracts
+[179/296] Building CXX object test/UnitTest/CMakeFiles/test_convertTypes.dir/test_convertTypes.cpp.o
+[180/296] Linking CXX executable test/UnitTest/test_convertTypes
+[181/296] Building CXX object test/UnitTest/CMakeFiles/test_crsMath.dir/test_crsMath.cpp.o
+[182/296] Linking CXX executable test/UnitTest/test_crsMath
+[183/296] Building CXX object test/UnitTest/CMakeFiles/test_descriptor.dir/test_descriptor.cpp.o
+[184/296] Linking CXX executable test/UnitTest/test_descriptor
+[185/296] Building CXX object test/UnitTest/CMakeFiles/test_compiler.dir/test_compiler.cpp.o
+[186/296] Linking CXX executable test/UnitTest/test_compiler
+[187/296] Building CXX object test/UnitTest/CMakeFiles/test_dataModel.dir/test_dataModel.cpp.o
+[188/296] Linking CXX executable test/UnitTest/test_dataModel
+[189/296] Building CXX object test/UnitTest/CMakeFiles/test_embedConfig.dir/test_embedConfig.cpp.o
+[190/296] Linking CXX executable test/UnitTest/test_embedConfig
+[191/296] Building CXX object test/UnitTest/CMakeFiles/test_descriptorIO.dir/test_descriptorIO.cpp.o
+[192/296] Linking CXX executable test/UnitTest/test_descriptorIO
+[193/296] Building CXX object test/UnitTest/CMakeFiles/test_dumpManager.dir/test_dumpManager.cpp.o
+[194/296] Linking CXX executable test/UnitTest/test_dumpManager
+[195/296] Building CXX object test/UnitTest/CMakeFiles/test_embedStorageGuard.dir/test_embedStorageGuard.cpp.o
+[196/296] Linking CXX executable test/UnitTest/test_embedStorageGuard
+[197/296] Building CXX object test/UnitTest/CMakeFiles/test_executor_rt.dir/test_executor_rt.cpp.o
+[198/296] Linking CXX executable test/UnitTest/test_executor_rt
+[199/296] Building CXX object test/UnitTest/CMakeFiles/test_embedEngine.dir/test_embedEngine.cpp.o
+[200/296] Linking CXX executable test/UnitTest/test_embedEngine
+[201/296] Building CXX object test/UnitTest/CMakeFiles/test_executor_rt_pthread.dir/test_executor_rt_pthread.cpp.o
+[202/296] Linking CXX executable test/UnitTest/test_executor_rt_pthread
+[203/296] Building CXX object test/UnitTest/CMakeFiles/test_executorsmAdHoc.dir/test_executorsmAdHoc.cpp.o
+[204/296] Linking CXX executable test/UnitTest/test_executorsmAdHoc
+[205/296] Building CXX object test/UnitTest/CMakeFiles/test_executorsmCommands.dir/test_executorsmCommands.cpp.o
+[206/296] Linking CXX executable test/UnitTest/test_executorsmCommands
+[207/296] Building CXX object test/UnitTest/CMakeFiles/test_exprSimplify.dir/test_exprSimplify.cpp.o
+[208/296] Linking CXX executable test/UnitTest/test_exprSimplify
+[209/296] Building CXX object test/UnitTest/CMakeFiles/test_expressionShape.dir/test_expressionShape.cpp.o
+[210/296] Linking CXX executable test/UnitTest/test_expressionShape
+[211/296] Building CXX object test/UnitTest/CMakeFiles/test_expeval.dir/test_expeval.cpp.o
+[212/296] Linking CXX executable test/UnitTest/test_expeval
+[213/296] Building CXX object test/UnitTest/CMakeFiles/test_faccmemory.dir/test_faccmemory.cpp.o
+[214/296] Linking CXX executable test/UnitTest/test_faccmemory
+[215/296] Building CXX object test/UnitTest/CMakeFiles/test_faccbindev.dir/test_faccbindev.cpp.o
+[216/296] Linking CXX executable test/UnitTest/test_faccbindev
+[217/296] Building CXX object test/UnitTest/CMakeFiles/test_faccfs.dir/test_faccfs.cpp.o
+[218/296] Linking CXX executable test/UnitTest/test_faccfs
+[219/296] Building CXX object test/UnitTest/CMakeFiles/test_faccposix.dir/test_faccposix.cpp.o
+[220/296] Linking CXX executable test/UnitTest/test_faccposix
+[221/296] Building CXX object test/UnitTest/CMakeFiles/test_faccposixshd.dir/test_faccposixshd.cpp.o
+[222/296] Linking CXX executable test/UnitTest/test_faccposixshd
+[223/296] Building CXX object test/UnitTest/CMakeFiles/test_facctxtsrc.dir/test_facctxtsrc.cpp.o
+[224/296] Linking CXX executable test/UnitTest/test_facctxtsrc
+[225/296] Building CXX object test/UnitTest/CMakeFiles/test_field.dir/test_field.cpp.o
+[226/296] Linking CXX executable test/UnitTest/test_field
+[227/296] Building CXX object test/UnitTest/CMakeFiles/test_fagrp.dir/test_fagrp.cpp.o
+[228/296] Linking CXX executable test/UnitTest/test_fagrp
+[229/296] Building CXX object test/UnitTest/CMakeFiles/test_gapDetector.dir/test_gapDetector.cpp.o
+[230/296] Linking CXX executable test/UnitTest/test_gapDetector
+[231/296] Building CXX object test/UnitTest/CMakeFiles/test_fatalError.dir/test_fatalError.cpp.o
+[232/296] Linking CXX executable test/UnitTest/test_fatalError
+[233/296] Building CXX object test/UnitTest/CMakeFiles/test_formatter.dir/test_formatter.cpp.o
+[234/296] Linking CXX executable test/UnitTest/test_formatter
+[235/296] Building CXX object test/UnitTest/CMakeFiles/test_h10aGate.dir/test_h10aGate.cpp.o
+[236/296] Linking CXX executable test/UnitTest/test_h10aGate
+[237/296] Building CXX object test/UnitTest/CMakeFiles/test_ipcClient.dir/test_ipcClient.cpp.o
+[238/296] Linking CXX executable test/UnitTest/test_ipcClient
+[239/296] Building CXX object test/UnitTest/CMakeFiles/test_ipcSecurity.dir/test_ipcSecurity.cpp.o
+[240/296] Linking CXX executable test/UnitTest/test_ipcSecurity
+[241/296] Building CXX object test/UnitTest/CMakeFiles/test_ipcResponses.dir/test_ipcResponses.cpp.o
+[242/296] Linking CXX executable test/UnitTest/test_ipcResponses
+[243/296] Building CXX object test/UnitTest/CMakeFiles/test_metaData.dir/test_metaData.cpp.o
+[244/296] Linking CXX executable test/UnitTest/test_metaData
+[245/296] Building CXX object test/UnitTest/CMakeFiles/test_lockManager.dir/test_lockManager.cpp.o
+[246/296] Linking CXX executable test/UnitTest/test_lockManager
+[247/296] Building CXX object test/UnitTest/CMakeFiles/test_ipcServer.dir/test_ipcServer.cpp.o
+[248/296] Linking CXX executable test/UnitTest/test_ipcServer
+[249/296] Building CXX object test/UnitTest/CMakeFiles/test_metaData_usage.dir/test_metaData_usage.cpp.o
+[250/296] Linking CXX executable test/UnitTest/test_metaData_usage
+[251/296] Building CXX object test/UnitTest/CMakeFiles/test_osPlatform.dir/test_osPlatform.cpp.o
+[252/296] Linking CXX executable test/UnitTest/test_osPlatform
+[253/296] Building CXX object test/UnitTest/CMakeFiles/test_metaShadow_usage.dir/test_metaShadow_usage.cpp.o
+[254/296] Linking CXX executable test/UnitTest/test_metaShadow_usage
+[255/296] Building CXX object test/UnitTest/CMakeFiles/test_osPlatform_launchd.dir/test_osPlatform_launchd.cpp.o
+[256/296] Linking CXX executable test/UnitTest/test_osPlatform_launchd
+[257/296] Building CXX object test/UnitTest/CMakeFiles/test_payload.dir/test_payload.cpp.o
+[258/296] Linking CXX executable test/UnitTest/test_payload
+[259/296] Building CXX object test/UnitTest/CMakeFiles/test_presenter.dir/test_presenter.cpp.o
+[260/296] Linking CXX executable test/UnitTest/test_presenter
+[261/296] Building CXX object test/UnitTest/CMakeFiles/test_persistentCounter.dir/test_persistentCounter.cpp.o
+[262/296] Linking CXX executable test/UnitTest/test_persistentCounter
+[263/296] Building CXX object test/UnitTest/CMakeFiles/test_probe.dir/test_probe.cpp.o
+[264/296] Building CXX object test/UnitTest/CMakeFiles/test_probeLogicalGate.dir/test_probeLogicalGate.cpp.o
+[265/296] Linking CXX executable test/UnitTest/test_probe
+[266/296] Linking CXX executable test/UnitTest/test_probeLogicalGate
+[267/296] Building CXX object test/UnitTest/CMakeFiles/test_qTree.dir/test_qTree.cpp.o
+[268/296] Linking CXX executable test/UnitTest/test_qTree
+[269/296] Building CXX object test/UnitTest/CMakeFiles/test_proofOracle.dir/test_proofOracle.cpp.o
+[270/296] Linking CXX executable test/UnitTest/test_proofOracle
+[271/296] Building CXX object test/UnitTest/CMakeFiles/test_planSource.dir/test_planSource.cpp.o
+[272/296] Linking CXX executable test/UnitTest/test_planSource
+[273/296] Building CXX object test/UnitTest/CMakeFiles/test_serverName.dir/test_serverName.cpp.o
+[274/296] Linking CXX executable test/UnitTest/test_serverName
+[275/296] Building CXX object test/UnitTest/CMakeFiles/test_serverRouting.dir/test_serverRouting.cpp.o
+[276/296] Linking CXX executable test/UnitTest/test_serverRouting
+[277/296] Building CXX object test/UnitTest/CMakeFiles/test_rdb.dir/test_rdb.cpp.o
+[278/296] Linking CXX executable test/UnitTest/test_rdb
+[279/296] Building CXX object test/UnitTest/CMakeFiles/test_shmBudget.dir/test_shmBudget.cpp.o
+[280/296] Linking CXX executable test/UnitTest/test_shmBudget
+[281/296] Building CXX object test/UnitTest/CMakeFiles/test_stackTrace.dir/test_stackTrace.cpp.o
+[282/296] Linking CXX executable test/UnitTest/test_stackTrace
+[283/296] Building CXX object test/UnitTest/CMakeFiles/test_soperations.dir/test_soperations.cpp.o
+[284/296] Linking CXX executable test/UnitTest/test_soperations
+[285/296] Building CXX object test/UnitTest/CMakeFiles/test_storagePaths.dir/test_storagePaths.cpp.o
+[286/296] Linking CXX executable test/UnitTest/test_storagePaths
+[287/296] Building CXX object test/UnitTest/CMakeFiles/test_sourceBuffer.dir/test_sourceBuffer.cpp.o
+[288/296] Linking CXX executable test/UnitTest/test_sourceBuffer
+[289/296] Building CXX object test/UnitTest/CMakeFiles/test_storageShadow_usage.dir/test_storageShadow_usage.cpp.o
+[290/296] Linking CXX executable test/UnitTest/test_storageShadow_usage
+[291/296] Building CXX object test/UnitTest/CMakeFiles/test_storageRotation.dir/test_storageRotation.cpp.o
+[292/296] Linking CXX executable test/UnitTest/test_storageRotation
+[293/296] Building CXX object test/UnitTest/CMakeFiles/test_xqry.dir/test_qry.cpp.o
+[294/296] Linking CXX executable test/UnitTest/test_xqry
+[295/296] Building CXX object test/UnitTest/CMakeFiles/test_uxSysTermTools.dir/test_uxSysTermTools.cpp.o
+[296/296] Linking CXX executable test/UnitTest/test_uxSysTermTools
+-- Verified xretractor build configuration (non-default):
+RDB_OPT_DEDUP_SUBSTRATES=ON
+RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+RDB_OPT_COMMUTATIVE_ADD=ON
+RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON
+RDB_BENCH_PROBE=ON
+RDB_OPT_SIMPLIFY_EXPRESSIONS=ON
+-- [warning: probe benchmark build] sonda pomiarowa WŁĄCZONA w tej kompilacji (RDB_BENCH_PROBE=ON).
