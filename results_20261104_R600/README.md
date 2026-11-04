@@ -89,4 +89,4 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Stan
 
-Kryteria zapisane (`a44288e`), suchy przebieg zakończony; kampania startuje po commicie tej sekcji: `~/R376/apparatus_R600/campaign.sh`, log `~/R376/campaign_R600.log`.
+Kryteria zapisane (`a44288e`), suchy przebieg zakończony (`6d6f81e`). Kampania 2026-11-04 21:56 - 2026-11-05 00:20, 90 z 90 przebiegów ważnych, bez zdarzeń wymagających aneksu. Wynik: `wynik.md`.
