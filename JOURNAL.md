@@ -4493,3 +4493,111 @@ Zamrożony most `results_20260726_G3/engine_check.py` daje 0/13 na każdym silni
 Katalogu kampanii nie poprawiano. Nowy `results_20261002_G3b/` importuje z niego `run_case` bez zmian, a podmienia tylko ocenę: cisza `origin + tail` i oczekiwanie każdej formy z modelu K24-C1, sprawdzanego wobec twierdzenia. Wynik: 13/13 na `40c28dbe` i `1695ed8d`, 0/13 na `fcc5a444^` (kontrola dodatnia, wyłącznie cisza; liczby rekordów równe lipcowemu `engine.json`). Kontrola higieny artefaktów: 8/8.
 
 Pin `rdb-experiment` w `rdb-artifact` (`d319e88`) zostaje; nota w `MAP.md` i `MANIFEST.md` odsyła do G3b po SHA.
+
+## 2026-11-03 — R593: powtórka kontrolna K6c i H9 (Q=8) na przypięciu `dfcc42d2` (retractordb #593, wariant C)
+
+Decyzja człowieka 2026-11-03: wyniki `tab:k6-primary` (K6c) i `tab:h9-primary` (K26v3) zostają wynikami kampanii historycznych z ich rewizjami, a na silniku `dfcc42d2`, który ma zostać nowym przypięciem artykułu, biegnie zapowiedziana powtórka kontrolna: cały Tier B K6c (13 komórek, 780 przebiegów) i H9 w rozstrzygającej klasie Q=8 (240 z 1440 przebiegów). Rate obu kampanii zamrożony (`rate.json` K6c, ANEKS-1 K26v3), bez nowej kalibracji. Plany w bieżącej składni po migracji M1/S1/S2 z dowodem (`migrate_corpus.py`, paper-arXiv `08bd80f`). Kryteria zapisane przed pomiarem w `results_20261103_R593_K6c/README.md` i `results_20261103_R593_H9/README.md`.
+
+Przygotowanie na hoście: H9 - dowód korpusu 84/84 + 4/4 na profilach `R593-*`, P6 84/84, bramki bez Flinka czyste, redukcja przy Q=8 równa predykcji (50,000 / 50,000 / 58,333%), `freeze_check.sh preflight` zielony; K6c - nakładka na zamrożony generator (138 planów po migracji, sumy w `migration/migration.tsv`), próba 13/13 komórek z kodem 0, `analyze.py` odtwarza z zamrożonych `runs.csv` werdykt K6c A=0/B=12/C=1. Dwie usterki aparatury, które przerwałyby pomiar na nowym silniku, poprawione w kopiach z dowodem: `calib/gen_calib.py` (skaler rate nie rozpoznawał `TEXTFILE`) i `summarize_run.py` (licznik `r3` w `REWRITE_APPLIED`). Odziedziczone ograniczenie K26v3: historyczny mutant F9-X jest odrzucany błędem składni, nie granicą `#` (opis w README H9).
+
+## 2026-11-03T16:45:26+01:00 — results_20261103_R593_K6c / ablation / study_1 (W2)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W2, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W2_Q01=1440 slotow@180 Hz; W2_Q08=1440 slotow@180 Hz; W2_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 180
+- dane: `results_20261103_R593_K6c/ablation/study_01_W2`
+
+## 2026-11-03T17:00:07+01:00 — results_20261103_R593_K6c / ablation / study_2 (W3)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W3, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W3_d1=1440 slotow@180 Hz; W3_d3=3240 slotow@405 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_02_W3`
+
+## 2026-11-03T17:43:54+01:00 — results_20261103_R593_K6c / ablation / study_3 (W4)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W4, reps=15, scale=1, f_phi generatora=15 Hz
+- budzet slotow per komorka: W4_Q08=400 slotow@15 Hz; W4_Q32=400 slotow@15 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_03_W4`
+
+## 2026-11-03T17:53:00+01:00 — results_20261103_R593_K6c / ablation / study_4 (W5)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W5, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W5_Q32=1440 slotow@180 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 60
+- dane: `results_20261103_R593_K6c/ablation/study_04_W5`
+
+## 2026-11-03T18:01:56+01:00 — results_20261103_R593_K6c / ablation / study_5 (W7)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W7, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W7_Q32=720 slotow@90 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 60
+- dane: `results_20261103_R593_K6c/ablation/study_05_W7`
+
+## 2026-11-03T18:43:26+01:00 — results_20261103_R593_K6c / ablation / study_6 (W8)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W8, reps=15, scale=6, f_phi generatora=90 Hz
+- budzet slotow per komorka: W8_Q01=5760 slotow@720 Hz; W8_Q08=5760 slotow@720 Hz; W8_Q32=5760 slotow@720 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: W8_Q32
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_06_W8`
+
+## 2026-11-03T19:04:20+01:00 — results_20261103_R593_K6c / ablation / study_7 (W9)
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rodzina=W9, reps=15, scale=12, f_phi generatora=180 Hz
+- budzet slotow per komorka: W9_Q08=960 slotow@120 Hz; W9_Q32=960 slotow@120 Hz
+- komorki wykluczone przez kalibracje: brak
+- komorki wykluczone decyzja: brak
+- przebiegow: 120
+- dane: `results_20261103_R593_K6c/ablation/study_07_W9`
+
+## 2026-11-03 — R593 K6c: wynik i decyzja o fladze sum artefaktów
+
+`analyze.py` na 780 przebiegach powtórki: A=0, B=12, C=1, regresja `W3_d3` 1.113 - rozkład K6c potwierdzony. Flaga `CAMPAIGN INVALID` wynika z różnych sum artefaktów R1-ON/R1-OFF w siedmiu komórkach z R1; `check_obs_r1.py` pokazuje Obs 7/7 (wartości identyczne, R1-ON o 2 rekordy dłuższy - krótszy ogon od `fcc5a444`). Decyzja człowieka: wynik potwierdzony wg def:observable, z zastrzeżeniem w `results_20261103_R593_K6c/README.md` (sekcja *Stan*). H9 (Q=8) w toku na workerze od 19:53 (`r593-p8.service`, związane przy `43377b5`).
+
+## 2026-11-04 — R593 H9 (Q=8): wynik powtórki, 3/3 potwierdzone
+
+Łańcuch P8 `r593-p8.service` zakończony bez HALT i STOP-8: F9-R2, F9-R1, F9-X po 80/80, każda rodzina ~2 h 48 min, ostatnia 04:22 (oś czasu `artifacts/R593/r593_control/chain.log`). `collect_p8_archives.sh`: `COLLECT_COMPLETE` 240/240, sumy archiwów host = worker. `analyze_r593.py` (kod 0): bramki P6 bez Flinka czyste w trzech rodzinach, redukcja przy Q=8 równa predykcji K26v3 (50,000 / 50,000 / 58,333%), cena [95% CI] F9-R2 0,9212 [0,9176; 0,9245], F9-R1 0,9921 [0,9897; 0,9945], F9-X 0,7510 [0,7303; 0,7526] - wszystkie górne granice poniżej 1,05. Wynik w `results_20261103_R593_H9/R593_H9.md` (README zostaje zamrożone w manifeście); raport odtwarza się bajt w bajt z `artifacts/R593/`. Razem z K6c z 2026-11-03 obie części powtórki #593 wariant C potwierdzają wyniki progowe artykułu na `dfcc42d2`. Surowe `raw.tar.gz` badań K6c przeniesione z workera na hosta (`artifacts/R593/k6c_raw/`, poza git, indeks `raw.sha256` w git).
+
+Decyzja człowieka 2026-11-04 (wariant a): sześć surowych archiwów K6c powtórki R593 (W2, W3, W4, W5, W7, W9; razem ok. 37 MB) wchodzi do repozytorium jako wyjątki w `.gitignore`, jak archiwa K6c z 2026-07-30; W8 (162 MB) zostaje poza git na hoście, z sumą w `artifacts/R593/k6c_raw/raw.sha256`.
+
+## 2026-11-04T10:06:14+01:00 — results_20261104_R593_K18 / rate_r593k18 / study_1
+
+- wynik: sukces
+- commit kodu: `dfcc42d2a5fee2efa0b531d682766e4b7b9b73bb`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20261104_R593_K18/rate_r593k18/study_01`
+
+## 2026-11-04 - R593 K18: kotwica bieżącej rewizji na `dfcc42d2` potwierdzona
+
+Ponowny pomiar K18 (#593 krok 6, decyzja człowieka 2026-11-04 wariant a) w `results_20261104_R593_K18/`. exactness/replay: 67 artefaktów, zero różnic; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego; 360 Hz: 19 999 interwałów, E1 mediana 885,7 µs, p99 1105,6 µs, max 1303,0 µs, queue-emission mediana 937,2 µs, p99 1211,1 µs, p99,9 1291,4 µs, max 1420,3 µs (51,1% budżetu slotu). Plan 360 Hz to `rec205-detect.rql` z drzewa `dfcc42d2`, inny tekst niż w K18, więc liczby czasowe nie są porównaniem tego samego obciążenia. Zmiany aparatury: `verify_probe_binary` wymaga `SIMPLIFY=ON`, gdy binarka go wypisuje (`3660df6`, decyzja człowieka); strażnik buildu nadzorcy nie zna `scripts/buildrdb/research.sh` - obejście ręczną instalacją i `--skip-build` (`25acde4`), strażnik niepoprawiony.
+
+## 2026-11-04 - R593 K22v5: przebiegi semantyczne na `dfcc42d2` - 9/15 PASS, niepotwierdzone
+
+#593 podpunkt 6c w `results_20261104_R593_K22v5/` (kryteria i aparatura przed pomiarem: `07c634c`). Część semantyczna K22v5 (15 komórek, oracle przy zerowej tolerancji, SPAN 2000) na kopii Debug `build/Debug` `dfcc42d2`. Rdzenie po migracji M1+S1+S2 z dowodem (`config/migration.tsv`, M1 i S `MIGRATED` 15/15), rekord 0 mapowany na zamrożony pierwszy indeks K22v5 (decyzja D1 ii), bez `base_must_fail` (D3). Wynik: 9/15 PASS (F1 bez M1, F3 bez M1, M4_F2), 6 FAIL klasy W (base/M1/M2/M3 × F2, M1_F1, M1_F3); `python.csv` i `flink.csv` bajtowo równe K22v5 w 15/15, `rql.csv` równe K22v5 w 9 komórkach PASS. Diagnoza opisowa: każde pole z osobna jest ciągiem odniesienia przesuniętym o stałe k (1 albo 4), ale pola jednego rekordu przesuwają się różnie - wyrównanie złączenia okna z innymi ścieżkami po `5f310515`; writer M1_F1 jawnie paruje okno z `samples2[n + 1]`. Warunek wstępny K22v5 nie zachodzi na `dfcc42d2` z zamrożonymi writerami; zostaje wynikiem historycznym na `dd733e3`. Dalsze kroki czekają na decyzję człowieka.

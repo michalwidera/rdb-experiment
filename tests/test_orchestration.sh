@@ -171,7 +171,9 @@ cat > "$tmp_dir/probe-bad" <<'EOF'
 #!/bin/bash
 printf '%s\n' RDB_BENCH_PROBE=OFF
 EOF
-chmod +x "$tmp_dir/probe-good" "$tmp_dir/probe-bad"
+{ cat "$tmp_dir/probe-good"; echo "echo RDB_OPT_SIMPLIFY_EXPRESSIONS=ON"; } > "$tmp_dir/probe-simplify-on"
+{ cat "$tmp_dir/probe-good"; echo "echo RDB_OPT_SIMPLIFY_EXPRESSIONS=OFF"; } > "$tmp_dir/probe-simplify-off"
+chmod +x "$tmp_dir/probe-good" "$tmp_dir/probe-bad" "$tmp_dir/probe-simplify-on" "$tmp_dir/probe-simplify-off"
 
 mkdir -p "$tmp_dir/fake_ssh"
 cat > "$tmp_dir/fake_ssh/ssh" <<'EOF'
@@ -254,6 +256,8 @@ expect_failure "repozytorium wynikow wewnatrz kodu" require_disjoint_repositorie
 expect_success "/dev/shm jest tmpfs" require_tmpfs /dev/shm
 expect_success "build Release-Probe" verify_probe_binary "$tmp_dir/probe-good"
 expect_failure "build bez sondy" verify_probe_binary "$tmp_dir/probe-bad"
+expect_success "build Release-Probe z SIMPLIFY=ON" verify_probe_binary "$tmp_dir/probe-simplify-on"
+expect_failure "build Release-Probe z SIMPLIFY=OFF" verify_probe_binary "$tmp_dir/probe-simplify-off"
 expect_success "pelny CSV sondy" validate_probe_csv "$tmp_dir/probe.csv" 4
 expect_failure "nieoczekiwana liczba rekordow sondy" validate_probe_csv "$tmp_dir/probe.csv" 5
 expect_success "poprawna kampania rate" validate_campaign_csv "$tmp_dir/rate.csv" rate

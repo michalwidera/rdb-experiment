@@ -1,0 +1,5 @@
+Syntax error @Rql
+line:7:41 at <EOF>
+msg:mismatched input '<EOF>' expecting {'[', FROM}
+Input file:/home/michal/.tmp/k26-compile-cggi3ki2/historical_invalid_F9_X.rql
+Parse result:line 7:41 mismatched input '<EOF>' expecting {'[', FROM}

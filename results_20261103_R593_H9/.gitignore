@@ -1,0 +1,4 @@
+# Wyniki wiazace start (ANEKS-0) i surowe dane P8 powstaja w trakcie pomiaru; ANEKS-0 zapisuje SHA
+# eksperymentu, wiec nie moze wejsc do repozytorium, ktore opisuje. Kopia z results_20260814_K26v3/.gitignore.
+/results/
+__pycache__/

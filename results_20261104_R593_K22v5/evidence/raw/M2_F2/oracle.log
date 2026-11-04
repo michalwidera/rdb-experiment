@@ -1,0 +1,2 @@
+verdict=FAIL range=[255,2255) rows_compared=0
+first_mismatch: indeks 255, pozycja pola 0: rql=('qrs_out_0', '29', '0', '0') vs python=('qrs_out_0', '30', '0', '0')

@@ -1,0 +1,2 @@
+verdict=FAIL range=[240,2240) rows_compared=0
+first_mismatch: indeks 240, pozycja pola 0: rql=('qrs_out_0', '21', '0', '0') vs flink=('qrs_out_0', '52', '0', '0')

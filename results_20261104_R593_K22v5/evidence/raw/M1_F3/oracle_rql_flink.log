@@ -1,0 +1,2 @@
+verdict=FAIL range=[35,2035) rows_compared=0
+first_mismatch: indeks 35, pozycja pola 1: rql=('f3_out_1', '30010', '0', '0') vs flink=('f3_out_1', '30011', '0', '0')
