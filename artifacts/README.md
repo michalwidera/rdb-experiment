@@ -33,7 +33,7 @@ werdyktu (`*_p9/matrix/`) zostają, bo są małe i to one karmią `verdict.py`.
 | `K26/` | K26, `results_20260809_K26/` | brak — `apparatus` | bramki, kalibracja; `k26_p8_partial` = 9/480 komórek sprzed awarii SSH, **jedyna kopia** |
 | `K26v2/` | K26v2, `results_20260810_K26v2/` | **BRAK WERDYKTU** | archiwa pełnej macierzy 1440/1440, bramki, kalibracja, dowody STOP-8, wejścia werdyktu |
 | `K26v3/` | K26v3, `results_20260814_K26v3/` | **H9 WSPARTA, `Q=8`, 3/3** | archiwa P8, bramki P6, kalibracja P7, `k26v3_control/`, wejścia werdyktu |
-| `R593/` | powtórka kontrolna #593 na `dfcc42d2`, `results_20261103_R593_H9/` i `results_20261103_R593_K6c/` | H9 `Q=8` **POTWIERDZONA 3/3** (`R593_H9.md`); K6c A=0, B=12, C=1 | archiwa P8 H9 (`archives/`), bramki P6 (`r593_gates_rdb.tar.gz`), oś czasu P8 (`r593_control/`), logi workera z budowy profili, P6 i badań K6c (`r593_worker_logs.tar.gz`), wydruk analizy (`r593_analyze.log`); `k6c_raw/` = surowe `raw.tar.gz` siedmiu badań K6c **poza git** (wzorzec `*raw.tar.gz`), w git tylko `k6c_raw/raw.sha256` |
+| `R593/` | powtórka kontrolna #593 na `dfcc42d2`, `results_20261103_R593_H9/` i `results_20261103_R593_K6c/` | H9 `Q=8` **POTWIERDZONA 3/3** (`R593_H9.md`); K6c A=0, B=12, C=1 | archiwa P8 H9 (`archives/`), bramki P6 (`r593_gates_rdb.tar.gz`), oś czasu P8 (`r593_control/`), logi workera z budowy profili, P6 i badań K6c (`r593_worker_logs.tar.gz`), wydruk analizy (`r593_analyze.log`); `k6c_raw/` = surowe `raw.tar.gz` siedmiu badań K6c i ich sumy `raw.sha256`; sześć w git (wyjątki w `.gitignore`, decyzja 2026-11-04), W8 (162 MB) **poza git**, tylko na hoście |
 | `NIEREJESTROWANE/` | — | — | `k26v2_explore` — patrz niżej |
 
 ## Czego nie wolno
@@ -51,7 +51,7 @@ werdyktu (`*_p9/matrix/`) zostają, bo są małe i to one karmią `verdict.py`.
 ## Kontrola spójności
 
 ```bash
-cd artifacts && sha256sum -c MANIFEST.sha256        # 158 pozycji
+cd artifacts && sha256sum -c MANIFEST.sha256        # 164 pozycji
 
 # archiwa K26v3 dodatkowo wobec indeksu kampanii w git:
 cd K26v3/k26v3_archives && sha256sum -c <(awk 'NR>1 {print $2"  "$1}' \

@@ -25,6 +25,16 @@ __pycache__/
 # '.parts.tsv' nie koncza sie na 'raw.tar.gz', wiec wzorzec ich nie lapie,
 # a sama calosc pozostaje poza git swiadomie: skladalna, nie przechowywana.
 
+# Decyzja 2026-11-04 (powtorka R593, retractordb #593): szesc archiwow K6c ponizej
+# limitu wchodzi do repozytorium, jak archiwa K6c z 2026-07-30. W8 (162 MB) zostaje
+# poza git; jego suma jest w artifacts/R593/k6c_raw/raw.sha256.
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_01_W2_raw.tar.gz
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_02_W3_raw.tar.gz
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_03_W4_raw.tar.gz
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_04_W5_raw.tar.gz
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_05_W7_raw.tar.gz
+!artifacts/R593/k6c_raw/results_20261103_R593_K6c_study_07_W9_raw.tar.gz
+
 # Katalogi robocze przebiegow K24: kampania i bramka odwzorowania zapisuja tam
 # query.rql, dane zrodlowe i artefakty binarne kazdego planu. To jest scratch
 # odtwarzalny z ziarna, nie artefakt badania — indeks SHA-256 obejmuje wylacznie
