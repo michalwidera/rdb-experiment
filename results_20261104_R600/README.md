@@ -74,7 +74,14 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Suchy przebieg
 
-(uzupełniane przed commitem kryteriów)
+2026-11-04, po zapisaniu kryteriów (`a44288e`): uc05 i uc03, po 1 przebiegu A i B z 10 podłączeniami (`~/R376/dry_R600`). Dane suchego przebiegu nie wchodzą do wyniku. Ustalenia, bez zmiany kryteriów:
+
+1. **Budowa.** A 20:38-21:44 (66 min, prawie pełna budowa), B przyrostowo 21:44-21:51. `--build-info` A i B identyczne (wszystkie `RDB_OPT_*` i `RDB_BENCH_PROBE` ON). `xqry` A i B ma ten sam rozmiar i różni się tylko wbudowanym napisem rewizji i czasu budowy (`qryLauncher.cpp` kompiluje się przy każdej zmianie rewizji); tak samo było w R376. SHA-256: A `xretractor` `16ad8829...`, `xqry` `9db950f2...`; B `xretractor` `9eaccd49...`, `xqry` `c4e8f486...` (pełne sumy w `~/R376/bin/R600_{A,B}.sha256` i w `meta.json` każdego przebiegu).
+2. **Strumień subskrybowany** wybrany regułą R376 binarką `R600_A` jest w 5 z 5 rodzin ten sam co w R376 (takty uc03 1/200 s, uc05 1/800 s, uc06 1/500 s, uc07 1/50 s, uc08 1/10 s). Plik porównania leżał przez chwilę w `/tmp` workera zamiast w `/dev/shm` i został od razu usunięty.
+3. **K1 rozpoznawalne.** B: 10 z 10 zwolnień w uc03 i w uc05 wykonał wątek, który zbudował kolejkę (`SCHED_OTHER`, rdzenie 0-2), 0 w wątku `SCHED_FIFO`. A: 10 z 10 w wątku slotu. Każde podłączenie miało wykryte zwolnienie.
+4. **Przewidywanie trafień potwierdzone.** uc03 B: 0 z 10 zwolnień trafiło w slot (A: 10 z 10). uc05 B: 10 z 10 trafiło; max `e2e_ns` zdarzenia p50 0,77 ms wobec 0,83 ms pseudo-zdarzeń (A: 5,93 ms wobec 0,74 ms), n = 10, nie do wniosków.
+5. **Zwolnienie w wątku komunikacyjnym trwa dłużej** niż w wątku slotu: uc05 p50 6,45 ms (B) wobec 5,74 ms (A), uc03 1,84 wobec 1,68 ms, po 1 przebiegu. Wątek komunikacyjny jest `SCHED_OTHER` na rdzeniach współdzielonych z systemem. Wielkość opisowa, raportowana w wierszu „zwolnienie (munmap+unlinkat)”.
+6. **K3 przy 1 przebiegu na stronę** ma rozrzut wewnątrz strony 0, więc każda różnica wychodzi „poza szumem”. To skutek liczności suchego przebiegu, nie aparatury; w kampanii 9 przebiegów na stronę, reguła bez zmian.
 
 ## Aneksy
 
@@ -82,4 +89,4 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Stan
 
-Kryteria zapisane; kampania jeszcze nie ruszyła.
+Kryteria zapisane (`a44288e`), suchy przebieg zakończony; kampania startuje po commicie tej sekcji: `~/R376/apparatus_R600/campaign.sh`, log `~/R376/campaign_R600.log`.
