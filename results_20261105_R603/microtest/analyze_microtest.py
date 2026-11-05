@@ -16,6 +16,7 @@ Uzycie: analyze_microtest.py PREFIKS [PREFIKS ...]   (PREFIKS_slots.csv, PREFIKS
 
 import math
 import sys
+from pathlib import Path
 
 import numpy as np
 
@@ -47,9 +48,15 @@ def mann_whitney_greater(x, y):
     return 0.5 * math.erfc(z / math.sqrt(2))
 
 
+def csv_path(prefix, kind):
+    """Surowe CSV w repozytorium sa skompresowane (.csv.gz); genfromtxt czyta oba warianty."""
+    p = Path(f"{prefix}_{kind}.csv")
+    return p if p.exists() else Path(f"{p}.gz")
+
+
 def load(prefix):
-    s = np.genfromtxt(f"{prefix}_slots.csv", delimiter=",", names=True, dtype=np.int64)
-    e = np.genfromtxt(f"{prefix}_events.csv", delimiter=",", names=True, dtype=None, encoding="ascii")
+    s = np.genfromtxt(csv_path(prefix, "slots"), delimiter=",", names=True, dtype=np.int64)
+    e = np.genfromtxt(csv_path(prefix, "events"), delimiter=",", names=True, dtype=None, encoding="ascii")
     if not np.all(s["valid"][1:] == 1):
         sys.exit(f"{prefix}: {int((s['valid'][1:] != 1).sum())} slotow z licznikami multipleksowanymi - przebieg niewazny")
     m = {

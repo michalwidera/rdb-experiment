@@ -1,0 +1,62 @@
+== raw/m1: nadwyzka mediany wobec slotow kontrolnych (n kontrolnych 13593)
+-- whole: faza munmap p50 2.78 ms, faza unlink p50 3.13 ms
+   miara                             munmap          unlink            obie
+   n slotow                              89              99               0
+   wake_lag_ns                         2070            1088               -
+   work_ns                              667             389               -
+   wake_l1d_tlb_refill                    2               2               -
+   wake_l1i_tlb_refill                   15               2               -
+   wake_l2d_cache                       152              -3               -
+   wake_l2d_cache_refill                 12               7               -
+   wake_l1d_cache_refill                 -1              -2               -
+   work_l1d_tlb_refill                   -1               0               -
+   work_l1i_tlb_refill                    1               1               -
+   work_l2d_cache                        57              30               -
+   work_l2d_cache_refill                  6               4               -
+   work_l1d_cache_refill                  0               0               -
+-- chunk: faza munmap p50 3.03 ms, faza unlink p50 3.15 ms
+   miara                             munmap          unlink            obie
+   n slotow                              96             103               2
+   wake_lag_ns                         1425            1134            1688
+   work_ns                              361             352             629
+   wake_l1d_tlb_refill                    1               2              -4
+   wake_l1i_tlb_refill                    2               2              -0
+   wake_l2d_cache                       -16             -17             -12
+   wake_l2d_cache_refill                  4               7               4
+   wake_l1d_cache_refill                  0              -2              -2
+   work_l1d_tlb_refill                    0               0               2
+   work_l1i_tlb_refill                    0               0              -0
+   work_l2d_cache                        18              19              32
+   work_l2d_cache_refill                  3               3               8
+   work_l1d_cache_refill                  0               0               2
+== raw/m2: nadwyzka mediany wobec slotow kontrolnych (n kontrolnych 13597)
+-- whole: faza munmap p50 2.77 ms, faza unlink p50 3.11 ms
+   miara                             munmap          unlink            obie
+   n slotow                              91             103               1
+   wake_lag_ns                         2028             934            3152
+   work_ns                              649             574            2075
+   wake_l1d_tlb_refill                    2               0               4
+   wake_l1i_tlb_refill                   13               1              10
+   wake_l2d_cache                       162               8             161
+   wake_l2d_cache_refill                  8               7              11
+   wake_l1d_cache_refill                 -2              -2              -3
+   work_l1d_tlb_refill                  -69               0             -40
+   work_l1i_tlb_refill                    0               0              -2
+   work_l2d_cache                       992              10             960
+   work_l2d_cache_refill                 41              25              25
+   work_l1d_cache_refill                  0              -3              -3
+-- chunk: faza munmap p50 3.02 ms, faza unlink p50 3.13 ms
+   miara                             munmap          unlink            obie
+   n slotow                             102              99               0
+   wake_lag_ns                         1357            1319               -
+   work_ns                              621             500               -
+   wake_l1d_tlb_refill                    2               1               -
+   wake_l1i_tlb_refill                    2               0               -
+   wake_l2d_cache                        -9              -6               -
+   wake_l2d_cache_refill                  2               8               -
+   wake_l1d_cache_refill                 -2              -2               -
+   work_l1d_tlb_refill                  -10             -10               -
+   work_l1i_tlb_refill                    0               0               -
+   work_l2d_cache                        -2               0               -
+   work_l2d_cache_refill                 22              25               -
+   work_l1d_cache_refill                 -2              -3               -
