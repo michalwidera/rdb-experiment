@@ -114,6 +114,19 @@ Opisowo, bez kryterium: długość okna zwolnienia w B i B', `wake_lag_ns` i `co
 4. Kampania: uc05 i uc06 × 9 par, ~1 h.
 5. `wynik.md`, surowe archiwum w `paper-arXiv/rdb-experiment-embargo/R603/`, tutaj tylko indeks sum.
 
+## Suchy przebieg (część II)
+
+2026-11-05, po zapisaniu kryteriów (`fab5036`), wyniku mikrotestu (`b1e673e`) i analizy (`73c1b95`): uc05, po 1 przebiegu B i B' z 10 podłączeniami (`~/R376/dry_R603`). Dane suchego przebiegu nie wchodzą do wyniku. Ustalenia, bez zmiany kryteriów:
+
+1. **Budowa** 08:16-08:26, B 5 min (przebudowany tylko `probe.cc`), B' przyrostowo 5 min (`ipcServer.cpp`), bez ostrzeżeń kompilatora w obu plikach. `--build-info` B i B' identyczne (wszystkie `RDB_OPT_*` i `RDB_BENCH_PROBE` ON). SHA-256 `xretractor`: B `d828a9dd...`, B' `476e7430...` (pełne sumy w `~/R376/bin/R603_{B,Bp}.sha256` i w `meta.json` każdego przebiegu).
+2. **Korpus** uc05 i uc06 odtworzony procedurą R600 (punkt 4 README R600); skrót SHA-256 drzewa każdej rodziny na workerze zgodny z niezależną generacją na hoście (uc05 `ce892219...`, uc06 `cb51496c...`; kopie na hoście usunięte). `streams.tsv` skopiowany z `~/R376/apparatus_R600` (tylko na workerze).
+3. **Test parsera** (`analyze.py --parser-check` na surowych danych R600): 2700 okien, 0 różnic wobec parsera R600.
+4. **C1 rozpoznawalne.** B: 1 `munmap` na zwolnienie; B': 9 na zwolnienie (8 kawałków 1 MiB i końcowy `munmap` z `queue.reset()` na pustym już zakresie), 10 z 10 zwolnień w wątku komunikacyjnym, 0 w wątku `SCHED_FIFO`.
+5. **Kolumny P2** ważne w obu stronach (12 kolumn, 0 wierszy z -1, bez multipleksowania). Takt slotu uc05 (mediana odstępu `deadline_ns`) = 1,000 ms.
+6. **Log silnika.** W tym trybie silnik nie zostawia `$TMPDIR/xretractor.log`, więc `engine.log` nie powstaje. Kopia w `run_one.py` jest warunkowa i nic nie psuje. Ostrzeżenie P3 „brak mapowania” byłoby niewidoczne, ale jego skutek (1 `munmap` zamiast 9) wykrywa C1 ze śladu.
+7. **Liczby przy n = 10 nie są do wniosków** (C0 z konstrukcji nierozstrzygnięte przy n < 100). Opisowo: sygnatura unieważnienia TLB z mikrotestu jest widoczna także w silniku. Δ `wake_l1i_tlb_refill` wynosi +7 w B i -1 w B', a Δ `wake_l2d_cache` +121 w B i -27 w B'. Nadwyżka `wake_l2d_cache_refill` występuje w obu stronach (+343 i +175).
+8. Przebieg trwa ~45 s; kampania (36 przebiegów) ~30 min.
+
 ## Embargo
 
 Część II używa korpusu `uc01`..`uc08`, objętego embargiem do publikacji DEBS. W tym katalogu i w komentarzach do zgłoszeń: wyłącznie identyfikatory rodzin i liczby z nich wyprowadzone. Plany, dane, generatory i nazwy strumieni zostają na workerze w `/dev/shm/r376` i w prywatnym `paper-arXiv`. Część I nie używa korpusu.
@@ -124,4 +137,4 @@ Część II używa korpusu `uc01`..`uc08`, objętego embargiem do publikacji DEB
 
 ## Stan
 
-Protokół zapisany przed pomiarem. Mikrotest skompilowany na workerze (`gcc -O2 -Wall -Wextra -pthread`, bez ostrzeżeń), nieuruchomiony.
+Protokół zapisany przed pomiarem (`fab5036`). Mikrotest zakończony (`b1e673e`, `microtest/wynik.md`). Aparatura części II zbudowana, suchy przebieg zakończony; kampania uruchomiona po tym commicie (`~/R376/campaign_R603.log`, dane `~/R376/raw_R603`).
