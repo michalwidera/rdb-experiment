@@ -146,3 +146,5 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 ## Stan
 
 Protokół zatwierdzony i zapisany przed pomiarem (`add5aae`). Aparatura i test parsera (`2f34d77`): test na stronie B R600 dał 1350 okien, 0 różnic wobec parsera R600, liczby trafień strony B 29 / 270 / 270 / 0 / 0 (uc03, uc05, uc06, uc07, uc08) i werdykty K2 strony B jak w R600. Suchy przebieg: sekcja wyżej. Kampania uruchomiona 2026-11-05 17:27 (`~/R376/campaign_R603C.log`, dane `~/R376/raw_R603C`), 90 przebiegów, ~2,5 h.
+
+Kampania zakończona 2026-11-05 19:55 (`CAMPAIGN_COMPLETE`, 90 z 90 przebiegów ważnych). Wynik w `wynik.md`: K1' ZDANE we wszystkich pięciu rodzinach (uc06 z 5 wyłączeniami martwego muteksu, 1,9 %), K2 dla C NIEZDANE w uc05 i uc06, NIEROZSTRZYGNIĘTE w uc03, uc07, uc08, K3 bez regresji. Po kampanii poprawiono parser okien R_C (`kill_windows`, `RENAME_AFTER_UNLINK_MAX_NS`), opis i skutek w `wynik.md`, *Odstępstwa*, punkt 1. Surowe dane: prywatne `paper-arXiv`, `rdb-experiment-embargo/R603C/`; tutaj tylko indeks `results_20261105_R603C_raw.index.tsv`.

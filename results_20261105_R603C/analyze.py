@@ -41,6 +41,9 @@ BOOT_N = 2000
 POOL = 2  # kResponseQueuePoolSegments w C
 EARLY_ABANDON_NS = 9_500_000_000  # porzucenie wczesniej = martwy muteks po SIGINT (README, Ustalenia, punkt 3)
 EXCLUDED_MAX = 0.05
+# Poprawka po kampanii (wynik.md, Odstepstwa): w przepelnieniu renameat idzie zaraz po unlinkat (kod uzytkownika,
+# w kampanii max 314 us). Pozniejszy renameat to oddanie z puli dla nastepnego klienta, nie koniec tego okna.
+RENAME_AFTER_UNLINK_MAX_NS = 10_000_000
 FUTEX_OPS = {0: "WAIT", 1: "WAKE", 6: "LOCK_PI", 7: "UNLOCK_PI", 9: "WAIT_BITSET", 10: "WAKE_BITSET"}
 
 
@@ -198,7 +201,7 @@ def kill_windows(events, conns, rt):
             continue
         t_kill, tid = events[idx][0], events[idx][1]
         w = {"t_kill": t_kill, "t0": None, "kill_ret": None, "t1": None, "overflow": False, "erased": False, "tid": tid,
-             "rename_idx": None, "munmap": 0, "unlink": 0, "t_munmap": None}
+             "rename_idx": None, "munmap": 0, "unlink": 0, "t_munmap": None, "t_unlink": None}
         for j in range(idx + 1, len(events)):
             e = events[j]
             if e[1] != tid:
@@ -211,6 +214,10 @@ def kill_windows(events, conns, rt):
                     w["t_munmap"] = e[0]
             elif e[2] == "unlinkat" and e[3] == "exit":
                 w["unlink"] += 1
+                w["t_unlink"] = e[0]
+            elif (e[2] in RENAME and e[3] == "enter" and w["t_unlink"] is not None
+                  and e[0] - w["t_unlink"] > RENAME_AFTER_UNLINK_MAX_NS):
+                break  # skasowanie: kolejny renameat nalezy do oddania z puli
             elif e[2] in RENAME and e[3] == "exit":
                 if e[4] == 0:
                     w["t1"], w["rename_idx"] = e[0], j
