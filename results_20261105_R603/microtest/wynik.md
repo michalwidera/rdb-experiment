@@ -68,7 +68,7 @@ Dostępy do L2 bez wzrostu chybień L1D (`l1d_cache_refill` Δ ≈ 0) to obraz p
 - Przewidywanie wynikające z mikrotestu (zapisane przed kampanią): u_a znacznie poniżej 1, C2 raczej „niewsparta” (Δ_e2e(B') > 0,5 · Δ_e2e(B)), resztka po B' istnieje (C3).
 - Miara T w C2 (`l1d_tlb_refill` + `l1i_tlb_refill`) ma tę samą wadę co M1: tło jądra w `l1d_tlb_refill`. W C2 decyduje warunek na `e2e`, a T rozstrzyga tylko o rodzaju wsparcia („wsparta” albo „tylko interwencyjnie”), więc wada nie zmienia werdyktu „niewsparta”. Opisowo raportuje się też `l1i_tlb_refill` i `l2d_cache` w odcinku pobudki, które w mikroteście niosą sygnaturę.
 
-## Do decyzji
+## Decyzje (2026-11-05)
 
-1. Czy przyjąć aneks do M1/M3: sygnatura TLB = Δ `wake_l1i_tlb_refill` i Δ `wake_l2d_cache` zamiast Δ `l1d_tlb_refill`. Werdykt według aneksu musiałby być oznaczony jako ustalony po zobaczeniu danych.
-2. Czy w części II zmienić T na `wake_l1i_tlb_refill` + `wake_l2d_cache` przed kampanią. To byłaby zmiana kryterium przed pomiarem kampanii, ale po zobaczeniu mikrotestu, więc trzeba ją zapisać jako aneks z datą i powodem.
+1. **Aneks do M1/M3 nie został przyjęty** (decyzja człowieka, zgodnie z rekomendacją). Werdykty M1-M3 zostają takie, jak je zapisano wyżej (niezdane). Błąd przesłanki M1 jest opisany w części *Dlaczego M1 i M3 nie mierzą tego, co miały mierzyć*, a sygnaturę TLB raportują miary opisowe.
+2. **Miara T w C2 części II nie została zmieniona.** Kampania rozstrzygnęła C2 warunkiem na `e2e` („niewsparta” w obu rodzinach, `../wynik.md`), więc zmiana T nie wpłynęłaby na werdykt.
