@@ -137,4 +137,4 @@ Część II używa korpusu `uc01`..`uc08`, objętego embargiem do publikacji DEB
 
 ## Stan
 
-Protokół zapisany przed pomiarem (`fab5036`). Mikrotest zakończony (`b1e673e`, `microtest/wynik.md`). Aparatura części II zbudowana, suchy przebieg zakończony; kampania uruchomiona po tym commicie (`~/R376/campaign_R603.log`, dane `~/R376/raw_R603`).
+Protokół zapisany przed pomiarem (`fab5036`). Mikrotest zakończony (`b1e673e`, `microtest/wynik.md`). Suchy przebieg (`2b12660`). Kampania 2026-11-05 08:31-09:29, 36 z 36 przebiegów ważnych, bez zdarzeń wymagających aneksu. Wynik: `wynik.md`. Surowe archiwum: prywatny `paper-arXiv`, `rdb-experiment-embargo/R603/`; tutaj indeks sum `results_20261105_R603_raw.index.tsv`.
