@@ -1,0 +1,69 @@
+== raw/m1: slotow 35339, kontrolnych 13593
+-- whole: n zdarzen 40, dlugosc okna p50 5.91 ms, max 7.35 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                     10056         9093           962  1.39e-24
+   wake_lag_ns                 28852        26117          2734  1.42e-24
+   e2e_ns                      38788        35152          3636  1.68e-24
+   l1d_tlb_refill                299          296             3  1.69e-05
+   l1i_tlb_refill                 76           62            14  3.34e-27
+   l2d_cache                    1652         1437           216  5.98e-27
+   l2d_cache_refill               34            2            32  9.85e-30
+   l1d_cache_refill              167          166             1  3.13e-02
+   inst_retired                67002        67002             0  5.94e-01
+-- chunk: n zdarzen 40, dlugosc okna p50 6.18 ms, max 7.40 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                      9889         9093           796  6.78e-23
+   wake_lag_ns                 28031        26113          1918  9.26e-24
+   e2e_ns                      37888        35154          2734  9.42e-24
+   l1d_tlb_refill                298          297             2  1.13e-04
+   l1i_tlb_refill                 64           62             2  1.41e-07
+   l2d_cache                    1456         1438            18  5.56e-07
+   l2d_cache_refill               19            2            17  5.99e-28
+   l1d_cache_refill              168          166             2  2.28e-03
+   inst_retired                67003        67002             1  2.87e-01
+== raw/m2: slotow 35379, kontrolnych 13597
+-- whole: n zdarzen 40, dlugosc okna p50 5.87 ms, max 7.12 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                     29416        28352          1064  4.20e-18
+   wake_lag_ns                 29112        27014          2098  1.15e-20
+   e2e_ns                      58100        55015          3084  1.86e-20
+   l1d_tlb_refill                780          790            -9  1.00e+00
+   l1i_tlb_refill                 77           64            13  3.51e-26
+   l2d_cache                    3970         2838          1132  7.50e-27
+   l2d_cache_refill              562          506            56  6.44e-21
+   l1d_cache_refill              704          706            -2  9.69e-01
+   inst_retired                71114        71064            50  6.56e-02
+-- chunk: n zdarzen 40, dlugosc okna p50 6.16 ms, max 7.61 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                     29934        28370          1565  2.66e-15
+   wake_lag_ns                 28810        27024          1787  1.50e-19
+   e2e_ns                      57706        55054          2652  2.98e-19
+   l1d_tlb_refill                785          790            -6  9.92e-01
+   l1i_tlb_refill                 65           64             1  2.14e-02
+   l2d_cache                    2834         2844           -10  7.17e-01
+   l2d_cache_refill              536          508            28  1.67e-18
+   l1d_cache_refill              702          706            -4  1.00e+00
+   inst_retired                71068        71077            -8  5.84e-01
+== raw/m3: slotow 35346, kontrolnych 13603
+-- whole: n zdarzen 40, dlugosc okna p50 5.89 ms, max 7.53 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                     10278         9074          1204  5.03e-21
+   wake_lag_ns                 28565        26120          2445  7.32e-21
+   e2e_ns                      38662        35124          3538  6.42e-21
+   l1d_tlb_refill                308          307             1  2.97e-01
+   l1i_tlb_refill                 78           62            16  5.22e-27
+   l2d_cache                    1661         1454           207  1.04e-26
+   l2d_cache_refill               32            2            30  6.05e-24
+   l1d_cache_refill              182          183            -1  9.74e-01
+   inst_retired                67676        67109           567  3.33e-07
+-- chunk: n zdarzen 40, dlugosc okna p50 6.04 ms, max 7.22 ms
+   miara               zdarzenia p50   pseudo p50  nadwyzka p50      MW p
+   work_ns                      9852         9074           778  1.82e-19
+   wake_lag_ns                 27962        26125          1837  1.02e-19
+   e2e_ns                      37508        35130          2378  1.05e-19
+   l1d_tlb_refill                307          307             0  1.62e-01
+   l1i_tlb_refill                 66           62             4  2.14e-08
+   l2d_cache                    1502         1458            44  1.22e-10
+   l2d_cache_refill               20            2            18  2.07e-22
+   l1d_cache_refill              182          183            -1  9.54e-01
+   inst_retired                67676        67129           547  1.92e-09

@@ -1,0 +1,65 @@
+--- b/src/retractor/lib/ipcServer.cpp	2026-11-05 08:10:42.743959658 +0100
++++ c/src/retractor/lib/ipcServer.cpp	2026-11-05 08:11:44.032659723 +0100
+@@ -1,10 +1,14 @@
+ #include "ipcServer.hpp"
+ 
++#include <sys/mman.h>
++
++#include <algorithm>
+ #include <array>
+ #include <chrono>
+ #include <cstdint>
+ #include <cstring>
+ #include <format>
++#include <fstream>
+ #include <iostream>
+ #include <list>
+ #include <memory>
+@@ -15,6 +19,7 @@
+ #include <string_view>
+ #include <thread>
+ #include <utility>
++#include <vector>
+ 
+ #include <spdlog/spdlog.h>
+ #include <boost/lexical_cast.hpp>
+@@ -47,6 +52,31 @@
+   return false;
+ }
+ 
++
++// R603 P3 (latka aparatury, nie silnik): zwolnienie mapowania kolejki w kawalkach 1 MiB, ponizej
++// progu 512 stron, od ktorego munmap na arm64 bez TLBI na zakresach unieważnia TLB calego ASID
++// (flush_tlb_mm). Zakresy mapowania z /proc/self/maps po sciezce pliku kolejki; munmap rosnaco,
++// wiec pierwszy kawalek zaczyna sie od adresu mapowania (okno zwolnienia w parserze sladu).
++// Nastepujacy queue.reset() woła munmap na pustym juz zakresie.
++void unmapQueueInChunks(const std::string &queueName) {
++  constexpr std::uintptr_t kChunk = std::uintptr_t{1} << 20;
++  const std::string suffix        = "/" + queueName;
++  std::vector<std::pair<std::uintptr_t, std::uintptr_t>> ranges;
++  {
++    std::ifstream maps("/proc/self/maps");
++    for (std::string line; std::getline(maps, line);) {
++      if (line.size() < suffix.size() || line.compare(line.size() - suffix.size(), suffix.size(), suffix) != 0) continue;
++      const auto dash = line.find('-');
++      const auto sp   = line.find(' ');
++      if (dash == std::string::npos || sp == std::string::npos || sp < dash) continue;
++      ranges.emplace_back(std::stoull(line.substr(0, dash), nullptr, 16), std::stoull(line.substr(dash + 1, sp - dash - 1), nullptr, 16));
++    }
++  }
++  if (ranges.empty()) SPDLOG_WARN("R603 P3: brak mapowania {} w /proc/self/maps", queueName);
++  for (const auto &[lo, hi] : ranges)
++    for (std::uintptr_t a = lo; a < hi; a += kChunk)
++      if (::munmap(reinterpret_cast<void *>(a), std::min(kChunk, hi - a)) != 0) SPDLOG_WARN("R603 P3: munmap nieudane");
++}
+ }  // namespace
+ 
+ void IpcServer::setServerName(std::string_view serverName) { names_ = ipc::names(serverName); }
+@@ -155,6 +185,7 @@
+   // Poza muteksem: munmap i unlink segmentu to milisekundy, a slot czekalby na nie przy
+   // nastepnym broadcast(). Nazwa nalezy wciaz do zwalnianej kolejki - patrz pendingRelease_.
+   for (auto &[clientId, queue] : released) {
++    unmapQueueInChunks(names_.responseQueue(clientId));
+     queue.reset();  // zamknij mapowanie przed unlink
+     ipc::security::removeOwned(names_.responseQueue(clientId));
+     SPDLOG_WARN("queue erased on timeout, procId={}", clientId);
