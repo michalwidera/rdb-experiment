@@ -126,8 +126,8 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Aneksy
 
-(brak)
+1. **2026-11-05, przed budową i pomiarem: kontrola przepełnienia bufora ftrace.** `run_one.py` zapisuje w `meta.json` sumę pól `overrun` z `per_cpu/cpu*/stats` (`trace_overrun`), a `analyze.py` unieważnia przebieg przy wartości różnej od 0. Powód: śledzenie `futex` w wątku slotu zwiększa liczbę zdarzeń w śladzie, a utrata zdarzeń mogłaby ukryć parę `munmap` + `unlinkat` i fałszywie dać K1' = 0. Kryteria bez zmian.
 
 ## Stan
 
-Protokół zatwierdzony i zapisany przed pomiarem. Następny krok: aparatura i test parsera (*Kolejność*, punkt 2).
+Protokół zatwierdzony i zapisany przed pomiarem (`add5aae`). Aparatura gotowa: `build_ab.sh`, `run_one.py`, `campaign.sh`, `analyze.py`. Test parsera (`analyze.py --raw <surowe R600> --parser-check`, strona B R600): 1350 okien, 0 różnic wobec parsera R600; liczby trafień strony B 29 / 270 / 270 / 0 / 0 (uc03, uc05, uc06, uc07, uc08) i werdykty K2 strony B jak w R600 (uc05 i uc06 NIEZDANE, p = 2,2e-04 i 1,3e-16; uc03, uc07, uc08 n < 100); p różni się od R600 tylko losowaniem pseudo-zdarzeń (ziarno 6031). Następny krok: korpus, budowa, suchy przebieg (*Kolejność*, punkt 3).
