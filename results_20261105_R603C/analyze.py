@@ -512,6 +512,10 @@ def family_report(fam, runs, rng_boot):
     def row(label, f):
         lines.append(f"| {label} | {f(B)} | {f(C)} |")
 
+    def row_c(label, f):
+        # Wiersz wlasciwy tylko dla puli (strona C); w B nie ma okien R_C, wiec liczby nie maja znaczenia.
+        lines.append(f"| {label} | - | {f(C)} |")
+
     def k1sum(x, key):
         return sum(r["k1"][key] for r in x["runs"])
 
@@ -520,13 +524,13 @@ def family_report(fam, runs, rng_boot):
     row("K1': kill(pid_klienta, 0) / do puli (ESRCH → renameat)",
         lambda x: f"{k1sum(x, 'kill_client')} / {k1sum(x, 'pool_in')}")
     row("K1': kolejki utworzone / oddane z puli", lambda x: f"{k1sum(x, 'created')} / {k1sum(x, 'pool_out')}")
-    row("K1': pary w fazie pracy / przed nią / w ogonie (poza przepełnieniem)",
+    row_c("K1': pary w fazie pracy / przed nią / w ogonie (poza przepełnieniem)",
         lambda x: f"{k1sum(x, 'pairs_working')} / {k1sum(x, 'pairs_before')} / {k1sum(x, 'tail_pairs')} "
                   f"({k1sum(x, 'tail_outside_overflow')})")
-    row("K1': przepełnienia puli / oczekiwane (utworzone - zwolnione bez puli - 2)",
+    row_c("K1': przepełnienia puli / oczekiwane (utworzone - zwolnione bez puli - 2)",
         lambda x: f"{k1sum(x, 'overflow')} / "
                   f"{sum(max(0, r['k1']['created'] - r['k1']['erased_total'] - POOL) for r in x['runs'])}")
-    row("K1': wyłączenia: martwy muteks / klient niezebrany; inne zwolnienia bez puli",
+    row_c("K1': wyłączenia: martwy muteks / klient niezebrany; inne zwolnienia bez puli",
         lambda x: f"{k1sum(x, 'dead_mutex')} / {k1sum(x, 'not_reaped')}; "
                   f"{k1sum(x, 'erased_other') + k1sum(x, 'no_kill_reaped')}")
     row("wartości powrotu kill", lambda x: ", ".join(sorted({str(v) for r in x["runs"] for v in r["k1"]["kill_ret"]})) or "-")

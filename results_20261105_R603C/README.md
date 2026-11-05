@@ -120,6 +120,21 @@ Jak R600: w slotach kontrolnych (dalej niż 0,5 s od każdego klienta, okna R_B 
 - **D2 - SIGINT zostaje** mimo ryzyka martwego muteksu (*Ustalenia*, punkt 3). Rekomendacja: zostawić (porównywalność z R600, ta sama postać w B i C) i rozpoznawać takie przypadki jako wyłączenie aparatury. Alternatywa: bez SIGINT (`xqry -m 1` po #599 kończy się sam), co usuwa ryzyko, ale zmienia chwilę wyjścia klienta wobec R600.
 - **D3 - gałąź w `rdb-experiment`.** Rekomendacja: `experiment/20261105_R603C`, scalana do `main` po wyniku, jak R600 i R603.
 
+## Suchy przebieg
+
+2026-11-05 17:22-17:26, po zapisaniu protokołu (`add5aae`) i aparatury (`2f34d77`): uc05 i uc03, po 1 przebiegu B i C z 10 podłączeniami (`~/R376/dry_R603C`). Dane suchego przebiegu nie wchodzą do wyniku. Ustalenia, bez zmiany kryteriów:
+
+1. **Budowa** 16:56-17:22: B 4,5 min (przyrostowo po R603), C 21 min. `--build-info` B i C identyczne (wszystkie `RDB_OPT_*` i `RDB_BENCH_PROBE` ON). SHA-256: B `xretractor` `22d2059f...`, `xqry` `b4698d4b...`; C `xretractor` `3458ed99...`, `xqry` `a7b7dcbd...` (pełne sumy w `~/R376/bin/R603C_{B,C}.sha256` i w `meta.json` każdego przebiegu). Opisowo: `xretractor` B ma ten sam rozmiar co `R600_B` (8 531 784 B) i napis rewizji tej samej długości, ale różni się w 25 821 bajtach, czyli nie tylko napisem rewizji (kod źródłowy identyczny, `git diff 221d312b 10f491b8` puste). Kryteria tego nie wymagają; B jest porównywany z C, a nie z binarką R600.
+2. **Korpus** uc03, uc05-uc08 odtworzony procedurą R600 (`paper-arXiv` HEAD `641bd97`, ostatnia zmiana `usecases` w `7a76922`). Skrót SHA-256 drzewa każdej rodziny na workerze zgodny z niezależną generacją na hoście: uc03 `a2681d9b...`, uc05 `ce892219...`, uc06 `cb51496c...` (uc05 i uc06 równe R603), uc07 `5a86cd94...`, uc08 `71639a56...`. Kopie na hoście usunięte.
+3. **glibc woła `renameat`** (0 zdarzeń `renameat2`). Sekwencja zwolnienia w C jest taka, jak przewidywały *Ustalenia*, punkt 4: `openat` /proc = -ENOENT, `kill(pid, 0)` = -ESRCH, drenaż bez wywołań systemowych, `renameat` = 0.
+4. **xqry zebrany**: 40 z 40 klientów `reaped = 1`, kod -2 (SIGINT), `trace_overrun` = 0 we wszystkich 4 przebiegach.
+5. **K1' rozpoznawalne.** B: 10 z 10 porzuceń kończy para `munmap` + `unlinkat` (rdzenie 0-2), 0 `kill` klienta. C (obie rodziny): 10 z 10 do puli (`kill` = -3, `renameat` = 0), 5 kolejek utworzonych i 5 oddanych z puli, 0 par w fazie pracy, 3 okna przepełnienia w ogonie = 5 - 2 (spójność ogona).
+6. **Okna.** R_C p50: uc05 2,38 ms (R_B 6,55 ms), uc03 0,79 ms (R_B 1,86 ms). Okno przepełnienia (drenaż + zwolnienie najstarszego wpisu): uc05 9,0 ms, uc03 2,6 ms. Podłączenie z puli: okno `renameat` ~0,05 ms wobec ~10,4 ms (uc05) i ~2,9 ms (uc03) okna budowy kolejki utworzonej. W kampanii na przebieg przypada ~27 okien R_C (30 minus ~3 przepełnienia w ogonie), czyli ~240 na rodzinę.
+7. **Bramka `futex` spełniona**: wątek slotu woła `futex` w 0,020-0,111 % slotów (próg 1 %). Opisowo: w C uc05 jedno `FUTEX_WAIT` wątku slotu na muteksie kolejki (10 µs, poza oknem R_C, bez przekroczenia taktu) i jedno `FUTEX_WAKE`, czyli rywalizacja slotu z klientem o muteks kolejki zdarza się i aparatura ją widzi.
+8. **Wątek slotu woła `unlinkat`** co ~10 ms w uc05, także w R600 (2700 w przebiegu R600 B_01). Nie dotyczy to kolejki: parser par bierze tylko `unlinkat` po `munmap` mapowania kolejki, jak w R600.
+9. **Liczby przy n = 10 nie są do wniosków.** K2 jest z konstrukcji nierozstrzygnięte przy n < 100, a K3 przy 1 przebiegu na stronę ma rozrzut 0, więc każda różnica wychodzi „poza szumem” (jak w suchym przebiegu R600, punkt 6).
+10. Przebieg z 10 podłączeniami trwa ~47 s.
+
 ## Embargo
 
 Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu i w komentarzach do zgłoszeń: wyłącznie identyfikatory rodzin i liczby z nich wyprowadzone. Plany, dane, generatory i nazwy strumieni zostają na workerze w `/dev/shm/r376` i w prywatnym `paper-arXiv`. Surowe CSV i ślady ftrace poza git; zostaje indeks sum.
@@ -130,4 +145,4 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Stan
 
-Protokół zatwierdzony i zapisany przed pomiarem (`add5aae`). Aparatura gotowa: `build_ab.sh`, `run_one.py`, `campaign.sh`, `analyze.py`. Test parsera (`analyze.py --raw <surowe R600> --parser-check`, strona B R600): 1350 okien, 0 różnic wobec parsera R600; liczby trafień strony B 29 / 270 / 270 / 0 / 0 (uc03, uc05, uc06, uc07, uc08) i werdykty K2 strony B jak w R600 (uc05 i uc06 NIEZDANE, p = 2,2e-04 i 1,3e-16; uc03, uc07, uc08 n < 100); p różni się od R600 tylko losowaniem pseudo-zdarzeń (ziarno 6031). Następny krok: korpus, budowa, suchy przebieg (*Kolejność*, punkt 3).
+Protokół zatwierdzony i zapisany przed pomiarem (`add5aae`). Aparatura i test parsera (`2f34d77`): test na stronie B R600 dał 1350 okien, 0 różnic wobec parsera R600, liczby trafień strony B 29 / 270 / 270 / 0 / 0 (uc03, uc05, uc06, uc07, uc08) i werdykty K2 strony B jak w R600. Suchy przebieg: sekcja wyżej. Kampania uruchomiona 2026-11-05 17:27 (`~/R376/campaign_R603C.log`, dane `~/R376/raw_R603C`), 90 przebiegów, ~2,5 h.
