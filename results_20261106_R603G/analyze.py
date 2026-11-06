@@ -123,7 +123,8 @@ def analyze_run(run_dir, rngs):
     win = json.loads((run_dir / "window.json").read_text())
     t0, t1 = win["t0_ns"], win["t1_ns"]
     w_s = (t1 - t0) / 1e9
-    events = A.parse_trace(run_dir / "trace.txt")
+    # Okno pomiaru = [t0, t1] (aneks A2): bufor sladu ma tez zdarzenia z ~0,4 s po t1 (start trace_stop).
+    events = [e for e in A.parse_trace(run_dir / "trace.txt") if t0 <= e[0] <= t1]
     rt = A.rt_tids(run_dir / "rt.txt")
     ts, te, comm_tid, others = D.comm_turns(events, None, rt)
     turn_len = te - ts

@@ -202,7 +202,8 @@ def main():
     # Aneks A4(b): kazdy watek spoza SCHED_FIFO (watek komunikacyjny) na rdzen 0; sprawdzane w rt.txt po podlaczeniach.
     for tid in sorted(int(x) for x in os.listdir(f"/proc/{engine.pid}/task")):
         if tid not in rt:
-            subprocess.run(["taskset", "-pc", COMM_CPU, str(tid)], stdout=subprocess.DEVNULL, check=True)
+            # sudo: silnik ma uprawnienia plikowe (setcap), zwykly uzytkownik dostaje EPERM (suchy przebieg 2).
+            subprocess.run(["sudo", "-n", "taskset", "-pc", COMM_CPU, str(tid)], stdout=subprocess.DEVNULL, check=True)
 
     clients = []
     rows = ["i\tpid\tstart_ns\tfirst_row_ns\trows0\tcount0_ns\trows1\tcount1_ns\talive"]
