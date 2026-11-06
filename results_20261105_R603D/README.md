@@ -157,6 +157,8 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Aneksy
 
+Aneksy 1 i 2 przejrzane i zatwierdzone przez człowieka 2026-11-06, w trakcie kampanii, przed analizą jej danych.
+
 1. **2026-11-06, bramka H - postać operacyjna (zapisana przed suchym przebiegiem, przed obejrzeniem jego danych).** Dosłowne „H nadal najmniejszą medianą |Δ compute|” nie zachodzi nawet na danych R603C, z których H wyznaczono: najmniejsza mediana |`compute`(i) - `compute`(i - h)| po h = 1..64, liczona razem po 9 przebiegach strony C, wypada przy h = 8 (uc03), 20 (uc05; przy 40 ta sama 0,481 µs), 5 (uc06), 10 (uc07; strona B 5), 6 (uc08; przy 12 o 0,19 µs, czyli 1,5 %, więcej). Każde H z *Ustaleń*, punkt 4, jest wielokrotnością tego argminu, więc klasa `iter mod H` rozdrabnia okres i przesunięcie placebo o m · H · takt dalej zachowuje fazę i klasę. Bramka H w `analyze.py --gates`: dla każdej strony suchego przebiegu argmin h* po h = 1..2H (wszystkie sloty strony razem) dzieli H, a mediana przy H jest najwyżej 5 % nad medianą przy h*. Wydruk podaje też dosłowny argmin (`argmin = H` albo `≠ H`). Kryteria K1'-K3 bez zmian.
 2. **2026-11-06, bufor ftrace 65 536 kB na rdzeń zamiast 16 384 kB (`run_one.py`).** Ślad obrotów dodaje ~2000 zdarzeń/s jednego wątku na rdzeniach 0-2, czyli przy ~100 s przebiegu ~10 MB w buforze jednego rdzenia, blisko starego limitu. Przepełnienie nadal unieważnia przebieg (`trace_overrun` ≠ 0); bramka G1 to sprawdza. Na workerze to 256 MB z 3,7 GB RAM. Jednakowo w C i C'.
 
