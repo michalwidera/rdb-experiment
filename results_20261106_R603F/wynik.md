@@ -109,6 +109,14 @@ D2s (`75e7574c`) jest na `dev/muro`. Pomiar pokazał, że wcześniejsze rozpozna
 
 Rekomendacja: 1, 2(a) i 3 jako następny pomiar #603 przed scaleniem `dev/muro` do `master`; 4 tylko wtedy, gdy werdykt w uc06 będzie potrzebny do publikacji.
 
+## Decyzje człowieka po wyniku (2026-11-06)
+
+1. **D2s (`75e7574c`) przyjęte jako naprawa kosztu porzucenia** (*Skutek*, punkt 1).
+2. **K3t: koszt ~0,2 µs na obrót bezczynny wątku komunikacyjnego przyjęty jako koszt sondy** (*Skutek*, punkt 2(a)). Werdykt K3t uc03 w *Wydruku analizy* zostaje według litery (regresja); przyczyny nie bada się osobno.
+3. **Przed scaleniem `dev/muro` do `master`: pomiar kosztu sondy przy długo żyjących subskrybentach** (*Skutek*, punkt 3, wariant D3(b) protokołu) jako osobne badanie z protokołem przed pomiarem.
+4. Punkt 4 *Skutku* (uc06 inną miarą) nie jest realizowany.
+5. R603F scalone do `main`.
+
 ## Odtworzenie od zera
 
 Wszystko na workerze `pi400` z katalogu `~/R376/apparatus_R603F` (kopia tego katalogu), poza analizą:
