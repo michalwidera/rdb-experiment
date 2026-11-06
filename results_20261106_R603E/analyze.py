@@ -57,6 +57,7 @@ E_POS = 1.0  # K2e: kontrola dodatnia C'
 T_FACTOR = 0.5  # K2s (D1)
 H0_HALF_MAX = 0.25  # K2s: polszerokosc przedzialu H0 wobec S(C')
 G2_FRAC = 0.99  # G2'
+H0_PER_SERIES = 5  # K2s: syntetyczne serie H0 na serie C' (aneks A2)
 
 
 def die(msg):
@@ -441,11 +442,12 @@ def h0_cpp_windows(m, rng, k, par):
 
 
 def h0_k2s(runs_cp, par, k, rng):
-    """Kontrola H0 K2s: syntetyczne serie C'' na tle slotow kontrolnych C' tej kampanii (est_gate_h0.py)."""
+    """Kontrola H0 K2s: syntetyczne serie C'' na tle slotow kontrolnych C' tej kampanii (est_gate_h0.py),
+    H0_PER_SERIES na kazda niezaklocona serie C' (aneks A2)."""
     out = []
     for r in runs_cp:
         m = r["model"]
-        for _ in range(sum(1 for sr in r["series"] if sr["kind"] == "ok")):
+        for _ in range(H0_PER_SERIES * sum(1 for sr in r["series"] if sr["kind"] == "ok")):
             wins = h0_cpp_windows(m, rng, k, par)
             if wins is None:
                 continue
@@ -725,8 +727,8 @@ def gate_h(runs):
 
 
 def g2_prime(r, p99, p999):
-    """G2' (C''): pelne porcje > p99,9 obrotu bezczynnego, obroty zamkniete <= p99 (po >= 99 %, bez granicznych),
-    obrot Pk+1 <= p99 w kazdej serii (jak G2 R603D); serie z obrotem granicznym raportowane osobno."""
+    """G2' (C'', z aneksem A1): pelne porcje > p99,9 obrotu bezczynnego, obroty zamkniete <= p99,9 (po >= 99 %, bez
+    granicznych), obrot Pk+1 <= p99 w kazdej serii bez obrotu granicznego w Pk ani Pk+1; te raportowane osobno."""
     ts, te = r["turns"]
     full, closed, after_ok, after_n, with_b, bad_b = [], [], 0, 0, 0, 0
     for sr in ser([r], "ok"):
@@ -735,18 +737,22 @@ def g2_prime(r, p99, p999):
         g = sr["gate"]
         bset = set(g["boundary"])
         full += [int(te[j] - ts[j]) > p999 for j in sr["turns"][:-1] if j not in bset]
-        closed += [int(te[j] - ts[j]) <= p99 for j in g["closed"] if j not in bset]
+        closed += [int(te[j] - ts[j]) <= p999 for j in g["closed"] if j not in bset]
         a_ok = int(te[sr["after"]] - ts[sr["after"]]) <= p99
+        m = r["model"]
+        b_end = sr["turns"][-1] in bset or gate_state(m.dl, m.end, int(ts[sr["after"]]), RES_PORTION_NS)[1] <= BOUNDARY_NS
+        if b_end:
+            with_b += 1
+            bad_b += not a_ok
+            continue
         after_n += 1
         after_ok += a_ok
-        with_b += bool(bset)
-        bad_b += bool(bset) and not a_ok
     ff = sum(full) / len(full) if full else np.nan
     fc = sum(closed) / len(closed) if closed else np.nan
     ok = bool(full) and ff >= G2_FRAC and (not closed or fc >= G2_FRAC) and after_n > 0 and after_ok == after_n
-    txt = (f"pełne porcje > p99,9 bezczynnego {sum(full)}/{len(full)} ({ff:.3f}), obroty zamknięte ≤ p99 {sum(closed)}/"
-           f"{len(closed)} ({fc:.3f}), Pk+1 ≤ p99 {after_ok}/{after_n} serii (serii z obrotem granicznym {with_b}, z nich "
-           f"z Pk+1 > p99 {bad_b})")
+    txt = (f"pełne porcje > p99,9 bezczynnego {sum(full)}/{len(full)} ({ff:.3f}), obroty zamknięte ≤ p99,9 {sum(closed)}/"
+           f"{len(closed)} ({fc:.3f}), Pk+1 ≤ p99 {after_ok}/{after_n} serii bez obrotu granicznego w Pk/Pk+1 "
+           f"(osobno: serii z granicznym w Pk/Pk+1 {with_b}, z nich z Pk+1 > p99 {bad_b})")
     return ok, txt
 
 

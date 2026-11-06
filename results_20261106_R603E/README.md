@@ -161,4 +161,7 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Aneksy
 
-(brak)
+Zatwierdzone przez człowieka 2026-11-06 przed kampanią, po suchym przebiegu (*Aparatura i suchy przebieg*, *Do decyzji człowieka przed kampanią*).
+
+1. **A1 - G2'.** Drugi warunek: co najmniej 99 % obrotów serii z bramką zamkniętą w modelu (bez granicznych) nie jest dłuższych niż **p99,9** obrotu bezczynnego (zamiast p99). Warunek Pk+1 (≤ p99, każda seria) liczony w seriach **bez obrotu granicznego w Pk ani w Pk+1**; serie z takim obrotem raportowane osobno. Powód: obroty zamknięte w uc05 przypadają głównie na czas ciężkiego slotu i leżą w ogonie rozkładu bezczynnego, a nie są porcjami (pełna porcja > p99,9); obrót graniczny w Pk przesuwa koniec serii modelu o obrót. Suchy przebieg po zmianie: uc03 41/41, 6/6, 7/7; uc05 198/199, 165/165, 6/6 (osobno 1 seria z obrotem granicznym w Pk) - wszystkie bramki spełnione.
+2. **A2 - ważność K2s.** Kontrola H0 K2s losuje **pięć** syntetycznych serii C'' na każdą niezakłóconą serię C' (zamiast jednej); próg półszerokości 0,25 · S(C') bez zmian. Powód: H0 sprawdza obciążenie estymatora, a jego przedział zwęża się z liczbą losowań; przy jednej serii na serię kontrola w uc05 (80,3 µs wobec 60,2 µs na danych R603D) blokowałaby werdykt, który sam przedział T może rozstrzygnąć. Na danych C' R603D: uc05 półszerokość 36,3 µs.
