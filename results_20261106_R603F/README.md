@@ -2,7 +2,7 @@
 
 Zgłoszenie: michalwidera/retractordb#603, plan D2s z komentarza 6688281387 (zatwierdzony 2026-11-06), kierunek 4 z *Skutku* R603E i decyzja człowieka po R603E (`results_20261106_R603E/wynik.md`, *Decyzje człowieka po wyniku*, punkt 2). Ten plik zapisano PRZED pomiarem i przed budową aparatury; po zatwierdzeniu przez człowieka zmiany protokołu trafiają do sekcji *Aneksy* z datą i powodem, nie do treści powyżej.
 
-**Stan: projekt do zatwierdzenia.** Plan aparatury i decyzje D0-D4 zatwierdzone przez człowieka 2026-11-06 według rekomendacji (*Decyzje*).
+**Stan: zatwierdzony przez człowieka 2026-11-06** (protokół `1d6e2b9`; plan aparatury i decyzje D0-D4 według rekomendacji, *Decyzje*; aneksy A1-A3 przed kampanią, *Aneksy*).
 
 Aparatura pochodzi z R603E (`results_20261106_R603E/`, protokół `d41cb82`, aparatura `9d750cd`, aneksy `cbd285e`, scalenie do `main` `3b1b50b`), a przez nią z R603D, R603C i R600. Opis aparatury, który się nie zmienił, jest w ich README; poniżej są tylko różnice i nowe kryteria.
 
@@ -206,4 +206,8 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
 
 ## Aneksy
 
-(brak)
+Zatwierdzone przez człowieka 2026-11-06 przed kampanią, po suchym przebiegu (*Aparatura i suchy przebieg*, *Do decyzji człowieka przed kampanią*).
+
+1. **A1 - seria D2s z P1 w obrocie P0.** W *Oknach i zdarzeniach* seria D2s to: P0 = okno R_C; P1 = reszta obrotu P0 od wyjścia z `renameat` do końca obrotu (gdy k ≥ 1); P2..Pk = k - 1 kolejnych obrotów; Pk+1 = następny obrót. H0 K2s z tym kształtem: pierwsze okno P0 + P1 jednym ciągiem (mediana P1 z D2s), dalsze k - 1 okien co obrót. G2f: pełne porcje w osobnych obrotach (P2..Pk-1) > p99,9 bezczynnego. Powód: `probeSubscribers` oddaje kolejkę do puli przed `releaseAbandonedQueues`, a ta w tym samym obrocie odbiera porcję z niegotowego wpisu (własność kodu D2s).
+2. **A2 - G2f.** Warunek Pk+1 ≤ p99 obrotu bezczynnego liczony tylko w seriach z k ≥ 1 (niegranicznych); serie z k = 0 raportowane osobno (liczba obrotów po P0 dłuższych niż p99). Powód: przy k = 0 i n̂ ≤ 252 P0 opróżnia kolejkę z konstrukcji, a poprawność n̂ sprawdzają serie z k ≥ 1.
+3. **A3 - bez połączeń z workerem w trakcie kampanii.** Po uruchomieniu kampanii nie łączyć się z workerem do jej końca (sesja ssh, która ją uruchomiła, pozostaje bezczynna); log sprawdzany po zakończeniu. Powód: odpytywanie przez ssh co 20 s wydłużało ogon obrotu wątku komunikacyjnego (p99,9 80 wobec 64-68 µs) i psuło G2.
