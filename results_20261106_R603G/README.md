@@ -2,7 +2,7 @@
 
 Zgłoszenie: michalwidera/retractordb#603. Decyzja człowieka po R603F (`results_20261106_R603F/wynik.md`, *Decyzje człowieka po wyniku*, punkt 3): przed scaleniem `dev/muro` do `master` trzeba zmierzyć koszt sondy przy długo żyjących subskrybentach. To wariant D3(b) protokołu R603F i otwarta pozycja w komentarzu planu D2s (6688281387). Ten plik zapisano PRZED pomiarem i przed budową aparatury. Po zatwierdzeniu przez człowieka zmiany protokołu trafiają do sekcji *Aneksy* z datą i powodem, nie do treści powyżej.
 
-**Stan: projekt do zatwierdzenia** (decyzje G0-G4 w sekcji *Decyzje*).
+**Stan: zatwierdzony przez człowieka 2026-11-06** (protokół `17f9963`; decyzje G0-G4 według rekomendacji, *Decyzje*).
 
 Aparatura pochodzi z R603F (`results_20261106_R603F/`, scalenie do `main` `41c3151`), a przez nią z R603E, R603D, R603C i R600. Opis tego, co się nie zmienia, jest w ich README. Poniżej są tylko różnice i nowe kryteria.
 
@@ -134,7 +134,7 @@ Per przebieg **średnia obrotu bezczynnego obcięta do p99** (wzór diagnostyki 
 4. **`analyze.py`**: importuje `results_20261106_R603F/analyze.py` (a przez niego R603E, R603D, R603C) bez zmian: `parse_trace`, `comm_turns`, `SlotModel`, `affected_idx`/`affected_cluster`/`aff_boot`, permutacyjny MW. Dochodzi: rozpoznanie przebiegów sondy i E_p, sloty kontrolne bez slotów dotkniętych, K3p z H0 na C', K4, K3 i K3t z progami δ (reguła `regress_lines` R603F rozszerzona o δ), bramki W1-W4 (`--gates`).
 5. **Archiwum** jak R603F: `rdb-experiment-embargo/R603G/`, części po N, każda z indeksem; tutaj tylko indeksy.
 
-## Decyzje (do zatwierdzenia przez człowieka)
+## Decyzje (zatwierdzone przez człowieka 2026-11-06: G0-G4 według rekomendacji)
 
 - **G0 - rodzina, N i liczba par.** Rekomendacja: uc05, N ∈ {1, 8, 32}, 9 par ABBA na N (54 przebiegi, ~1,4 h). Koszt `inspectProcess` nie zależy od rodziny, a uc05 ma najkrótszy takt i największe kolejki. Alternatywy: (b) dołożyć uc03 (takt 5 ms, +~1,4 h); (c) N = 16 zamiast 32, gdyby suchy przebieg pokazał, że klienci nie nadążają.
 - **G1 - krótkie podłączenia.** Rekomendacja: bez. Ścieżkę śmierci klienta zmierzyło R603F, a serie drenażu w oknie pomiaru mieszałyby się z przebiegami sondy (argument D3(c) R603F). Alternatywa: 30 krótkich podłączeń jak R603F na tle N subskrybentów (obraz bliższy wdrożeniu, ale serie trzeba wyłączać ze slotów kontrolnych i z obrotów bezczynnych).
@@ -153,3 +153,8 @@ Per przebieg **średnia obrotu bezczynnego obcięta do p99** (wzór diagnostyki 
 ## Embargo
 
 Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu i w komentarzach do zgłoszeń są wyłącznie identyfikatory rodzin i liczby z nich wyprowadzone. Plany, dane, generatory, nazwy strumieni i wyjście klientów zostają na workerze w `/dev/shm/r376`, a surowe CSV i ślady w prywatnym `paper-arXiv` (`rdb-experiment-embargo/R603G/`). Tutaj zostaje indeks sum.
+
+## Aparatura i suchy przebieg (2026-11-06)
+
+- **Aparatura**: `run_one.py`, `campaign.sh`, `analyze.py` (importuje `results_20261106_R603F/analyze.py` bez zmian). Sloty kontrolne D2s w `analyze.py` wyłączają sloty dotknięte przez przebieg sondy i po 2 sloty przed i po nich, a nie margines `GUARD_NS` R603C (500 ms). Przy przebiegu sondy co 1 s ten margines nie zostawiłby ani jednego slotu kontrolnego. To odstępstwo od tekstu *Okien i zdarzeń* (propozycja aneksu A1, *Do decyzji człowieka przed kampanią*).
+- **Test analizy ZDANY** (`analyze.py --raw <R603F>/raw --parser-check`, ~35 s; część uc05 archiwum `rdb-experiment-embargo/R603F/` rozpakowana od nowa, indeks zgodny, 108 plików): (1) obrót bezczynny uc05 z funkcji R603F: C' 13,0 / 31,0 / 1410,0 µs, D2s 14,0 / 34,0 / 1303,0 µs (p50 / p99 / max), równe *Wydrukowi analizy* R603F; (2) obroty z udanym `openat` wątku komunikacyjnego poza oknami podłączeń: 0 na obu stronach.
