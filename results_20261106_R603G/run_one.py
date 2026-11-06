@@ -46,6 +46,9 @@ CONNECT_GAP_S = 0.25
 FIRST_ROW_TIMEOUT_S = 15.0
 SETTLE_S = 5.0
 RT_CPU = "3"
+# Aneks A4(b): watek komunikacyjny sam na rdzeniu 0, klienci (i runner, campaign.sh) na rdzeniach 1-2.
+COMM_CPU = "0"
+CLIENT_CPUS = "1,2"
 BIN_DIR = {"Cp": "R603D_Cp", "D2s": "R603F_D2s"}
 CLIENT_BIN_DIR = "R603D_Cp"  # G3: ten sam xqry po obu stronach
 QUEUE_PREFIX = "brcdbr"  # kResponseQueuePrefix: obiekty kolejek odpowiedzi w /dev/shm
@@ -136,7 +139,7 @@ def connect(i, stream, env):
     out_path = RUN / "temp" / f"client_{i:02d}.out"
     out = open(out_path, "wb")
     t0 = time.monotonic_ns()
-    p = subprocess.Popen([str(EXEC / "xqry"), "-s", stream], cwd=RUN, env=env, stdout=out, stderr=subprocess.DEVNULL,
+    p = subprocess.Popen(["taskset", "-c", CLIENT_CPUS, str(EXEC / "xqry"), "-s", stream], cwd=RUN, env=env, stdout=out, stderr=subprocess.DEVNULL,
                          stdin=subprocess.DEVNULL)
     out.close()
     first = None
@@ -196,6 +199,10 @@ def main():
     rt_lines, fifo, vmlck, rt = rt_report(engine.pid)
     meta.update(rt_fifo_threads=fifo, rt_vmlck_kB=vmlck)
     rt_ok = fifo >= 1 and vmlck > 0
+    # Aneks A4(b): kazdy watek spoza SCHED_FIFO (watek komunikacyjny) na rdzen 0; sprawdzane w rt.txt po podlaczeniach.
+    for tid in sorted(int(x) for x in os.listdir(f"/proc/{engine.pid}/task")):
+        if tid not in rt:
+            subprocess.run(["taskset", "-pc", COMM_CPU, str(tid)], stdout=subprocess.DEVNULL, check=True)
 
     clients = []
     rows = ["i\tpid\tstart_ns\tfirst_row_ns\trows0\tcount0_ns\trows1\tcount1_ns\talive"]

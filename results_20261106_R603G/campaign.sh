@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# R603G: kampania - uc05, N z R603G_NS (domyslnie 1 8 32) x 9 par C'/D2s (README R603G, Obciazenie i przebieg).
+# R603G: kampania - uc05, N z R603G_NS (domyslnie 1 8 16) x 9 par C'/D2s (README R603G, Obciazenie i przebieg).
 # W parze p kolejnosc N przesunieta o p - 1; strony w parze nieparzystej Cp D2s, w parzystej D2s Cp.
 # Strumien subskrybowany czyta streams.tsv z aparatury R600 (rodzina<TAB>strumien), plik tylko na workerze.
 # Uruchamiac odczepione: setsid nohup ./campaign.sh > ~/R376/campaign_R603G.log 2>&1 < /dev/null &
-# Zmienne: R603G_PAIRS (domyslnie 9), R603G_NS (domyslnie "1 8 32"), R603G_RAW (katalog wyjscia), R603G_WINDOW (s, 60).
+# Zmienne: R603G_PAIRS (domyslnie 9), R603G_NS (domyslnie "1 8 16", aneks A4(b)), R603G_RAW (katalog wyjscia), R603G_WINDOW (s, 60).
 set -euo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"
 raw="${R603G_RAW:-$HOME/R376/raw_R603G}"
 pairs="${R603G_PAIRS:-9}"
-read -r -a ns <<< "${R603G_NS:-1 8 32}"
+read -r -a ns <<< "${R603G_NS:-1 8 16}"
 window="${R603G_WINDOW:-60}"
 fam=uc05
 streams="$HOME/R376/apparatus_R600/streams.tsv"
@@ -34,7 +34,8 @@ for ((p = 1; p <= pairs; p++)); do
     n=${ns[$(((i + p - 1) % ${#ns[@]}))]}
     for side in "${order[@]}"; do
       echo "$(date -Is) $fam N=$n pair=$p side=$side"
-      python3 -I "$here/run_one.py" --side "$side" --family "$fam" --run "$p" --n "$n" --stream "$stream" \
+      # Aneks A4(b): runner (i jego sudo) na rdzeniach 1-2; silnik startuje z wlasnym taskset -c 3.
+      taskset -c 1,2 python3 -I "$here/run_one.py" --side "$side" --family "$fam" --run "$p" --n "$n" --stream "$stream" \
         --window "$window" --out "$raw/$fam/N$n/${side}_$(printf %02d "$p")"
     done
   done

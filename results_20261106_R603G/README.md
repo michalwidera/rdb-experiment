@@ -2,7 +2,7 @@
 
 Zgłoszenie: michalwidera/retractordb#603. Decyzja człowieka po R603F (`results_20261106_R603F/wynik.md`, *Decyzje człowieka po wyniku*, punkt 3): przed scaleniem `dev/muro` do `master` trzeba zmierzyć koszt sondy przy długo żyjących subskrybentach. To wariant D3(b) protokołu R603F i otwarta pozycja w komentarzu planu D2s (6688281387). Ten plik zapisano PRZED pomiarem i przed budową aparatury. Po zatwierdzeniu przez człowieka zmiany protokołu trafiają do sekcji *Aneksy* z datą i powodem, nie do treści powyżej.
 
-**Stan: zatwierdzony przez człowieka 2026-11-06** (protokół `17f9963`; decyzje G0-G4 według rekomendacji, *Decyzje*).
+**Stan: zatwierdzony przez człowieka 2026-11-06** (protokół `17f9963`; decyzje G0-G4 według rekomendacji, *Decyzje*; aneksy A1-A5 przed kampanią, *Aneksy*).
 
 Aparatura pochodzi z R603F (`results_20261106_R603F/`, scalenie do `main` `41c3151`), a przez nią z R603E, R603D, R603C i R600. Opis tego, co się nie zmienia, jest w ich README. Poniżej są tylko różnice i nowe kryteria.
 
@@ -167,7 +167,7 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
   - Wstępnie przy N = 1 (1 przebieg na stronę): S_p +16,1 (+1,9..+31,9) µs z 60 przebiegów sondy, H0 300 okien, S_H0 +5,6, półszerokość 7,0 µs. W kampanii jest 9 przebiegów na stronę, więc oczekiwana półszerokość ~2,3 µs.
   - **Naruszenie zakazu połączeń w suchym przebiegu.** Logowanie sesji (`ssh` + `rsync`) ~21:51:30-21:52 wypadło w oknie przebiegu N = 1 C', bo przebieg N = 32 trwał ~4,5 min zamiast zakładanych ~85 s, a sesja liczyła czas na ~85 s. Wartości N = 1 C' są obarczone tym połączeniem; bramki sprawdzono mimo to.
 
-### Do decyzji człowieka przed kampanią
+### Do decyzji człowieka przed kampanią (rozstrzygnięte: *Aneksy*)
 
 - **A1 - sloty kontrolne D2s** (*Aparatura*, punkt pierwszy tej sekcji). Rekomendacja: sloty dotknięte przez przebieg sondy ± 2 sloty zamiast ± `GUARD_NS` 500 ms. Alternatywa: ± 10 ms.
 - **A2 - granice okna i zapis do tracefs.** Rekomendacja: wszystkie zapisy do tracefs jednym `sudo -n sh -c` (ta sama treść i kolejność), `t0` po `tracing_on=1`, `t1` przed `tracing_on=0`. Zmiana w `run_one.py` jest gotowa, sprawdzona składniowo, jeszcze nie uruchomiona.
@@ -177,3 +177,13 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
   - (b) **rekomendacja**: wątek komunikacyjny przypięty po starcie silnika (`taskset -pc 0 <tid>`) sam na rdzeniu 0, klienci (`taskset -c 1,2`) i runner na rdzeniach 1-2, N = 1 / 8 / 16, K4 przy N = 16. Mierzy koszt sondy bez rywalizacji z klientami. N = 32 na 2 rdzeniach dawałoby ~150 % zajętości. Kampania ~1,3 h;
   - (c) bez przypięcia, N = 1 / 4 / 8 (zajętość ≤ ~35 %), K4 przy N = 8.
 - **A5 - przewidywanie K4 po Ustaleniu 2.** Przewidywania z protokołu nie zmienia się, a wynik zostanie z nim porównany. Do zapisu przed kampanią: przy ~130 µs na subskrybenta K4 jest przewidywane jako NIEZDANE przy N = 16 w (b) (~2 ms) i graniczne przy N = 8 w (c) (~1 ms). Zmiana w silniku (tańszy odczyt wpisu procesu albo rozłożenie sondy na kolejne obroty) to osobna decyzja, poza tym badaniem.
+
+## Aneksy
+
+Zatwierdzone przez człowieka 2026-11-06 przed kampanią, po suchym przebiegu (*Aparatura i suchy przebieg*, *Do decyzji człowieka przed kampanią*), według rekomendacji.
+
+1. **A1 - sloty kontrolne D2s.** W *Oknach i zdarzeniach* sloty kontrolne D2s to sloty okna pomiaru bez slotów dotkniętych przez którykolwiek przebieg sondy i bez 2 slotów przed i po każdym z nich (zamiast ± `GUARD_NS`). Powód: margines 500 ms przy przebiegu sondy co 1 s nie zostawiłby ani jednego slotu kontrolnego.
+2. **A2 - granice okna i zapis do tracefs.** Wszystkie zapisy do tracefs jednym `sudo -n sh -c` (ta sama treść i kolejność co w R603F). Okno pomiaru to `t0` tuż po `tracing_on=1` i `t1` tuż przed `tracing_on=0`. Wiersze klientów liczone tuż przed `t0` i tuż po zatrzymaniu śladu, więc W2 sprawdza tempo na przedziale obejmującym okno. Powód: suchy przebieg, wada aparatury 1.
+3. **A3 - W3 i W4.** W3 = 0 wywołań `unlinkat`, `renameat` i `kill` wątku komunikacyjnego oraz 0 `munmap` ≥ 1 MiB dowolnego wątku silnika. W4 mierzy odstęp między początkami obrotów z sondą. Powód: suchy przebieg, wada aparatury 2.
+4. **A4(b) - przypięcie i N.** Po rozgrzewce runner przypina każdy wątek silnika spoza SCHED_FIFO (wątek komunikacyjny) do rdzenia 0 (`taskset -pc 0`). Klienci (`taskset -c 1,2`) i runner (`campaign.sh`) działają na rdzeniach 1-2, wątek slotu jak dotąd na izolowanym rdzeniu 3. W1 obejmuje sprawdzenie przypięcia w `rt.txt` zapisanym po podłączeniach. **N ∈ {1, 8, 16}** zamiast {1, 8, 32}, a K4 rozstrzygane przy N = 16. Kampania: 9 par ABBA na N, 54 przebiegi. Powód: N = 32 nasycało rdzenie 0-2 (Ustalenie 1), więc K4 i K3p mierzyłyby rywalizację o CPU, a nie koszt sondy. Granica wniosków: koszt sondy bez rywalizacji z klientami. Wdrożenie z klientami na rdzeniach wątku komunikacyjnego płaci dodatkowo udział CFS (suchy przebieg: przebieg sondy 65 ms przy N = 32).
+5. **A5 - przewidywanie K4, dopisane przed kampanią.** Tabela *Przewidywania* zostaje bez zmian i wynik zostanie z nią porównany. Po Ustaleniu 2 (~129 µs na `inspectProcess` przy N = 1) przewidywane są: E_p p50 ~130 / ~1050 / ~2100 µs przy N = 1 / 8 / 16 i **K4 NIEZDANE przy N = 16** (p99 E_p ~2,1-2,5 ms > 1 ms). K3p: S_p rzędu wstępnego wyniku N = 1 (+16 µs, przedział +2..+32), więc przy N = 1 możliwe NIEZDANE albo NIEROZSTRZYGNIĘTE, przy N = 8 i 16 (okno ~1-2 ms, ~2-3 slotów) S_p rośnie z N. K3 i K3t bez zmian. Zmiana w silniku to osobna decyzja, poza tym badaniem.

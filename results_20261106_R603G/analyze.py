@@ -40,8 +40,8 @@ FAM = "uc05"
 RATE = 799.9  # wiersze/s strumienia uc05 (pojemnosc 8000 / 10 s, R603F Ustalenia punkt 6)
 DELTA_S_NS = 10_000  # K3p, G2
 H0_HALF_MAX_NS = 5_000  # waznosc K3p: polszerokosc H0 <= delta_S / 2
-K4_MAX_NS = 1_000_000  # K4: p99 E_p przy N = 32 <= kQueuePollInterval
-K4_N = 32
+K4_MAX_NS = 1_000_000  # K4: p99 E_p przy N = K4_N <= kQueuePollInterval
+K4_N = 16  # aneks A4(b)
 K3_REL = 0.05  # K3: delta = 5 % mediany C'
 K3T_NS = 500  # K3t: delta_t
 W2_MIN = 0.95
@@ -156,7 +156,11 @@ def analyze_run(run_dir, rngs):
 
     # Bramki W1-W4 (README, Kolejnosc, punkt 3)
     clients = load_clients(run_dir / "clients.tsv")
-    w1 = bool(meta.get("rt_ok")) and meta.get("trace_overrun") == 0 and meta.get("governor") == "performance"
+    # W1 z aneksem A4(b): watki spoza SCHED_FIFO przypiete do rdzenia 0 (rt.txt zapisany po podlaczeniach).
+    pinned = [l.split("\t")[-1] == "0" for l in (run_dir / "rt.txt").read_text().splitlines()
+              if l.startswith("tid=") and "policy=SCHED_FIFO" not in l]
+    w1 = (bool(meta.get("rt_ok")) and meta.get("trace_overrun") == 0 and meta.get("governor") == "performance"
+          and bool(pinned) and all(pinned))
     rates = [(c["rows1"] - c["rows0"]) / ((c["c1"] - c["c0"]) / 1e9) for c in clients]
     w2 = len(clients) == n and all(c["alive"] for c in clients) and all(r >= W2_MIN * RATE for r in rates)
     w3 = big_unmap == 0 and unlink == 0 and rename == 0 and kills == 0
