@@ -1,0 +1,59 @@
+xretractor: OK
+xqry: OK
+xretractor: OK
+xqry: OK
+2026-11-06T22:21:31+01:00 uc05 N=1 pair=1 side=Cp
+2026-11-06T22:22:51+01:00 uc05 N=1 pair=1 side=D2s
+2026-11-06T22:24:10+01:00 uc05 N=8 pair=1 side=Cp
+2026-11-06T22:26:07+01:00 uc05 N=8 pair=1 side=D2s
+2026-11-06T22:28:04+01:00 uc05 N=16 pair=1 side=Cp
+2026-11-06T22:30:56+01:00 uc05 N=16 pair=1 side=D2s
+2026-11-06T22:33:49+01:00 uc05 N=8 pair=2 side=D2s
+2026-11-06T22:35:46+01:00 uc05 N=8 pair=2 side=Cp
+2026-11-06T22:37:43+01:00 uc05 N=16 pair=2 side=D2s
+2026-11-06T22:40:36+01:00 uc05 N=16 pair=2 side=Cp
+2026-11-06T22:43:28+01:00 uc05 N=1 pair=2 side=D2s
+2026-11-06T22:44:47+01:00 uc05 N=1 pair=2 side=Cp
+2026-11-06T22:46:07+01:00 uc05 N=16 pair=3 side=Cp
+2026-11-06T22:49:00+01:00 uc05 N=16 pair=3 side=D2s
+2026-11-06T22:51:54+01:00 uc05 N=1 pair=3 side=Cp
+2026-11-06T22:53:14+01:00 uc05 N=1 pair=3 side=D2s
+2026-11-06T22:54:33+01:00 uc05 N=8 pair=3 side=Cp
+2026-11-06T22:56:30+01:00 uc05 N=8 pair=3 side=D2s
+2026-11-06T22:58:27+01:00 uc05 N=1 pair=4 side=D2s
+2026-11-06T22:59:47+01:00 uc05 N=1 pair=4 side=Cp
+2026-11-06T23:01:06+01:00 uc05 N=8 pair=4 side=D2s
+2026-11-06T23:03:03+01:00 uc05 N=8 pair=4 side=Cp
+2026-11-06T23:05:00+01:00 uc05 N=16 pair=4 side=D2s
+2026-11-06T23:07:53+01:00 uc05 N=16 pair=4 side=Cp
+2026-11-06T23:10:46+01:00 uc05 N=8 pair=5 side=Cp
+2026-11-06T23:12:43+01:00 uc05 N=8 pair=5 side=D2s
+2026-11-06T23:14:40+01:00 uc05 N=16 pair=5 side=Cp
+2026-11-06T23:17:34+01:00 uc05 N=16 pair=5 side=D2s
+2026-11-06T23:20:27+01:00 uc05 N=1 pair=5 side=Cp
+2026-11-06T23:21:47+01:00 uc05 N=1 pair=5 side=D2s
+2026-11-06T23:23:06+01:00 uc05 N=16 pair=6 side=D2s
+2026-11-06T23:25:59+01:00 uc05 N=16 pair=6 side=Cp
+2026-11-06T23:28:52+01:00 uc05 N=1 pair=6 side=D2s
+2026-11-06T23:30:11+01:00 uc05 N=1 pair=6 side=Cp
+2026-11-06T23:31:31+01:00 uc05 N=8 pair=6 side=D2s
+2026-11-06T23:33:28+01:00 uc05 N=8 pair=6 side=Cp
+2026-11-06T23:35:25+01:00 uc05 N=1 pair=7 side=Cp
+2026-11-06T23:36:44+01:00 uc05 N=1 pair=7 side=D2s
+2026-11-06T23:38:04+01:00 uc05 N=8 pair=7 side=Cp
+2026-11-06T23:40:01+01:00 uc05 N=8 pair=7 side=D2s
+2026-11-06T23:41:58+01:00 uc05 N=16 pair=7 side=Cp
+2026-11-06T23:44:50+01:00 uc05 N=16 pair=7 side=D2s
+2026-11-06T23:47:44+01:00 uc05 N=8 pair=8 side=D2s
+2026-11-06T23:49:41+01:00 uc05 N=8 pair=8 side=Cp
+2026-11-06T23:51:38+01:00 uc05 N=16 pair=8 side=D2s
+2026-11-06T23:54:31+01:00 uc05 N=16 pair=8 side=Cp
+2026-11-06T23:57:24+01:00 uc05 N=1 pair=8 side=D2s
+2026-11-06T23:58:44+01:00 uc05 N=1 pair=8 side=Cp
+2026-11-07T00:00:04+01:00 uc05 N=16 pair=9 side=Cp
+2026-11-07T00:02:57+01:00 uc05 N=16 pair=9 side=D2s
+2026-11-07T00:05:52+01:00 uc05 N=1 pair=9 side=Cp
+2026-11-07T00:07:12+01:00 uc05 N=1 pair=9 side=D2s
+2026-11-07T00:08:32+01:00 uc05 N=8 pair=9 side=Cp
+2026-11-07T00:10:29+01:00 uc05 N=8 pair=9 side=D2s
+CAMPAIGN_COMPLETE
