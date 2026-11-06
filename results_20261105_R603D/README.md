@@ -185,3 +185,5 @@ Protokół zapisany przed pomiarem i przed budową aparatury, zatwierdzony 2026-
 
 Uruchomiona 2026-11-06 08:00:53 na pi400 (`setsid nohup ./campaign.sh`, log `~/R376/campaign_R603D.log`, dane `~/R376/raw_R603D`), 5 rodzin × 9 par = 90 przebiegów, ~2,5 h. Przerwana rodzina = powtórzyć całą (ABBA).
 
+
+Zakończona: ostatni przebieg uruchomiony 10:30:40, log kończy się `CAMPAIGN_COMPLETE` (kopia `campaign.log`), 90 z 90 przebiegów ważnych. Wynik: `wynik.md` (K1' NIEZDANE w uc03, uc05, uc06 z warunku gotowości (a), ZDANE w uc07, uc08; K2a NIEZDANE w uc05 i uc06, NIEROZSTRZYGNIĘTE w uc03, uc07, uc08; K2b opisowe; K3 bez regresji). Surowe archiwum w pięciu częściach po rodzinach w prywatnym `paper-arXiv`, `rdb-experiment-embargo/R603D/`; tu tylko indeksy `results_20261105_R603D_raw_ucNN.index.tsv`. Następny krok: decyzja człowieka (`wynik.md`, *Skutek dla naprawy*).
