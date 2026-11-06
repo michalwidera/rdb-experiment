@@ -23,6 +23,7 @@ import argparse
 import hashlib
 import json
 import os
+import shlex
 import shutil
 import signal
 import subprocess
@@ -54,28 +55,27 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def tracefs_write(name, value):
-    subprocess.run(["sudo", "-n", "tee", str(TRACEFS / name)], input=value.encode(), stdout=subprocess.DEVNULL,
-                   check=True)
+def tracefs_batch(writes):
+    """Zapisy do tracefs w kolejnosci, jednym wywolaniem sudo (aneks A2: ~60 osobnych `sudo tee` przy N obciazonych
+    klientach trwalo ~75 s)."""
+    script = "\n".join(f"printf %s {shlex.quote(v)} > {shlex.quote(str(TRACEFS / n))}" for n, v in writes)
+    subprocess.run(["sudo", "-n", "sh", "-e", "-c", script], check=True)
 
 
 def trace_start(tids, rt):
-    tracefs_write("tracing_on", "0")
-    tracefs_write("trace", "")
-    tracefs_write("trace_clock", "mono")
-    tracefs_write("buffer_size_kb", "65536")
-    tracefs_write("set_event_pid", " ".join(str(t) for t in tids))
     rt_filter = " && ".join(f"common_pid != {t}" for t in rt) or "0"
     rt_only = " || ".join(f"common_pid == {t}" for t in rt)
+    writes = [("tracing_on", "0"), ("trace", ""), ("trace_clock", "mono"), ("buffer_size_kb", "65536"),
+              ("set_event_pid", " ".join(str(t) for t in tids))]
     for call in SYSCALLS:
         if call in RT_ONLY and not rt_only:
             continue
         for kind in ("enter", "exit"):
             event = f"events/syscalls/sys_{kind}_{call}"
             filt = rt_filter if call in RT_UNTRACED else (rt_only if call in RT_ONLY else "0")
-            tracefs_write(f"{event}/filter", filt)
-            tracefs_write(f"{event}/enable", "1")
-    tracefs_write("tracing_on", "1")
+            writes += [(f"{event}/filter", filt), (f"{event}/enable", "1")]
+    writes.append(("tracing_on", "1"))
+    tracefs_batch(writes)
 
 
 def trace_overrun():
@@ -87,16 +87,15 @@ def trace_overrun():
 
 
 def trace_stop(dest):
-    tracefs_write("tracing_on", "0")
+    tracefs_batch([("tracing_on", "0")])
     overrun = trace_overrun()
     with open(dest, "wb") as out:
         subprocess.run(["sudo", "-n", "cat", str(TRACEFS / "trace")], stdout=out, check=True)
+    writes = []
     for call in SYSCALLS:
         for kind in ("enter", "exit"):
-            tracefs_write(f"events/syscalls/sys_{kind}_{call}/enable", "0")
-            tracefs_write(f"events/syscalls/sys_{kind}_{call}/filter", "0")
-    tracefs_write("set_event_pid", "")
-    tracefs_write("trace", "")
+            writes += [(f"events/syscalls/sys_{kind}_{call}/enable", "0"), (f"events/syscalls/sys_{kind}_{call}/filter", "0")]
+    tracefs_batch(writes + [("set_event_pid", ""), ("trace", "")])
     return overrun
 
 
@@ -209,13 +208,14 @@ def main():
         rt_lines, fifo, vmlck, rt = rt_report(engine.pid)
         meta.update(rt_vmlck_kB_connected=vmlck)
         c0 = [count_rows(c[1]) for c in clients]
-        cpu0 = cpu_lines()
-        t0 = time.monotonic_ns()
         trace_start([int(t) for t in os.listdir(f"/proc/{engine.pid}/task")], rt)
+        # Granice okna = slad wlaczony (aneks A2): t0 po tracing_on=1, t1 przed tracing_on=0.
+        t0 = time.monotonic_ns()
+        cpu0 = cpu_lines()
         time.sleep(args.window)
+        cpu1 = cpu_lines()
         t1 = time.monotonic_ns()
         meta["trace_overrun"] = trace_stop(args.out / "trace.txt")
-        cpu1 = cpu_lines()
         alive = [c[0].poll() is None for c in clients]
         c1 = [count_rows(c[1]) for c in clients]
         (args.out / "window.json").write_text(json.dumps({"t0_ns": t0, "t1_ns": t1}) + "\n")

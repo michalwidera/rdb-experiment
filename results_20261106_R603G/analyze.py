@@ -128,21 +128,21 @@ def analyze_run(run_dir, rngs):
     ts, te, comm_tid, others = D.comm_turns(events, None, rt)
     turn_len = te - ts
 
-    ok_by, fail_by, ok_first = Counter(), Counter(), {}
+    ok_by, fail_by = Counter(), Counter()
     big_unmap = unlink = rename = kills = 0
     for t, tid, call, kind, val, _ in events:
         if call == "openat" and kind == "exit" and tid == comm_tid:
             j = turn_index(ts, te, t)
             (ok_by if val >= 0 else fail_by)[j] += 1
-            if val >= 0 and j >= 0:
-                ok_first.setdefault(j, t)
         elif kind == "enter" and call == "munmap" and val.get("len", 0) >= BIG_MUNMAP:
             big_unmap += 1
-        elif kind == "enter" and call == "unlinkat":
+        # W3 (aneks A3): zwolnienie kolejki porzuconej idzie przez watek komunikacyjny (releaseAbandonedQueues,
+        # probeSubscribers); watek slotu wykonuje ~31 unlinkat/s w zwyklej pracy planu uc05 na obu stronach.
+        elif kind == "enter" and call == "unlinkat" and tid == comm_tid:
             unlink += 1
-        elif kind == "enter" and call in A.RENAME:
+        elif kind == "enter" and call in A.RENAME and tid == comm_tid:
             rename += 1
-        elif kind == "enter" and call == "kill":
+        elif kind == "enter" and call == "kill" and tid == comm_tid:
             kills += 1
     probe = sorted(j for j in ok_by if j >= 0)
     is_probe = np.zeros(len(ts), dtype=bool)
@@ -150,7 +150,9 @@ def analyze_run(run_dir, rngs):
     idle_len = turn_len[~is_probe]
     med_idle = float(np.median(idle_len)) if len(idle_len) else float("nan")
     ep = turn_len[probe] - med_idle
-    gaps = np.diff([ok_first[j] for j in probe]) if len(probe) > 1 else np.zeros(0)
+    # W4 (aneks A3): odstep miedzy poczatkami obrotow z sonda; nextProbe_ liczy sie od now() na poczatku obrotu,
+    # a pierwszy openat moze sie przesunac o wywlaszczenie.
+    gaps = np.diff(ts[probe]) if len(probe) > 1 else np.zeros(0)
 
     # Bramki W1-W4 (README, Kolejnosc, punkt 3)
     clients = load_clients(run_dir / "clients.tsv")
