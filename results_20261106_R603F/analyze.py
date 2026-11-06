@@ -303,16 +303,22 @@ def analyze_run_f(run_dir, rngs):
         elif j0 + k + 1 >= len(ts):
             sr["kind"], sr["reason"] = "disturbed", "koniec sladu przed Pk+1"
         else:
-            sr["turns"] = list(range(j0 + 1, j0 + k + 1))
-            sr["after"] = j0 + k + 1
-            sr["windows"] += [(int(ts[j]), int(te[j])) for j in sr["turns"]]
+            # P1 w obrocie P0 (aneks A1): probeSubscribers oddaje kolejke do puli przed releaseAbandonedQueues,
+            # a ta w tym samym obrocie odbiera porcje z niegotowego wpisu - P1 = reszta obrotu P0 po renameat.
+            # P2..Pk = k - 1 kolejnych obrotow, Pk+1 = nastepny.
+            last = j0 + max(k, 1) - 1
+            sr["turns"] = list(range(j0 + 1, last + 1))
+            sr["after"] = last + 1
             if k:
-                sr["end"] = int(te[j0 + k])
-                a, b = int(ts[j0 + 1]), int(te[j0 + k])
-                inside = comm_t[(comm_t >= a) & (comm_t <= b)]
-                if len(inside) and sr["kind"] == "ok":
-                    names = sorted({e[2] for e in comm_ev if a <= e[0] <= b})
-                    sr["kind"], sr["reason"] = "disturbed", "wywolanie w P1..Pk: " + ", ".join(names)
+                sr["p1"] = (w["t1"], int(te[j0]))
+                sr["windows"].append(sr["p1"])
+            sr["windows"] += [(int(ts[j]), int(te[j])) for j in sr["turns"]]
+            sr["end"] = int(te[last]) if k else w["t1"]
+            a, b = (w["t1"], int(te[last])) if k else (0, -1)
+            inside = [e for e in comm_ev if a < e[0] <= b and not (e[0] <= int(te[j0]) and e[2] in A.RENAME)]
+            if inside and sr["kind"] == "ok":
+                names = sorted({e[2] for e in inside})
+                sr["kind"], sr["reason"] = "disturbed", "wywolanie w P1..Pk: " + ", ".join(names)
         series.append(sr)
 
     excl = [(w["t_kill"], w["t1"] if w["t1"] is not None else (w["t0"] or w["t_kill"])) for w in kills if w is not None]
@@ -350,6 +356,7 @@ def analyze_run_f(run_dir, rngs):
                 phase.append(sr["t0"] - int(end_slot[i]))
     full = [int(te[j] - ts[j]) for sr in series if sr["kind"] == "ok" for j in sr["turns"][:-1]]
     last = [int(te[sr["turns"][-1]] - ts[sr["turns"][-1]]) for sr in series if sr["kind"] == "ok" and sr["turns"]]
+    p1 = [sr["p1"][1] - sr["p1"][0] for sr in series if sr["kind"] == "ok" and "p1" in sr]
     after = [int(te[sr["after"]] - ts[sr["after"]]) for sr in series if sr["kind"] == "ok" and "after" in sr]
     step = [int(ts[j + 1] - ts[j]) for sr in series if sr["kind"] == "ok" for j in sr["turns"]]
     dur = [sr["end"] - sr["t0"] for sr in series if sr["kind"] == "ok"]
@@ -380,7 +387,8 @@ def analyze_run_f(run_dir, rngs):
     return {"meta": meta, "side": side, "fam": fam, "base": base, "series": series, "h0": [], "model": model,
             "ctl": {kk: s[kk][ctl] for kk in ("e2e", "compute", "wake")}, "n_conns": len(conns), "k": None, "k_mmap": k_mmap,
             "caps": caps, "turns": (ts, te), "comm_tid": comm_tid, "sleep_other": sleep_other, "idle_len": idle_len,
-            "o3": {"p0": p0_len, "phase": phase, "full": full, "last": last, "after": after, "step": step, "dur": dur},
+            "o3": {"p0": p0_len, "phase": phase, "full": full, "last": last, "after": after, "step": step, "dur": dur,
+                   "p1": p1},
             "pool_viol": viol, "late": late, "pool_out_n": len(pouts), "tail_overflow": tail_overflow, "desc": desc,
             "comm_ev_n": len(comm_ev), "trace_span": (events[0][0], events[-1][0]) if events else (0, 0),
             "slots_in_series": int(in_series.sum()), "conns": conns, "o6": o6}
@@ -430,6 +438,19 @@ def analyze(run_dir, rngs):
 
 # ---------------------------------------------------------------- H0 dla serii D2s
 
+def h0_windows_d2s(m, rng, k, par):
+    """Seria o ksztalcie D2s (aneks A1): P0 i P1 jednym ciagiem w pierwszym obrocie, P2..Pk w k - 1 kolejnych
+    obrotach; faza, obrot i rozrzut jak D.SlotModel.h0_windows."""
+    cidx = np.flatnonzero(m.ctl)
+    k0 = int(rng.choice(cidx))
+    t0 = int(m.end[k0]) + int(rng.integers(par["phase"][0], par["phase"][1]))
+    wins = [(t0, t0 + par["p0_ns"] + (par["p1_ns"] if k else 0))]
+    for j in range(1, k):
+        a = t0 + j * par["turn_ns"] + int(rng.integers(0, par["jitter_ns"]))
+        wins.append((a, a + par["w_ns"]))
+    return wins
+
+
 def h0_d2s(runs_cp, par, ks, rng):
     """Syntetyczne serie o ksztalcie D2s (P0 + k porcji, k z empirycznego rozkladu D2s) na tle slotow kontrolnych C',
     E.H0_PER_SERIES na kazda niezaklocona serie C' (aneks A2 R603E)."""
@@ -440,7 +461,7 @@ def h0_d2s(runs_cp, par, ks, rng):
         m = r["model"]
         for _ in range(E.H0_PER_SERIES * sum(1 for sr in r["series"] if sr["kind"] == "ok")):
             k = int(ks[int(rng.integers(0, len(ks)))])
-            wins = m.h0_windows(rng, k, par)
+            wins = h0_windows_d2s(m, rng, k, par)
             idx, _ = E.affected_idx(m, wins)
             if not len(idx) or not m.ctl[idx].all():
                 continue
@@ -556,7 +577,10 @@ def family_report(fam, P, Q, h0, rngs, ctx):
         only_q=True)
     row("O3: P0 [µs] p50 / p99 / max", lambda x: dist([v for r in x for v in r["o3"]["p0"]]))
     row("O3: faza P0 po końcu slotu [µs] p5 / p50 / p95", lambda x: dist([v for r in x for v in r["o3"]["phase"]], (5, 50, 95)))
-    row("O3: pełna porcja P1..Pk-1 [µs] p50 / p99 / max", lambda x: dist([v for r in x for v in r["o3"]["full"]]))
+    row("O3: P1 w obrocie P0, od wyjścia z renameat [µs] p50 / p99 / max (aneks A1)",
+        lambda x: dist([v for r in x for v in r["o3"]["p1"]]), only_q=True)
+    row("O3: pełna porcja w osobnym obrocie (C' P1..Pk-1, D2s P2..Pk-1) [µs] p50 / p99 / max",
+        lambda x: dist([v for r in x for v in r["o3"]["full"]]))
     row("O3: ostatnia porcja Pk [µs] p50 / p99 / max", lambda x: dist([v for r in x for v in r["o3"]["last"]]))
     row("O3: obrót Pk+1 [µs] p50 / p99 / max", lambda x: dist([v for r in x for v in r["o3"]["after"]]))
     row("O3: obrót bezczynny [µs] p50 / p99 / max", lambda x: dist(np.concatenate([r["idle_len"] for r in x])))
@@ -664,6 +688,8 @@ def load_family(fam_dir, rngs):
 
 def h0_par(Q):
     par = D.h0_params(Q, 0)
+    p1 = [v for r in Q for v in r["o3"].get("p1", [])]
+    par["p1_ns"] = int(pct(p1, 50)) if p1 else par["w_ns"]
     ks = [sr["k"] for sr in ser(Q, "ok")]
     return par, ks
 
@@ -680,7 +706,8 @@ def main_report(raw, seed, out):
         h0 = h0_d2s(P, par, ks, rngs["h0"])
         report += [f"Parametry H0 K2s {fam} (z D2s): P0 {par['p0_ns'] / 1e3:.1f} µs, porcja {par['w_ns'] / 1e3:.1f} µs, obrót "
                    f"{par['turn_ns'] / 1e3:.1f} µs, faza {par['phase'][0] / 1e3:.0f}..{par['phase'][1] / 1e3:.0f} µs, "
-                   f"rozrzut {par['jitter_ns'] / 1e3:.0f} µs, k z {len(ks)} serii D2s.", ""]
+                   f"rozrzut {par['jitter_ns'] / 1e3:.0f} µs, P1 w obrocie P0 {par['p1_ns'] / 1e3:.1f} µs, k z {len(ks)} "
+                   f"serii D2s.", ""]
         report += family_report(fam, P, Q, h0, rngs, ctx)
     report += ["## Werdykty", "", "| rodzina | K0 | K1'' D2s (b) | K2s | K1'' C' (b, opisowo) |", "|---|---|---|---|---|"]
     for fam, v in ctx["verdicts"].items():
@@ -712,20 +739,26 @@ def gate_h(runs):
 
 
 def g2f(r, p99, p999):
-    """G2f (D2s): pelne porcje P1..Pk-1 > p99,9 obrotu bezczynnego i obroty Pk+1 <= p99, po >= 99 %, w niezaklóconych
-    seriach niegranicznych."""
+    """G2f (D2s, aneksy A1 i A2): pelne porcje w osobnych obrotach (P2..Pk-1) > p99,9 obrotu bezczynnego i obroty Pk+1
+    <= p99, po >= 99 %, w niezakloconych seriach niegranicznych z k >= 1; serie z k = 0 osobno (obrot po P0 > p99)."""
     ts, te = r["turns"]
-    full, after = [], []
+    full, after, k0_long, k0_n = [], [], 0, 0
     for sr in ser([r], "ok"):
         if sr["boundary"] or "after" not in sr:
             continue
+        a_ok = int(te[sr["after"]] - ts[sr["after"]]) <= p99
+        if sr["k"] == 0:
+            k0_n += 1
+            k0_long += not a_ok
+            continue
         full += [int(te[j] - ts[j]) > p999 for j in sr["turns"][:-1]]
-        after.append(int(te[sr["after"]] - ts[sr["after"]]) <= p99)
+        after.append(a_ok)
     ff = sum(full) / len(full) if full else np.nan
     fa = sum(after) / len(after) if after else np.nan
-    ok = bool(after) and fa >= E.G2_FRAC and (not full or ff >= E.G2_FRAC)
-    txt = (f"pełne porcje > p99,9 bezczynnego {sum(full)}/{len(full)} ({ff:.3f}), Pk+1 ≤ p99 {sum(after)}/{len(after)} "
-           f"({fa:.3f}), serie graniczne {sum(sr['boundary'] for sr in ser([r], 'ok'))}")
+    ok = (not after or fa >= E.G2_FRAC) and (not full or ff >= E.G2_FRAC)
+    txt = (f"pełne porcje > p99,9 bezczynnego {sum(full)}/{len(full)} ({ff:.3f}), Pk+1 ≤ p99 w seriach z k ≥ 1 "
+           f"{sum(after)}/{len(after)} ({fa:.3f}), osobno serie z k = 0: obrót po P0 > p99 w {k0_long} z {k0_n}, serie "
+           f"graniczne {sum(sr['boundary'] for sr in ser([r], 'ok'))}")
     return ok, txt
 
 
