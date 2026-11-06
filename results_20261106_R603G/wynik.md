@@ -87,6 +87,13 @@ Możliwości:
 
 Rekomendacja: **(a)**. Kryteria wątku slotu (K3) są spełnione przy każdym N. Niezdane K3p przy N = 1 to ~16 µs raz na sekundę bez przekroczeń terminu. K4 dotyczy opóźnienia komend, a nie obliczeń, i przy N ≤ 8 mieści się w 1 ms (p99 743 µs). Rozłożenie sondy na obroty jest prostą naprawą K4 na później. Zmiana w silniku to osobna decyzja.
 
+## Decyzje człowieka po wyniku (2026-11-07)
+
+1. **Wariant (a): `dev/muro` scalone do `master` bez zmian w silniku** (*Skutek dla scalenia*). Przekroczenie K4 (wydłużenie obrotu wątku komunikacyjnego ~50 + 72·N µs raz na sekundę, > 1 ms od N ≈ 13) jest przyjęte jako znane ograniczenie D2s.
+2. **Rozłożenie sondy na kolejne obroty: osobne zgłoszenie michalwidera/retractordb#607**, z planem przed kodem i własnym pomiarem.
+3. Werdykty K3p (N = 1 NIEZDANE, N = 8 NIEROZSTRZYGNIĘTE) i K3t (N = 16 regresja według litery) zostają w *Wydruku analizy* bez zmian. Mechanizmów z *Odstępstw*, punkty 4 i 5, nie bada się osobno.
+4. R603G scalone do `main`.
+
 ## Odtworzenie od zera
 
 Wszystko na workerze `pi400` z katalogu `~/R376/apparatus_R603G` (kopia tego katalogu), poza analizą:
