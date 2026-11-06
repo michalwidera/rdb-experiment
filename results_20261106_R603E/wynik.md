@@ -22,7 +22,7 @@ Analiza: `analyze.py --raw <raw> --seed 6034`; pełny wydruk niżej, w części 
 |---|---|---|---|---|---|---|---|---|
 | uc03 | 5 ms | 7 | **ZDANE** | 0,283 → 0,000 (0,000..0,000): opisowo (E(C') < 1) | +75,4 → +69,3; T +31,6 (+22,7..+41,4): **NIEZDANE** | 8,43 → 8,50 | +29,43 → +23,66 | bez regresji |
 | uc05 | 1 ms | 31 | **ZDANE** | 6,321 → 0,000 (0,000..0,000): **ZDANE** | +264,9 → +394,7; T +262,2 (+132,8..+402,8): **NIEZDANE** | 36,26 → 59,27 | +2,70 → +2,82 | bez regresji |
-| uc06 | 2 ms | 19 | **NIEZDANE** (1 zdarzenie poza klasyfikacją parsera) | 3,366 → 0,009 (0,000..0,022): **ZDANE** | +2583,9 → -75,5; T -1367,4 (-3512,1..+835,2): **NIEROZSTRZYGNIĘTE (miara)** | 22,36 → 30,10 | +11,30 → +7,89 | bez regresji wg kryterium (punkt K3) |
+| uc06 | 2 ms | 19 | **NIEZDANE** według litery (1 zdarzenie poza klasyfikacją parsera); po decyzji człowieka **ZDANE** (*Decyzje*) | 3,366 → 0,009 (0,000..0,022): **ZDANE** | +2583,9 → -75,5; T -1367,4 (-3512,1..+835,2): **NIEROZSTRZYGNIĘTE (miara)** | 22,36 → 30,10 | +11,30 → +7,89 | bez regresji wg kryterium (punkt K3) |
 
 - **K2e: bramka robi to, co miała.** W 710 niezakłóconych seriach C'' są tylko 2 sloty narażone (uc06, 2 serie, +69,7 µs każdy); ich przyczyny nie badano. W uc03 kontrola dodatnia C' ma E = 0,28 (R603D 0,30), poniżej progu ważności 1, więc K2e jest tam opisowe, jak przewidziano. Limit 100 odroczeń nie zadziałał ani razu (0 kroków wymuszonych). Najdłuższe oczekiwanie P0 to 52 obroty w uc06 (okresowy slot ~48 ms), a obrotów z zamkniętą bramką w serii jest p50 21 (uc05) i 7 (uc06).
 - **K2s: usunięcie nakładania nie zmienia kosztu.** Ważność miary jest spełniona w uc03 i uc05: dolna granica S(C') wynosi +67,9 i +189,1 µs, a półszerokość H0 3,8 µs wobec 18,9 µs i 34,0 µs wobec 66,2 µs (aneks A2). S(C'') - S(C') wynosi -6,1 µs (-17,7..+4,9) w uc03 i +129,7 µs (-23,9..+286,1) w uc05, u_S = 0,92 (0,78..1,07) i 1,49 (0,92..2,34). Na pojedynczym slocie dotkniętym nakładanie widać tylko w uc03 i uc06. Δ mediany spada tam o 5,8 i 3,4 µs, a w uc05 zostaje bez zmian (+2,70 → +2,82 µs). Wartości C'' leżą bliżej slotu następnego z *Ustaleń*, punkt 1 (+27, +4,3, +11,7 µs), niż zera, zgodnie z *Przewidywaniem*, punkt 4. Seria jest dłuższa, ale dotyka podobnej liczby slotów (uc05 31,8 → 28,8, uc03 2,2 → 2,5, uc06 12,1 → 16,0). Koszt porzucenia pozostaje więc kosztem przeczytania kolejki, gdziekolwiek w takcie wypadnie porcja.
@@ -67,7 +67,7 @@ Analiza: `analyze.py --raw <raw> --seed 6034`; pełny wydruk niżej, w części 
 - Ogon K3 w uc06 (+358 µs) i jego odwrotność w R603D (-377 µs) to porównania różnych par binarek w różnych kampaniach. Kandydatka na przyczynę - inny układ kodu binarki C' - jest hipotezą, której nie sprawdzono.
 - Liczba naruszeń warunku (a) zależy od rytmu podłączeń aparatury (start co ~2,5 s), jak w R603D.
 
-## Skutek dla naprawy (do decyzji człowieka)
+## Skutek dla naprawy (decyzja człowieka: *Decyzje*)
 
 C'' (`d105498a`) jest tylko na `dev/muro` (w `origin/dev/muro`, poza `master`). Pomiar pokazał, że wyrównanie do przerwy po slocie usuwa nakładanie, ale nie obniża kosztu serii, a wydłuża ją o 63 % w uc05 i 35 % w uc06. Możliwe kierunki:
 
@@ -77,6 +77,19 @@ C'' (`d105498a`) jest tylko na `dev/muro` (w `origin/dev/muro`, poza `master`). 
 4. **Następny krok #603: mniej danych do przeczytania.** Koszt idzie za ilością przeczytanej kolejki, nie za chwilą odczytu. Jedyna dźwignia, która zostaje, to kierunek 2 z R603D: wcześniejsze rozpoznanie śmierci klienta, ~10 razy mniej komunikatów. Mierzony miarą slotów dotkniętych (D2), względem C'.
 
 Rekomendacja: 1 (wycofać C'') i 4 jako następny wariant mierzony tą samą aparaturą po poprawce z punktu 3; ogon K3 uc06 sprawdzić tylko wtedy, gdy kierunek 4 trafi do pomiaru tych samych binarek.
+
+## Decyzje człowieka po wyniku (2026-11-06)
+
+1. **K1'' uc06: oba zdarzenia z *Odstępstw*, punkt 1, są wyłączeniami (martwy muteks).** Po tej decyzji K1'' w uc06 jest **ZDANE na obu stronach**:
+   - C'': 5 z 270 wyłączeń (1,9 % ≤ 5 %), do puli 265 = 270 - 5, pary w fazie pracy i zwolnienia bez puli niewyjaśnione 0. Ogon jest spójny: w `Cpp_03` utworzono 6 kolejek, 2 zwolniono przy martwym muteksie, 2 trafiły do puli, przepełnienia 2.
+   - C': 5 z 270 wyłączeń; jedyną niezgodnością ogona była para martwego muteksu w `Cp_09`.
+
+   *Wydruk analizy* zostaje wydrukiem zatwierdzonej aparatury (litera: NIEZDANE). Klasyfikację martwego muteksu przy znalezionym procesie i w ogonie poprawia następna aparatura #603. Jej test parsera na danych R603E musi odtworzyć ten werdykt.
+2. **Skutek: przyjęte punkty 1, 3 i 4, odrzucony punkt 2.**
+   - C'' (`d105498a`) zostaje wycofany z `dev/muro` (revert jako diff do przeglądu i commitu przez człowieka).
+   - Następny wariant #603 to wcześniejsze rozpoznanie śmierci klienta, mierzone miarą slotów dotkniętych względem C', aparaturą z poprawką klasyfikacji z punktu 1.
+   - Ogona K3 w uc06 nie badać osobno.
+3. R603E scalone do `main`.
 
 ## Odtworzenie od zera
 
