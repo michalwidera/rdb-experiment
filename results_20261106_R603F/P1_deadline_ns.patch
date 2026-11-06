@@ -1,0 +1,21 @@
+--- a/src/rdb/lib/probe.cc
++++ b/src/rdb/lib/probe.cc
+@@ -147,7 +147,7 @@
+   const char *path = std::getenv("RDB_BENCH_CSV");
+   if (path == nullptr) return;  // sonda wkompilowana, ale nieuzbrojona - normalne działanie usługi
+   csv_ = std::fopen(path, "w");
+-  if (csv_ != nullptr) std::println(csv_, "iter,compute_ns,wake_lag_ns,e2e_ns");
++  if (csv_ != nullptr) std::println(csv_, "iter,compute_ns,wake_lag_ns,e2e_ns,deadline_ns");
+ }
+ 
+ void slotProbe::closeCsv() {
+@@ -177,7 +177,8 @@
+ void slotProbe::writeRow() {
+   if (csv_ == nullptr) return;
+   const long emitNs = nowNs();  // koniec emisji wyniku (E2E)
+-  std::println(csv_, "{},{},{},{}", slot_++, computeEndNs_ - computeBeginNs_, wakeNs_ - deadlineNs_, emitNs - deadlineNs_);
++  std::println(csv_, "{},{},{},{},{}", slot_++, computeEndNs_ - computeBeginNs_, wakeNs_ - deadlineNs_, emitNs - deadlineNs_,
++               deadlineNs_);
+ }
+ 
+ //
