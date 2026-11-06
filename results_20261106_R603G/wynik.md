@@ -89,7 +89,7 @@ Rekomendacja: **(a)**. Kryteria wątku slotu (K3) są spełnione przy każdym N.
 
 ## Decyzje człowieka po wyniku (2026-11-07)
 
-1. **Wariant (a): `dev/muro` do scalenia z `master` bez zmian w silniku** (pull request otwiera człowiek) (*Skutek dla scalenia*). Przekroczenie K4 (wydłużenie obrotu wątku komunikacyjnego ~50 + 72·N µs raz na sekundę, > 1 ms od N ≈ 13) jest przyjęte jako znane ograniczenie D2s.
+1. **Wariant (a): `dev/muro` scalone z `master` bez zmian w silniku** (michalwidera/retractordb#608, `b0fd0135`) (*Skutek dla scalenia*). Przekroczenie K4 (wydłużenie obrotu wątku komunikacyjnego ~50 + 72·N µs raz na sekundę, > 1 ms od N ≈ 13) jest przyjęte jako znane ograniczenie D2s.
 2. **Rozłożenie sondy na kolejne obroty: osobne zgłoszenie michalwidera/retractordb#607**, z planem przed kodem i własnym pomiarem.
 3. Werdykty K3p (N = 1 NIEZDANE, N = 8 NIEROZSTRZYGNIĘTE) i K3t (N = 16 regresja według litery) zostają w *Wydruku analizy* bez zmian. Mechanizmów z *Odstępstw*, punkty 4 i 5, nie bada się osobno.
 4. R603G scalone do `main`.
