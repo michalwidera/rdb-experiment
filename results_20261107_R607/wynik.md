@@ -109,6 +109,12 @@ Możliwości:
 
 Rekomendacja: **(a)**. Kryteria rozstrzygające (K4, K4n, K0, K3, K3t) są spełnione przy każdym N. K3p z protokołu jest opisowe, a hipoteza kosztu na obrót, która mogła je zawyżyć N-krotnie, jest wykluczona.
 
+## Decyzje człowieka po wyniku (2026-11-07)
+
+1. **Wariant (a): D2r przyjęte.** `dev/muro` scalone z `master` pull requestem michalwidera/retractordb#609 (`3d83d4fe`), michalwidera/retractordb#607 zamknięte (*Skutek dla zgłoszenia*).
+2. K3p przy N = 8 (+23,2 µs/s, +6,8..+40,8, nierozstrzygnięte) zostaje opisowe i znane, bez osobnego badania. Werdykty zostają w *Wydruku analizy* bez zmian.
+3. R607 scalone do `main`.
+
 ## Odtworzenie od zera
 
 Wszystko na workerze `pi400` z katalogu `~/R376/apparatus_R607` (kopia tego katalogu), poza analizą:
