@@ -4613,3 +4613,10 @@ Niesprawdzone: czy `7.0.0-*-raspi-realtime` uruchamia się na Pi 400 (BCM2711, t
 Skutek dla badań: worker zostaje na Ubuntu 24.04 z jądrem `6.8.0-2049-raspi-realtime` (rekomendacja: do zakończenia serii pomiarów #603, R376-R603D, żeby kampanie zostały porównywalne). Propozycja bez decyzji: pilot na drugiej karcie SD - obraz obecnej karty na hosta, klon i przebieg A/A (wpływ samej karty), potem 26.04 z `linux-raspi-realtime` i tymi samymi binarkami. Pytanie pilota: czy jądro 7.0 zmienia mechanizm z R603 (unieważnienie TLB całego ASID przy dużym `munmap`); Cortex-A72 nie ma sprzętowego TLBI range, więc zmienić się może tylko próg i obsługa zwalniania stron, nie sam brak instrukcji.
 
 Źródła: https://packages.ubuntu.com/resolute/linux-raspi-realtime, https://ubuntu.com/real-time/docs/reference/releases/, https://ubuntu.com/real-time/docs/how-to/enable-real-time-ubuntu/
+
+## 2026-11-07T21:14:14+01:00 — results_20261107_R593_K18b / rate_r593k18b / study_1
+
+- wynik: sukces
+- commit kodu: `e389edd3596e4b83b6f3f4a9e238905a91c667b4`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20261107_R593_K18b/rate_r593k18b/study_01`
