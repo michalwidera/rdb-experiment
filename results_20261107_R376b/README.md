@@ -100,4 +100,9 @@ Jak R376: w tym katalogu i w komentarzach do zgłoszeń wyłącznie identyfikato
 
 ## Aneksy
 
-(brak)
+- **A1 (2026-11-07, przed suchym przebiegiem i kampanią) - doprecyzowanie aparatury i werdyktu, bez zmiany metryk.**
+  - Kolejność rozstrzygnięć G, gdy warunki się nakładają: najpierw NIEPOTWIERDZONY (p99 B ≥ p99 A albo MW p ≥ 0,01), potem NIEROZSTRZYGNIĘTY (mniej niż 8 ważnych przebiegów na stronę, `n_hit` < 100 albo któreś p99 niestabilne), potem kontrola aparatury: różnica poza rozrzutem daje NIEROZSTRZYGNIĘTY z dopiskiem „kontrola aparatury wstrzymuje wniosek”. W przeciwnym razie POTWIERDZONY. Powód: protokół nie mówi, co przeważa przy jednoczesnym braku kierunku i niestabilnym p99.
+  - `campaign.sh` nie przerywa kampanii po nieważnym przebiegu (R376 przerywało przez `set -e`). Zapisuje go w logu, a `analyze.py` wyłącza go i wypisuje z powodem. Tak każe *Ważność przebiegu*: przebieg nieważny jest raportowany i nie jest powtarzany.
+  - `analyze.py` sprawdza ważność przed analizą: `rt_ok`, governor, liczbę podłączeń, sumy obu binarek wobec R376, wątek `SCHED_FIFO` na rdzeniu 3 (`rt.txt`) i wiersz dla każdego klienta.
+  - Bootstrap G ma osobny generator z ziarnem `--seed`, jak eksploracja R376. Raport R376 drukowany przed G (kryterium na wszystkich zdarzeniach) zawiera też linię eksploracji R376, liczoną bez zmian, z ziarnem 376.
+  - **Test analizy (Kolejność, punkt 2) zdany** na archiwum R376 rozpakowanym od nowa (indeks zgodny): `analyze.py --raw <raw R376> --seed 376 --conns 30` daje część R376 bajt w bajt równą wydrukowi `../results_20261104_R376/analyze.py --seed 376`, który jest równy *Wydrukowi analizy* w `wynik.md` R376. G w uc05: A 11,055 [10,880, 11,312] ms, n = 267 (3 wyłączone), B 1,254 [1,211, 1,434] ms, n = 264 (6 wyłączonych), MW 9,75e-89. To liczby eksploracji R376.
