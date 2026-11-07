@@ -4620,3 +4620,7 @@ Skutek dla badań: worker zostaje na Ubuntu 24.04 z jądrem `6.8.0-2049-raspi-re
 - commit kodu: `e389edd3596e4b83b6f3f4a9e238905a91c667b4`
 - parametry: rate_hz=360, clients=1, samples=20000, sink=null
 - dane: `results_20261107_R593_K18b/rate_r593k18b/study_01`
+
+## 2026-11-07 - R593 K18b: kotwica bieżącej rewizji na `e389edd3` potwierdzona
+
+Powtórzenie R593 K18 na pinie silnika artefaktu `e389edd3` (#593 krok 8, decyzja człowieka 2026-11-07 wariant b) w `results_20261107_R593_K18b/`, gałąź `experiment/20261107_R593b`. exactness/replay: 67 artefaktów, zero różnic, artefakty bez `.meta` bajt w bajt równe R593 K18 na `dfcc42d2`; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego (a2=19 996, b2=19 997); 360 Hz: 19 999 interwałów, E1 mediana 916,4 µs, p99 1115,7 µs, max 1284,8 µs, queue-emission mediana 970,8 µs, p99 1215,0 µs, p99,9 1276,5 µs, max 1426,1 µs (51,3% budżetu slotu), wake_lag max 69,6 µs. Plan 360 Hz ten sam tekst co w R593 K18; jeden przebieg, więc różnic wobec R593 K18 (mediany +3-4%, maksima w granicach ±1,5%) nie przypisuję silnikowi. Odstępstwa: pierwsze podejście `run.sh` padło na brakującym katalogu `exactness/` (kopia aparatury bez `exactness/README.md`, dodane `8e749a8`, drugie podejście od zera); strażnik buildu nadzorcy nadal nie zna `scripts/buildrdb/research.sh` - build ręczny i `--skip-build`. Kontrola zgodności korpusu na tym silniku i drzewo `current/` (224 kopie w bieżącej składni) - `current/README.md`.
