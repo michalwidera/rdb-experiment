@@ -176,10 +176,10 @@ Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu 
   - Wstępnie K3p (jeden przebieg na stronę): N = 1 S D2s +11,7, D2r +16,5 µs, półszerokość H0 6,7 µs; N = 16 S D2s -3,0, D2r -56,8 (-137,8..+24,8) µs, półszerokość H0 34,8 µs. Przy 9 przebiegach oczekiwana półszerokość H0 przy N = 16 to ~12 µs, więc reguła odczytu ryzyka (10 µs na sekundę) może dać „nierozstrzygnięte” z rozdzielczości.
   - Przebieg trwał ~2,0 min przy N = 16 i ~1,3 min przy N = 1, więc kampania potrwa ~1,6 h, a nie ~2,1 h.
 
-### Do decyzji człowieka przed analizą (kampania uruchomiona, dane od niej nie zależą)
+### Do decyzji człowieka przed analizą (kampania uruchomiona, dane od niej nie zależą; rozstrzygnięte: *Aneksy*)
 
 - **A1 - przebieg D2r przecięty granicą okna** (punkt pierwszy tej sekcji). Litera W4 („przebiegi po dokładnie N kolejnych obrotów”) unieważniłaby przebieg, w którym okno zaczyna się albo kończy w trakcie przebiegu sondy. Przy N = 16 przebieg sondy trwa ~19 ms, więc dotyczy to ~4 % przebiegów D2r (w suchym przebiegu 0). Rekomendacja: przebieg przecięty dopuszczalny tylko na granicy okna, pominięty w K3p i w odstępach W4, jego obroty liczone w E_p. Alternatywa: litera W4, przebieg nieważny (liczność ≥ 8 zostaje przy jednym takim przebiegu na N). Raport podaje liczbę przebiegów przeciętych.
 
 ## Aneksy
 
-(brak)
+1. **A1 - przebieg D2r przecięty granicą okna** (zatwierdzony przez człowieka 2026-11-07, w trakcie kampanii, przed analizą; dane kampanii od tej decyzji nie zależą). W4 na D2r dopuszcza przebieg sondy krótszy niż N obrotów wyłącznie wtedy, gdy zaczyna się na pierwszym albo kończy na ostatnim obrocie okna pomiaru. Taki przebieg jest pomijany w K3p i w odstępach W4, a jego obroty wchodzą do E_p (K4, K4n). Raport podaje liczbę przebiegów przeciętych. Powód: okno pomiaru zaczyna się i kończy w chwilach niezależnych od fazy sondy, a przebieg D2r przy N = 16 trwa ~19 ms, więc litera W4 unieważniałaby ~4 % przebiegów D2r bez związku z działaniem sondy (*Aparatura i suchy przebieg*).
