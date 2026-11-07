@@ -511,7 +511,7 @@ def gates(raw):
         print(f"{r['dir'].relative_to(raw)}: N={r['n']} {g}; sonda: obroty {len(r['probe'])}, przebiegi {len(r['rounds'])} "
               f"(długości {dict(sorted(lens.items()))}, przecięte {r['partial']}), openat/obrót "
               f"{sorted(set(r['ok_by'][j] for j in r['probe']))}, nieudane {sum(r['fail_by'][j] for j in r['probe'])}, "
-              f"poza obrotami {r['orphan_ok']}, odstęp [ms] {D.dist(r['gaps']) if len(r['gaps']) else '-'}; "
+              f"poza obrotami {r['orphan_ok']}, odstęp [µs] {D.dist(r['gaps']) if len(r['gaps']) else '-'}; "
               f"W3 {r['w3']}; wiersze/s min {min(r['rates']) if r['rates'] else float('nan'):.1f}; zajętość 0-2 {r['cpu']:.3f}; "
               f"E_p [µs] {D.dist(r['ep'])}; przebieg [µs] {D.dist(r['round_len'])}; obrót bezczynny p50/p99/p99,9 "
               f"{us(pct(r['idle_len'], 50))} / {us(pct(r['idle_len'], 99))} / {us(pct(r['idle_len'], 99.9))} µs; "

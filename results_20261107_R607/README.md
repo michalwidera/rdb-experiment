@@ -156,6 +156,30 @@ Jak K3t R603G: per przebieg średnia obrotu bezczynnego obcięta do p99, **REGRE
 
 Korpus `uc01`..`uc08` jest objęty embargiem do publikacji DEBS. W tym katalogu i w komentarzach do zgłoszeń są wyłącznie identyfikatory rodzin i liczby z nich wyprowadzone. Plany, dane, generatory, nazwy strumieni i wyjście klientów zostają na workerze w `/dev/shm/r376`, a surowe CSV i ślady w prywatnym `paper-arXiv` (`rdb-experiment-embargo/R607/`). Tutaj zostaje indeks sum.
 
+## Aparatura i suchy przebieg (2026-11-07)
+
+- **Aparatura** (`2519dba`): `build_ab.sh`, `run_one.py`, `campaign.sh`, `analyze.py` (importuje `results_20261106_R603G/analyze.py` bez zmian). Łatka P1 nakłada się na `4daec944` bez zmian (`git apply --check`); `src/qry`, `src/common` i `src/rdb` są między `75e7574c` a `4daec944` identyczne.
+  - Przebieg D2r przecięty granicą okna (zaczęty przed `t0` albo kończony po `t1`) ma mniej niż N obrotów. W4 dopuszcza taki przebieg tylko na granicy okna, a K3p go pomija. Odstęp W4 liczy się od początków przebiegów bez przebiegu przeciętego na początku okna. To doprecyzowanie W4 z *Kolejności*, punkt 3, bez zmiany kryterium.
+  - Klient zabity w fazie zgonów, którego kolejkę zwolniono bez wykrycia przez sondę (np. martwy muteks, R603F), albo którego zwolnienia nie ma w śladzie, jest w K0 liczony jako niezgodny z kryterium i raportowany osobno.
+- **Test analizy ZDANY** (`analyze.py --raw <R603G>/raw --r603f <R603F>/raw --parser-check`, ~24 s; archiwa `rdb-experiment-embargo/R603G/` i `R603F/` rozpakowane od nowa, 6 indeksów zgodnych, 432 + 324 pliki):
+  - (1) `analyze_run` R607 na przebiegach D2s R603G daje te same pola (obroty z sondą, E_p, obroty bezczynne, odstępy, sloty kontrolne, średnia obcięta, K3, bramki) i te same klastry placebo co `analyze_run` R603G. E_p 124,0 / 187,0 / 218,0, 612,0 / 743,0 / 765,0 i 1197,0 / 1352,0 / 1920,0 µs, obrót bezczynny i S_p przy N = 1 (+15,81 (+10,83..+21,25) µs) są równe *Wydrukowi analizy* R603G;
+  - (2) rozpoznanie wykrycia na przebiegach D2s R603F daje 270 / 270 / 266 wykryć, 0 / 0 / 1 samotnych i L min / p50 / p99 / max równe *Wydrukowi analizy* R603F w uc03, uc05 i uc06;
+  - (3) przebieg D2r wymuszony na danych D2s R603G: przy N = 1 po 60 przebiegów z jednym obrotem, przy N = 8 i 16 0 obrotów z jednym udanym `openat`.
+- **Korpus**: worker po restarcie (uptime 55 min o 09:18), `/dev/shm` pusty. uc05 odtworzony procedurą R600 (`paper-arXiv` HEAD `3929c57`, ostatnia zmiana `usecases` w `7a76922`); skrót drzewa `ce892219...`, równy README R603C.
+- **Budowa D2r** 09:19-09:40, odczepiona (`~/R376/build_R607.log`): `xretractor` `3b944eb00f53928d...`, `xqry` `ddd7288e9b9e3250...`, build-info równe D2s. W trakcie budowy jedno logowanie na worker (lista plików aparatury), poza pomiarem.
+- **Suchy przebieg** 09:40-09:47 (`~/R376/dry_R607`, `campaign.sh` z `R607_PAIRS=1`, `R607_NS="16 1"`; uc05, po 1 przebiegu D2s i D2r przy N = 16 i N = 1, okno 60 s), odczepiony, bez łączenia się z workerem w trakcie. **W1-W5 spełnione we wszystkich 4 przebiegach.** Po przebiegu w `/dev/shm` tylko korpus.
+  - D2r: 60 przebiegów sondy, przy N = 16 każdy z dokładnie 16 kolejnych obrotów z jednym udanym `openat`, 0 przeciętych granicą okna, odstęp początków 1000,4-1001,1 ms. Przebieg sondy trwa p50 18,8 ms.
+  - E_p p50 / p99 / max: N = 1 D2s 125 / 185 / 185, D2r 124 / 178 / 178 µs; N = 16 D2s 1209 / 1370 / 1370, **D2r 136 / 229 / 299 µs**.
+  - Obrót bezczynny p50 / p99 / p99,9: N = 16 D2s 17 / 20 / 77, D2r 17 / 25 / 94 µs; średnia obcięta 16,82 / 17,53 µs (jeden przebieg na stronę, bez wniosku). Zajętość rdzeni 0-2 0,68 przy N = 16.
+  - K0: wszyscy zabici klienci wykryci przez sondę w granicy, kody wyjścia -9, `trace_overrun` faz zgonów 0, silnik kończy się kodem 0. L min / p50 / max przy N = 16: D2s 91 / 510 / 966 ms, D2r 30 / 472 / 951 ms; przy N = 1 920 ms (D2s) i 890 ms (D2r).
+  - Sloty kontrolne przy N = 16: D2s 59 632, D2r 58 570 z ~60 014 (97,6 %, *Przewidywanie*, punkt 4).
+  - Wstępnie K3p (jeden przebieg na stronę): N = 1 S D2s +11,7, D2r +16,5 µs, półszerokość H0 6,7 µs; N = 16 S D2s -3,0, D2r -56,8 (-137,8..+24,8) µs, półszerokość H0 34,8 µs. Przy 9 przebiegach oczekiwana półszerokość H0 przy N = 16 to ~12 µs, więc reguła odczytu ryzyka (10 µs na sekundę) może dać „nierozstrzygnięte” z rozdzielczości.
+  - Przebieg trwał ~2,0 min przy N = 16 i ~1,3 min przy N = 1, więc kampania potrwa ~1,6 h, a nie ~2,1 h.
+
+### Do decyzji człowieka przed analizą (kampania uruchomiona, dane od niej nie zależą)
+
+- **A1 - przebieg D2r przecięty granicą okna** (punkt pierwszy tej sekcji). Litera W4 („przebiegi po dokładnie N kolejnych obrotów”) unieważniłaby przebieg, w którym okno zaczyna się albo kończy w trakcie przebiegu sondy. Przy N = 16 przebieg sondy trwa ~19 ms, więc dotyczy to ~4 % przebiegów D2r (w suchym przebiegu 0). Rekomendacja: przebieg przecięty dopuszczalny tylko na granicy okna, pominięty w K3p i w odstępach W4, jego obroty liczone w E_p. Alternatywa: litera W4, przebieg nieważny (liczność ≥ 8 zostaje przy jednym takim przebiegu na N). Raport podaje liczbę przebiegów przeciętych.
+
 ## Aneksy
 
 (brak)
