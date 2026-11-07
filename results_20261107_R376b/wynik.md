@@ -14,7 +14,7 @@ Kampania trwała 2026-11-07 12:07:04 - 12:58:59 na pi400: rodzina uc05, 9 par A/
 
 `/dev/shm` przed każdym przebiegiem zajmował 1,38-1,41 MB.
 
-Surowe dane leżą poza tym repozytorium, w prywatnym `paper-arXiv`, w katalogu `rdb-experiment-embargo/R376b/`, bo pochodzą z korpusu objętego embargiem. Archiwum `results_20261107_R376b_raw.tar.gz` ma 40 466 715 B i SHA-256 `f3da5bf50d57e48b25f34a8ec7b5adbdeea5d593c68493f08a558f0c780c3e3b`. Indeks 108 plików jest tutaj, w `results_20261107_R376b_raw.index.tsv`. Analiza: `analyze.py --raw <raw>` (ziarno domyślne 3762). Jej pełny wydruk jest w części *Wydruk analizy*.
+Surowe dane leżą poza tym repozytorium, w prywatnym `paper-arXiv`, w katalogu `rdb-experiment-embargo/R376b/` (commit `16f003a`, opis i polecenia sprawdzenia w `rdb-experiment-embargo/README.md`), bo pochodzą z korpusu objętego embargiem. Archiwum `results_20261107_R376b_raw.tar.gz` ma 40 466 715 B i SHA-256 `f3da5bf50d57e48b25f34a8ec7b5adbdeea5d593c68493f08a558f0c780c3e3b`. Indeks 108 plików jest tutaj, w `results_20261107_R376b_raw.index.tsv`. Analiza: `analyze.py --raw <raw>` (ziarno domyślne 3762). Jej pełny wydruk jest w części *Wydruk analizy*.
 
 ## Odpowiedź
 
@@ -67,7 +67,7 @@ Surowe dane leżą poza tym repozytorium, w prywatnym `paper-arXiv`, w katalogu 
 
 ## Skutek dla zgłoszenia (decyzja człowieka)
 
-Według L4 werdykt POTWIERDZONY idzie do #376, a zgłoszenie zamyka człowiek. Komentarz wyniku w #376 zawiera opis badania i wyjaśnienie werdyktu, z samym identyfikatorem rodziny i liczbami wyprowadzonymi.
+Według L4 werdykt POTWIERDZONY idzie do #376, a zgłoszenie zamyka człowiek. Komentarz wyniku z opisem badania i wyjaśnieniem werdyktu, z samym identyfikatorem rodziny i liczbami wyprowadzonymi: michalwidera/retractordb#376, komentarz 6706731218 (2026-11-07).
 
 ## Odtworzenie od zera
 
