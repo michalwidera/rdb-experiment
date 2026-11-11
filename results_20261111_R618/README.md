@@ -53,4 +53,4 @@ Kalibracja: wartości 19 087 (`20260818`) i 31 841 (`20260819`) z STOP.md odtwar
 
 ## Stan
 
-Predeklaracja zapisana; przebiegi etapu 2 nierozpoczęte.
+Predeklaracja zapisana w `129bb3c`, przed przebiegami. **Iteracja 1 ZATRZYMANA 2026-11-11** na błędzie aparatury kontroli zgodności (kod 2, grupa `artifacts`/`ecg`) i 54 rozbieżnościach kopii `current/`; obie przyczyny leżą w zmianie odniesienia z `40c28dbe` na `e389edd3`. Kryteria 1, 2 i 4 niesprawdzone. Szczegóły: [`STOP.md`](STOP.md).
