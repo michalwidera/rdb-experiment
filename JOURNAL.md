@@ -4624,3 +4624,14 @@ Skutek dla badań: worker zostaje na Ubuntu 24.04 z jądrem `6.8.0-2049-raspi-re
 ## 2026-11-07 - R593 K18b: kotwica bieżącej rewizji na `e389edd3` potwierdzona
 
 Powtórzenie R593 K18 na pinie silnika artefaktu `e389edd3` (#593 krok 8, decyzja człowieka 2026-11-07 wariant b) w `results_20261107_R593_K18b/`, gałąź `experiment/20261107_R593b`. exactness/replay: 67 artefaktów, zero różnic, artefakty bez `.meta` bajt w bajt równe R593 K18 na `dfcc42d2`; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego (a2=19 996, b2=19 997); 360 Hz: 19 999 interwałów, E1 mediana 916,4 µs, p99 1115,7 µs, max 1284,8 µs, queue-emission mediana 970,8 µs, p99 1215,0 µs, p99,9 1276,5 µs, max 1426,1 µs (51,3% budżetu slotu), wake_lag max 69,6 µs. Plan 360 Hz ten sam tekst co w R593 K18; jeden przebieg, więc różnic wobec R593 K18 (mediany +3-4%, maksima w granicach ±1,5%) nie przypisuję silnikowi. Odstępstwa: pierwsze podejście `run.sh` padło na brakującym katalogu `exactness/` (kopia aparatury bez `exactness/README.md`, dodane `8e749a8`, drugie podejście od zera); strażnik buildu nadzorcy nadal nie zna `scripts/buildrdb/research.sh` - build ręczny i `--skip-build`. Kontrola zgodności korpusu na tym silniku i drzewo `current/` (224 kopie w bieżącej składni) - `current/README.md`.
+
+## 2026-11-11T12:23:28+01:00 — results_20261111_R618_K18c / rate_r618k18c / study_1
+
+- wynik: sukces
+- commit kodu: `16c516f9eb76c473d5ff8510a2a812b8c23a893d`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20261111_R618_K18c/rate_r618k18c/study_01`
+
+## 2026-11-11 - R618 K18c: kotwica bieżącej rewizji na R = `16c516f9` potwierdzona
+
+Powtórzenie R593 K18b na rewizji silnika R = `16c516f9` (#618 droga (b), etap 3, decyzja człowieka 2026-11-11 D2) w `results_20261111_R618_K18c/`, gałąź `experiment/20261111_R618`, protokół K18b bez zmian (plany exactness bajtowo równe K18b, dowód migracji na R bajtowo równy `migration.tsv` K18b, plan 360 Hz `8c03d005…` ten sam). exactness/replay: 67 artefaktów, zero różnic, artefakty bez `.meta` i `configuration.sha256` bajt w bajt równe R593 K18b na `e389edd3`; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego (a2=19 996, b2=19 997); 360 Hz: 19 999 interwałów, E1 mediana 851,6 µs, p99 1064,8 µs, max 1225,9 µs (44,1% budżetu slotu), queue-emission mediana 906,6 µs, p99 1168,8 µs, p99,9 1229,4 µs, max 1351,5 µs (48,7% budżetu slotu), wake_lag mediana 22,3 µs, max 106,0 µs. Jeden przebieg; różnic wobec R593 K18b (kwantyle E1 i queue-emission niższe o 3,7-7,1%, max wake_lag wyższy) nie przypisuję silnikowi - delta #617 to rachunek kompilatora. Odstępstwa: tylko znany strażnik buildu nadzorcy (build ręczny, `--skip-build`). Bez odpytywania workera w trakcie pomiaru.
