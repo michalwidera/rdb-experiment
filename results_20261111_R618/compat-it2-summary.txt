@@ -1,0 +1,45 @@
+== zgodnosc wsteczna korpusu artykulu (2026-11-11 10:23)
+silnik pod testem: <github>/retractordb/build/R618-Release/src/retractor/xretractor
+  Branch: dev/muro:16c516f9, sha256 955fdc71e75a, RDB_OPT_DEDUP_SUBSTRATES=ON RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON RDB_OPT_COMMUTATIVE_ADD=ON RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON RDB_BENCH_PROBE=OFF RDB_OPT_SIMPLIFY_EXPRESSIONS=ON 
+odniesienie (binarka pinu): <github>/paper-arXiv/measurment-tool/run/bin/e389edd3596e4b83b6f3f4a9e238905a91c667b4/xretractor
+  Branch: :e389edd3, sha256 a72e641e1a05, RDB_OPT_DEDUP_SUBSTRATES=ON RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON RDB_OPT_COMMUTATIVE_ADD=ON RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON RDB_BENCH_PROBE=OFF RDB_OPT_SIMPLIFY_EXPRESSIONS=ON 
+piny z MANIFEST.md: retractordb e389edd3596e4b83b6f3f4a9e238905a91c667b4, rdb-experiment 84fee502acb77b111b0f83bb07a2104b7477e560
+plany: po migracji M1, S1, S2 (domyslnie)
+UWAGA: rdb-experiment stoi na b944c89; korpus brany jest z pinu
+akceptacje: <github>/paper-arXiv/measurment-tool/check_backward_corpus_compatibility.accepted
+migracja M1 (<github>/paper-arXiv/measurment-tool/run/compat-20261111-16c516f9-it2/migration.tsv): BOTHFAIL=36 SAME=646 
+migracja S1/S2: MIGRATED=465 PROBED=35 SAME=182 FILE=1995 przyrostkowe=598
+  COUNT plany=682 odrzucane_na_obu=36 przyjete_dopiero_teraz=0
+  COUNT kopie_current_zgodne=170 kopie_current_zgodne_modulo_m1=54
+  czas 22 s
+  COUNT przebiegi=67 (po dwa: pin i silnik pod testem)
+  czas 107 s
+  ZAPATCHOWANA  k18/replay: S1 FILE (3), S2 przyrostkowe (4)
+  k18/replay: pin~silnik: rc 0/0: OK: compared=67 nonempty_data=16 excluded_bytes_per_meta=8;silnik plan pinu~silnik S1/S2: rc 0/0: OK: compared=67 nonempty_data=16 excluded_bytes_per_meta=8;silnik x2: rc 0/0: OK: compared=67 nonempty_data=16 excluded_bytes_per_meta=8;
+  COUNT drzewa=48 (K18, K6c skali 36, fig:qrs)
+  czas 142 s
+  COUNT przypadki=13
+  czas 8 s
+  ziarno 20260818: 35835 obserwacji, bajt w bajt jak campaign_seed20260818.csv
+  ziarno 20260820: 35703 obserwacji, bajt w bajt jak campaign_seed20260820.csv
+  czas 51 s
+  ziarno 20260912: 36162 obserwacji, bajt w bajt jak h10_20260912.csv
+  ziarno 20260913: 36089 obserwacji, bajt w bajt jak h10_20260913.csv
+  czas 38 s
+  fig:qrs-migrated: kanaly 3/3, probki [400, 400, 400], NULL [0, 0, 0], rozbieznosci wartosci wobec pinu [0, 0, 0], piki MLII x=122,365 (przypiete 122,365), xqry rc 0, serwer rc 0
+  czas 10 s
+== podsumowanie
+grupa      porownano   zgodne rozbieznosci  zaakceptowane  zapatchowane   inne
+plans            682      646            0              0           500     36
+runs              67       67            0              0            67      0
+artifacts         48       48            0              0            47      0
+g3                13       13            0              0            13      0
+k24e               2        2            0              0             2      0
+k24f               2        2            0              0             2      0
+ecg                1        1            0              0             0      0
+NIEUZYTE akceptacje (wynik juz inny albo pozycja zgodna - usun wpis):
+  plans exp/results_20260801_K22v2/tasks/M1/F3_multirate/rql/core.rql [7f16f48688a4]
+  plans exp/results_20260808_K23/pilot/diag_X_named.rql [06fa7fc37035]
+  plans exp/results_20260808_K23v2/pilot/diag_X_named.rql [06fa7fc37035]
+raport: <github>/paper-arXiv/measurment-tool/run/compat-20261111-16c516f9-it2/report.txt
+WYNIK: ZGODNY

@@ -54,3 +54,14 @@ Kalibracja: wartości 19 087 (`20260818`) i 31 841 (`20260819`) z STOP.md odtwar
 ## Stan
 
 Predeklaracja zapisana w `129bb3c`, przed przebiegami. **Iteracja 1 ZATRZYMANA 2026-11-11** na błędzie aparatury kontroli zgodności (kod 2, grupa `artifacts`/`ecg`) i 54 rozbieżnościach kopii `current/`; obie przyczyny leżą w zmianie odniesienia z `40c28dbe` na `e389edd3`. Kryteria 1, 2 i 4 niesprawdzone. Szczegóły: [`STOP.md`](STOP.md).
+
+**Iteracja 2 ([`PREDECLARATION-2.md`](PREDECLARATION-2.md), `b944c89`): POTWIERDZONY 2026-11-11** - wszystkie cztery kryteria zachodzą na R `16c516f9` wobec pinu `e389edd3`.
+
+1. K24e: ziarno `20260818` 35 835 obserwacji, ziarno `20260820` 35 703, oba bajt w bajt jak `raw/campaign_seed*.csv`;
+2. K24f: ziarno `20260912` 36 162, ziarno `20260913` 36 089, oba bajt w bajt jak `raw/h10_*.csv`;
+3. kontrola zgodności (start 10:23, skrypt SHA-256 `1540b712…`): `WYNIK: ZGODNY`, kod 0, 0 rozbieżności w siedmiu grupach. `plans` 682 (646 zgodnych, 36 odrzucanych przez oba silniki, 0 przyjętych dopiero teraz), kopie `current/` 170 bajtowo równych + 54 zgodnych modulo M1 = 224; `runs` 67/67; `artifacts` 48/48 (replay K18 67 plików: pin = silnik, plan pinu = plan S1/S2, dwa przebiegi silnika równe); `g3` 13/13; `fig:qrs` 3/3 kanały, 400 próbek, 0 NULL, 0 rozbieżności wartości, piki MLII `x=122,365`. Opisowo: trzy wpisy pliku akceptacji są nieużyte, bo pin `e389edd3` odrzuca te plany tak samo jak R (`odrzucane_na_obu` 33 -> 36); plik zostaje bez zmian. Wyciąg z logu: [`compat-it2-summary.txt`](compat-it2-summary.txt);
+4. przykłady: 27/27 programów z `examples/` kompiluje się all-on i all-off w obu trybach (kod 0, stderr puste), stdout `-c -m -q` i `-c -q` bajtowo identyczny ON/OFF dla 27/27; trzy kontrole pozytywne dają różne listingi ON/OFF w obu trybach. Dowody: [`examples/`](examples/) (`census.tsv`, sumy źródeł, sumy zrzutów, tożsamość binarek), skrypt [`tools/examples_census.sh`](tools/examples_census.sh).
+
+Punkt 7 policzony skryptami [`tools/k24e_max_period.py`](tools/k24e_max_period.py) i [`tools/k24f_max_period.py`](tools/k24f_max_period.py) (`python3 -I <skrypt> <katalog kampanii> <ziarno> [csv]`; dla K24f katalog `apparatus/`).
+
+Dalej (#618 etap 3): R618 K18c na pi400, kryteria w osobnym katalogu przed pomiarem.

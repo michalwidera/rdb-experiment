@@ -1,0 +1,3 @@
+test/IntegrationTest/issue167_dedup_positive/query.rql
+test/IntegrationTest/issue202_hash_shift_factorization/matched.rql
+test/IntegrationTest/select_cse_commutative_add/query.rql

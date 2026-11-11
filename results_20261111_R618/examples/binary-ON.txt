@@ -1,0 +1,11 @@
+ON <github>/retractordb/build/R618-Release/src/retractor/xretractor
+<github>/retractordb/build/R618-Release/src/retractor/xretractor - compiler & data processing tool.
+
+Usage: <github>/retractordb/build/R618-Release/src/retractor/xretractor queryfile [option]
+RDB_OPT_DEDUP_SUBSTRATES=ON
+RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+RDB_OPT_COMMUTATIVE_ADD=ON
+RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON
+RDB_BENCH_PROBE=OFF
+RDB_OPT_SIMPLIFY_EXPRESSIONS=ON
+955fdc71e75aa21889fadcd6bb869d62f5c49c6ac3f784b4ead657ae813685c7  <github>/retractordb/build/R618-Release/src/retractor/xretractor
