@@ -4631,3 +4631,7 @@ Powtórzenie R593 K18 na pinie silnika artefaktu `e389edd3` (#593 krok 8, decyzj
 - commit kodu: `16c516f9eb76c473d5ff8510a2a812b8c23a893d`
 - parametry: rate_hz=360, clients=1, samples=20000, sink=null
 - dane: `results_20261111_R618_K18c/rate_r618k18c/study_01`
+
+## 2026-11-11 - R618 K18c: kotwica bieżącej rewizji na R = `16c516f9` potwierdzona
+
+Powtórzenie R593 K18b na rewizji silnika R = `16c516f9` (#618 droga (b), etap 3, decyzja człowieka 2026-11-11 D2) w `results_20261111_R618_K18c/`, gałąź `experiment/20261111_R618`, protokół K18b bez zmian (plany exactness bajtowo równe K18b, dowód migracji na R bajtowo równy `migration.tsv` K18b, plan 360 Hz `8c03d005…` ten sam). exactness/replay: 67 artefaktów, zero różnic, artefakty bez `.meta` i `configuration.sha256` bajt w bajt równe R593 K18b na `e389edd3`; round-trip `a2 == a`, `b2 == b` bez rekordu zastępczego (a2=19 996, b2=19 997); 360 Hz: 19 999 interwałów, E1 mediana 851,6 µs, p99 1064,8 µs, max 1225,9 µs (44,1% budżetu slotu), queue-emission mediana 906,6 µs, p99 1168,8 µs, p99,9 1229,4 µs, max 1351,5 µs (48,7% budżetu slotu), wake_lag mediana 22,3 µs, max 106,0 µs. Jeden przebieg; różnic wobec R593 K18b (kwantyle E1 i queue-emission niższe o 3,7-7,1%, max wake_lag wyższy) nie przypisuję silnikowi - delta #617 to rachunek kompilatora. Odstępstwa: tylko znany strażnik buildu nadzorcy (build ręczny, `--skip-build`). Bez odpytywania workera w trakcie pomiaru.

@@ -51,4 +51,29 @@ Na nadzorcy, po zatwierdzeniu exactness/replay:
 
 ## Stan
 
-Przygotowanie przed pomiarem.
+**POTWIERDZONY 2026-11-11** - wszystkie trzy warunki z kryteriów zachodzą na `dev/muro@16c516f9`, binarka Release-Probe z `~/R618` (SHA-256 `xretractor` `4c02e5c8571ea73512d5544829f3b09208925a9de6addb06fd0b012d968615ea`, `xqry` `20e80fe07537839ff7db1a5f641c2b842eb5dee621f3770a0b21c18450ed79ed`, `xtrdb` `763b911b2c68e90a52fa8b9ec1a59634a8ab391214f15c79b20db8953222416a`; binarki w `~/.local/bin` bajt w bajt równe buildowi; `--build-info`: 5 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=ON`; `--help`: `Branch: dev/muro:16c516f9`, GCC 14.2.0).
+
+1. exactness/replay (`exactness/`, commit `380b95f`): 2 przebiegi, 67 artefaktów, 51 identycznych bitowo, 16 `.meta` identycznych po pominięciu czasu utworzenia; zero różnic. Opisowo, poza kryterium: artefakty bez `.meta` są bajt w bajt równe artefaktom R593 K18b na `e389edd3`, a `configuration.sha256` jest ten sam;
+2. round-trip: `a2 == a`, `b2 == b` bez rekordu zastępczego, `c[2i] == b[i]`, `c[2i+1] == a[i]`; rekordy a=19 999, b=19 999, c=39 994, a2=19 996, b2=19 997 (prefiksy >= 19 990), te same liczby co w R593 K18b i R593 K18 (`roundtrip_compare.txt` bajtowo równy K18b);
+3. 360 Hz (`rate_r618k18c/study_01/`, commit `46555ab`): 19 999 interwałów w sondzie (żaden rekord nie zaginął), jeden klient `xqry` (pusty `xqry_1.err`), harness zakończony sukcesem, governor `performance` w czasie badania, `throttled=0x0`.
+
+Liczby czasowe (opisowo, jeden przebieg na każdej rewizji). Plan 360 Hz jest tym samym tekstem co w R593 K18b i R593 K18, ale jeden przebieg nie wystarcza, by różnicę wobec nich przypisać silnikowi; w K18 plan był innym tekstem.
+
+| Metryka | K18 `bc37186` | R593 K18 `dfcc42d2` | R593 K18b `e389edd3` | R618 K18c `16c516f9` |
+|---|---|---|---|---|
+| E1 mediana | 1312,4 µs | 885,7 µs | 916,4 µs | 851,6 µs |
+| E1 p99 | 1617,9 µs | 1105,6 µs | 1115,7 µs | 1064,8 µs |
+| E1 max | 1838,5 µs | 1303,0 µs | 1284,8 µs | 1225,9 µs |
+| max E1 / budżet 2777,8 µs | - | 46,9% | 46,3% | 44,1% |
+| queue-emission mediana | 1372,8 µs | 937,2 µs | 970,8 µs | 906,6 µs |
+| queue-emission p99 | 1718,6 µs | 1211,1 µs | 1215,0 µs | 1168,8 µs |
+| queue-emission p99,9 | 1832,5 µs | 1291,4 µs | 1276,5 µs | 1229,4 µs |
+| queue-emission max | 1944,0 µs | 1420,3 µs | 1426,1 µs | 1351,5 µs |
+| max queue-emission / budżet 2777,8 µs | 70,0% | 51,1% | 51,3% | 48,7% |
+| wake_lag mediana / max | 20,7 / 54,3 µs | 22,2 / 71,2 µs | 22,3 / 69,6 µs | 22,3 / 106,0 µs |
+
+Wobec R593 K18b wszystkie podane kwantyle E1 i queue-emission są niższe o 3,7-7,1%, a maksimum wake_lag wyższe (106,0 wobec 69,6 µs przy tej samej medianie 22,3 µs). Delta silnika (#617) dotyczy rachunku kompilatora, nie ścieżki wykonania ani IPC, a pomiar to jeden przebieg na każdej rewizji, więc tych różnic nie przypisuję silnikowi.
+
+Stan workera: ostatni start ok. 10:05 (2026-11-11), potem build Release-Probe w `~/R618` (10:41-11:48), exactness 12:11-12:18 i badanie 360 Hz 12:22-12:23. Kampania ma jedno badanie, więc nadzorca nie restartował workera. W trakcie exactness i badania nikt poza nadzorcą nie łączył się z workerem: start `run.sh` przez `timeout 30 ssh` z procesem odczepionym, oczekiwanie lokalnym `sleep`, jedno logowanie po końcu (12:21), potem tylko sesje nadzorcy. Kolejność jak w R593 K18b (build, exactness, badanie).
+
+Odstępstwa w przebiegu: brak poza znanym z R593 K18 i K18b - strażnik buildu nadzorcy (`grep 'build/Release-Probe' scripts/buildrdb.sh`) nadal nie zna `scripts/buildrdb/research.sh`, więc build był ręczny (`scripts/buildrdb.sh conan ninja probe`, `cmake --install build/Release-Probe`), a nadzorca szedł z `--skip-build` i weryfikacją zainstalowanej binarki. Wyniki exactness skopiowane z workera na nadzorcę i zacommitowane tam (`380b95f`); kopie na workerze porównane bajtowo z commitem przed synchronizacją gałęzi.
