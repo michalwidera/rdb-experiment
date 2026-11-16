@@ -1,0 +1,11 @@
+[
+  "taskset",
+  "-c",
+  "15",
+  "./xretractor",
+  "-c",
+  "query.rql",
+  "-v",
+  "--config",
+  "empty.toml"
+]

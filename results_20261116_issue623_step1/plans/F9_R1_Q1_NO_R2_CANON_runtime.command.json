@@ -1,0 +1,15 @@
+[
+  "taskset",
+  "-c",
+  "15",
+  "./xretractor",
+  "query.rql",
+  "-r",
+  "-k",
+  "--config",
+  "empty.toml",
+  "--no-clock",
+  "-v",
+  "-m",
+  "6000"
+]

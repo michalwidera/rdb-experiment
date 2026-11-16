@@ -1,0 +1,1153 @@
+Start testing: Nov 16 19:50 CET
+----------------------------------------------------------
+284/527 Testing: ut_compiler-setup
+284/527 Test: ut_compiler-setup
+Command: "/usr/bin/bash" "-c" "rm -f *.meta *.desc"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_compiler
+"ut_compiler-setup" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ut_compiler-setup" end time: Nov 16 19:50 CET
+"ut_compiler-setup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+285/527 Testing: ut_compiler
+285/527 Test: ut_compiler
+Command: "/home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/test_compiler"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_compiler
+"ut_compiler" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+[==========] Running 284 tests from 4 test suites.
+[----------] Global test environment set-up.
+[----------] 76 tests from xparser
+[ RUN      ] xparser.check_compile
+[       OK ] xparser.check_compile (0 ms)
+[ RUN      ] xparser.check_compile_result
+[       OK ] xparser.check_compile_result (0 ms)
+[ RUN      ] xparser.check_parserRQLString
+[       OK ] xparser.check_parserRQLString (0 ms)
+[ RUN      ] xparser.check_topological_sort
+[       OK ] xparser.check_topological_sort (0 ms)
+[ RUN      ] xparser.check_multiline_backslash
+[       OK ] xparser.check_multiline_backslash (0 ms)
+[ RUN      ] xparser.rule_on_missing_stream_is_refused_not_ignored
+[       OK ] xparser.rule_on_missing_stream_is_refused_not_ignored (0 ms)
+[ RUN      ] xparser.rule_on_declaration_is_refused_without_killing_the_process
+[       OK ] xparser.rule_on_declaration_is_refused_without_killing_the_process (0 ms)
+[ RUN      ] xparser.duplicate_rule_name_on_one_stream_is_refused
+[       OK ] xparser.duplicate_rule_name_on_one_stream_is_refused (0 ms)
+[ RUN      ] xparser.dump_rules_sharing_a_dump_file_are_refused
+[       OK ] xparser.dump_rules_sharing_a_dump_file_are_refused (0 ms)
+[ RUN      ] xparser.dump_rules_with_distinct_dump_files_are_accepted
+[       OK ] xparser.dump_rules_with_distinct_dump_files_are_accepted (0 ms)
+[ RUN      ] xparser.empty_dump_range_is_refused_by_the_parser
+[       OK ] xparser.empty_dump_range_is_refused_by_the_parser (0 ms)
+[ RUN      ] xparser.dump_range_signs_are_read_from_the_neighbouring_child
+[       OK ] xparser.dump_range_signs_are_read_from_the_neighbouring_child (0 ms)
+[ RUN      ] xparser.literals_at_the_edge_of_their_type_are_still_accepted
+[       OK ] xparser.literals_at_the_edge_of_their_type_are_still_accepted (0 ms)
+[ RUN      ] xparser.aggregate_keywords_are_reserved_stream_names
+[       OK ] xparser.aggregate_keywords_are_reserved_stream_names (1 ms)
+[ RUN      ] xparser.parse_failure_does_not_poison_the_next_parse
+[       OK ] xparser.parse_failure_does_not_poison_the_next_parse (0 ms)
+[ RUN      ] xparser.invalid_values_are_refused_without_killing_the_process
+[       OK ] xparser.invalid_values_are_refused_without_killing_the_process (4 ms)
+[ RUN      ] xparser.zero_where_it_has_a_meaning_is_accepted
+[       OK ] xparser.zero_where_it_has_a_meaning_is_accepted (0 ms)
+[ RUN      ] xparser.function_name_is_case_insensitive
+[       OK ] xparser.function_name_is_case_insensitive (0 ms)
+[ RUN      ] xparser.function_name_is_canonicalized_in_token
+[       OK ] xparser.function_name_is_canonicalized_in_token (0 ms)
+[ RUN      ] xparser.conversion_aliases_are_canonicalized_in_token
+[       OK ] xparser.conversion_aliases_are_canonicalized_in_token (0 ms)
+[ RUN      ] xparser.implemented_functions_are_reachable_from_rql
+[       OK ] xparser.implemented_functions_are_reachable_from_rql (0 ms)
+[ RUN      ] xparser.newly_implemented_functions_compile
+[       OK ] xparser.newly_implemented_functions_compile (0 ms)
+[ RUN      ] xparser.unknown_function_is_rejected_at_compile_time
+[       OK ] xparser.unknown_function_is_rejected_at_compile_time (0 ms)
+[ RUN      ] xparser.unknown_function_in_rule_condition_is_rejected
+[       OK ] xparser.unknown_function_in_rule_condition_is_rejected (0 ms)
+[ RUN      ] xparser.declared_width_is_rejected_for_functions_without_width
+[       OK ] xparser.declared_width_is_rejected_for_functions_without_width (0 ms)
+[ RUN      ] xparser.function_call_is_a_primary
+[       OK ] xparser.function_call_is_a_primary (0 ms)
+[ RUN      ] xparser.shift_binds_tighter_than_hash
+[       OK ] xparser.shift_binds_tighter_than_hash (0 ms)
+[ RUN      ] xparser.hash_binds_tighter_than_concatenation
+[       OK ] xparser.hash_binds_tighter_than_concatenation (0 ms)
+[ RUN      ] xparser.binary_stream_operators_are_left_associative
+[       OK ] xparser.binary_stream_operators_are_left_associative (0 ms)
+[ RUN      ] xparser.power_binds_tighter_than_multiplication
+[       OK ] xparser.power_binds_tighter_than_multiplication (0 ms)
+[ RUN      ] xparser.power_is_right_associative
+[       OK ] xparser.power_is_right_associative (0 ms)
+[ RUN      ] xparser.additive_and_multiplicative_operators_are_left_associative
+[       OK ] xparser.additive_and_multiplicative_operators_are_left_associative (0 ms)
+[ RUN      ] xparser.power_and_unary_minus_group_differently_for_literals_and_fields
+[       OK ] xparser.power_and_unary_minus_group_differently_for_literals_and_fields (0 ms)
+[ RUN      ] xparser.unary_operators_emit_one_field_with_the_operator
+[       OK ] xparser.unary_operators_emit_one_field_with_the_operator (0 ms)
+[ RUN      ] xparser.unary_operators_in_a_multi_field_list
+[       OK ] xparser.unary_operators_in_a_multi_field_list (0 ms)
+[ RUN      ] xparser.unary_minus_binds_tighter_than_binary_plus_and_minus
+[       OK ] xparser.unary_minus_binds_tighter_than_binary_plus_and_minus (0 ms)
+[ RUN      ] xparser.unary_minus_in_a_rule_condition_stays_in_the_condition
+[       OK ] xparser.unary_minus_in_a_rule_condition_stays_in_the_condition (0 ms)
+[ RUN      ] xparser.comparison_chain_in_rule_condition_is_a_syntax_error
+[       OK ] xparser.comparison_chain_in_rule_condition_is_a_syntax_error (1 ms)
+[ RUN      ] xparser.not_negates_the_whole_comparison
+[       OK ] xparser.not_negates_the_whole_comparison (0 ms)
+[ RUN      ] xparser.postfix_stream_operators_chain
+[       OK ] xparser.postfix_stream_operators_chain (0 ms)
+[ RUN      ] xparser.hash_operator_is_not_whitespace_sensitive
+[       OK ] xparser.hash_operator_is_not_whitespace_sensitive (0 ms)
+[ RUN      ] xparser.trailing_hash_comment_is_rejected
+[       OK ] xparser.trailing_hash_comment_is_rejected (0 ms)
+[ RUN      ] xparser.whole_line_hash_comment_survives
+[       OK ] xparser.whole_line_hash_comment_survives (0 ms)
+[ RUN      ] xparser.syntax_error_reports_the_line_of_the_file
+[       OK ] xparser.syntax_error_reports_the_line_of_the_file (0 ms)
+[ RUN      ] xparser.malformed_generator_indices_are_refused_before_compilation
+[       OK ] xparser.malformed_generator_indices_are_refused_before_compilation (1 ms)
+[ RUN      ] xparser.string_literal_inside_numeric_expression_does_not_make_string_field
+[       OK ] xparser.string_literal_inside_numeric_expression_does_not_make_string_field (0 ms)
+[ RUN      ] xparser.to_string_width_survives_concatenation
+[       OK ] xparser.to_string_width_survives_concatenation (0 ms)
+[ RUN      ] xparser.numeric_result_types_follow_the_evaluator
+[       OK ] xparser.numeric_result_types_follow_the_evaluator (0 ms)
+[ RUN      ] xparser.explicit_storage_overrides_default_without_leaking_to_next_select
+[       OK ] xparser.explicit_storage_overrides_default_without_leaking_to_next_select (0 ms)
+[ RUN      ] xparser.retention_without_segments_on_disk_storage_is_a_plan_error
+[       OK ] xparser.retention_without_segments_on_disk_storage_is_a_plan_error (1 ms)
+[ RUN      ] xparser.retention_segments_on_memory_storage_are_a_plan_error
+[       OK ] xparser.retention_segments_on_memory_storage_are_a_plan_error (0 ms)
+[ RUN      ] xparser.rejects_misplaced_duplicate_or_conflicting_persistence
+[       OK ] xparser.rejects_misplaced_duplicate_or_conflicting_persistence (0 ms)
+[ RUN      ] xparser.declare_source_kind_comes_from_the_keyword
+[       OK ] xparser.declare_source_kind_comes_from_the_keyword (0 ms)
+[ RUN      ] xparser.deprecated_file_resolves_by_the_frozen_rule
+[       OK ] xparser.deprecated_file_resolves_by_the_frozen_rule (0 ms)
+[ RUN      ] xparser.device_refuses_the_options_of_recorded_files
+[       OK ] xparser.device_refuses_the_options_of_recorded_files (1 ms)
+[ RUN      ] xparser.device_timeout_clause
+[       OK ] xparser.device_timeout_clause (0 ms)
+[ RUN      ] xparser.device_timeout_refusals
+[       OK ] xparser.device_timeout_refusals (2 ms)
+[ RUN      ] xparser.effective_device_timeout_precedence
+[       OK ] xparser.effective_device_timeout_precedence (0 ms)
+[ RUN      ] xparser.source_keywords_are_reserved_stream_names
+[       OK ] xparser.source_keywords_are_reserved_stream_names (0 ms)
+[ RUN      ] xparser.storage_profiles_are_only_writable_profiles
+[       OK ] xparser.storage_profiles_are_only_writable_profiles (2 ms)
+[ RUN      ] xparser.query_reset_clears_the_source_kind
+[       OK ] xparser.query_reset_clears_the_source_kind (0 ms)
+[ RUN      ] xparser.let_constants_compile_to_the_literal_plan
+[       OK ] xparser.let_constants_compile_to_the_literal_plan (1 ms)
+[ RUN      ] xparser.let_refusals_name_the_constant_and_its_position
+Error: line 2:9: constant ?I in field index is not declared; LET must precede its first use
+Error: line 2:27: constant ?X in time shift is not declared; LET must precede its first use
+Error: line 2:4: constant ?I is already declared on line 1
+Syntax error @Rql
+line:1:8 at foo
+msg:mismatched input 'foo' expecting {FLOAT, DECIMAL, '-'}
+Syntax error @Rql
+line:1:10 at +
+msg:extraneous input '+' expecting {<EOF>, SELECT, DECLARE, STORAGE, ROTATION, SUBSTRAT, RULE, DEFAULT, LET, VAR}
+Syntax error @Rql
+line:2:8 at ?X
+msg:mismatched input '?X' expecting {FLOAT, DECIMAL, '-'}
+Syntax error @Rql
+line:2:9 at <unknown>
+msg:token recognition error at: '? '
+Syntax error @Rql
+line:3:11 at $
+msg:no viable alternative at input 's[?A$'
+Error: line 1:4: constant name A$B must not contain '$'
+Error: line 3:26: constant ?X = 2.5 in AGSE step is not an integer
+Error: line 3:27: constant ?X = 1/2 in time shift is not an integer
+Error: line 3:9: constant ?X = -1 in field index must not be negative
+Error: line 3:9: constant ?X = -3 in generator index must not be negative
+Error: line 4:25: constant ?X = -1 in stream index must not be negative
+Error: AGSE step ?X = 0 (line 3:26) must be greater than zero
+Error: AGSE window ?X = 0 (line 3:30) must be greater than zero
+Error: time shift ?X = 65537 (line 3:27) exceeds the limit 65536
+Error: AGSE window ?X = 65537 (line 3:30) exceeds the limit 65536
+Error: line 1:4: value 99999999999 of constant ?X is out of range
+Error: line 1:4: fraction 1/0 of constant ?X has a zero denominator
+Error: RETENTION segments ?X = -3 (line 3:37) must not be negative
+Error: field size ?X = -2 (line 2:17) must be greater than zero
+Error: Rule 'r': dump range [2..2] is empty, left bound must be less than right bound
+Error: DUMP range bound ?B = 65537 (line 4:35) exceeds the limit 65536
+Syntax error @Rql
+line:1:8 at let
+msg:mismatched input 'let' expecting ID
+[       OK ] xparser.let_refusals_name_the_constant_and_its_position (1 ms)
+[ RUN      ] xparser.let_constants_in_rational_and_scalar_contexts_compile_to_the_literal_plan
+[       OK ] xparser.let_constants_in_rational_and_scalar_contexts_compile_to_the_literal_plan (1 ms)
+[ RUN      ] xparser.let_refusals_in_rational_and_scalar_contexts
+Error: constant ?F = 1/40 (line 3:14) is a fraction, which an expression has no literal for; write it as a decimal
+Error: interval ?X = -2 (line 2:28) must be greater than zero
+Error: interval ?X = -0.5 (line 3:27) must be greater than zero
+Error: interval ?X = -1/2 (line 3:27) must be greater than zero
+Error: interval ?X = 0 (line 2:28) must be greater than zero
+Error: interval ?X = 0/5 (line 3:27) must be greater than zero
+Error: interval ?X = 0.0 (line 2:28) must be greater than zero
+Error: interval ?X = 0.00000001 (line 2:28) is out of range
+Error: interval ?X = 3000000000.0 (line 2:28) is out of range
+Error: interval ?X = -2147483648 (line 2:28) must be greater than zero
+Error: DECLARE d: TIMEOUT ?T = -1 (line 2:56) must not be negative
+Error: DECLARE d: TIMEOUT ?T = 1 (line 2:57) must not be negative
+Error: DECLARE d: TIMEOUT ?T = 86401 (line 2:56) exceeds the limit 86400 s
+Error: DECLARE d: TIMEOUT ?T = -0.01 (line 2:56) must not be negative
+Error: expression -?X = -2147483648 (line 3:8) is out of range
+Error: expression ?X = 10000000000000000000000000000000000000000.0 (line 3:14) is out of range
+Error: line 2:14: constant ?Q in expression is not declared; LET must precede its first use
+Error: line 3:24: constant ?Q in expression is not declared; LET must precede its first use
+Error: line 2:27: constant ?Q in interval is not declared; LET must precede its first use
+Error: line 1:56: constant ?Q in TIMEOUT is not declared; LET must precede its first use
+Error: line 3:9: constant ?X = 2.5 in field index is not an integer
+Syntax error @Rql
+line:3:29 at /
+msg:extraneous input '/' expecting {<EOF>, SELECT, DECLARE, STORAGE, ROTATION, SUBSTRAT, RULE, DEFAULT, LET, VAR}
+[       OK ] xparser.let_refusals_in_rational_and_scalar_contexts (1 ms)
+[ RUN      ] xparser.let_question_mark_inside_text_stays_text
+[       OK ] xparser.let_question_mark_inside_text_stays_text (0 ms)
+[ RUN      ] xparser.let_constants_live_within_one_plan
+Error: line 2:9: constant ?X in field index is not declared; LET must precede its first use
+Error: line 1:9: constant ?X in field index is not declared; LET must precede its first use
+Error: line 3:9: constant ?Q in field index is not declared; LET must precede its first use
+[       OK ] xparser.let_constants_live_within_one_plan (0 ms)
+[ RUN      ] xparser.var_reads_compile_to_variable_tokens_with_the_declared_type
+[       OK ] xparser.var_reads_compile_to_variable_tokens_with_the_declared_type (0 ms)
+[ RUN      ] xparser.var_refusals_name_the_variable_the_context_and_its_position
+Error: line 3:9: variable ?V cannot be used in field index; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:9: variable ?V cannot be used in generator index; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:21: variable ?V cannot be used in stream generator size; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 4:25: variable ?V cannot be used in stream index; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:26: variable ?V cannot be used in AGSE step; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:30: variable ?V cannot be used in AGSE window; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:27: variable ?V cannot be used in time shift; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:18: variable ?V cannot be used in record window width; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:18: variable ?V cannot be used in record window argument; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:24: variable ?V cannot be used in to_string width; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:35: variable ?V cannot be used in RETENTION capacity; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:37: variable ?V cannot be used in RETENTION segments; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:27: variable ?V cannot be used in interval; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:27: variable ?V cannot be used in interval; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 3:27: variable ?V cannot be used in interval; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 4:35: variable ?V cannot be used in DUMP range bound; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 4:51: variable ?V cannot be used in DUMP RETENTION; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 2:28: variable ?V cannot be used in interval; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 2:56: variable ?V cannot be used in TIMEOUT; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 2:17: variable ?V cannot be used in field size; VAR is allowed only in scalar expressions of SELECT and RULE WHEN
+Error: line 2:4: variable ?X is already declared on line 1
+Error: line 2:4: variable ?X is already declared as constant on line 1
+Error: line 2:4: constant ?X is already declared as variable on line 1
+Error: line 1:4: variable name A$B must not contain '$'
+Error: line 2:7: constant ?X in expression is not declared; LET must precede its first use
+Syntax error @Rql
+line:1:8 at 'txt'
+msg:mismatched input ''txt'' expecting {FLOAT, DECIMAL, '-'}
+Syntax error @Rql
+line:1:8 at s
+msg:mismatched input 's' expecting {FLOAT, DECIMAL, '-'}
+Error: line 1:4: value 99999999999 of variable ?X is out of range
+Error: line 1:4: value 10000000000000000000000000000000000000000.0 of variable ?X is out of range
+Error: line 1:4: fraction 1/0 of variable ?X has a zero denominator
+Syntax error @Rql
+line:1:8 at var
+msg:mismatched input 'var' expecting ID
+[       OK ] xparser.var_refusals_name_the_variable_the_context_and_its_position (2 ms)
+[ RUN      ] xparser.var_lives_within_one_plan
+Error: line 1:7: constant ?X in expression is not declared; LET must precede its first use
+Error: line 2:7: constant ?X in expression is not declared; LET must precede its first use
+[       OK ] xparser.var_lives_within_one_plan (0 ms)
+[ RUN      ] xparser.adhoc_sees_plan_variables_but_not_plan_constants
+Error: line 1:7: constant ?C in expression is not declared; LET must precede its first use
+Error: line 1:30: variable ?C in DO SET is not declared; VAR must precede its first use
+Error: Rule 'x' on stream 'o' has an unknown action
+Error: line 1:4: variable ?K is already declared on line 2
+[       OK ] xparser.adhoc_sees_plan_variables_but_not_plan_constants (0 ms)
+[ RUN      ] xparser.set_rules_carry_target_value_program_and_text_order
+[       OK ] xparser.set_rules_carry_target_value_program_and_text_order (0 ms)
+[ RUN      ] xparser.set_refusals_name_the_target_the_rule_and_the_position
+Error: line 7:33: constant ?C cannot be the target of DO SET; declare it with VAR
+Error: Rule 'r' on stream 'o' has an unknown action
+Error: line 7:33: variable ?Z in DO SET is not declared; VAR must precede its first use
+Error: Rule 'r' on stream 'o' has an unknown action
+Syntax error @Rql
+line:7:33 at V
+msg:mismatched input 'V' expecting CONST_REF
+Syntax error @Rql
+line:7:40 at DUMP
+msg:extraneous input 'DUMP' expecting {<EOF>, SELECT, DECLARE, STORAGE, ROTATION, SUBSTRAT, RULE, DEFAULT, LET, VAR}
+Error: Rule 'r' cannot be attached to declaration stream 's'
+[       OK ] xparser.set_refusals_name_the_target_the_rule_and_the_position (1 ms)
+[ RUN      ] xparser.var_type_annotation_converts_the_declared_literal
+Error: line 1:4: value -1 of constant ?X is out of range for UINT
+Error: line 1:4: value -1 of variable ?X is out of range for UINT
+Error: line 1:4: value 2.5 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 2.5 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 2.5 of constant ?X is out of range for UINT
+Error: line 1:4: value 2.5 of variable ?X is out of range for UINT
+Error: line 1:4: value 1/3 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 1/3 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 1/3 of constant ?X is out of range for UINT
+Error: line 1:4: value 1/3 of variable ?X is out of range for UINT
+Error: line 1:4: value 0.123456789012 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 0.123456789012 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 0.123456789012 of constant ?X is out of range for UINT
+Error: line 1:4: value 0.123456789012 of variable ?X is out of range for UINT
+Error: line 1:4: value 0.123456789012 of constant ?X is out of range for RATIONAL
+Error: line 1:4: value 0.123456789012 of variable ?X is out of range for RATIONAL
+Error: line 1:4: value 3000000000 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 3000000000 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 3000000000 of constant ?X is out of range for RATIONAL
+Error: line 1:4: value 3000000000 of variable ?X is out of range for RATIONAL
+Error: line 1:4: value 4294967296 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 4294967296 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 4294967296 of constant ?X is out of range for UINT
+Error: line 1:4: value 4294967296 of variable ?X is out of range for UINT
+Error: line 1:4: value 4294967296 of constant ?X is out of range for RATIONAL
+Error: line 1:4: value 4294967296 of variable ?X is out of range for RATIONAL
+Error: line 1:4: value -2147483648 of constant ?X is out of range for UINT
+Error: line 1:4: value -2147483648 of variable ?X is out of range for UINT
+Error: line 1:4: value 0.00000095367431640625 of constant ?X is out of range for INTEGER
+Error: line 1:4: value 0.00000095367431640625 of variable ?X is out of range for INTEGER
+Error: line 1:4: value 0.00000095367431640625 of constant ?X is out of range for UINT
+Error: line 1:4: value 0.00000095367431640625 of variable ?X is out of range for UINT
+Error: line 1:4: value -0.5 of constant ?X is out of range for INTEGER
+Error: line 1:4: value -0.5 of variable ?X is out of range for INTEGER
+Error: line 1:4: value -0.5 of constant ?X is out of range for UINT
+Error: line 1:4: value -0.5 of variable ?X is out of range for UINT
+Syntax error @Rql
+line:1:8 at BYTE
+msg:mismatched input 'BYTE' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at BYTE
+msg:mismatched input 'BYTE' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at STRING
+msg:mismatched input 'STRING' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at STRING
+msg:mismatched input 'STRING' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at rational
+msg:mismatched input 'rational' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at rational
+msg:mismatched input 'rational' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at INTPAIR
+msg:mismatched input 'INTPAIR' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Syntax error @Rql
+line:1:8 at INTPAIR
+msg:mismatched input 'INTPAIR' expecting {UNSIGNED_T, INTEGER_T, FLOAT_T, DOUBLE_T, RATIONAL_T}
+Error: line 1:4: value 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.0 of variable ?X is out of range
+Syntax error @Rql
+line:1:8 at RATIONAL
+msg:mismatched input 'RATIONAL' expecting ID
+[       OK ] xparser.var_type_annotation_converts_the_declared_literal (5 ms)
+[ RUN      ] xparser.set_single_literal_converts_to_the_variable_type
+Error: line 10:33: value -1 in DO SET ?N is out of range for UINT
+Error: line 10:33: value 2.5 in DO SET ?V is out of range for INTEGER
+Error: line 10:33: value ?Q = 1/4 in DO SET ?V is out of range for INTEGER
+Error: line 10:33: value 0.123456789012 in DO SET ?R is out of range for RATIONAL
+Error: constant ?Q = 1/4 (line 10:38) is a fraction, which an expression has no literal for; write it as a decimal
+Error: numeric literal 3000000000 is out of range
+Error: line 10:38: constant ?Z in expression is not declared; LET must precede its first use
+[       OK ] xparser.set_single_literal_converts_to_the_variable_type (2 ms)
+[ RUN      ] xparser.let_type_annotation_in_expressions_set_and_structural_contexts
+Error: expression -?N = 3000000000 (line 9:8) is out of range for UINT
+Error: expression -?M = -2147483648 (line 9:15) is out of range for INTEGER
+Error: line 13:33: value ?Q = 1/4 in DO SET ?V is out of range for INTEGER
+Error: line 13:33: value -?N = -3000000000 in DO SET ?R is out of range for RATIONAL
+Error: line 3:27: constant ?K : DOUBLE cannot be used in time shift; it takes a constant without annotation or annotated INTEGER
+Error: line 3:9: constant ?N : UINT cannot be used in field index; it takes a constant without annotation or annotated INTEGER
+Error: line 3:26: constant ?R : RATIONAL cannot be used in AGSE step; it takes a constant without annotation or annotated INTEGER
+Error: line 3:9: constant ?N : UINT cannot be used in generator index; it takes a constant without annotation or annotated INTEGER
+Error: line 2:17: constant ?W : FLOAT cannot be used in field size; it takes a constant without annotation or annotated INTEGER
+Error: line 3:27: constant ?F : FLOAT cannot be used in interval; it takes a constant without annotation or annotated INTEGER or RATIONAL
+Error: line 2:28: constant ?U : UINT cannot be used in interval; it takes a constant without annotation or annotated INTEGER or RATIONAL
+Error: line 2:56: constant ?D : DOUBLE cannot be used in TIMEOUT; it takes a constant without annotation or annotated INTEGER or RATIONAL
+Error: interval ?R = -1/2 (line 3:27) must be greater than zero
+Error: interval ?R = -2147483648 (line 3:27) must be greater than zero
+[       OK ] xparser.let_type_annotation_in_expressions_set_and_structural_contexts (2 ms)
+[----------] 76 tests from xparser (51 ms total)
+
+[----------] 155 tests from xcompiler
+[ RUN      ] xcompiler.refuses_non_positive_intervals_before_hash_arithmetic
+[       OK ] xcompiler.refuses_non_positive_intervals_before_hash_arithmetic (0 ms)
+[ RUN      ] xcompiler.refuses_non_positive_operator_intervals_without_parser
+[       OK ] xcompiler.refuses_non_positive_operator_intervals_without_parser (0 ms)
+[ RUN      ] xcompiler.positive_intervals_and_zero_interval_directives_survive_recompilation
+[       OK ] xcompiler.positive_intervals_and_zero_interval_directives_survive_recompilation (0 ms)
+[ RUN      ] xcompiler.refuses_deinterleave_with_equal_intervals
+[       OK ] xcompiler.refuses_deinterleave_with_equal_intervals (0 ms)
+[ RUN      ] xcompiler.rule_condition_reaching_another_stream_is_refused
+[       OK ] xcompiler.rule_condition_reaching_another_stream_is_refused (0 ms)
+[ RUN      ] xcompiler.shares_commutative_add_select_computation
+[       OK ] xcompiler.shares_commutative_add_select_computation (0 ms)
+[ RUN      ] xcompiler.shares_syntactically_identical_add_select_computation
+[       OK ] xcompiler.shares_syntactically_identical_add_select_computation (0 ms)
+[ RUN      ] xcompiler.does_not_share_order_sensitive_selects
+[       OK ] xcompiler.does_not_share_order_sensitive_selects (0 ms)
+[ RUN      ] xcompiler.does_not_share_different_result_shapes
+[       OK ] xcompiler.does_not_share_different_result_shapes (0 ms)
+[ RUN      ] xcompiler.preserves_add_grouping_in_computation_fingerprint
+[       OK ] xcompiler.preserves_add_grouping_in_computation_fingerprint (0 ms)
+[ RUN      ] xcompiler.toggles_substrate_deduplication
+[       OK ] xcompiler.toggles_substrate_deduplication (0 ms)
+[ RUN      ] xcompiler.toggles_matched_hash_time_move_factorization
+[       OK ] xcompiler.toggles_matched_hash_time_move_factorization (0 ms)
+[ RUN      ] xcompiler.does_not_rewrite_existing_queries_during_import
+[       OK ] xcompiler.does_not_rewrite_existing_queries_during_import (0 ms)
+[ RUN      ] xcompiler.computes_startup_latency
+[       OK ] xcompiler.computes_startup_latency (0 ms)
+[ RUN      ] xcompiler.exact_tail_for_subtract_and_dehash
+[       OK ] xcompiler.exact_tail_for_subtract_and_dehash (0 ms)
+[ RUN      ] xcompiler.agse_capacity_covers_whole_window_over_computed_source
+[       OK ] xcompiler.agse_capacity_covers_whole_window_over_computed_source (0 ms)
+[ RUN      ] xcompiler.shift_matching_identity_does_not_lengthen_startup_latency
+[       OK ] xcompiler.shift_matching_identity_does_not_lengthen_startup_latency (0 ms)
+[ RUN      ] xcompiler.rewrites_preserve_observable_field_names
+[       OK ] xcompiler.rewrites_preserve_observable_field_names (0 ms)
+[ RUN      ] xcompiler.resolves_intervals_independently_of_plan_order
+[       OK ] xcompiler.resolves_intervals_independently_of_plan_order (4 ms)
+[ RUN      ] xcompiler.still_reports_true_circular_dependency
+[       OK ] xcompiler.still_reports_true_circular_dependency (0 ms)
+[ RUN      ] xcompiler.self_reference_over_bare_stream_is_rejected
+[       OK ] xcompiler.self_reference_over_bare_stream_is_rejected (0 ms)
+[ RUN      ] xcompiler.other_self_reference_shapes_stay_with_the_cycle_detector
+[       OK ] xcompiler.other_self_reference_shapes_stay_with_the_cycle_detector (0 ms)
+[ RUN      ] xcompiler.deep_dehash_chain_does_not_overflow_interval
+[       OK ] xcompiler.deep_dehash_chain_does_not_overflow_interval (0 ms)
+[ RUN      ] xcompiler.unrepresentable_interval_reports_range_error
+[       OK ] xcompiler.unrepresentable_interval_reports_range_error (0 ms)
+[ RUN      ] xcompiler.unresolved_node_is_a_compilation_error
+[       OK ] xcompiler.unresolved_node_is_a_compilation_error (0 ms)
+[ RUN      ] xcompiler.complete_resolution_passes_the_gate
+[       OK ] xcompiler.complete_resolution_passes_the_gate (0 ms)
+[ RUN      ] xcompiler.every_node_of_a_nine_class_plan_is_resolved
+[       OK ] xcompiler.every_node_of_a_nine_class_plan_is_resolved (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_reference_is_a_compilation_error
+[       OK ] xcompiler.interleave_constituent_reference_is_a_compilation_error (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_reference_is_rejected_through_substrates
+[       OK ] xcompiler.interleave_constituent_reference_is_rejected_through_substrates (0 ms)
+[ RUN      ] xcompiler.sum_keeps_constituent_identity
+[       OK ] xcompiler.sum_keeps_constituent_identity (0 ms)
+[ RUN      ] xcompiler.interleave_allows_reference_by_output_stream_name
+[       OK ] xcompiler.interleave_allows_reference_by_output_stream_name (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_reference_is_rejected_for_bare_field_names
+[       OK ] xcompiler.interleave_constituent_reference_is_rejected_for_bare_field_names (0 ms)
+[ RUN      ] xcompiler.sum_allows_bare_field_names
+[       OK ] xcompiler.sum_allows_bare_field_names (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_named_field_is_rejected
+[       OK ] xcompiler.interleave_constituent_named_field_is_rejected (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_index_wildcard_is_rejected
+[       OK ] xcompiler.interleave_constituent_index_wildcard_is_rejected (0 ms)
+[ RUN      ] xcompiler.sum_allows_constituent_index_wildcards
+[       OK ] xcompiler.sum_allows_constituent_index_wildcards (0 ms)
+[ RUN      ] xcompiler.index_wildcard_expands_in_place_beside_other_select_items
+[       OK ] xcompiler.index_wildcard_expands_in_place_beside_other_select_items (0 ms)
+[ RUN      ] xcompiler.sole_index_wildcard_keeps_its_historical_field_names
+[       OK ] xcompiler.sole_index_wildcard_keeps_its_historical_field_names (0 ms)
+[ RUN      ] xcompiler.interleave_constituent_qualified_wildcard_is_rejected
+[       OK ] xcompiler.interleave_constituent_qualified_wildcard_is_rejected (0 ms)
+[ RUN      ] xcompiler.interleave_allows_qualified_wildcard_by_output_stream_name
+[       OK ] xcompiler.interleave_allows_qualified_wildcard_by_output_stream_name (0 ms)
+[ RUN      ] xcompiler.rule_rejects_interleave_constituent_reference
+[       OK ] xcompiler.rule_rejects_interleave_constituent_reference (0 ms)
+[ RUN      ] xcompiler.shift_over_agse_in_one_from_clause_does_not_corrupt_heap
+[       OK ] xcompiler.shift_over_agse_in_one_from_clause_does_not_corrupt_heap (0 ms)
+[ RUN      ] xcompiler.shift_over_agse_matches_the_two_step_form
+[       OK ] xcompiler.shift_over_agse_matches_the_two_step_form (0 ms)
+[ RUN      ] xcompiler.malformed_intermediate_operator_is_rejected_before_iterator_underflow
+[       OK ] xcompiler.malformed_intermediate_operator_is_rejected_before_iterator_underflow (0 ms)
+[ RUN      ] xcompiler.stream_function_matches_the_two_step_form
+[       OK ] xcompiler.stream_function_matches_the_two_step_form (2 ms)
+[ RUN      ] xcompiler.stream_functions_compose_with_other_from_operators
+[       OK ] xcompiler.stream_functions_compose_with_other_from_operators (2 ms)
+[ RUN      ] xcompiler.deprecated_dot_notation_matches_the_function_form
+[       OK ] xcompiler.deprecated_dot_notation_matches_the_function_form (0 ms)
+[ RUN      ] xcompiler.reducer_over_another_from_operator_is_extracted_not_fatal
+[       OK ] xcompiler.reducer_over_another_from_operator_is_extracted_not_fatal (0 ms)
+[ RUN      ] xcompiler.refuses_colliding_substrate_programs_before_topological_sort
+[       OK ] xcompiler.refuses_colliding_substrate_programs_before_topological_sort (0 ms)
+[ RUN      ] xcompiler.distinct_windows_over_one_source_get_distinct_substrates
+[       OK ] xcompiler.distinct_windows_over_one_source_get_distinct_substrates (0 ms)
+[ RUN      ] xcompiler.identical_windows_over_one_source_still_share_one_substrate
+[       OK ] xcompiler.identical_windows_over_one_source_still_share_one_substrate (0 ms)
+[ RUN      ] xcompiler.direct_operand_keeps_its_own_slots_beside_a_nested_occurrence
+[       OK ] xcompiler.direct_operand_keeps_its_own_slots_beside_a_nested_occurrence (0 ms)
+[ RUN      ] xcompiler.range_check_and_offset_agree_on_a_name_reached_twice
+[       OK ] xcompiler.range_check_and_offset_agree_on_a_name_reached_twice (0 ms)
+[ RUN      ] xcompiler.substrate_names_stay_identifiers
+[       OK ] xcompiler.substrate_names_stay_identifiers (0 ms)
+[ RUN      ] xcompiler.substrate_name_stays_readable_below_threshold
+[       OK ] xcompiler.substrate_name_stays_readable_below_threshold (0 ms)
+[ RUN      ] xcompiler.wide_from_clause_falls_back_to_digest
+[       OK ] xcompiler.wide_from_clause_falls_back_to_digest (0 ms)
+[ RUN      ] xcompiler.digest_name_is_a_pure_function_of_the_readable_name
+[       OK ] xcompiler.digest_name_is_a_pure_function_of_the_readable_name (2 ms)
+[ RUN      ] xcompiler.reducer_over_a_digest_named_substrate_keeps_its_shape
+[       OK ] xcompiler.reducer_over_a_digest_named_substrate_keeps_its_shape (0 ms)
+[ RUN      ] xcompiler.bitwise_not_is_refused_outside_byte_and_uint
+[       OK ] xcompiler.bitwise_not_is_refused_outside_byte_and_uint (0 ms)
+[ RUN      ] xcompiler.unary_minus_over_string_is_refused
+[       OK ] xcompiler.unary_minus_over_string_is_refused (0 ms)
+[ RUN      ] xcompiler.unary_operators_keep_the_operand_type
+[       OK ] xcompiler.unary_operators_keep_the_operand_type (0 ms)
+[ RUN      ] xcompiler.generator_plan_is_identical_to_hand_written_plan
+[       OK ] xcompiler.generator_plan_is_identical_to_hand_written_plan (0 ms)
+[ RUN      ] xcompiler.generator_substitutes_ordinal_as_a_value
+[       OK ] xcompiler.generator_substitutes_ordinal_as_a_value (0 ms)
+[ RUN      ] xcompiler.generator_expands_ordinal_in_from_clause
+[       OK ] xcompiler.generator_expands_ordinal_in_from_clause (0 ms)
+[ RUN      ] xcompiler.rejects_generator_without_ordinal
+[       OK ] xcompiler.rejects_generator_without_ordinal (0 ms)
+[ RUN      ] xcompiler.rejects_zero_sized_generator
+Error: stream generator size 0 must be greater than zero
+[       OK ] xcompiler.rejects_zero_sized_generator (0 ms)
+[ RUN      ] xcompiler.stream_count_after_generator_expansion_is_limited
+[       OK ] xcompiler.stream_count_after_generator_expansion_is_limited (0 ms)
+[ RUN      ] xcompiler.record_size_is_limited
+[       OK ] xcompiler.record_size_is_limited (5 ms)
+[ RUN      ] xcompiler.hash_input_record_is_limited
+[       OK ] xcompiler.hash_input_record_is_limited (0 ms)
+[ RUN      ] xcompiler.hash_output_schema_takes_the_longer_side
+[       OK ] xcompiler.hash_output_schema_takes_the_longer_side (0 ms)
+[ RUN      ] xcompiler.string_fields_use_one_notation_across_the_plan
+[       OK ] xcompiler.string_fields_use_one_notation_across_the_plan (0 ms)
+[ RUN      ] xcompiler.derived_field_length_is_limited
+[       OK ] xcompiler.derived_field_length_is_limited (0 ms)
+[ RUN      ] xcompiler.plan_wide_element_count_is_limited
+[       OK ] xcompiler.plan_wide_element_count_is_limited (18 ms)
+[ RUN      ] xcompiler.agse_logical_origin_beyond_int_is_a_plan_error
+[       OK ] xcompiler.agse_logical_origin_beyond_int_is_a_plan_error (176 ms)
+[ RUN      ] xcompiler.hash_startup_latency_beyond_int_is_a_plan_error
+[       OK ] xcompiler.hash_startup_latency_beyond_int_is_a_plan_error (0 ms)
+[ RUN      ] xcompiler.agse_capacity_period_is_computed_without_int_overflow
+[       OK ] xcompiler.agse_capacity_period_is_computed_without_int_overflow (2 ms)
+[ RUN      ] xcompiler.stream_history_in_memory_is_limited_by_the_config_budget
+[       OK ] xcompiler.stream_history_in_memory_is_limited_by_the_config_budget (7 ms)
+[ RUN      ] xcompiler.rejects_generated_field_index_beyond_source
+[       OK ] xcompiler.rejects_generated_field_index_beyond_source (0 ms)
+[ RUN      ] xcompiler.rejects_generated_field_index_that_does_not_fit_in_int
+[       OK ] xcompiler.rejects_generated_field_index_that_does_not_fit_in_int (0 ms)
+[ RUN      ] xcompiler.rejects_family_index_that_does_not_fit_in_int
+[       OK ] xcompiler.rejects_family_index_that_does_not_fit_in_int (0 ms)
+[ RUN      ] xcompiler.rejects_negative_family_index_in_generator_template
+[       OK ] xcompiler.rejects_negative_family_index_in_generator_template (0 ms)
+[ RUN      ] xcompiler.generator_index_over_expanded_source_matches_hand_written_plan
+[       OK ] xcompiler.generator_index_over_expanded_source_matches_hand_written_plan (0 ms)
+[ RUN      ] xcompiler.rejects_generated_field_index_beyond_expanded_source
+[       OK ] xcompiler.rejects_generated_field_index_beyond_expanded_source (0 ms)
+[ RUN      ] xcompiler.rejects_stream_index_beyond_from_slots
+[       OK ] xcompiler.rejects_stream_index_beyond_from_slots (0 ms)
+[ RUN      ] xcompiler.accepts_stream_index_on_last_from_slot
+[       OK ] xcompiler.accepts_stream_index_on_last_from_slot (0 ms)
+[ RUN      ] xcompiler.bounds_self_index_by_from_record
+[       OK ] xcompiler.bounds_self_index_by_from_record (0 ms)
+[ RUN      ] xcompiler.bounds_rule_condition_index_by_own_record
+[       OK ] xcompiler.bounds_rule_condition_index_by_own_record (0 ms)
+[ RUN      ] xcompiler.generator_index_bound_matches_hand_written
+[       OK ] xcompiler.generator_index_bound_matches_hand_written (0 ms)
+[ RUN      ] xcompiler.rejects_negative_generated_field_index
+[       OK ] xcompiler.rejects_negative_generated_field_index (0 ms)
+[ RUN      ] xcompiler.family_reference_in_select_list_points_at_the_instance_name
+[       OK ] xcompiler.family_reference_in_select_list_points_at_the_instance_name (0 ms)
+[ RUN      ] xcompiler.family_instance_is_addressable_by_its_physical_name
+[       OK ] xcompiler.family_instance_is_addressable_by_its_physical_name (0 ms)
+[ RUN      ] xcompiler.rejects_ordinal_outside_generator
+[       OK ] xcompiler.rejects_ordinal_outside_generator (0 ms)
+[ RUN      ] xcompiler.rejects_reference_beyond_family_range
+[       OK ] xcompiler.rejects_reference_beyond_family_range (0 ms)
+[ RUN      ] xcompiler.rejects_file_directive_on_generator
+[       OK ] xcompiler.rejects_file_directive_on_generator (0 ms)
+[ RUN      ] xcompiler.rejects_collision_with_existing_stream
+[       OK ] xcompiler.rejects_collision_with_existing_stream (0 ms)
+[ RUN      ] xcompiler.index_wildcard_schema_survives_being_joined
+[       OK ] xcompiler.index_wildcard_schema_survives_being_joined (0 ms)
+[ RUN      ] xcompiler.index_wildcard_width_comes_from_the_from_clause
+[       OK ] xcompiler.index_wildcard_width_comes_from_the_from_clause (0 ms)
+[ RUN      ] xcompiler.index_wildcard_over_direct_operands_is_unchanged
+[       OK ] xcompiler.index_wildcard_over_direct_operands_is_unchanged (0 ms)
+[ RUN      ] xcompiler.index_wildcard_under_a_reducer_is_one_slot
+[       OK ] xcompiler.index_wildcard_under_a_reducer_is_one_slot (0 ms)
+[ RUN      ] xcompiler.index_wildcard_over_a_stream_outside_from_is_refused
+[       OK ] xcompiler.index_wildcard_over_a_stream_outside_from_is_refused (0 ms)
+[ RUN      ] xcompiler.index_wildcard_through_a_width_changing_join_is_refused
+[       OK ] xcompiler.index_wildcard_through_a_width_changing_join_is_refused (0 ms)
+[ RUN      ] xcompiler.field_type_lookup_uses_flat_element_index
+[       OK ] xcompiler.field_type_lookup_uses_flat_element_index (0 ms)
+[ RUN      ] xcompiler.string_field_reaches_output_descriptor
+[       OK ] xcompiler.string_field_reaches_output_descriptor (0 ms)
+[ RUN      ] xcompiler.string_type_propagates_through_intermediate_stream
+[       OK ] xcompiler.string_type_propagates_through_intermediate_stream (0 ms)
+[ RUN      ] xcompiler.length_over_string_field_yields_integer_field
+[       OK ] xcompiler.length_over_string_field_yields_integer_field (0 ms)
+[ RUN      ] xcompiler.derived_schema_width_is_flat_for_array_fields
+[       OK ] xcompiler.derived_schema_width_is_flat_for_array_fields (0 ms)
+[ RUN      ] xcompiler.window_aggregate_never_changes_the_output_interval
+[       OK ] xcompiler.window_aggregate_never_changes_the_output_interval (0 ms)
+[ RUN      ] xcompiler.window_aggregate_origin_covers_the_whole_window
+[       OK ] xcompiler.window_aggregate_origin_covers_the_whole_window (0 ms)
+[ RUN      ] xcompiler.window_aggregate_result_type_follows_the_reduction_rule
+[       OK ] xcompiler.window_aggregate_result_type_follows_the_reduction_rule (0 ms)
+[ RUN      ] xcompiler.explicit_to_integer_outranks_the_window_reduction_type
+[       OK ] xcompiler.explicit_to_integer_outranks_the_window_reduction_type (0 ms)
+[ RUN      ] xcompiler.window_aggregates_of_one_shape_share_a_group
+[       OK ] xcompiler.window_aggregates_of_one_shape_share_a_group (0 ms)
+[ RUN      ] xcompiler.window_group_addresses_a_single_flat_slot
+[       OK ] xcompiler.window_group_addresses_a_single_flat_slot (0 ms)
+[ RUN      ] xcompiler.bare_array_name_is_not_a_field_reference
+[       OK ] xcompiler.bare_array_name_is_not_a_field_reference (0 ms)
+[ RUN      ] xcompiler.window_argument_spellings_describe_one_window
+[       OK ] xcompiler.window_argument_spellings_describe_one_window (0 ms)
+[ RUN      ] xcompiler.window_aggregate_accepts_an_expression_argument
+[       OK ] xcompiler.window_aggregate_accepts_an_expression_argument (0 ms)
+[ RUN      ] xcompiler.window_subexpression_goes_through_expression_simplification
+[       OK ] xcompiler.window_subexpression_goes_through_expression_simplification (0 ms)
+[ RUN      ] xcompiler.window_aggregates_over_different_expressions_get_different_groups
+[       OK ] xcompiler.window_aggregates_over_different_expressions_get_different_groups (0 ms)
+[ RUN      ] xcompiler.window_over_an_expression_takes_the_widest_field_type
+[       OK ] xcompiler.window_over_an_expression_takes_the_widest_field_type (0 ms)
+[ RUN      ] xcompiler.window_over_an_expression_rejects_what_it_cannot_execute
+[       OK ] xcompiler.window_over_an_expression_rejects_what_it_cannot_execute (0 ms)
+[ RUN      ] xcompiler.window_aggregate_survives_recompilation_of_a_live_plan
+[       OK ] xcompiler.window_aggregate_survives_recompilation_of_a_live_plan (0 ms)
+[ RUN      ] xcompiler.window_aggregate_rejects_plans_it_cannot_execute
+Error: record window width 0 must be greater than zero
+[       OK ] xcompiler.window_aggregate_rejects_plans_it_cannot_execute (0 ms)
+[ RUN      ] xcompiler.derived_field_is_a_reference_not_a_copy_of_the_producer_program
+[       OK ] xcompiler.derived_field_is_a_reference_not_a_copy_of_the_producer_program (0 ms)
+[ RUN      ] xcompiler.window_result_type_reaches_copies_of_the_window_stream
+[       OK ] xcompiler.window_result_type_reaches_copies_of_the_window_stream (0 ms)
+[ RUN      ] xcompiler.requested16_three_documented_boundaries
+[       OK ] xcompiler.requested16_three_documented_boundaries (0 ms)
+[ RUN      ] xcompiler.fullscan_copies_every_producer_field_shape
+[       OK ] xcompiler.fullscan_copies_every_producer_field_shape (0 ms)
+[ RUN      ] xcompiler.producer_field_shape_propagates_through_copying_operators
+[       OK ] xcompiler.producer_field_shape_propagates_through_copying_operators (0 ms)
+[ RUN      ] xcompiler.field_shape_crosses_several_intermediate_streams
+[       OK ] xcompiler.field_shape_crosses_several_intermediate_streams (0 ms)
+[ RUN      ] xcompiler.synthesised_schemas_keep_their_own_field_shapes
+[       OK ] xcompiler.synthesised_schemas_keep_their_own_field_shapes (0 ms)
+[ RUN      ] xcompiler.window_argument_type_comes_from_its_whole_program
+[       OK ] xcompiler.window_argument_type_comes_from_its_whole_program (0 ms)
+[ RUN      ] xcompiler.declaration_shapes_are_authoritative
+[       OK ] xcompiler.declaration_shapes_are_authoritative (0 ms)
+[ RUN      ] xcompiler.array_element_read_keeps_type_and_drops_arity
+[       OK ] xcompiler.array_element_read_keeps_type_and_drops_arity (0 ms)
+[ RUN      ] xcompiler.field_shapes_are_stable_across_a_live_plan_recompilation
+[       OK ] xcompiler.field_shapes_are_stable_across_a_live_plan_recompilation (0 ms)
+[ RUN      ] xcompiler.declared_to_string_width_survives_a_second_compilation
+[       OK ] xcompiler.declared_to_string_width_survives_a_second_compilation (0 ms)
+[ RUN      ] xcompiler.rejects_a_stream_reducer_used_as_a_field_reference
+[       OK ] xcompiler.rejects_a_stream_reducer_used_as_a_field_reference (0 ms)
+[ RUN      ] xcompiler.keeps_the_working_ways_of_reading_a_stream_reducer
+[       OK ] xcompiler.keeps_the_working_ways_of_reading_a_stream_reducer (0 ms)
+[ RUN      ] xcompiler.rejects_sqrt_over_a_rational_value
+[       OK ] xcompiler.rejects_sqrt_over_a_rational_value (0 ms)
+[ RUN      ] xcompiler.rejects_sqrt_over_a_rational_value_in_a_rule_condition
+[       OK ] xcompiler.rejects_sqrt_over_a_rational_value_in_a_rule_condition (0 ms)
+[ RUN      ] xcompiler.rejects_sqrt_in_a_rule_over_an_explicit_reducer_field
+[       OK ] xcompiler.rejects_sqrt_in_a_rule_over_an_explicit_reducer_field (0 ms)
+[ RUN      ] xcompiler.keeps_sqrt_where_it_was_never_unsafe
+[       OK ] xcompiler.keeps_sqrt_where_it_was_never_unsafe (0 ms)
+[ RUN      ] xcompiler.rejects_irrational_functions_over_a_rational_value
+[       OK ] xcompiler.rejects_irrational_functions_over_a_rational_value (0 ms)
+[ RUN      ] xcompiler.rejects_irrational_functions_over_a_rational_value_in_a_rule_condition
+[       OK ] xcompiler.rejects_irrational_functions_over_a_rational_value_in_a_rule_condition (0 ms)
+[ RUN      ] xcompiler.irrational_functions_yield_double_over_inexact_and_integer_arguments
+[       OK ] xcompiler.irrational_functions_yield_double_over_inexact_and_integer_arguments (0 ms)
+[ RUN      ] xcompiler.gating_tan_log_log2_leaves_their_result_type_alone
+[       OK ] xcompiler.gating_tan_log_log2_leaves_their_result_type_alone (0 ms)
+[ RUN      ] xcompiler.default_volatile_matches_explicit_plan
+[       OK ] xcompiler.default_volatile_matches_explicit_plan (0 ms)
+[ RUN      ] xcompiler.storage_memory_is_a_bounded_ring_in_memory
+[       OK ] xcompiler.storage_memory_is_a_bounded_ring_in_memory (0 ms)
+[ RUN      ] xcompiler.volatile_retention_sets_the_ring_size
+[       OK ] xcompiler.volatile_retention_sets_the_ring_size (0 ms)
+[ RUN      ] xcompiler.default_policy_does_not_override_explicit_storage
+[       OK ] xcompiler.default_policy_does_not_override_explicit_storage (0 ms)
+[ RUN      ] xcompiler.disk_retention_must_cover_the_history_the_plan_reads
+[       OK ] xcompiler.disk_retention_must_cover_the_history_the_plan_reads (0 ms)
+[ RUN      ] xcompiler.default_retention_bounds_disk_streams_without_retention
+[       OK ] xcompiler.default_retention_bounds_disk_streams_without_retention (0 ms)
+[ RUN      ] xcompiler.default_retention_too_small_for_the_plan_is_a_compilation_error
+[       OK ] xcompiler.default_retention_too_small_for_the_plan_is_a_compilation_error (0 ms)
+[ RUN      ] xcompiler.explicit_substrate_profile_overrides_default_in_either_header_order
+[       OK ] xcompiler.explicit_substrate_profile_overrides_default_in_either_header_order (0 ms)
+[ RUN      ] xcompiler.resolution_gate_includes_directives_and_names_the_first_missing_node_and_pass
+[       OK ] xcompiler.resolution_gate_includes_directives_and_names_the_first_missing_node_and_pass (0 ms)
+[ RUN      ] xcompiler.import_returns_only_new_non_directive_nodes_and_reset_forgets_previous_plan
+[       OK ] xcompiler.import_returns_only_new_non_directive_nodes_and_reset_forgets_previous_plan (0 ms)
+[ RUN      ] xcompiler.compiled_plan_places_every_producer_before_its_consumers
+[       OK ] xcompiler.compiled_plan_places_every_producer_before_its_consumers (0 ms)
+[ RUN      ] xcompiler.missing_from_source_and_non_positive_agse_step_are_refused_after_generator_expansion
+[       OK ] xcompiler.missing_from_source_and_non_positive_agse_step_are_refused_after_generator_expansion (0 ms)
+[----------] 155 tests from xcompiler (248 ms total)
+
+[----------] 23 tests from xparser/xparser_out_of_range
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_decimal
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_decimal (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_fraction_nom
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_fraction_nom (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_fraction_den
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_fraction_den (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float_above_rational
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float_above_rational (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float_below_rational
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/declare_float_below_rational (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_array_size
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_array_size (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/expression_decimal
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/expression_decimal (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/expression_float
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/expression_float (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/time_move
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/time_move (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_step
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_step (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_window
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_window (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_negative_window
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/agse_negative_window (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/record_window_width
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/record_window_width (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/retention_capacity
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/retention_capacity (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/retention_segments
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/retention_segments (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/generator_size
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/generator_size (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_index_wraps_to_zero
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_index_wraps_to_zero (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_index_wraps_to_minus_one
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/field_index_wraps_to_minus_one (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/to_string_width
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/to_string_width (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_left
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_left (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_right
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_right (0 ms)
+[ RUN      ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_retention
+[       OK ] xparser/xparser_out_of_range.literal_is_a_plan_error/dump_retention (0 ms)
+[----------] 23 tests from xparser/xparser_out_of_range (5 ms total)
+
+[----------] 30 tests from xparser/xparser_dimension_limit
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/generator_size
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/generator_size (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/field_array_size
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/field_array_size (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/string_length
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/string_length (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/to_string_width
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/to_string_width (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_step
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_step (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_window
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_window (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_negative_window
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/agse_negative_window (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/time_move
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/time_move (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_min
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_min (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_max
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_max (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_avg
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_avg (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_sumc
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/record_window_sumc (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_left
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_left (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_right
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_right (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_retention
+[       OK ] xparser/xparser_dimension_limit.value_at_the_limit_is_accepted/dump_retention (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/generator_size
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/generator_size (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/field_array_size
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/field_array_size (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/string_length
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/string_length (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/to_string_width
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/to_string_width (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_step
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_step (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_window
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_window (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_negative_window
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/agse_negative_window (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/time_move
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/time_move (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_min
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_min (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_max
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_max (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_avg
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_avg (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_sumc
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/record_window_sumc (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_left
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_left (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_right
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_right (0 ms)
+[ RUN      ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_retention
+[       OK ] xparser/xparser_dimension_limit.value_above_the_limit_is_a_plan_error/dump_retention (0 ms)
+[----------] 30 tests from xparser/xparser_dimension_limit (6 ms total)
+
+[----------] Global test environment tear-down
+[==========] 284 tests from 4 test suites ran. (312 ms total)
+[  PASSED  ] 284 tests.
+<end of output>
+Test time =   0.32 sec
+----------------------------------------------------------
+Test Passed.
+"ut_compiler" end time: Nov 16 19:50 CET
+"ut_compiler" time elapsed: 00:00:00
+----------------------------------------------------------
+
+300/527 Testing: ut_dataModel-setup
+300/527 Test: ut_dataModel-setup
+Command: "/usr/bin/bash" "-c" "rm -f *.meta *.desc"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_dataModel
+"ut_dataModel-setup" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ut_dataModel-setup" end time: Nov 16 19:50 CET
+"ut_dataModel-setup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+301/527 Testing: ut_dataModel
+301/527 Test: ut_dataModel
+Command: "/home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/test_dataModel"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_dataModel
+"ut_dataModel" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+[==========] Running 54 tests from 8 test suites.
+[----------] Global test environment set-up.
+[----------] 21 tests from xschema
+[ RUN      ] xschema.check_construct_payload
+[       OK ] xschema.check_construct_payload (4 ms)
+[ RUN      ] xschema.check_construct_payload_mirror
+[       OK ] xschema.check_construct_payload_mirror (6 ms)
+[ RUN      ] xschema.probe_e4_agse_window_work_counts
+[       OK ] xschema.probe_e4_agse_window_work_counts (6 ms)
+[ RUN      ] xschema.probe_e4_agse_elements_scale_with_window_length
+[       OK ] xschema.probe_e4_agse_elements_scale_with_window_length (7 ms)
+[ RUN      ] xschema.check_sum
+[       OK ] xschema.check_sum (8 ms)
+[ RUN      ] xschema.getRow_1
+[       OK ] xschema.getRow_1 (5 ms)
+[ RUN      ] xschema.handleTable_survives_plan_reorder
+[       OK ] xschema.handleTable_survives_plan_reorder (5 ms)
+[ RUN      ] xschema.handleTable_stale_entry_is_caught
+/home/michal/github/retractordb/test/UnitTest/test_dataModel.cpp:417: Skipped
+kontrola krzyzowa uchwytow zyje tylko w Debug - w Release nie ma czego czerwienic
+
+[  SKIPPED ] xschema.handleTable_stale_entry_is_caught (5 ms)
+[ RUN      ] xschema.missingStream_is_reported_not_inserted
+[       OK ] xschema.missingStream_is_reported_not_inserted (18 ms)
+[ RUN      ] xschema.addQueriesToModel_is_all_or_nothing
+[       OK ] xschema.addQueriesToModel_is_all_or_nothing (5 ms)
+[ RUN      ] xschema.addQueriesToModel_second_construction_failure_is_all_or_nothing
+[       OK ] xschema.addQueriesToModel_second_construction_failure_is_all_or_nothing (9 ms)
+[ RUN      ] xschema.agse_window_flat_position_beyond_int
+[       OK ] xschema.agse_window_flat_position_beyond_int (11 ms)
+[ RUN      ] xschema.agse_adhoc_join_flat_position_beyond_int
+[       OK ] xschema.agse_adhoc_join_flat_position_beyond_int (5 ms)
+[ RUN      ] xschema.reduceFieldsToPayload_max
+[       OK ] xschema.reduceFieldsToPayload_max (9 ms)
+[ RUN      ] xschema.reduceFieldsToPayload_min
+[       OK ] xschema.reduceFieldsToPayload_min (6 ms)
+[ RUN      ] xschema.reduceFieldsToPayload_sum
+[       OK ] xschema.reduceFieldsToPayload_sum (6 ms)
+[ RUN      ] xschema.reduceFieldsToPayload_avg
+[       OK ] xschema.reduceFieldsToPayload_avg (6 ms)
+[ RUN      ] xschema.constructOutputPayload_expression
+[       OK ] xschema.constructOutputPayload_expression (4 ms)
+[ RUN      ] xschema.constructRulesAndUpdate_empty_rules
+[       OK ] xschema.constructRulesAndUpdate_empty_rules (6 ms)
+[ RUN      ] xschema.reduceFieldsToPayload_single_field
+[       OK ] xschema.reduceFieldsToPayload_single_field (7 ms)
+[ RUN      ] xschema.constructAgsePayload_marks_missing_elements_null_and_scales_by_step
+[       OK ] xschema.constructAgsePayload_marks_missing_elements_null_and_scales_by_step (7 ms)
+[----------] 21 tests from xschema (155 ms total)
+
+[----------] 4 tests from dataModel
+[ RUN      ] dataModel.initialization_refusal_preserves_class_and_discards_partial_model
+Syntax error @Descriptor
+line:1:0 at invalid
+msg:mismatched input 'invalid' expecting '{'
+[       OK ] dataModel.initialization_refusal_preserves_class_and_discards_partial_model (1 ms)
+[ RUN      ] dataModel.open_files_exhaustion_names_the_limit
+[       OK ] dataModel.open_files_exhaustion_names_the_limit (4 ms)
+[ RUN      ] dataModel.empty_plan_remains_an_internal_error
+[       OK ] dataModel.empty_plan_remains_an_internal_error (4 ms)
+[ RUN      ] dataModel.empty_directive_value_remains_an_internal_error
+[       OK ] dataModel.empty_directive_value_remains_an_internal_error (2 ms)
+[----------] 4 tests from dataModel (13 ms total)
+
+[----------] 1 test from xschema_rules
+[ RUN      ] xschema_rules.constructRulesAndUpdate_system_rule_fires
+[       OK ] xschema_rules.constructRulesAndUpdate_system_rule_fires (1 ms)
+[----------] 1 test from xschema_rules (1 ms total)
+
+[----------] 5 tests from xschema_all_null
+[ RUN      ] xschema_all_null.reduceFieldsToPayload_all_null_sum
+[       OK ] xschema_all_null.reduceFieldsToPayload_all_null_sum (0 ms)
+[ RUN      ] xschema_all_null.reduceFieldsToPayload_all_null_min
+[       OK ] xschema_all_null.reduceFieldsToPayload_all_null_min (4 ms)
+[ RUN      ] xschema_all_null.reduceFieldsToPayload_all_null_max
+[       OK ] xschema_all_null.reduceFieldsToPayload_all_null_max (4 ms)
+[ RUN      ] xschema_all_null.reduceFieldsToPayload_all_null_avg
+[       OK ] xschema_all_null.reduceFieldsToPayload_all_null_avg (5 ms)
+[ RUN      ] xschema_all_null.null_bits_flushed_to_disk_second_reader_sum
+[       OK ] xschema_all_null.null_bits_flushed_to_disk_second_reader_sum (6 ms)
+[----------] 5 tests from xschema_all_null (23 ms total)
+
+[----------] 5 tests from xschema_partial_null
+[ RUN      ] xschema_partial_null.reduceFieldsToPayload_partial_null_sum
+[       OK ] xschema_partial_null.reduceFieldsToPayload_partial_null_sum (2 ms)
+[ RUN      ] xschema_partial_null.reduceFieldsToPayload_partial_null_avg
+[       OK ] xschema_partial_null.reduceFieldsToPayload_partial_null_avg (4 ms)
+[ RUN      ] xschema_partial_null.reduceFieldsToPayload_partial_null_min
+[       OK ] xschema_partial_null.reduceFieldsToPayload_partial_null_min (5 ms)
+[ RUN      ] xschema_partial_null.reduceFieldsToPayload_partial_null_max
+[       OK ] xschema_partial_null.reduceFieldsToPayload_partial_null_max (4 ms)
+[ RUN      ] xschema_partial_null.null_bits_flushed_to_disk_second_reader_ignores_null
+[       OK ] xschema_partial_null.null_bits_flushed_to_disk_second_reader_ignores_null (6 ms)
+[----------] 5 tests from xschema_partial_null (23 ms total)
+
+[----------] 7 tests from StreamRuntimeContract
+[ RUN      ] StreamRuntimeContract.rule_condition_truthiness_selects_dump_and_system_actions
+[       OK ] StreamRuntimeContract.rule_condition_truthiness_selects_dump_and_system_actions (5 ms)
+[ RUN      ] StreamRuntimeContract.rule_waits_until_records_reach_armAtCount
+[       OK ] StreamRuntimeContract.rule_waits_until_records_reach_armAtCount (0 ms)
+[ RUN      ] StreamRuntimeContract.pending_dump_advances_with_an_empty_rule_list
+[       OK ] StreamRuntimeContract.pending_dump_advances_with_an_empty_rule_list (0 ms)
+[ RUN      ] StreamRuntimeContract.rule_errors_return_in_result
+[       OK ] StreamRuntimeContract.rule_errors_return_in_result (0 ms)
+[ RUN      ] StreamRuntimeContract.failing_system_command_is_logged_without_failing_the_slot
+[       OK ] StreamRuntimeContract.failing_system_command_is_logged_without_failing_the_slot (1 ms)
+[ RUN      ] StreamRuntimeContract.record_window_skips_nulls_and_missing_records
+[       OK ] StreamRuntimeContract.record_window_skips_nulls_and_missing_records (0 ms)
+[ RUN      ] StreamRuntimeContract.output_fields_null_on_failed_conversion_and_stop_on_error
+[       OK ] StreamRuntimeContract.output_fields_null_on_failed_conversion_and_stop_on_error (0 ms)
+[----------] 7 tests from StreamRuntimeContract (11 ms total)
+
+[----------] 10 tests from DataModelSlotContract
+[ RUN      ] DataModelSlotContract.create_strips_directives_and_builds_every_stream_in_the_given_memory_store
+Syntax error @Descriptor
+line:1:0 at invalid
+msg:mismatched input 'invalid' expecting '{'
+[       OK ] DataModelSlotContract.create_strips_directives_and_builds_every_stream_in_the_given_memory_store (1 ms)
+[ RUN      ] DataModelSlotContract.processRows_computes_due_nodes_in_plan_order_before_advancing_sources
+[       OK ] DataModelSlotContract.processRows_computes_due_nodes_in_plan_order_before_advancing_sources (0 ms)
+[ RUN      ] DataModelSlotContract.processRows_emits_nothing_during_origin_plus_tail_slots
+[       OK ] DataModelSlotContract.processRows_emits_nothing_during_origin_plus_tail_slots (0 ms)
+[ RUN      ] DataModelSlotContract.processRows_stops_the_slot_at_the_first_error
+[       OK ] DataModelSlotContract.processRows_stops_the_slot_at_the_first_error (0 ms)
+[ RUN      ] DataModelSlotContract.processRows_mask_of_another_length_is_an_invariant_failure
+[       OK ] DataModelSlotContract.processRows_mask_of_another_length_is_an_invariant_failure (8 ms)
+[ RUN      ] DataModelSlotContract.set_writes_commit_at_the_end_of_a_successful_slot_only
+[       OK ] DataModelSlotContract.set_writes_commit_at_the_end_of_a_successful_slot_only (1 ms)
+[ RUN      ] DataModelSlotContract.reads_by_offset_and_forward_index_fall_back_to_null
+[       OK ] DataModelSlotContract.reads_by_offset_and_forward_index_fall_back_to_null (0 ms)
+[ RUN      ] DataModelSlotContract.adhoc_stream_starts_at_the_index_of_its_first_due_slot
+[       OK ] DataModelSlotContract.adhoc_stream_starts_at_the_index_of_its_first_due_slot (1 ms)
+[ RUN      ] DataModelSlotContract.syncDeclaredCapacities_only_grows_history
+[       OK ] DataModelSlotContract.syncDeclaredCapacities_only_grows_history (0 ms)
+[ RUN      ] DataModelSlotContract.exhaustedInputStream_names_the_source_after_its_last_record
+[       OK ] DataModelSlotContract.exhaustedInputStream_names_the_source_after_its_last_record (0 ms)
+[----------] 10 tests from DataModelSlotContract (18 ms total)
+
+[----------] 1 test from xschema_compare_restore
+[ RUN      ] xschema_compare_restore.state_restored_for_compare_test
+[       OK ] xschema_compare_restore.state_restored_for_compare_test (4 ms)
+[----------] 1 test from xschema_compare_restore (4 ms total)
+
+[----------] Global test environment tear-down
+[==========] 54 tests from 8 test suites ran. (251 ms total)
+[  PASSED  ] 53 tests.
+[  SKIPPED ] 1 test, listed below:
+[  SKIPPED ] xschema.handleTable_stale_entry_is_caught
+<end of output>
+Test time =   0.26 sec
+----------------------------------------------------------
+Test Passed.
+"ut_dataModel" end time: Nov 16 19:50 CET
+"ut_dataModel" time elapsed: 00:00:00
+----------------------------------------------------------
+
+460/527 Testing: ut_probe-setup
+460/527 Test: ut_probe-setup
+Command: "/usr/bin/bash" "-c" "rm -f *.meta *.desc"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_probe
+"ut_probe-setup" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"ut_probe-setup" end time: Nov 16 19:50 CET
+"ut_probe-setup" time elapsed: 00:00:00
+----------------------------------------------------------
+
+461/527 Testing: ut_probe
+461/527 Test: ut_probe
+Command: "/home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/test_probe"
+Directory: /home/michal/github/retractordb/build/R593-DEFAULT/test/UnitTest/Data/test_probe
+"ut_probe" start time: Nov 16 19:50 CET
+Output:
+----------------------------------------------------------
+[==========] Running 45 tests from 9 test suites.
+[----------] Global test environment set-up.
+[----------] 4 tests from probeWork
+[ RUN      ] probeWork.counters_accumulate_per_event
+[       OK ] probeWork.counters_accumulate_per_event (0 ms)
+[ RUN      ] probeWork.counters_accumulate_across_slots
+[       OK ] probeWork.counters_accumulate_across_slots (0 ms)
+[ RUN      ] probeWork.reset_zeroes_every_counter
+[       OK ] probeWork.reset_zeroes_every_counter (0 ms)
+[ RUN      ] probeWork.report_is_a_snapshot_not_a_view
+[       OK ] probeWork.report_is_a_snapshot_not_a_view (0 ms)
+[----------] 4 tests from probeWork (0 ms total)
+
+[----------] 3 tests from probeMaterialization
+[ RUN      ] probeMaterialization.persistent_and_memory_storage_counted_separately
+[       OK ] probeMaterialization.persistent_and_memory_storage_counted_separately (0 ms)
+[ RUN      ] probeMaterialization.overwrite_costs_a_write_but_no_volume
+[       OK ] probeMaterialization.overwrite_costs_a_write_but_no_volume (0 ms)
+[ RUN      ] probeMaterialization.reset_zeroes_every_counter
+[       OK ] probeMaterialization.reset_zeroes_every_counter (0 ms)
+[----------] 3 tests from probeMaterialization (0 ms total)
+
+[----------] 9 tests from probeCanonicalRecord
+[ RUN      ] probeCanonicalRecord.empty_descriptor_has_only_an_empty_null_map
+[       OK ] probeCanonicalRecord.empty_descriptor_has_only_an_empty_null_map (0 ms)
+[ RUN      ] probeCanonicalRecord.integer_field_is_eight_bytes_plus_one_map_byte
+[       OK ] probeCanonicalRecord.integer_field_is_eight_bytes_plus_one_map_byte (0 ms)
+[ RUN      ] probeCanonicalRecord.width_per_type_follows_the_frozen_mapping
+[       OK ] probeCanonicalRecord.width_per_type_follows_the_frozen_mapping (0 ms)
+[ RUN      ] probeCanonicalRecord.string_keeps_its_declared_width
+[       OK ] probeCanonicalRecord.string_keeps_its_declared_width (0 ms)
+[ RUN      ] probeCanonicalRecord.array_multiplies_the_canonical_width
+[       OK ] probeCanonicalRecord.array_multiplies_the_canonical_width (0 ms)
+[ RUN      ] probeCanonicalRecord.null_map_rounds_up_to_whole_bytes
+[       OK ] probeCanonicalRecord.null_map_rounds_up_to_whole_bytes (0 ms)
+[ RUN      ] probeCanonicalRecord.configuration_fields_and_nulltype_carry_no_width
+[       OK ] probeCanonicalRecord.configuration_fields_and_nulltype_carry_no_width (0 ms)
+[ RUN      ] probeCanonicalRecord.result_is_independent_of_record_contents
+[       OK ] probeCanonicalRecord.result_is_independent_of_record_contents (0 ms)
+[ RUN      ] probeCanonicalRecord.uint_and_pair_types_follow_the_frozen_mapping
+[       OK ] probeCanonicalRecord.uint_and_pair_types_follow_the_frozen_mapping (0 ms)
+[----------] 9 tests from probeCanonicalRecord (0 ms total)
+
+[----------] 6 tests from probeLogicalWrite
+[ RUN      ] probeLogicalWrite.zero_writes_report_zero
+[       OK ] probeLogicalWrite.zero_writes_report_zero (0 ms)
+[ RUN      ] probeLogicalWrite.substrate_and_public_roles_counted_apart
+[       OK ] probeLogicalWrite.substrate_and_public_roles_counted_apart (0 ms)
+[ RUN      ] probeLogicalWrite.overwrite_carries_bytes_unlike_the_native_counter
+[       OK ] probeLogicalWrite.overwrite_carries_bytes_unlike_the_native_counter (0 ms)
+[ RUN      ] probeLogicalWrite.q_copies_of_the_same_subplan_scale_linearly
+[       OK ] probeLogicalWrite.q_copies_of_the_same_subplan_scale_linearly (0 ms)
+[ RUN      ] probeLogicalWrite.records_of_different_width_sum_exactly
+[       OK ] probeLogicalWrite.records_of_different_width_sum_exactly (0 ms)
+[ RUN      ] probeLogicalWrite.reset_zeroes_every_counter
+[       OK ] probeLogicalWrite.reset_zeroes_every_counter (0 ms)
+[----------] 6 tests from probeLogicalWrite (0 ms total)
+
+[----------] 6 tests from probePlanShape
+[ RUN      ] probePlanShape.directives_are_not_part_of_the_plan
+[       OK ] probePlanShape.directives_are_not_part_of_the_plan (0 ms)
+[ RUN      ] probePlanShape.substrates_counted_apart_from_public_streams
+[       OK ] probePlanShape.substrates_counted_apart_from_public_streams (0 ms)
+[ RUN      ] probePlanShape.field_tokens_counted_separately_from_from_tokens
+[       OK ] probePlanShape.field_tokens_counted_separately_from_from_tokens (0 ms)
+[ RUN      ] probePlanShape.empty_plan_has_zero_shape
+[       OK ] probePlanShape.empty_plan_has_zero_shape (0 ms)
+[ RUN      ] probePlanShape.capacities_summed_and_maximum_reported
+[       OK ] probePlanShape.capacities_summed_and_maximum_reported (0 ms)
+[ RUN      ] probePlanShape.empty_capacity_map_has_zero_shape
+[       OK ] probePlanShape.empty_capacity_map_has_zero_shape (0 ms)
+[----------] 6 tests from probePlanShape (0 ms total)
+
+[----------] 4 tests from probeReport
+[ RUN      ] probeReport.runtime_counters_are_silent_without_environment
+[       OK ] probeReport.runtime_counters_are_silent_without_environment (0 ms)
+[ RUN      ] probeReport.work_line_printed_when_armed
+[       OK ] probeReport.work_line_printed_when_armed (0 ms)
+[ RUN      ] probeReport.materialization_line_printed_when_armed
+[       OK ] probeReport.materialization_line_printed_when_armed (0 ms)
+[ RUN      ] probeReport.logical_line_is_armed_by_its_own_variable
+[       OK ] probeReport.logical_line_is_armed_by_its_own_variable (0 ms)
+[----------] 4 tests from probeReport (0 ms total)
+
+[----------] 5 tests from probePlanReport
+[ RUN      ] probePlanReport.silent_without_environment
+[       OK ] probePlanReport.silent_without_environment (0 ms)
+[ RUN      ] probePlanReport.stages_and_rewrites_reported_when_armed
+[       OK ] probePlanReport.stages_and_rewrites_reported_when_armed (0 ms)
+[ RUN      ] probePlanReport.dedup_switch_is_visible_in_the_report
+[       OK ] probePlanReport.dedup_switch_is_visible_in_the_report (0 ms)
+[ RUN      ] probePlanReport.construction_resets_rewrite_counters
+[       OK ] probePlanReport.construction_resets_rewrite_counters (0 ms)
+[ RUN      ] probePlanReport.compile_time_runs_from_construction_less_the_probe_cost
+[       OK ] probePlanReport.compile_time_runs_from_construction_less_the_probe_cost (5 ms)
+[----------] 5 tests from probePlanReport (6 ms total)
+
+[----------] 5 tests from probeSlot
+[ RUN      ] probeSlot.csv_has_header_and_one_row_per_slot
+[       OK ] probeSlot.csv_has_header_and_one_row_per_slot (0 ms)
+[ RUN      ] probeSlot.measured_intervals_keep_their_order
+[       OK ] probeSlot.measured_intervals_keep_their_order (0 ms)
+[ RUN      ] probeSlot.disarmed_probe_writes_nothing_and_survives_use
+[       OK ] probeSlot.disarmed_probe_writes_nothing_and_survives_use (0 ms)
+[ RUN      ] probeSlot.unopenable_or_unopened_csv_leaves_the_probe_disarmed
+[       OK ] probeSlot.unopenable_or_unopened_csv_leaves_the_probe_disarmed (0 ms)
+[ RUN      ] probeSlot.deadline_is_anchor_plus_offset_and_compute_spans_its_markers
+[       OK ] probeSlot.deadline_is_anchor_plus_offset_and_compute_spans_its_markers (5 ms)
+[----------] 5 tests from probeSlot (5 ms total)
+
+[----------] 3 tests from probeCounters
+[ RUN      ] probeCounters.work_report_is_a_snapshot_and_reset_clears_seeded_state
+[       OK ] probeCounters.work_report_is_a_snapshot_and_reset_clears_seeded_state (0 ms)
+[ RUN      ] probeCounters.materialization_report_is_a_snapshot_and_reset_clears_seeded_state
+[       OK ] probeCounters.materialization_report_is_a_snapshot_and_reset_clears_seeded_state (0 ms)
+[ RUN      ] probeCounters.logical_write_report_is_a_snapshot_and_reset_clears_seeded_state
+[       OK ] probeCounters.logical_write_report_is_a_snapshot_and_reset_clears_seeded_state (0 ms)
+[----------] 3 tests from probeCounters (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 45 tests from 9 test suites ran. (12 ms total)
+[  PASSED  ] 45 tests.
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ut_probe" end time: Nov 16 19:50 CET
+"ut_probe" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 16 19:50 CET

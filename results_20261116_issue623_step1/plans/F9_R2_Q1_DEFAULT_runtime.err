@@ -1,0 +1,9 @@
+PLAN bench (publiczne/substraty/tokeny-from/tokeny-pol, dedup=ON): wejscie=3/0/3/8  przed-dedup=3/0/3/8  po-dedup=3/0/3/8  wyjscie=3/0/3/8
+REWRITE_APPLIED r1=0 r2=0 r3=0
+COMPILE_NS 82677 sonda=431
+PLAN capacity: strumieni=4 suma=8 maks=3
+./xretractor: warning: stream m1 grows without bound on disk (no RETENTION)
+./xretractor: note: bound them with RETENTION <capacity> <segments>, STORAGE MEMORY, SUBSTRAT 'memory' or [storage] default_retention in the config
+MATERIALIZED trwale: dopisania=2999 nadpisania=0 bajty=11996  pamieciowe: dopisania=0 nadpisania=0 bajty=0
+LOGICAL substrat: dopisania=0 nadpisania=0 bajty=0  publiczne: dopisania=2999 nadpisania=0 bajty=26991
+WORK agse: okna=0 elementy=0 odczyty=0  eval: wywolania=2999 tokeny=23992  hash: wybory=0  add: scalenia=2999

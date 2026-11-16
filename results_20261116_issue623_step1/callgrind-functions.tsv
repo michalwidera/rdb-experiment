@@ -1,0 +1,115 @@
+cell	function	calls	Ir	Dr	Dw
+F9_R1_Q1_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	63790742	18292174	7942998
+F9_R1_Q1_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	8994	13030239	3425410	1884251
+F9_R1_Q1_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	8993	12013884	2933368	1605353
+F9_R1_Q1_DEFAULT	rdb::storage::write(unsigned long)	8993	11460103	2756905	1848406
+F9_R1_Q1_DEFAULT	rdb::payload::operator=(rdb::payload const&)	22485	5944302	1753594	845343
+F9_R1_Q1_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	8993	5834560	1489741	813804
+F9_R1_Q1_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	8991	5808220	1330673	944056
+F9_R1_Q1_DEFAULT	rdb::storage::read(unsigned long, unsigned char*)	4496	3246112	813776	508048
+F9_R1_Q1_DEFAULT	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	4497	1013077	261044	157556
+F9_R1_Q1_DEFAULT	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	4496	620448	152864	80928
+F9_R1_Q1_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	64362784	18405797	7945505
+F9_R1_Q1_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	8992	13029263	3425120	1884071
+F9_R1_Q1_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	8989	12472170	3013093	1609182
+F9_R1_Q1_NO_R1_FACTOR	rdb::storage::write(unsigned long)	8989	11457072	2756027	1847858
+F9_R1_Q1_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	8989	6043919	1538639	817968
+F9_R1_Q1_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	22480	5943533	1753280	845208
+F9_R1_Q1_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	8986	5805862	1330084	943626
+F9_R1_Q1_NO_R1_FACTOR	rdb::storage::read(unsigned long, unsigned char*)	4494	3244956	813466	507854
+F9_R1_Q1_NO_R1_FACTOR	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	4495	1013649	261088	157655
+F9_R1_Q1_NO_R1_FACTOR	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	4494	620172	152796	80892
+F9_R1_Q2_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	83204905	23683286	11198291
+F9_R1_Q2_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	13489	18731362	4745346	2590042
+F9_R1_Q2_DEFAULT	rdb::storage::write(unsigned long)	13489	16779857	4074416	2747711
+F9_R1_Q2_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	13490	16519135	4311122	2432763
+F9_R1_Q2_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	13489	10910544	2757613	1510684
+F9_R1_Q2_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	13486	8559160	1973458	1411536
+F9_R1_Q2_DEFAULT	rdb::payload::operator=(rdb::payload const&)	26981	7203636	2158324	1052224
+F9_R1_Q2_DEFAULT	rdb::storage::read(unsigned long, unsigned char*)	8992	6492224	1627552	1016096
+F9_R1_Q2_DEFAULT	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	8992	1240896	305728	161856
+F9_R1_Q2_DEFAULT	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	4497	1013228	261070	157572
+F9_R1_Q2_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	86670527	24134696	11410613
+F9_R1_Q2_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	13483	22088383	5164342	2804662
+F9_R1_Q2_NO_R1_FACTOR	rdb::storage::write(unsigned long)	13483	16774762	4073004	2746795
+F9_R1_Q2_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	13486	16516607	4310438	2432339
+F9_R1_Q2_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	13483	10909423	2768497	1510044
+F9_R1_Q2_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	13479	8555578	1972583	1410898
+F9_R1_Q2_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	26974	7201853	2157740	1051932
+F9_R1_Q2_NO_R1_FACTOR	rdb::storage::read(unsigned long, unsigned char*)	8988	6489624	1626880	1015676
+F9_R1_Q2_NO_R1_FACTOR	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	8988	1240344	305592	161784
+F9_R1_Q2_NO_R1_FACTOR	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	4495	1013800	261114	157671
+F9_R2_Q1_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	2999	42753335	12403798	5522534
+F9_R2_Q1_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	5998	12723807	3386791	1781325
+F9_R2_Q1_DEFAULT	rdb::payload::operator=(rdb::payload const&)	17994	4569460	1259300	575680
+F9_R2_Q1_DEFAULT	rdb::storage::write(unsigned long)	2999	3548850	878917	599933
+F9_R2_Q1_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	2999	3491248	963443	495338
+F9_R2_Q1_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	2998	1835201	428799	311848
+F9_R2_Q1_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	5998	1526491	401866	167944
+F9_R2_Q1_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	2999	42753335	12403798	5522534
+F9_R2_Q1_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	5998	12723807	3386791	1781325
+F9_R2_Q1_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	17994	4569460	1259300	575680
+F9_R2_Q1_NO_R1_FACTOR	rdb::storage::write(unsigned long)	2999	3548850	878917	599933
+F9_R2_Q1_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	2999	3491248	963443	495338
+F9_R2_Q1_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	2998	1835201	428799	311848
+F9_R2_Q1_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	5998	1526491	401866	167944
+F9_R2_Q2_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	2999	65027979	18453511	9274740
+F9_R2_Q2_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	11996	17378292	4568399	2513080
+F9_R2_Q2_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	8997	11788304	3195036	1743171
+F9_R2_Q2_DEFAULT	rdb::storage::write(unsigned long)	8997	11192082	2717654	1832734
+F9_R2_Q2_DEFAULT	rdb::payload::operator=(rdb::payload const&)	23992	6250014	1799342	851754
+F9_R2_Q2_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	8994	5708343	1316148	941388
+F9_R2_Q2_DEFAULT	rdb::storage::read(unsigned long, unsigned char*)	5998	4330556	1085638	677774
+F9_R2_Q2_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	5998	1526491	401866	167944
+F9_R2_Q2_DEFAULT	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	5998	827724	203932	107964
+F9_R2_Q2_DEFAULT	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	2999	675258	174029	105034
+F9_R2_Q2_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	2999	65027979	18453511	9274740
+F9_R2_Q2_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	11996	17378292	4568399	2513080
+F9_R2_Q2_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	8997	11788304	3195036	1743171
+F9_R2_Q2_NO_R1_FACTOR	rdb::storage::write(unsigned long)	8997	11192082	2717654	1832734
+F9_R2_Q2_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	23992	6250014	1799342	851754
+F9_R2_Q2_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	8994	5708343	1316148	941388
+F9_R2_Q2_NO_R1_FACTOR	rdb::storage::read(unsigned long, unsigned char*)	5998	4330556	1085638	677774
+F9_R2_Q2_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	5998	1526491	401866	167944
+F9_R2_Q2_NO_R1_FACTOR	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	5998	827724	203932	107964
+F9_R2_Q2_NO_R1_FACTOR	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	2999	675258	174029	105034
+F9_X_Q1_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	145154511	39952336	20383950
+F9_X_Q1_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	22482	38412149	9623109	5127945
+F9_X_Q1_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	26980	33039578	8622511	4865695
+F9_X_Q1_DEFAULT	rdb::storage::write(unsigned long)	22482	29876707	7074121	4695063
+F9_X_Q1_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	26978	22228792	5674101	3036357
+F9_X_Q1_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	22477	14978700	3394031	2373572
+F9_X_Q1_DEFAULT	rdb::storage::read(unsigned long, unsigned char*)	17984	12984448	3255104	2032192
+F9_X_Q1_DEFAULT	rdb::payload::operator=(rdb::payload const&)	44970	11888604	3507188	1690686
+F9_X_Q1_DEFAULT	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	17986	4050054	1043734	629930
+F9_X_Q1_DEFAULT	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	17984	2481792	611456	323712
+F9_X_Q1_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	146482969	40202901	20385401
+F9_X_Q1_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	22472	39519944	9807818	5133248
+F9_X_Q1_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	26972	33034090	8621065	4864799
+F9_X_Q1_NO_R1_FACTOR	rdb::storage::write(unsigned long)	22472	29869307	7071983	4693715
+F9_X_Q1_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	26966	22498707	5739186	3042528
+F9_X_Q1_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	22465	14971884	3392423	2372432
+F9_X_Q1_NO_R1_FACTOR	rdb::storage::read(unsigned long, unsigned char*)	17976	12978960	3253708	2031320
+F9_X_Q1_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	44960	11886915	3506534	1690400
+F9_X_Q1_NO_R1_FACTOR	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	17978	4051924	1043876	630164
+F9_X_Q1_NO_R1_FACTOR	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	17976	2480688	611184	323568
+F9_X_Q2_DEFAULT	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	179253617	49179039	26022371
+F9_X_Q2_DEFAULT	dataModel::constructInputPayload(query const&, streamInstance&)	31474	51496870	13107767	7011947
+F9_X_Q2_DEFAULT	rdb::storage::write(unsigned long)	31474	41334341	9830504	6543122
+F9_X_Q2_DEFAULT	rdb::storage::revRead(unsigned long, unsigned char*)	35972	40017370	10393935	5962719
+F9_X_Q2_DEFAULT	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	26978	22417624	5714565	3040853
+F9_X_Q2_DEFAULT	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	31467	20786240	4724551	3317522
+F9_X_Q2_DEFAULT	rdb::storage::read(unsigned long, unsigned char*)	26976	19476672	4882656	3048288
+F9_X_Q2_DEFAULT	rdb::payload::operator=(rdb::payload const&)	53962	14407272	4316648	2104448
+F9_X_Q2_DEFAULT	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	22482	5061925	1304544	787331
+F9_X_Q2_DEFAULT	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	26976	3722688	917184	485568
+F9_X_Q2_NO_R1_FACTOR	dataModel::processRows(std::span<char const, 18446744073709551615ul>, boost::rational<int> const&)	5999	180510011	49422561	26024283
+F9_X_Q2_NO_R1_FACTOR	dataModel::constructInputPayload(query const&, streamInstance&)	31460	52541619	13287878	7019376
+F9_X_Q2_NO_R1_FACTOR	rdb::storage::write(unsigned long)	31460	41321845	9827140	6540952
+F9_X_Q2_NO_R1_FACTOR	rdb::storage::revRead(unsigned long, unsigned char*)	35960	40008778	10391701	5961335
+F9_X_Q2_NO_R1_FACTOR	dataModel::fetchForward(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int)	26966	22792315	5812588	3050018
+F9_X_Q2_NO_R1_FACTOR	rdb::MetaIndexStore::overwriteLast(rdb::IndexRecord const&)	31451	20776840	4722351	3315962
+F9_X_Q2_NO_R1_FACTOR	rdb::storage::read(unsigned long, unsigned char*)	26964	19468296	4880536	3046964
+F9_X_Q2_NO_R1_FACTOR	rdb::payload::operator=(rdb::payload const&)	53948	14404463	4315634	2103978
+F9_X_Q2_NO_R1_FACTOR	rdb::memoryFile::write(unsigned char const*, std::vector<bool, std::allocator<bool> > const&, unsigned long)	22472	5063345	1304570	787495
+F9_X_Q2_NO_R1_FACTOR	rdb::memoryFile::read(unsigned char*, std::vector<bool, std::allocator<bool> >&, unsigned long)	26964	3721032	916776	485352

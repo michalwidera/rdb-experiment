@@ -1,0 +1,2 @@
+Layer A: 190 text artifacts checked; strict mode for source/config/RQL.
+Failures: 0

@@ -1,0 +1,13 @@
+|Idx|Delta|Cap|                                               Name|
+|___|_____|___|___________________________________________________|
+|  0|1/100|  5|                                                  A|
+|  1|1/100|  4|                                STREAM_TIMEMOVE_2_A|
+|  2| 1/50|  4|                                                  B|
+|  3| 1/50|  4|                                STREAM_TIMEMOVE_1_B|
+|  4|1/150|  1|STREAM_HASH_STREAM_TIMEMOVE_2_A_STREAM_TIMEMOVE_1_B|
+|  5|1/100|  5|                                                  C|
+|  6|1/100|  4|                                STREAM_TIMEMOVE_2_C|
+|  7| 1/50|  4|                                                  D|
+|  8| 1/50|  4|                                STREAM_TIMEMOVE_1_D|
+|  9|1/150|  1|STREAM_HASH_STREAM_TIMEMOVE_2_C_STREAM_TIMEMOVE_1_D|
+| 10|1/150|  0|                                                 m1|

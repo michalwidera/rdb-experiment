@@ -1,0 +1,7 @@
+PLAN bench (publiczne/substraty/tokeny-from/tokeny-pol, dedup=ON): wejscie=4/0/6/16  przed-dedup=4/0/6/16  po-dedup=4/0/6/16  wyjscie=4/1/5/10
+REWRITE_APPLIED r1=0 r2=0 r3=0
+COMPILE_NS 116432 sonda=530
+PLAN capacity: strumieni=4 suma=8 maks=3
+./xretractor: warning: stream m1 grows without bound on disk (no RETENTION)
+./xretractor: warning: stream m2 grows without bound on disk (no RETENTION)
+./xretractor: note: bound them with RETENTION <capacity> <segments>, STORAGE MEMORY, SUBSTRAT 'memory' or [storage] default_retention in the config

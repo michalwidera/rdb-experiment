@@ -1,0 +1,81 @@
+{
+  "revision": "d291d03c7269664fcb64f9e5e616431c7027df3d",
+  "status": "",
+  "src_tree": "65d27a7ae0cb9ad4a3c6894a3581f847451c9341",
+  "runner_sha256": "8a488c6f562e9a7244c2aa11fbdeead3aa6b85badd10912e41807adaba83468c",
+  "compiler": "c++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0\nCopyright (C) 2025 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "valgrind": "valgrind-3.26.0",
+  "platform": "Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+  "cpu": 15,
+  "cpuinfo": "processor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 26\nmodel\t\t: 68\nmodel name\t: AMD Ryzen 9 9900X 12-Core Processor\nstepping\t: 0\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 4391.648\ncache size\t: 1024 KB\nphysical id\t: 0\nsiblings\t: 16\ncore id\t\t: 0\ncpu cores\t: 8\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves avx_vnni avx512_bf16 clzero xsaveerptr arat avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm avx512_vp2intersect\nbugs\t\t: sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso spectre_v2_user\nbogomips\t: 8783.29\nTLB size\t: 192 4K pages\nclflush size\t: 64\ncache_alignment\t: 64\naddress sizes\t: 48 bits physical, 48 bits virtual\npower management:",
+  "seed": 62320261116,
+  "affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "runtime": [
+    "./xretractor",
+    "query.rql",
+    "-r",
+    "-k",
+    "--config",
+    "empty.toml",
+    "--no-clock"
+  ],
+  "profiles": {
+    "DEFAULT": {
+      "binary": "/home/michal/github/retractordb/build/R593-DEFAULT/src/retractor/xretractor",
+      "sha256": "97ef05a7a8f2c91575870deca97515bafd8558c91fb81c57075040f27e4c23d8",
+      "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=ON\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON\nRDB_BENCH_PROBE=ON\nRDB_OPT_SIMPLIFY_EXPRESSIONS=ON\n",
+      "verified_build": "ninja: Entering directory `/home/michal/github/retractordb/build/R593-DEFAULT'\n[0/2] Re-checking globbed directories...\nninja: no work to do.\n"
+    },
+    "NO_R2_CANON": {
+      "binary": "/home/michal/github/retractordb/build/R593-NO_R2_CANON/src/retractor/xretractor",
+      "sha256": "7824d04d788ebb66cdec79407ba061bbccfa2f06a6eeed36272167d63f292bd7",
+      "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=OFF\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON\nRDB_BENCH_PROBE=ON\nRDB_OPT_SIMPLIFY_EXPRESSIONS=ON\n",
+      "verified_build": "ninja: Entering directory `/home/michal/github/retractordb/build/R593-NO_R2_CANON'\n[0/2] Re-checking globbed directories...\nninja: no work to do.\n"
+    },
+    "NO_R1_FACTOR": {
+      "binary": "/home/michal/github/retractordb/build/R593-NO_R1_FACTOR/src/retractor/xretractor",
+      "sha256": "6974f2b3c33e7432c9991a739429d6c1b1bf12cd320763ca14cb1757e70e7d1c",
+      "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=ON\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=OFF\nRDB_BENCH_PROBE=ON\nRDB_OPT_SIMPLIFY_EXPRESSIONS=ON\n",
+      "verified_build": "ninja: Entering directory `/home/michal/github/retractordb/build/R593-NO_R1_FACTOR'\n[0/2] Re-checking globbed directories...\nninja: no work to do.\n"
+    },
+    "NO_R1_NO_R2": {
+      "binary": "/home/michal/github/retractordb/build/R593-NO_R1_NO_R2/src/retractor/xretractor",
+      "sha256": "cd4589c203a426a37143e1a514fc6f3e593653e64bcac1099245c617877d79f4",
+      "build_info": "RDB_OPT_DEDUP_SUBSTRATES=ON\nRDB_OPT_SHARE_EQUIVALENT_SELECTS=ON\nRDB_OPT_COMMUTATIVE_ADD=OFF\nRDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=OFF\nRDB_BENCH_PROBE=ON\nRDB_OPT_SIMPLIFY_EXPRESSIONS=ON\n",
+      "verified_build": "ninja: Entering directory `/home/michal/github/retractordb/build/R593-NO_R1_NO_R2'\n[0/2] Re-checking globbed directories...\nninja: no work to do.\n"
+    }
+  },
+  "inputs": {
+    "test/research_gate/h9/data/main/rear_vib.txt": "1e05d0a0d287e6b7d332fe15e949d372ce4eb9593ed1c8b0846d022d4ce5585a",
+    "test/research_gate/h9/data/main/front_vib.txt": "1900d789e23d0754ad7ead813f4c3bad2f579d3e3b04c96943c078802963fb0f",
+    "test/research_gate/h9/data/main/vib.txt": "906162d7a980070296a5f8d8fdaecdadee5d6ceb674113e504f6a7f7e7ef772b",
+    "test/research_gate/h9/data/main/cur.txt": "04b90e9b3673e25cea1de95b468eafeee2ae77e06917948c7b319dbc71217a98",
+    "test/research_gate/h9/data/main/axis_x.txt": "8fd7c3c58bf28e9416d767940c2ee0c069a76481ee0dac7620abbf6012cf85d2",
+    "test/research_gate/h9/data/main/front_cur.txt": "7c5a8f4610b78bc47715d0a1c37ae38917662d917374c56388d0c47c9f44bf3a",
+    "test/research_gate/h9/data/main/axis_y.txt": "5cfad47fa996907466de08876364646f2283f75ac5b0059a94e624c200a1bf73",
+    "test/research_gate/h9/data/main/rear_cur.txt": "f68ef6661152c19b77ff57b5a2a18c8d89a731cda72acb48390fb35668e988d8",
+    "test/research_gate/h9/rql/F9_R1_Q1.rql": "888b6bce71dced84cfb3789267f43efe7109e80ad5a02e6e0849081ee5dd10bb",
+    "test/research_gate/h9/rql/F9_R1_Q2.rql": "b8c9bf120e8b1681fd108fadd70caf303cabc80a06f1f367b3639b4378fe1e05",
+    "test/research_gate/h9/rql/F9_X_Q1.rql": "0a4b2bfd7ff3e47321e8b299ab8f70c476086b65a8827474a1d42099a5b02ae7",
+    "test/research_gate/h9/rql/F9_X_Q2.rql": "8287ab9ebcaa39b1af791088acd394da314a94b9963cee10b29c4edd0dbc7aa0",
+    "test/research_gate/h9/rql/F9_R2_Q1.rql": "43fb6f7c8e7a52cf849dbb0b2296913c18671c29f9fab910df85e94be4cc8b14",
+    "test/research_gate/h9/rql/F9_R2_Q2.rql": "52436eaaf3c2b644eddabdd92cb566dc0733c5fe59d49eda41b93948575daaf2"
+  }
+}

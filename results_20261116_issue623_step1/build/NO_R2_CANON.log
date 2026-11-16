@@ -1,0 +1,196 @@
+ninja: Entering directory `build/R593-NO_R2_CANON'
+[0/2] Re-checking globbed directories...
+-- GLOB mismatch!
+The following files were added:
+  +/home/michal/github/retractordb/test/UnitTest/test_processLimits.cpp
+[1/2] Re-running CMake...
+-- Using Conan toolchain: /home/michal/github/retractordb/build/Conan-K6-Profiles/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: Defining architecture flag: -m64
+-- Conan toolchain: C++ Standard 23 with extensions ON
+CMake Warning at CMakeLists.txt:225 (message):
+  RDB_BENCH_PROBE=ON - benchmark probes compiled in; NOT a production build.
+
+
+-- RDB_OPT_DEDUP_SUBSTRATES=ON
+-- RDB_OPT_SHARE_EQUIVALENT_SELECTS=ON
+-- RDB_OPT_COMMUTATIVE_ADD=OFF
+-- RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=ON
+-- RDB_OPT_SIMPLIFY_EXPRESSIONS=ON
+-- RDB_BENCH_PROBE=ON
+-- Performing Test RDB_MOLD_LINKS
+-- Performing Test RDB_MOLD_LINKS - Success
+-- RDB_HAS_ADDR2LINE=1
+-- RDB_HAS_CLOCK_NANOSLEEP=1
+-- RDB_HAS_MACH_TIME_H=0
+-- RDB_HAS_SCHED_SETSCHEDULER=1
+-- RDB_HAS_SCHED_AFFINITY=1
+-- RDB_HAS_MLOCKALL=1
+-- RDB_HAS_MCL_ONFAULT=1
+-- RDB_HAS_PTHREAD_SCHEDPARAM=1
+-- RDB_HAS_ROBUST_MUTEX=1
+-- RDB_HAS_SYSCTL_KERN_PROC=0
+-- RDB_HAS_LD_WRAP=1
+-- RDB_HAS_STATVFS=1
+-- ccache not found, skipping (install: scripts/buildrdb.sh toolchain, or apt install ccache)
+-- IPO for Release: OFF
+-- Conan: Component target declared 'Boost::diagnostic_definitions'
+-- Conan: Component target declared 'Boost::disable_autolinking'
+-- Conan: Component target declared 'Boost::dynamic_linking'
+-- Conan: Component target declared 'Boost::headers'
+-- Conan: Component target declared 'Boost::boost'
+-- Conan: Component target declared 'boost::_libboost'
+-- Conan: Component target declared 'Boost::container'
+-- Conan: Component target declared 'Boost::exception'
+-- Conan: Component target declared 'Boost::program_options'
+-- Conan: Component target declared 'Boost::regex'
+-- Conan: Component target declared 'Boost::stacktrace'
+-- Conan: Component target declared 'Boost::stacktrace_addr2line'
+-- Conan: Component target declared 'Boost::stacktrace_backtrace'
+-- Conan: Component target declared 'Boost::stacktrace_basic'
+-- Conan: Component target declared 'Boost::stacktrace_from_exception'
+-- Conan: Component target declared 'Boost::stacktrace_noop'
+-- Conan: Target declared 'boost::boost'
+-- Conan: Target declared 'libbacktrace::libbacktrace'
+-- Conan: Component target declared 'spdlog::spdlog_header_only'
+-- Conan: Component target declared 'fmt::fmt'
+-- Conan: Target declared 'antlr4_static'
+-- Conan: Component target declared 'GTest::gtest'
+-- Conan: Component target declared 'GTest::gtest_main'
+-- Conan: Component target declared 'GTest::gmock'
+-- Conan: Component target declared 'GTest::gmock_main'
+-- Conan: Target declared 'gtest::gtest'
+-- Conan: Target declared 'antlr4::antlr4'
+-- Conan: Target declared 'openjdk::openjdk'
+-- Conan: Target declared 'magic_enum::magic_enum'
+-- Conan: Target declared 'tomlplusplus::tomlplusplus'
+-- Performing Test RDB_BOOST_POSIX_SHM
+-- Performing Test RDB_BOOST_POSIX_SHM - Success
+-- RDB_BOOST_POSIX_SHM=1 (obiekty IPC pod /dev/shm)
+-- Memory checker: /usr/bin/valgrind
+-- setup descgrammar in PROJECT_SOURCE_DIR=/home/michal/github/retractordb/src/rdb/lib
+-- setup rqlgrammar in PROJECT_SOURCE_DIR=/home/michal/github/retractordb/src/retractor/lib
+-- Remove folder /home/michal/github/retractordb/build/R593-NO_R2_CANON/test
+-- Copy folder /home/michal/github/retractordb/test to /home/michal/github/retractordb/build/R593-NO_R2_CANON/test/..
+-- Configuring done (15.0s)
+-- Generating done (0.3s)
+-- Build files have been written to: /home/michal/github/retractordb/build/R593-NO_R2_CANON
+[0/4] Re-checking globbed directories...
+[1/87] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCListener.cpp.o
+[2/87] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLBaseListener.cpp.o
+[3/87] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCBaseListener.cpp.o
+[4/87] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLLexer.cpp.o
+[5/87] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCLexer.cpp.o
+[6/87] Building CXX object src/rdb/lib/.antlr/CMakeFiles/descparser.dir/DESCParser.cpp.o
+[7/87] Linking CXX static library src/rdb/lib/.antlr/libdescparser.a
+[8/87] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLListener.cpp.o
+[9/87] Building CXX object src/common/CMakeFiles/common.dir/osPlatform.cpp.o
+[10/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/cmake_pch.hxx.gch
+[11/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/cmake_pch.hxx.gch
+[12/87] Building CXX object src/retractor/lib/.antlr/CMakeFiles/rqlparser.dir/RQLParser.cpp.o
+[13/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/cmake_pch.hxx.gch
+[14/87] Building CXX object src/common/CMakeFiles/common.dir/uxSysTermTools.cpp.o
+[15/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/CRSMath.cpp.o
+[16/87] Building CXX object src/common/CMakeFiles/common.dir/ipcSecurity.cpp.o
+[17/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/DESCParser.cc.o
+[18/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/bitsetCodec.cc.o
+[19/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/accessorFactory.cc.o
+[20/87] Building CXX object src/retractor/CMakeFiles/xretractor.dir/launcher.cpp.o
+[21/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/convertTypes.cc.o
+[22/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptor.cc.o
+[23/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/descriptorIO.cc.o
+[24/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/error.cc.o
+[25/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccbindev.cc.o
+[26/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccfs.cc.o
+[27/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccmemory.cc.o
+[28/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposix.cc.o
+[29/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/compiler.cpp.o
+[30/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/gapDetector.cc.o
+[31/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/faccposixshd.cc.o
+[32/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/facctxtsrc.cc.o
+[33/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/fagrp.cc.o
+[34/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/indexRecord.cc.o
+[35/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/memoryStore.cc.o
+[36/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/rleSegment.cc.o
+[37/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaIndexStore.cc.o
+In file included from /usr/include/x86_64-linux-gnu/c++/15/bits/c++allocator.h:33,
+                 from /usr/include/c++/15/bits/allocator.h:46,
+                 from /usr/include/c++/15/string:45,
+                 from /usr/include/c++/15/stdexcept:41,
+                 from /usr/include/c++/15/system_error:45,
+                 from /usr/include/c++/15/bits/fs_fwd.h:35,
+                 from /usr/include/c++/15/filesystem:53,
+                 from /home/michal/github/retractordb/build/R593-NO_R2_CANON/src/rdb/lib/CMakeFiles/rdb.dir/cmake_pch.hxx:6,
+                 from <command-line>:
+In member function ‘void std::__new_allocator<_Tp>::deallocate(_Tp*, size_type) [with _Tp = std::byte]’,
+    inlined from ‘constexpr void std::allocator< <template-parameter-1-1> >::deallocate(_Tp*, std::size_t) [with _Tp = std::byte]’ at /usr/include/c++/15/bits/allocator.h:215:35,
+    inlined from ‘static constexpr void std::allocator_traits<std::allocator<_CharT> >::deallocate(allocator_type&, pointer, size_type) [with _Tp = std::byte]’ at /usr/include/c++/15/bits/alloc_traits.h:649:23,
+    inlined from ‘constexpr void std::_Vector_base<_Tp, _Alloc>::_M_deallocate(pointer, std::size_t) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/stl_vector.h:396:19,
+    inlined from ‘constexpr std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::_Guard_alloc::~_Guard_alloc() [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/stl_vector.h:1883:27,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::_M_realloc_append(_Args&& ...) [with _Args = {const std::byte&}; _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/vector.tcc:640:7,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::push_back(const value_type&) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/stl_vector.h:1427:21,
+    inlined from ‘constexpr std::back_insert_iterator<_Container>& std::back_insert_iterator<_Container>::operator=(const typename _Container::value_type&) [with _Container = std::vector<std::byte>]’ at /usr/include/c++/15/bits/stl_iterator.h:718:22,
+    inlined from ‘constexpr void std::ranges::__detail::__assign_one(_OutIter&, _InIter&) [with bool _IsMove = false; _OutIter = std::back_insert_iterator<std::vector<std::byte> >; _InIter = const std::byte*]’ at /usr/include/c++/15/bits/ranges_algobase.h:201:9,
+    inlined from ‘constexpr std::__conditional_t<_IsMove, std::ranges::in_out_result<_Iter, _Out>, std::ranges::in_out_result<_Iter, _Out> > std::ranges::__copy_or_move(_Iter, _Sent, _Out) [with bool _IsMove = false; _Iter = const std::byte*; _Sent = const std::byte*; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/15/bits/ranges_algobase.h:315:39,
+    inlined from ‘constexpr std::__conditional_t<_IsMove, std::ranges::in_out_result<_Iter, _Out>, std::ranges::in_out_result<_Iter, _Out> > std::ranges::__copy_or_move(_Iter, _Sent, _Out) [with bool _IsMove = false; _Iter = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte>::__iter_tag>; _Sent = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte>::__iter_tag>; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/15/bits/ranges_algobase.h:286:39,
+    inlined from ‘constexpr std::ranges::copy_result<_Iter, _Out> std::ranges::__copy_fn::operator()(_Iter, _Sent, _Out) const [with _Iter = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte>::__iter_tag>; _Sent = __gnu_cxx::__normal_iterator<const std::byte*, std::span<const std::byte>::__iter_tag>; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/15/bits/ranges_algobase.h:341:38,
+    inlined from ‘constexpr std::ranges::copy_result<std::ranges::borrowed_iterator_t<_Range>, _Out> std::ranges::__copy_fn::operator()(_Range&&, _Out) const [with _Range = std::span<const std::byte>; _Out = std::back_insert_iterator<std::vector<std::byte> >]’ at /usr/include/c++/15/bits/ranges_algobase.h:351:16,
+    inlined from ‘rdb::Result<> rdb::MetaIndexStore::rewrite(const std::vector<rdb::IndexRecord>&)’ at /home/michal/github/retractordb/src/rdb/lib/metaIndexStore.cc:131:22:
+/usr/include/c++/15/bits/new_allocator.h:172:66: warning: ‘void operator delete(void*, std::size_t)’ called on pointer ‘<unknown>’ with nonzero offset [1, 9223372036854775807] [-Wfree-nonheap-object]
+  172 |         _GLIBCXX_OPERATOR_DELETE(_GLIBCXX_SIZED_DEALLOC(__p, __n));
+      |                                                                  ^
+In member function ‘_Tp* std::__new_allocator<_Tp>::allocate(size_type, const void*) [with _Tp = std::byte]’,
+    inlined from ‘constexpr _Tp* std::allocator< <template-parameter-1-1> >::allocate(std::size_t) [with _Tp = std::byte]’ at /usr/include/c++/15/bits/allocator.h:203:40,
+    inlined from ‘static constexpr _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(allocator_type&, size_type) [with _Tp = std::byte]’ at /usr/include/c++/15/bits/alloc_traits.h:614:28,
+    inlined from ‘constexpr std::_Vector_base<_Tp, _Alloc>::pointer std::_Vector_base<_Tp, _Alloc>::_M_allocate(std::size_t) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/stl_vector.h:387:33,
+    inlined from ‘constexpr void std::vector< <template-parameter-1-1>, <template-parameter-1-2> >::reserve(size_type) [with _Tp = std::byte; _Alloc = std::allocator<std::byte>]’ at /usr/include/c++/15/bits/vector.tcc:79:33,
+    inlined from ‘rdb::Result<> rdb::MetaIndexStore::rewrite(const std::vector<rdb::IndexRecord>&)’ at /home/michal/github/retractordb/src/rdb/lib/metaIndexStore.cc:130:20:
+/usr/include/c++/15/bits/new_allocator.h:151:73: note: returned from ‘void* operator new(std::size_t)’
+  151 |         return static_cast<_Tp*>(_GLIBCXX_OPERATOR_NEW(__n * sizeof(_Tp)));
+      |                                                                         ^
+[38/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaData.cc.o
+[39/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/probe.cc.o
+[40/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/metaShadow.cc.o
+[41/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/payload.cc.o
+[42/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/sourceBuffer.cc.o
+[43/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/stackTrace.cc.o
+[44/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/coreState.cpp.o
+[45/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storagePaths.cc.o
+[46/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storageRotation.cc.o
+[47/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storageShadow.cc.o
+[48/87] Building CXX object src/rdb/lib/CMakeFiles/rdb.dir/storage.cc.o
+[49/87] Linking CXX static library src/rdb/lib/librdb.a
+[50/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/executor_rt.cpp.o
+[51/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/dumpManager.cpp.o
+[52/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/dataModel.cpp.o
+[53/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/field.cpp.o
+[54/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/expressionShape.cpp.o
+[55/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/exprSimplify.cpp.o
+[56/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/persistentCounter.cpp.o
+[57/87] Linking CXX static library src/retractor/lib/.antlr/librqlparser.a
+[58/87] Linking CXX static library src/common/libcommon.a
+[59/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/query.cpp.o
+[60/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/qTree.cpp.o
+[61/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/planSource.cpp.o
+[62/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/expressionEvaluator.cpp.o
+[63/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/token.cpp.o
+[64/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/streamInstance.cpp.o
+[65/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/bus.cpp.o
+[66/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/appConfig.cpp.o
+[67/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsm.cpp.o
+[68/87] Building CXX object src/retractor/lib/CMakeFiles/retractorcore.dir/RQLParser.cpp.o
+[69/87] Linking CXX static library src/retractor/lib/libretractorcore.a
+[70/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmState.cpp.o
+[71/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmAdHoc.cpp.o
+[72/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmPlanReload.cpp.o
+[73/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/lockFile.cpp.o
+[74/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/executorsmCommands.cpp.o
+[75/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/ipcResponses.cpp.o
+[76/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/processLimits.cpp.o
+[77/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/lockManager.cpp.o
+[78/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/ipcServer.cpp.o
+[79/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/presenter.cpp.o
+[80/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/serverName.cpp.o
+[81/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/serviceControl.cpp.o
+[82/87] Building CXX object src/retractor/lib/CMakeFiles/retractor.dir/shmBudget.cpp.o
+[83/87] Linking CXX static library src/retractor/lib/libretractor.a
+[84/87] Linking CXX executable src/retractor/xretractor
