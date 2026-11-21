@@ -44,7 +44,7 @@ Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą b
 
 ## Stan
 
-Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-5 POTWIERDZONE 2026-11-21, kryterium 6 nie biegło.**
+Predeklaracja zapisana w `6351fc1`, przed przebiegami. **R631 POTWIERDZONY 2026-11-21: wszystkie sześć kryteriów zachodzi na R `758be53b`.** Kotwica czasowa K18d ma osobny katalog i osobny werdykt.
 
 **Iteracja 1 nieliczona.** Przebieg skończył się `ZGODNY` z 0 rozbieżności, ale binarka odniesienia `run/bin/16c516f9…` ma wbudowaną rewizję `e389edd3`; szczegóły w [`PREDECLARATION-2.md`](PREDECLARATION-2.md) §1, wyciąg w [`compat-it1-summary.txt`](compat-it1-summary.txt).
 
@@ -60,4 +60,6 @@ Ani #626 (strażnik R1 dla `VAR`), ani `ce2c65eb` (walidacja interwału rozplotu
 
 **Kryterium 5 (tryb dowodowy), 2026-11-21:** świeży katalog z `rdb-artifact/bin/checkout.sh` (`1dcf754`) z jedyną zmianą `ENGINE_SNAPSHOT=758be53b` - tą, którą zapisze `move_pin.sh --apply`; cztery repozytoria na pinach, drzewa czyste. `install-lean.sh --no-upgrade-check` (Lean `v4.33.0`, Mathlib `db584cd6`, Verso `3bdedf29`, nowy `.lake`), `./render.sh` -> `DOWODY: OK`, 0 linii z `warning`/`sorry`, 9 rozdziałów tekstowych. `test/proof_manifest.tsv`: 151 twierdzeń, 86 TEST, 65 poza zakresem, 0 niepokrytych; 86 wierszy TEST wskazuje 52 testy `ProofOracle`, wszystkie wśród zaliczonych. `ctest -R 'proof_drift|ut_proofOracle' -LE valgrind` w `build/Debug` tego katalogu: 3/3 zielone, `ut_proofOracle` 54/54 testów gtest. Odstępstwo: pierwsze wywołanie ctest zbudowało zły cel (`ut_proofOracle` zamiast `test_proofOracle`) i `ut_proofOracle` nie ruszył (`Not Run`); po zbudowaniu właściwego celu wynik jak wyżej, kod testu bez zmian. Dowód: [`proofs/summary.txt`](proofs/summary.txt).
 
-Dalej (#632 etap 1): kryterium 6 (`doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.
+**Kryterium 6 (dokumentacja), 2026-11-21:** ten sam katalog co kryterium 5, przekonfigurowany na `RDB_DOCS_EN` = kopia `documentation-rdb` na pinie `00e5717` (domyślnie wskazywał żywy klon, nowszy o 1 commit); `RDB_DOCS_PL` = `dokumentacja-rdb` `ebbc5836` (artefakt nie przypina dokumentacji PL). `doc_drift_scalar_functions`: `ZGODNY: 21 funkcji, 2 dokumentacji`; `proof_drift`: 151 twierdzeń, 86 dotyczących silnika, 86 z testem, pokrycie 100%, `ZGODNY`. Pin dokumentacji w artefakcie zostaje. Dowód: [`docs/summary.txt`](docs/summary.txt).
+
+Dalej (#632 etap 1): R631 K18d na pi400 w osobnym katalogu, z własną predeklaracją przed pomiarem.

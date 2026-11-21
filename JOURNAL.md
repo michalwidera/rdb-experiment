@@ -4651,3 +4651,7 @@ Kampania potwierdzająca przesunięcie pinu silnika artefaktu `16c516f9` -> R = 
 ## 2026-11-21 - R631: tryb dowodowy na R = `758be53b` - kryterium 5 potwierdzone
 
 Świeży katalog z `rdb-artifact/bin/checkout.sh` z pinem silnika R (jedyna zmiana kopii skryptu: `ENGINE_SNAPSHOT`), nowy `.lake`: `render.sh` -> `DOWODY: OK` bez ostrzeżeń, 9 rozdziałów tekstowych (z `startup-boundaries`, `plan-composition`, `plan-values`); `proof_manifest.tsv` 151 twierdzeń, 86 TEST, 65 poza zakresem, 0 niepokrytych; `proof_drift` i `ut_proofOracle` (54/54) zielone, wszystkie 52 testy wskazane przez manifest zaliczone. Pierwsze wywołanie ctest bez zbudowanej binarki testu (`Not Run`) - powtórzone po budowie celu `test_proofOracle`. Zostaje kryterium 6 (`doc_drift`) i kotwica K18d.
+
+## 2026-11-21 - R631 POTWIERDZONY na R = `758be53b`: kryterium 6 (dokumentacja) zielone
+
+`doc_drift_scalar_functions` i `proof_drift` w katalogu trybu dowodowego, przekonfigurowanym na `RDB_DOCS_EN` = `documentation-rdb` na pinie `00e5717` (domyślna ścieżka wskazywała żywy klon, nowszy o 1 commit): `ZGODNY: 21 funkcji, 2 dokumentacji`; 151 twierdzeń, 86 dotyczących silnika, 86 z testem, pokrycie 100%. Pin dokumentacji w artefakcie zostaje. Tym samym wszystkie sześć kryteriów R631 zachodzi: produkty artykułu przenoszą się z `16c516f9` na `758be53b` bez różnic. Zostaje kotwica czasowa K18d na pi400 (osobny katalog i werdykt).
