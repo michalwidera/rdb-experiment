@@ -44,4 +44,16 @@ Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą b
 
 ## Stan
 
-Predeklaracja zapisana przed przebiegami. Kryteria 1-6 niesprawdzone.
+Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-3 POTWIERDZONE 2026-11-21, kryteria 4-6 nie biegły.**
+
+**Iteracja 1 nieliczona.** Przebieg skończył się `ZGODNY` z 0 rozbieżności, ale binarka odniesienia `run/bin/16c516f9…` ma wbudowaną rewizję `e389edd3`; szczegóły w [`PREDECLARATION-2.md`](PREDECLARATION-2.md) §1, wyciąg w [`compat-it1-summary.txt`](compat-it1-summary.txt).
+
+**Iteracja 2 ([`PREDECLARATION-2.md`](PREDECLARATION-2.md), `e50c041`): kryteria 1-3 zachodzą na R `758be53b` wobec czystej binarki pinu `16c516f9` (`build/R618-Release`, `955fdc71…`).**
+
+1. K24e: ziarno `20260818` 35 835 obserwacji, ziarno `20260820` 35 703, oba bajt w bajt jak `raw/campaign_seed*.csv`;
+2. K24f: ziarno `20260912` 36 162, ziarno `20260913` 36 089, oba bajt w bajt jak `raw/h10_*.csv`;
+3. kontrola zgodności (2026-11-21 22:12-22:19, skrypt SHA-256 `1540b712…`, `paper-arXiv` `2da2d7c`): `WYNIK: ZGODNY`, kod 0, 0 rozbieżności w siedmiu grupach. `plans` 709 (673 zgodne, 36 odrzucanych przez oba silniki, 0 przyjętych dopiero teraz; wobec R618 +27 planów z pinu korpusu `ff5a116`), kopie `current/` 170 bajtowo równych + 54 zgodnych modulo M1 = 224; `runs` 67/67; `artifacts` 48/48 (replay K18 67 plików: pin = silnik, plan pinu = plan S1/S2, dwa przebiegi silnika równe); `g3` 13/13; `fig:qrs` 3/3 kanały, 400 próbek, 0 NULL, 0 rozbieżności wartości, piki MLII `x=122,365`. Trzy wpisy pliku akceptacji nieużyte jak w R618; plik bez zmian. Wyciąg z logu: [`compat-it2-summary.txt`](compat-it2-summary.txt).
+
+Ani #626 (strażnik R1 dla `VAR`), ani `ce2c65eb` (walidacja interwału rozplotu) nie zmienia wydruku żadnego planu korpusu ani wyniku żadnego przebiegu.
+
+Dalej (#632 etap 1): kryteria 4-6 (budowa all-off, przykłady ON/OFF, tryb dowodowy, `doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.
