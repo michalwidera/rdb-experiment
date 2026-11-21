@@ -44,7 +44,7 @@ Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą b
 
 ## Stan
 
-Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-3 POTWIERDZONE 2026-11-21, kryteria 4-6 nie biegły.**
+Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-4 POTWIERDZONE 2026-11-21, kryteria 5-6 nie biegły.**
 
 **Iteracja 1 nieliczona.** Przebieg skończył się `ZGODNY` z 0 rozbieżności, ale binarka odniesienia `run/bin/16c516f9…` ma wbudowaną rewizję `e389edd3`; szczegóły w [`PREDECLARATION-2.md`](PREDECLARATION-2.md) §1, wyciąg w [`compat-it1-summary.txt`](compat-it1-summary.txt).
 
@@ -56,4 +56,6 @@ Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryter
 
 Ani #626 (strażnik R1 dla `VAR`), ani `ce2c65eb` (walidacja interwału rozplotu) nie zmienia wydruku żadnego planu korpusu ani wyniku żadnego przebiegu.
 
-Dalej (#632 etap 1): kryteria 4-6 (budowa all-off, przykłady ON/OFF, tryb dowodowy, `doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.
+**Kryterium 4 (przykłady), 2026-11-21:** binarka all-off dopisana w `07bdccc` przed przebiegiem. 27/27 programów z `examples/` kompiluje się all-on i all-off w obu trybach (kod 0, stderr puste), stdout `-c -m -q` i `-c -q` bajtowo identyczny ON/OFF dla 27/27; trzy kontrole pozytywne dają różne listingi ON/OFF w obu trybach. Opisowo: źródła (`sources.sha256`) i wszystkie 120 zrzutów (`dumps.sha256`) bajtowo równe R618 na `16c516f9`. Dowody: [`examples/`](examples/) (`census.tsv`, sumy źródeł, sumy zrzutów, tożsamość binarek), narzędzie `results_20261111_R618/tools/examples_census.sh` bez zmian.
+
+Dalej (#632 etap 1): kryteria 5-6 (tryb dowodowy, `doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.
