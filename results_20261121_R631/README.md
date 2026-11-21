@@ -44,7 +44,7 @@ Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą b
 
 ## Stan
 
-Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-4 POTWIERDZONE 2026-11-21, kryteria 5-6 nie biegły.**
+Predeklaracja zapisana w `6351fc1`, przed przebiegami. **Kampania w toku: kryteria 1-5 POTWIERDZONE 2026-11-21, kryterium 6 nie biegło.**
 
 **Iteracja 1 nieliczona.** Przebieg skończył się `ZGODNY` z 0 rozbieżności, ale binarka odniesienia `run/bin/16c516f9…` ma wbudowaną rewizję `e389edd3`; szczegóły w [`PREDECLARATION-2.md`](PREDECLARATION-2.md) §1, wyciąg w [`compat-it1-summary.txt`](compat-it1-summary.txt).
 
@@ -58,4 +58,6 @@ Ani #626 (strażnik R1 dla `VAR`), ani `ce2c65eb` (walidacja interwału rozplotu
 
 **Kryterium 4 (przykłady), 2026-11-21:** binarka all-off dopisana w `07bdccc` przed przebiegiem. 27/27 programów z `examples/` kompiluje się all-on i all-off w obu trybach (kod 0, stderr puste), stdout `-c -m -q` i `-c -q` bajtowo identyczny ON/OFF dla 27/27; trzy kontrole pozytywne dają różne listingi ON/OFF w obu trybach. Opisowo: źródła (`sources.sha256`) i wszystkie 120 zrzutów (`dumps.sha256`) bajtowo równe R618 na `16c516f9`. Dowody: [`examples/`](examples/) (`census.tsv`, sumy źródeł, sumy zrzutów, tożsamość binarek), narzędzie `results_20261111_R618/tools/examples_census.sh` bez zmian.
 
-Dalej (#632 etap 1): kryteria 5-6 (tryb dowodowy, `doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.
+**Kryterium 5 (tryb dowodowy), 2026-11-21:** świeży katalog z `rdb-artifact/bin/checkout.sh` (`1dcf754`) z jedyną zmianą `ENGINE_SNAPSHOT=758be53b` - tą, którą zapisze `move_pin.sh --apply`; cztery repozytoria na pinach, drzewa czyste. `install-lean.sh --no-upgrade-check` (Lean `v4.33.0`, Mathlib `db584cd6`, Verso `3bdedf29`, nowy `.lake`), `./render.sh` -> `DOWODY: OK`, 0 linii z `warning`/`sorry`, 9 rozdziałów tekstowych. `test/proof_manifest.tsv`: 151 twierdzeń, 86 TEST, 65 poza zakresem, 0 niepokrytych; 86 wierszy TEST wskazuje 52 testy `ProofOracle`, wszystkie wśród zaliczonych. `ctest -R 'proof_drift|ut_proofOracle' -LE valgrind` w `build/Debug` tego katalogu: 3/3 zielone, `ut_proofOracle` 54/54 testów gtest. Odstępstwo: pierwsze wywołanie ctest zbudowało zły cel (`ut_proofOracle` zamiast `test_proofOracle`) i `ut_proofOracle` nie ruszył (`Not Run`); po zbudowaniu właściwego celu wynik jak wyżej, kod testu bez zmian. Dowód: [`proofs/summary.txt`](proofs/summary.txt).
+
+Dalej (#632 etap 1): kryterium 6 (`doc_drift`) według tego README, bez nowej predeklaracji; potem R631 K18d na pi400 w osobnym katalogu.

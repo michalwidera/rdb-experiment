@@ -4647,3 +4647,7 @@ Kampania potwierdzająca przesunięcie pinu silnika artefaktu `16c516f9` -> R = 
 ## 2026-11-21 - R631: przykłady ON/OFF na R = `758be53b` - kryterium 4 potwierdzone
 
 `results_20261121_R631/examples/`: binarki all-on `9d5950c6…` i all-off `573cd48b…` (dopisana przed przebiegiem, `07bdccc`), narzędzie R618 `tools/examples_census.sh` bez zmian. 27/27 programów z `examples/` kompiluje się w obu trybach (`-c -m -q`, `-c -q`) z kodem 0 i pustym stderr, stdout ON/OFF bajtowo identyczny dla 27/27; trzy kontrole pozytywne z #612 dają różne listingi ON/OFF. Wszystkie 120 zrzutów bajtowo równe R618 na `16c516f9`. Zostają kryteria 5-6 (tryb dowodowy, `doc_drift`) i kotwica K18d.
+
+## 2026-11-21 - R631: tryb dowodowy na R = `758be53b` - kryterium 5 potwierdzone
+
+Świeży katalog z `rdb-artifact/bin/checkout.sh` z pinem silnika R (jedyna zmiana kopii skryptu: `ENGINE_SNAPSHOT`), nowy `.lake`: `render.sh` -> `DOWODY: OK` bez ostrzeżeń, 9 rozdziałów tekstowych (z `startup-boundaries`, `plan-composition`, `plan-values`); `proof_manifest.tsv` 151 twierdzeń, 86 TEST, 65 poza zakresem, 0 niepokrytych; `proof_drift` i `ut_proofOracle` (54/54) zielone, wszystkie 52 testy wskazane przez manifest zaliczone. Pierwsze wywołanie ctest bez zbudowanej binarki testu (`Not Run`) - powtórzone po budowie celu `test_proofOracle`. Zostaje kryterium 6 (`doc_drift`) i kotwica K18d.

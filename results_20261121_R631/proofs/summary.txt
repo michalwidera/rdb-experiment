@@ -1,0 +1,42 @@
+# R631 kryterium 5 - tryb dowodowy (rdb-artifact REPRODUCE.md 6), 2026-11-21
+## katalog: swiezy, bin/checkout.sh rdb-artifact 1dcf754 z jedyna zmiana ENGINE_SNAPSHOT=758be53b (to, co zapisze move_pin.sh --apply)
+16c16
+< ENGINE_SNAPSHOT="16c516f9eb76c473d5ff8510a2a812b8c23a893d"
+---
+> ENGINE_SNAPSHOT="758be53b3b8339d176dc678f9a75a259b8926925"
+retractordb 758be53b3b8339d176dc678f9a75a259b8926925 status_porcelain_lines=0
+rdb-experiment ff5a116b5e51002cc6b27c6a6300e526538a07c7 status_porcelain_lines=0
+documentation-rdb 00e571783c232e635bce924e294b99bd43033919 status_porcelain_lines=0
+paper-arXiv 3cc9905821762163c356a11f6964f80593133d43 status_porcelain_lines=0
+## Lean
+lean-toolchain: leanprover/lean4:v4.33.0
+mathlib db584cd6d46c92f209a44c0f1c829460d327499d
+verso 3bdedf29bada13d8103e6c979001c51dcee210c8
+.lake: nowy katalog kluczowany sciezka projektu (link-lake.sh); Mathlib z pamieci podrecznej lake exe cache get
+## install-lean.sh --no-upgrade-check: rc 0 (22:31:52-22:33:15)
+Completed successfully in 22461 ms!
+==> gotowe - teraz ./render.sh
+## render.sh: rc 0 (22:33:15-22:36:12), linie z warning/sorry: 0
+DOWODY: OK - kod Lean i dokumenty Verso sprawdzone bez bledow i ostrzezen.
+rozdzialy tekstowe: 9 (+ all-proofs.txt)
+  all-proofs.txt
+  deinterleave.txt
+  event-order.txt
+  exact-invertibility.txt
+  interleave-covering.txt
+  plan-composition.txt
+  plan-values.txt
+  shift-matching.txt
+  startup-boundaries.txt
+  sum-commutativity.txt
+## proof_manifest.tsv
+twierdzenia 151, TEST 86, POZA_ZAKRESEM 65, inne 0
+testy ProofOracle wskazane przez wiersze TEST: 52, wszystkie wsrod zaliczonych: tak
+## ctest (build/Debug w katalogu, CMAKE_HOME_DIRECTORY = katalog, test_proofOracle sha256 136e64b26ac3)
+ctest -R 'proof_drift|ut_proofOracle' -LE valgrind
+1/3 Test   #6: proof_drift ......................   Passed    0.02 sec
+2/3 Test #474: ut_proofOracle-setup .............   Passed    0.01 sec
+3/3 Test #475: ut_proofOracle ...................   Passed    1.24 sec
+100% tests passed, 0 tests failed out of 3
+475: [==========] 54 tests from 1 test suite ran. (1023 ms total)
+475: [  PASSED  ] 54 tests.
