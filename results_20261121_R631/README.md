@@ -21,7 +21,7 @@ Czyste drzewo `retractordb` na R (`git status --porcelain --untracked-files=all`
 | Wariant | Katalog | `--build-info` | SHA-256 `xretractor` | SHA-256 `xqry` |
 |---|---|---|---|---|
 | all-on | `build/R631-Release` | 5 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=OFF` | `9d5950c6c5ad5d173389fdd9256d8988461dc340aa8a153eb8f1ef28e27f2f9b` | `749112090fe21bec82f3c9f55e72bd841d38ef549d9ad7e898eb8f8a39180713` |
-| all-off | `build/R631-Ablation-alloff` | budowana przed kryterium 4, ten sam przepis z 5 × `RDB_OPT_*=OFF`; sumy dopisywane przed przebiegiem kryterium 4 | - | - |
+| all-off | `build/R631-Ablation-alloff` | 5 × `RDB_OPT_*=OFF`, `RDB_BENCH_PROBE=OFF` (zbudowana 2026-11-21 po kryteriach 1-3, przed przebiegiem kryterium 4, ten sam przepis) | `573cd48bdbeffca69d99861c82f4c293b9635ed4efc8609a77012041bfd0004c` | `f589244b3c71c61e5cf6930232791c34bab0653b808fec50e3deace4bc164e87` |
 
 Odniesienie: binarka pinu `16c516f9` z `paper-arXiv/measurment-tool/run/bin/16c516f9eb76c473d5ff8510a2a812b8c23a893d/xretractor` (zbudowana przez `trend.py` 2026-11-12, `--build-info` 5 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=OFF`), SHA-256 `ef8ef4c4a30ad5a2e2393dc33a87ce82b58a74e8cbcae4f944edd35094acf4e1`. Korpus: `rdb-experiment` na pinie artefaktu `ff5a116b5e51002cc6b27c6a6300e526538a07c7`; drzewo `current/` bez zmian wobec `84fee502` (R618).
 
