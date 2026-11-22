@@ -4655,3 +4655,10 @@ Kampania potwierdzająca przesunięcie pinu silnika artefaktu `16c516f9` -> R = 
 ## 2026-11-21 - R631 POTWIERDZONY na R = `758be53b`: kryterium 6 (dokumentacja) zielone
 
 `doc_drift_scalar_functions` i `proof_drift` w katalogu trybu dowodowego, przekonfigurowanym na `RDB_DOCS_EN` = `documentation-rdb` na pinie `00e5717` (domyślna ścieżka wskazywała żywy klon, nowszy o 1 commit): `ZGODNY: 21 funkcji, 2 dokumentacji`; 151 twierdzeń, 86 dotyczących silnika, 86 z testem, pokrycie 100%. Pin dokumentacji w artefakcie zostaje. Tym samym wszystkie sześć kryteriów R631 zachodzi: produkty artykułu przenoszą się z `16c516f9` na `758be53b` bez różnic. Zostaje kotwica czasowa K18d na pi400 (osobny katalog i werdykt).
+
+## 2026-11-22T08:36:31+01:00 — results_20261122_R631_K18d / rate_r631k18d / study_1
+
+- wynik: sukces
+- commit kodu: `758be53b3b8339d176dc678f9a75a259b8926925`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20261122_R631_K18d/rate_r631k18d/study_01`
