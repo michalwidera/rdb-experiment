@@ -51,4 +51,29 @@ Na nadzorcy, po zatwierdzeniu exactness/replay:
 
 ## Stan
 
-Przygotowanie przed pomiarem; exactness/replay i badanie 360 Hz nie biegły.
+**POTWIERDZONY 2026-11-22** - wszystkie trzy warunki z kryteriów zachodzą na `dev/muro@758be53b`, binarka Release-Probe z `~/R631` (SHA-256 `xretractor` `d452c07f242933a74812f89c4950a0bb148b051134683740852d8350e78556ae`, `xqry` `4f8b4d48f6ce655acda3345e93ce3876ecf51f69e77504be993721cf5bcd457e`, `xtrdb` `e137fc43843ba853a54b5eaa3eb39ea6a2f6c4c30a8ce00701f964ba5f323947`; binarki w `~/.local/bin` bajt w bajt równe buildowi; `--build-info`: 5 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=ON`; `--help`: `Branch: dev/muro:758be53b`, GCC 14.2.0).
+
+1. exactness/replay (`exactness/`, commit `f918b4d`): 2 przebiegi, 67 artefaktów, 51 identycznych bitowo, 16 `.meta` identycznych po pominięciu czasu utworzenia; zero różnic. Opisowo, poza kryterium: lista artefaktów i artefakty bez `.meta` są bajt w bajt równe artefaktom R618 K18c na `16c516f9`, a `configuration.sha256` jest ten sam;
+2. round-trip: `a2 == a`, `b2 == b` bez rekordu zastępczego, `c[2i] == b[i]`, `c[2i+1] == a[i]`; rekordy a=19 999, b=19 999, c=39 994, a2=19 996, b2=19 997 (prefiksy >= 19 990), te same liczby co w R618 K18c, R593 K18b i R593 K18 (`roundtrip_compare.txt` bajtowo równy K18c);
+3. 360 Hz (`rate_r631k18d/study_01/`, commit `913147d`): 19 999 interwałów w sondzie (żaden rekord nie zaginął), jeden klient `xqry` (pusty `xqry_1.err`), harness zakończony sukcesem, governor `performance` w czasie badania, `throttled=0x0`.
+
+Liczby czasowe (opisowo, jeden przebieg na każdej rewizji). Plan 360 Hz jest tym samym tekstem co w R618 K18c, R593 K18b i R593 K18, ale jeden przebieg nie wystarcza, by różnicę wobec nich przypisać silnikowi; w K18 plan był innym tekstem.
+
+| Metryka | K18 `bc37186` | R593 K18 `dfcc42d2` | R593 K18b `e389edd3` | R618 K18c `16c516f9` | R631 K18d `758be53b` |
+|---|---|---|---|---|---|
+| E1 mediana | 1312,4 µs | 885,7 µs | 916,4 µs | 851,6 µs | 870,6 µs |
+| E1 p99 | 1617,9 µs | 1105,6 µs | 1115,7 µs | 1064,8 µs | 1075,7 µs |
+| E1 max | 1838,5 µs | 1303,0 µs | 1284,8 µs | 1225,9 µs | 1257,0 µs |
+| max E1 / budżet 2777,8 µs | - | 46,9% | 46,3% | 44,1% | 45,3% |
+| queue-emission mediana | 1372,8 µs | 937,2 µs | 970,8 µs | 906,6 µs | 925,6 µs |
+| queue-emission p99 | 1718,6 µs | 1211,1 µs | 1215,0 µs | 1168,8 µs | 1177,7 µs |
+| queue-emission p99,9 | 1832,5 µs | 1291,4 µs | 1276,5 µs | 1229,4 µs | 1240,5 µs |
+| queue-emission max | 1944,0 µs | 1420,3 µs | 1426,1 µs | 1351,5 µs | 1372,4 µs |
+| max queue-emission / budżet 2777,8 µs | 70,0% | 51,1% | 51,3% | 48,7% | 49,4% |
+| wake_lag mediana / max | 20,7 / 54,3 µs | 22,2 / 71,2 µs | 22,3 / 69,6 µs | 22,3 / 106,0 µs | 22,7 / 73,6 µs |
+
+Wobec R618 K18c wszystkie podane kwantyle E1 i queue-emission są wyższe o 0,8-2,5%, wobec R593 K18b niższe o 2,2-5,0%; każda z tych wartości leży między R618 K18c a R593 K18b. Maksimum wake_lag wróciło do poziomu R593 K18 i K18b (73,6 µs). Delta silnika (#626, `ce2c65eb`) dotyczy rachunku kompilatora, nie ścieżki wykonania ani IPC, a pomiar to jeden przebieg na każdej rewizji, więc tych różnic nie przypisuję silnikowi.
+
+Stan workera: start ok. 07:07 (2026-11-22, po włączeniu przez człowieka), potem build Release-Probe w `~/R631` (07:12-08:20), exactness 08:23-08:29 i badanie 360 Hz 08:35-08:36. Kampania ma jedno badanie, więc nadzorca nie restartował workera. W trakcie exactness i badania nikt poza nadzorcą nie łączył się z workerem: start `run.sh` przez `timeout 30 ssh` z procesem odczepionym, oczekiwanie lokalnym `sleep`, jedno logowanie po końcu (08:33), potem kontrola kopii i synchronizacja gałęzi (do 08:35) i tylko sesje nadzorcy. Logowania w trakcie buildu (jedno o 07:17, potem co 5 min od ok. 08:12 do 08:22) były przed oboma pomiarami. Kolejność jak w R618 K18c (build, exactness, badanie).
+
+Odstępstwa w przebiegu: (a) znane z R593 K18, K18b i R618 K18c - strażnik buildu nadzorcy nie zna `scripts/buildrdb/research.sh`, więc build był ręczny (`scripts/buildrdb.sh conan ninja probe`, `cmake --install build/Release-Probe`), a nadzorca szedł z `--skip-build` i weryfikacją zainstalowanej binarki; (b) pierwsze uruchomienie nadzorcy (08:34:53) zatrzymało się na wstępnym preflighcie (`repozytorium wynikow workera nie jest czyste`), zanim cokolwiek uruchomiło na workerze: w klonie `~/rdb-experiment` zostały nieśledzone kopie 15 plików `exactness/`. Wszystkie 15 porównano bajtowo z `origin/experiment/20261122_R631` (`f918b4d`, zero różnic), usunięto i zsynchronizowano gałąź; drugie uruchomienie dało badanie z tego katalogu. Pomiaru nie powtarzano. Wyniki exactness skopiowane z workera na nadzorcę i zacommitowane tam (`f918b4d`); sumy kopii na workerze porównane z plikami commitu przed wypchnięciem.
