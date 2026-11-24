@@ -1,0 +1,47 @@
+# R648 kryterium 5 - tryb dowodowy (rdb-artifact REPRODUCE.md 6), 2026-11-24
+## katalog: swiezy, bin/checkout.sh rdb-artifact c0647ff z jedyna zmiana ENGINE_SNAPSHOT=7e5659f4 (to, co zapisze move_pin.sh --apply)
+16c16
+< ENGINE_SNAPSHOT="758be53b3b8339d176dc678f9a75a259b8926925"
+---
+> ENGINE_SNAPSHOT="7e5659f4c070b39f1c1a711217fb98548ca60cf4"
+retractordb 7e5659f4c070b39f1c1a711217fb98548ca60cf4 status_porcelain_lines=0
+rdb-experiment b3ca436f620cce39f2958d69d16f629ab4b9d9ee status_porcelain_lines=0
+documentation-rdb 00e571783c232e635bce924e294b99bd43033919 status_porcelain_lines=0
+paper-arXiv 3acd046e86b78aa60f58d702a675563386e1c266 status_porcelain_lines=0
+## Lean
+lean-toolchain: leanprover/lean4:v4.33.0
+mathlib db584cd6d46c92f209a44c0f1c829460d327499d
+verso 3bdedf29bada13d8103e6c979001c51dcee210c8
+.lake: nowy katalog kluczowany sciezka projektu (link-lake.sh); Mathlib z pamieci podrecznej lake exe cache get
+## install-lean.sh --no-upgrade-check: rc 0 (07:31:53-07:33:16)
+Completed successfully in 22677 ms!
+==> gotowe - teraz ./render.sh
+## render.sh: rc 0 (07:33:16-07:36:53), linie z warning/sorry: 0 (dwie linie ze slowem Warning to nazwa modulu Cache.Warning w logu budowy lake, nie ostrzezenia)
+AKSJOMATY: OK - 307 twierdzen Profs.* zalezy najwyzej od propext, Classical.choice i Quot.sound
+DOWODY: OK - kod Lean i dokumenty Verso sprawdzone bez bledow i ostrzezen.
+rozdzialy tekstowe: 10 (+ all-proofs.txt)
+  all-proofs.txt
+  deinterleave.txt
+  engine-rules.txt
+  event-order.txt
+  exact-invertibility.txt
+  interleave-covering.txt
+  plan-composition.txt
+  plan-values.txt
+  shift-matching.txt
+  startup-boundaries.txt
+  sum-commutativity.txt
+## proof_manifest.tsv
+twierdzenia 233, TEST 118, POZA_ZAKRESEM 115, inne 0
+testy ProofOracle wskazane przez wiersze TEST: 70, wszystkie wsrod zaliczonych: tak
+## ctest (build/Debug w katalogu, CMAKE_HOME_DIRECTORY = katalog, cel test_proofOracle zbudowany, test_proofOracle sha256 9dba5cf62d53)
+ctest -R 'doc_drift_scalar_functions|proof_drift|ut_proofOracle' -LE valgrind -V
+1/4 Test   #3: doc_drift_scalar_functions .......   Passed    0.02 sec
+2/4 Test   #6: proof_drift ......................   Passed    0.02 sec
+3/4 Test #475: ut_proofOracle-setup .............   Passed    0.00 sec
+476: [==========] Running 72 tests from 1 test suite.
+476: [==========] 72 tests from 1 test suite ran. (767 ms total)
+476: [  PASSED  ] 72 tests.
+4/4 Test #476: ut_proofOracle ...................   Passed    0.77 sec
+The following tests passed:
+100% tests passed, 0 tests failed out of 4

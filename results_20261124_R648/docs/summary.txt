@@ -1,0 +1,15 @@
+# R648 kryterium 6 - doc_drift_scalar_functions i proof_drift przeciw documentation-rdb 00e5717, 2026-11-24
+katalog: ten sam co kryterium 5 (proofs/summary.txt), retractordb 7e5659f4c070b39f1c1a711217fb98548ca60cf4
+konfiguracja: RDB_DOCS_EN=<workspace>/documentation-rdb podane przy pierwszej konfiguracji cmake (w R631 przekonfigurowanie po kryterium 5); wartosc sprawdzona w CMakeCache.txt i w poleceniu testu
+RDB_DOCS_EN: <workspace>/documentation-rdb 00e571783c232e635bce924e294b99bd43033919 status_porcelain_lines=0
+RDB_DOCS_PL: <github>/dokumentacja-rdb bb0193633f5c504e678202f576cd568bb92efd8e status_porcelain_lines=0 (artefakt nie przypina dokumentacji PL)
+kopia skryptu w build/Debug/test bajtowo rowna test/doc_drift_scalar_functions.py: tak
+ctest -R 'doc_drift_scalar_functions|proof_drift|ut_proofOracle' -LE valgrind -V (ten sam przebieg co kryterium 5)
+3: ZGODNY: 21 funkcji, 2 dokumentacji
+1/4 Test   #3: doc_drift_scalar_functions .......   Passed    0.02 sec
+6: Twierdzenia w Profs: 233, dotyczace silnika: 118, z testem: 118
+6: Pokrycie: 100.0%
+6: Werdykt: ZGODNY
+2/4 Test   #6: proof_drift ......................   Passed    0.02 sec
+The following tests passed:
+100% tests passed, 0 tests failed out of 4
