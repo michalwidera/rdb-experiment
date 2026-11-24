@@ -4670,3 +4670,10 @@ Powtórzenie R618 K18c na rewizji silnika R = `758be53b` (#632 etap 1, decyzja c
 ## 2026-11-24 - R648: kontrola zgodności korpusu i przykłady ON/OFF na R = `7e5659f4` - kryteria 1-4 potwierdzone
 
 Kampania potwierdzająca przesunięcie pinu silnika artefaktu `758be53b` -> R = `7e5659f4` (retractordb #649 etap 1, krok A5 z #634: warstwa A dowodów i poprawki zakresu arytmetyki #635, #636, #637, #640, #644, #647) w `results_20261124_R648/`, predeklaracja `75e8078`. Odniesienie: czysta binarka `758be53b` z R631 (`9d5950c6…`). Kontrola zgodności: `WYNIK: ZGODNY`, kod 0, 0 rozbieżności w siedmiu grupach - plans 712 (676 zgodnych, 36 odrzucanych przez oba, 0 przyjętych dopiero teraz; +3 plany K18d z pinu korpusu `b3ca436`), kopie `current/` 170 + 54 modulo M1, runs 67/67, artifacts 48/48, g3 13/13, K24e i K24f oba ziarna bajt w bajt, `fig:qrs` 3/3 kanały z pikami MLII `x=122,365`. Przykłady: 27/27 programów ON/OFF bajtowo identycznych w obu trybach, 3 kontrole pozytywne różne, wszystkie 120 zrzutów równe R631. Poprawki nie zmieniają niczego w korpusie. Kryteria 5-6 (tryb dowodowy, `doc_drift`) i kotwica K18e jeszcze nie biegły.
+
+## 2026-11-24T09:05:07+01:00 — results_20261124_R648_K18e / rate_r648k18e / study_1
+
+- wynik: sukces
+- commit kodu: `7e5659f4c070b39f1c1a711217fb98548ca60cf4`
+- parametry: rate_hz=360, clients=1, samples=20000, sink=null
+- dane: `results_20261124_R648_K18e/rate_r648k18e/study_01`
