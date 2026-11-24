@@ -1,0 +1,48 @@
+# R648 - produkty artykułu na rewizji silnika z warstwą A dowodów i poprawkami zakresu arytmetyki
+
+Kampania potwierdzająca w ramach retractordb #649 (krok A5 z #634), etap 1: przepięcie silnika artefaktu z `758be53b3b8339d176dc678f9a75a259b8926925` (pin z `rdb-artifact/MANIFEST.md` od 2026-11-22, R631) na R = `7e5659f4c070b39f1c1a711217fb98548ca60cf4` (`master` = `dev/muro`, scalenie #648). Plan zatwierdzony przez człowieka 2026-11-23 (issue #649, decyzje D1-D3; kotwica czasowa mierzona na nowo, D2). Ten katalog nie poprawia K24e, K24f, R618 ani R631 i nie zastępuje ich liczb: każda zostaje wynikiem swojej rewizji.
+
+## Dlaczego pomiar, a nie wymiana SHA
+
+Powód przesunięcia: na `758be53b` nie ma warstwy A dowodów z #634 (`math_proofs/Profs/CppArith.lean`, `Profs/EngineRules.lean`, `AxiomCheck.lean`, `ProfsManual/EngineRules.lean`): przepisania funkcji `src/include/SOperations.hpp` do Lean na arytmetyce sprawdzanej, z testami zgodności tablic przepisań z kodem C++. Przesunięcie przesuwa jednak cały silnik: między `758be53b` a R są 23 commity i 28 plików `src/`, w tym poprawki poprawności:
+
+- #635 (`2f37d64a`): ogon Θ, ~Θ, `-` i `+` liczony bez straży zakresu w `rational<int>` - teraz dokładnie albo plan jest odrzucany;
+- #636 (`a4e44b9c`): mapy odczytu `Hash` / `Div` / `Mod` / `Subtract` / `Add` w `SOperations.hpp` liczone dokładnie do `n = INT_MAX`;
+- #637 (`a911c3d5`): pojemności historii liczone dokładnie, pojemność spoza `int` odrzuca plan;
+- #640 (`b28b53fe`, `12a518ff`, `1085f44b`): chwila slotu w `executor_rt.cpp` poza `rational<int>` (horyzont osi czasu), `xqry --horizon`, `timing.horizon` w `retractor.toml`, nowe pliki `humanDuration.hpp` i zmiany w `executorsm*.cpp`;
+- #644 (`5678da32`): ogon przeplotu `#` z `p/q` poza `rational<int>` bez straży zakresu;
+- #647 (`893b5c37`, `7723fad9`): `computeLogicalOrigin()` - origin powyżej `INT_MAX` przez `>N` i okno rekordowe jest błędem planu; `expandIndexWildcards()` - źródło `[_]` bez pól to złamany niezmiennik.
+
+`VERSION` bez zmian (0.1.14), `examples/` bez zmian (pusty `git diff`), wersje Lean, Mathlib i Verso bez zmian. Oczekiwanie: plany i przebiegi korpusu bajtowo równe, bo poprawki zmieniają tylko wartości poza dawnym zakresem `int`; ryzyko niosą #635, #637, #640, #644 i #647 (odrzucenie planu przyjmowanego dotąd albo inny wydruk). Zgodności korpusu z R nie można więc przyjąć bez przebiegu. Suchy przebieg `rdb-artifact/bin/move_pin.sh` (#649 etap 0, 2026-11-23): 0 problemów, w delcie brak pliku tekstowego >= 1,2 MB i brak dodanej linii pasującej do terminów anonimizacji.
+
+## Binarki (przed tą predeklaracją)
+
+Czyste drzewo `retractordb` na R (`git status --porcelain --untracked-files=all` pusty przed i po budowie), nowe katalogi budowy, Conan i CMake jak `scripts/buildrdb.sh release` (konfiguracja `production_cmake_args`, przy all-off pięć przełączników `RDB_OPT_*=OFF`), zmienne wstrzykujące flagi usunięte ze środowiska, cele `xretractor`, `xqry`, `xtrdb`. Obie binarki zbudowane 2026-11-24 przed tą predeklaracją:
+
+| Wariant | Katalog | `--build-info` | SHA-256 `xretractor` | SHA-256 `xqry` |
+|---|---|---|---|---|
+| all-on | `build/R648-Release` | 5 × `RDB_OPT_*=ON`, `RDB_BENCH_PROBE=OFF` | `beab738586af50960a2a5f102e47f8007eb52a9a09e6005db6f964de7169ed93` | `51e3a6b9398a1ce4977fc1efbf88197a665d4abb7da92ab854c13549a6ecb559` |
+| all-off | `build/R648-Ablation-alloff` | 5 × `RDB_OPT_*=OFF`, `RDB_BENCH_PROBE=OFF` | `5eb519c54c48e85d3576296f73a0a52f010d8a4740a20953d8367202f294816a` | `b61ef3d342d34896033d176a5c56dc739404f5aea1bdccf4278b008aa7b97d34` |
+
+Odniesienie: czysta binarka pinu `758be53b` z R631, `retractordb/build/R631-Release/src/retractor/xretractor`, SHA-256 `9d5950c6c5ad5d173389fdd9256d8988461dc340aa8a153eb8f1ef28e27f2f9b` (tabela binarek `results_20261121_R631/README.md`, wariant all-on, wbudowana rewizja `758be53b`), przekazana skryptowi jawnie przez `--ref`. Binarka all-off odniesienia dla kryterium 4 (opisowo): `build/R631-Ablation-alloff`, `573cd48bdbeffca69d99861c82f4c293b9635ed4efc8609a77012041bfd0004c`. Korpus: `rdb-experiment` na pinie artefaktu `b3ca436f620cce39f2958d69d16f629ab4b9d9ee`.
+
+Aparatura bez zmian wobec R631 iteracji 2: `paper-arXiv/measurment-tool/check_backward_corpus_compatibility.sh` SHA-256 `1540b7127f11bcce85fe492472b1f7a52ddfa7ba61cbe77b2625b141d9de7834` (zacommitowany w `paper-arXiv` `2da2d7c`, czysty), `migrate_corpus.py` SHA-256 `8be34ca79c2d8064ffa7f4439638f02e3f5667884484c3e7904f3a5a93285b28`, plik akceptacji `check_backward_corpus_compatibility.accepted` SHA-256 `e56d3ed315c5a369a7fe635f089f694b133acfde86c1164c668ac3f40b1479f4` (3 wpisy).
+
+## Kryteria - zapisane przed przebiegami
+
+Przebiegi biegną na hoście x86_64. Wynik jest **POTWIERDZONY**, gdy wszystkie warunki zachodzą jednocześnie:
+
+1. **K24e, oba ziarna.** Grupa `k24e` kontroli zgodności: generator K24e z pinu korpusu (`results_20260818_K24e/`), 10 010 planów na ziarno, silnik all-on R. Plik CSV kampanii bajt w bajt równy zapisanemu `raw/campaign_seed20260818.csv` i `raw/campaign_seed20260820.csv`.
+2. **K24f, oba ziarna.** Grupa `k24f`: generator K24f z oknami rekordowymi (`results_20260912_K24f/apparatus/`, `--with-window`), ziarna `20260912` i `20260913`, silnik all-on R. CSV bajt w bajt równy `raw/h10_20260912.csv` i `raw/h10_20260913.csv`.
+3. **Pozostałe grupy kontroli zgodności wstecznej.** `check_backward_corpus_compatibility.sh` z silnikiem pod testem all-on R wobec binarki pinu `758be53b` (`--ref` jak wyżej), wszystkie siedem grup (`plans`, `runs`, `artifacts`, `g3`, `k24e`, `k24f`, `ecg`), tryb domyślny (po migracji M1, S1, S2), nowy katalog roboczy `run/compat-20261124-7e5659f4`: wynik `ZGODNY`, kod 0, zero niezaakceptowanych rozbieżności, plik akceptacji bez zmian; każda kopia `current/` zgodna albo zgodna modulo M1 (`kopie_current_zgodne + kopie_current_zgodne_modulo_m1` = liczba kopii, żadna kopia nie jest rozbieżnością; oczekiwane z R631: 170 + 54 = 224). Zero planów przyjmowanych na pinie, a odrzucanych na R. Liczba planów grupy `plans` nie jest kryterium; oczekiwana 712 = 709 z R631 + 3 plany, które pin korpusu `b3ca436` dodaje wobec `ff5a116` (`results_20261122_R631_K18d/config/exactness-*.rql`, kopie planów K18c); inna liczba nie jest rozbieżnością, ale raport ją wyjaśnia.
+4. **Przykłady.** Każdy plik `.rql` z `examples/` w drzewie R (27 programów, bez zmian wobec `758be53b`) kompiluje się binarką all-on i all-off z własnego katalogu (`-c -m -q <plik>` i `-c -q <plik>`, kod 0); stdout obu trybów jest bajtowo identyczny ON/OFF dla każdego programu. Kontrola trafności porównania: trzy kontrole pozytywne z #612 (`test/IntegrationTest/issue167_dedup_positive/query.rql`, `issue202_hash_shift_factorization/matched.rql`, `select_cse_commutative_add/query.rql`) dają różne zwykłe listingi (`-c -q`) ON/OFF. Narzędzie: `results_20261111_R618/tools/examples_census.sh` bez zmian. Opisowo, poza kryterium: porównanie sum zrzutów z R631.
+5. **Tryb dowodowy.** Świeży katalog z `rdb-artifact/bin/checkout.sh` z pinem silnika R (`REPRODUCE.md` §6; w kopii skryptu jedyna zmiana `ENGINE_SNAPSHOT`, czyli to, co zapisze `move_pin.sh --apply`): w `math_proofs/` `./render.sh` drukuje `AKSJOMATY: OK` i kończy się `DOWODY: OK`, bez linii z `warning` / `sorry`; `proof_drift` i `ut_proofOracle` zielone (`ctest -LE valgrind` po zbudowaniu celu `test_proofOracle`); `test/proof_manifest.tsv` R: 233 twierdzenia, 118 TEST, 0 niepokrytych, 115 poza zakresem, pokrycie 118 z 118. Opisowo: liczba testów gtest `ut_proofOracle` (na `758be53b`: 54) i liczba twierdzeń w wierszu `AKSJOMATY: OK`.
+6. **Dokumentacja.** `doc_drift_scalar_functions` i `proof_drift` na R przeciw `documentation-rdb` `00e571783c232e635bce924e294b99bd43033919` (kopia na pinie w katalogu z kryterium 5, wartość `RDB_DOCS_EN` sprawdzona w `CMakeCache.txt`) zielone; przy zielonym wyniku pin dokumentacji w artefakcie zostaje. #640 dodał `xqry --horizon` i `timing.horizon`, których `00e5717` nie opisuje; to osobny temat dokumentacji (#649, sekcja Kontekst), poza tym kryterium.
+
+**Każda rozbieżność zatrzymuje kampanię** i idzie do człowieka z surowymi danymi (`STOP.md`). Bez korekt po fakcie: przebieg nie jest powtarzany ani poprawiany po cichu, plik akceptacji, aparatura kampanii i skrypt kontroli nie są zmieniane po starcie. Czerwony wynik niczego nie psuje w artefakcie: pin `758be53b` zostaje, dopóki kampania nie jest potwierdzona.
+
+Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą biec w osobnej sesji, z tymi samymi kryteriami, bez nowej predeklaracji. Kotwica czasowa K18 na R (R648 K18e na pi400, protokół R631 K18d bez zmian) dostaje własne kryteria, zapisane przed pomiarem w osobnym katalogu.
+
+## Stan
+
+Predeklaracja zapisana przed przebiegami; żaden przebieg kryteriów 1-6 na R jeszcze nie ruszył.
