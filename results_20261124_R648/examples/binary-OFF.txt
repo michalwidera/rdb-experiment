@@ -1,0 +1,11 @@
+OFF <github>/retractordb/build/R648-Ablation-alloff/src/retractor/xretractor
+<github>/retractordb/build/R648-Ablation-alloff/src/retractor/xretractor - compiler & data processing tool.
+
+Usage: <github>/retractordb/build/R648-Ablation-alloff/src/retractor/xretractor queryfile [option]
+RDB_OPT_DEDUP_SUBSTRATES=OFF
+RDB_OPT_SHARE_EQUIVALENT_SELECTS=OFF
+RDB_OPT_COMMUTATIVE_ADD=OFF
+RDB_OPT_FACTOR_MATCHED_HASH_TIMEMOVES=OFF
+RDB_BENCH_PROBE=OFF
+RDB_OPT_SIMPLIFY_EXPRESSIONS=OFF
+5eb519c54c48e85d3576296f73a0a52f010d8a4740a20953d8367202f294816a  <github>/retractordb/build/R648-Ablation-alloff/src/retractor/xretractor

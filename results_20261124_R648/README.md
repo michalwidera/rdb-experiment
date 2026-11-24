@@ -45,4 +45,16 @@ Kryteria 1-3 rozstrzyga jeden przebieg kontroli zgodności; kryteria 4-6 mogą b
 
 ## Stan
 
-Predeklaracja zapisana przed przebiegami; żaden przebieg kryteriów 1-6 na R jeszcze nie ruszył.
+Predeklaracja zapisana w `75e8078`, przed przebiegami.
+
+**Kryteria 1-3, 2026-11-24: zachodzą na R `7e5659f4` wobec czystej binarki pinu `758be53b` (`build/R631-Release`, `9d5950c6…`).**
+
+1. K24e: ziarno `20260818` 35 835 obserwacji, ziarno `20260820` 35 703, oba bajt w bajt jak `raw/campaign_seed*.csv`;
+2. K24f: ziarno `20260912` 36 162, ziarno `20260913` 36 089, oba bajt w bajt jak `raw/h10_*.csv`;
+3. kontrola zgodności (2026-11-24 07:18, skrypt SHA-256 `1540b712…`, `paper-arXiv` `2da2d7c`, katalog `run/compat-20261124-7e5659f4`): `WYNIK: ZGODNY`, kod 0, 0 rozbieżności w siedmiu grupach. `plans` 712 (676 zgodnych, 36 odrzucanych przez oba silniki, 0 przyjętych dopiero teraz; wobec R631 +3 plany K18d z pinu korpusu `b3ca436`, jak przewidziano), kopie `current/` 170 bajtowo równych + 54 zgodnych modulo M1 = 224; `runs` 67/67; `artifacts` 48/48 (replay K18 67 plików: pin = silnik, plan pinu = plan S1/S2, dwa przebiegi silnika równe); `g3` 13/13; `fig:qrs` 3/3 kanały, 400 próbek, 0 NULL, 0 rozbieżności wartości, piki MLII `x=122,365`. Trzy wpisy pliku akceptacji nieużyte jak w R618 i R631; plik bez zmian. Wyciąg z logu: [`compat-summary.txt`](compat-summary.txt); poza nagłówkiem, liczbą planów i czasami równy wyciągowi R631 iteracji 2.
+
+Poprawki #635, #636, #637, #640, #644 i #647 nie zmieniają wydruku żadnego planu korpusu, nie odrzucają żadnego planu przyjmowanego na `758be53b` i nie zmieniają wyniku żadnego przebiegu.
+
+**Kryterium 4 (przykłady), 2026-11-24:** 27/27 programów z `examples/` kompiluje się all-on (`beab7385…`) i all-off (`5eb519c5…`) w obu trybach (`-c -m -q`, `-c -q`; kod 0, stderr puste), stdout bajtowo identyczny ON/OFF dla 27/27; trzy kontrole pozytywne dają różne listingi ON/OFF w obu trybach. Opisowo: źródła (`sources.sha256`), tabela `census.tsv` (bez kolumny sum) i wszystkie 120 zrzutów (`dumps.sha256`) bajtowo równe R631 na `758be53b`. Dowody: [`examples/`](examples/), narzędzie `results_20261111_R618/tools/examples_census.sh` bez zmian.
+
+Zostają kryteria 5-6 (tryb dowodowy, `doc_drift`). Kotwica czasowa K18e: osobny katalog i werdykt.
